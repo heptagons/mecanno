@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Meccano</title>
+</head>
+<body>
+<h1>Meccano regular heptagon</h1>
+<svg width="440" height="440" style="border:1px solid gray;">
+ <g id="heptagon" transform="translate(250 250)">
+  <g fill="#08f8" stroke="#008">
+   <path id="p8a"></path>
+   <path id="p8b"></path>
+   <path id="p8c"></path>
+   <path id="p8d"></path>
+   <path id="p8e"></path>
+   <path id="p8f"></path>
+   <path id="p8g"></path>
+
+   <path id="p8h"></path>
+   <path id="p8i"></path>
+   <path id="p8j"></path>
+   <path id="p8k"></path>
+  </g>
+  <g fill="#f808" stroke="#800">
+   <path id="p8l"></path>
+   <path id="p8m"></path>
+   <path id="p8n"></path>
+   <path id="p8o"></path>
+  </g>
+
+ </g>
+</svg>
+</body>
+<script type="text/javascript">
+const rod = (R, n)=> {
+	const r = R/2
+	const L = 2 * n * r
+	const d  = [ 
+		"m", -r, 0,
+		"a", r, r, 0, 0, 1, +2*r, 0, "l", 0, +L,
+		"a", r, r, 0, 0, 1, -2*r, 0, "l", 0, -L,
+		"z", "m", r/2, -2*r
+	]	
+	for (let i=0; i <= n; i++) { // holes
+		d.push(...["m", 0, 2*r, "a", r/2, r/2, 0, 0, 0, r, 0, r/2, r/2, 0, 0, 0, -r, 0])
+	}
+	return d.join(" ")
+}
+
+const r = 20
+
+const dt = (id, d, t)=> {
+	if (d) document.getElementById(id).setAttribute("d", d);
+	if (t) document.getElementById(id).setAttribute("transform", t) 	
+
+}
+
+const r0 = 90 - 180/7
+const r1 = 2 * 180/7
+
+const R = (r)=> { return `rotate(${r})`}
+const t8 = `translate(0 ${8*r})`
+
+dt("heptagon", null, "translate(220,40) scale(1 1)")
+dt("p8a", rod(r, 8), `${R(+r0)}`)
+dt("p8b", rod(r, 8), `${R(-r0)}`)
+dt("p8c", rod(r, 8), `${R(+r0)} ${t8} ${R(-r1)}`)
+dt("p8d", rod(r, 8), `${R(-r0)} ${t8} ${R(+r1)}`)
+dt("p8e", rod(r, 8), `${R(+r0)} ${t8} ${R(-r1)} ${t8} ${R(-r1)}`)
+dt("p8f", rod(r, 8), `${R(-r0)} ${t8} ${R(+r1)} ${t8} ${R(+r1)}`)
+dt("p8g", rod(r, 8), `${R(+r0)} ${t8} ${R(-r1)} ${t8} ${R(-r1)} ${t8} ${R(-r1)}`)
+
+const r2 = 90 -3*180/7
+
+dt("p8h", rod(r, 8), `${R(+r2)}`)
+dt("p8i", rod(r, 8), `${R(-r2)}`)
+dt("p8j", rod(r, 8), `${R(+r2)} ${t8} ${R(+r1)}`)
+dt("p8k", rod(r, 8), `${R(-r2)} ${t8} ${R(-r1)}`)
+
+const t1 = `translate(0 ${1*r})`
+const t7 = `translate(0 ${7*r})`
+
+dt("p8l", rod(r, 11), `${R(+r0)} ${t8} ${R(-r1)} ${t8} ${R(-r1)} ${t1} rotate(-74.1)`)
+dt("p8m", rod(r, 11), `${R(+r0)} ${t8} ${R(-r1)} ${t8} ${R(-r1)} ${t7} rotate(-105.7)`)
+
+dt("p8n", rod(r, 11), `${R(-r0)} ${t8} ${R(+r1)} ${t8} ${R(+r1)} ${t1} rotate(+74.1)`)
+dt("p8o", rod(r, 11), `${R(-r0)} ${t8} ${R(+r1)} ${t8} ${R(+r1)} ${t7} rotate(+105.7)`)
+
+
+</script>
+</html>
