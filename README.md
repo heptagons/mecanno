@@ -1,4 +1,4 @@
-# mecanno
-Mecanno geometry experiments.
+# meccano
+Meccano geometry experiments.
 
 <img src="heptagon.svg">
