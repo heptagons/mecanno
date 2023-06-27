@@ -1,40 +1,56 @@
 # Meccano pentagons
 
-To identify a pentagon we use two angles _A_ and _B_:
+To identify a pentagon we use two angles _A_ and _B_.
+Some identities are solved for sqrt(5) values and will be used next.
 
-&nbsp;&nbsp;&nbsp;&nbsp;[<img src="eqs/1.svg" height="250px">](eqs/1.tex)
+| &nbsp;&nbsp;&nbsp;&nbsp;<img src="eqs/1.svg" width="225px"> |
+|-------------|
+| [equations 1](eqs/1.tex) |
 
 ## Pentagon of type 1
 
+A pentagon of type is defined in next figure:
+
 <img src="pentagon-type-1.svg">
 
-A pentagon of type 1 has three rods (or sections of rods) 
-**a**, **b** and **c** at fixed angles with integer sizes.
 
-We want to find a fourth rod **d** with integer size too to make the pentagon of type 1.
+We identify in this type, three rods (or sections of rods) 
+**a**, **b** and **c** at fixed angles with integer sizes as for any meccanno figure.
 
-We start by looking relations with other rods: 
+We want to find a fourth rod **d** with integer size too to make the pentagon.
 
-&nbsp;&nbsp;&nbsp;&nbsp;[<img src="eqs/2.svg" height="300px">](eqs/2.tex)
+We start by looking the formulas to relate the rods:
 
-We define two variables **m** and **n**. **m** is the sum of all terms multipled by **sqrt(5)** while **n** is the sum of all the terms not multipled by **sqrt(5)**:
+| <img src="eqs/2.svg" width="500px"> |
+|-------------|
+| [equations 2](eqs/2.tex) |
 
-&nbsp;&nbsp;&nbsp;&nbsp;[<img src="eqs/3.svg" height="80px">](eqs/3.tex)
+We define two variables **m** and **n**. **m** is the sum of all terms multipled by **sqrt(5)**s while **n** is the sum of all the terms not multipled by **sqrt(5)**:
 
-Simplifyng:
+| <img src="eqs/3.svg" width="400px"> |
+|-------------|
+| [equations 3](eqs/3.tex) |
 
-&nbsp;&nbsp;&nbsp;&nbsp;[<img src="eqs/4.svg" height="20%">](eqs/4.tex)
+Simplifying, we get a value of rod **d<sup>2</sup>** in fuction of the rest of rods:
 
-We can do **m = 0** by doing **ac = (a + c)b** and all the terms with sqrt(5) goes away.
+| <img src="eqs/4.svg" width="300px"> |
+|-------------|
+| [equations 4](eqs/4.tex) |
 
-Finally we get two equations:
+Now, we want rod **d<sup>2</sup>** to be as simple as possible so is good idea to set **m = 0**
+which requires **ac = (a + c)b**. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;[<img src="eqs/5.svg" height="10%">](eqs/5.tex)
+This way rod **d** is a simple function:
 
-Now, a program use the equations and iterate over the integer values
-of **a**, **b** and **c** to check if generated **d** is an integer too.
+| <img src="eqs/5.svg" width="230px"> |
+|-------------|
+| [equations 5](eqs/5.tex) |
+
+Withe equations 5, a program can iterate over the integer values
+of **a**, **b** and **c** to discover **d** as integer too.
 
 Next javascript program was run and found a single solution *`a = 12, b = 3, c = 4, d = 11`* after 5000 iterations. Scaled solutions are discared as are repetitions.
+At this point
 
 ```
 function meccano_pentagons_1(sols)
@@ -69,9 +85,11 @@ function meccano_pentagons_1(sols)
 
 ```
 
-The single solution of pentagon type 1:
 
-<img src="pentagon-12a.svg">
+
+| The first solution of pentagon type 1 |
+|---------------|
+| <img src="pentagon-12a.svg"> |
 
 
 ## Pentagons type 2
