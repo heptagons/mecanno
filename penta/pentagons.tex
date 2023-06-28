@@ -20,6 +20,9 @@
 
 \usepackage[margin=0.75in]{geometry}
 
+% inkscape fig.svg --export-pdf=fig.pdf (prior version 1.0)
+
+\usepackage{graphicx}
 \begin{document}
 
 \maketitle
@@ -42,14 +45,16 @@ To identify a pentagon we use two angles $A$ and $B$. Some identities are solved
 \end{align*}
 
 \subsection{Pentagons of type 1}
-A pentagon of type 1 shown in Figure \ref{pentagon-type-1}. We note three rods (or sections of rods) $a$, $b$, and $c$ at fixed angles and with integer sizes as for any meccano figure. We want to find the fourth rod $d$ which also needs to be of integer size to make the pentagon.
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{figs/pentagon-type-1}
-\caption{From integer rods $a$, $b$ and $c$ we expect to find the rod $d$ also integer to make a pentagon of type 1. Actually, the pentagon shown is the unique solved so far for small values of rods, $a=12$}
+\caption{From rods $a$, $b$ and $c$ with integer lengths we expect to find the rod $d$ length as integer too. Actually, the pentagon shown is the unique solved so far for small values of rods, $a=12$.}
 \label{pentagon-type-1}
 \end{figure}
+
+A pentagon of type 1 is shown in figure \ref{pentagon-type-1}. We note three rods (or sections of rods) $a$, $b$, and $c$ at fixed angles and with integer sizes as it should be for any meccano figure. We want to find the fourth rod $d$ which also needs to be of integer size to make the pentagon.
+
 
 We start by looking the rods' related formulas:
 
@@ -133,8 +138,6 @@ function meccano_pentagons_1(sols)
 
 \subsubsection{Pentagons of type 1 results}
 
-Figure \ref{pentagon-12a} shows the first pentagon of type 1 found.
-
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{figs/pentagon-12a}
@@ -142,10 +145,20 @@ Figure \ref{pentagon-12a} shows the first pentagon of type 1 found.
 \label{pentagon-12a}
 \end{figure}
 
+Figure \ref{pentagon-12a} shows the first pentagon of type 1 found.
+
 
 \subsection{Pentagons of type 2}
 
-A pentagon of type 2 is shown in figure \ref{pentagon-12a}. We identify in this type of pentagon four rods $a$, $b$, $c$ and $d$ at fixed angles. We want to find a fifth rod $e$ with integer length to make the pentagon. Actually, the example pentagon shown is the smallest found $a=12, b=2, c=9, d=6, e=11$. For each solution there are two versions whether the green rods are used or the green ones.
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1.00]{figs/pentagon-type-2.pdf}
+\caption{For rods $a$, $b$, $c$ and $d$ with integer lengths we expect
+to find the rod $e$ with integer length too. Actually, the example shown is the smallest found $a=12, b=2, c=9, d=6, e=11$. For each solution there are two versions whether the green rods are used or the green ones.}
+\label{pentagon-type-2}
+\end{figure}
+
+A pentagon of type 2 is shown in figure \ref{pentagon-type-2}. We identify in this type of pentagon four rods $a$, $b$, $c$ and $d$ at fixed angles. We want to find a fifth rod $e$ with integer length to make the pentagon.
 
 We start with the rods relation formulas
 
@@ -243,14 +256,16 @@ Figures \ref{pentagons-2-31}, \ref{pentagons-2-38} and \ref{pentagons-2-48} show
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{figs/pentagons-2-31}
-\caption{Pentagon of type 2 with $a=31$}
+\caption{Pentagon of type 2 with $a=31$. This construction requires 7 rods of 
+length 31 and 2 rods of length 27.}
 \label{pentagons-2-31}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{figs/pentagons-2-38}
-\caption{Pentagons of type 2 with $a=38$}
+\caption{Pentagons of type 2 with $a=38$. Each construction requires 5 rods
+of length 38, 2 rods of length 31 and 2 rods of length 26}
 \label{pentagons-2-38}
 \end{figure}
 
