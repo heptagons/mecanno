@@ -18,6 +18,8 @@
 	stepnumber=1
 }
 
+\usepackage[margin=0.75in]{geometry}
+
 \begin{document}
 
 \maketitle
@@ -44,7 +46,7 @@ A pentagon of type 1 shown in Figure \ref{pentagon-type-1}. We note three rods (
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{pentagon-type-1}
+\includegraphics[width=10cm]{figs/pentagon-type-1}
 \caption{From integer rods $a$, $b$ and $c$ we expect to find the rod $d$ also integer to make a pentagon of type 1. Actually, the pentagon shown is the unique solved so far for small values of rods, $a=12$}
 \label{pentagon-type-1}
 \end{figure}
@@ -129,9 +131,13 @@ function meccano_pentagons_1(sols)
 
 \end{lstlisting}
 
+\subsubsection{Pentagons of type 1 results}
+
+Figure \ref{pentagon-12a} shows the first pentagon of type 1 found.
+
 \begin{figure}
 \centering
-\includegraphics[width=7cm]{pentagon-12a}
+\includegraphics[width=7cm]{figs/pentagon-12a}
 \caption{The smallest and maybe unique of pentagons of type 1.}
 \label{pentagon-12a}
 \end{figure}
@@ -229,5 +235,30 @@ function meccano_pentagons_2(sols)
 }
 
 \end{lstlisting}
+
+\subsubsection{Pentagons of type 2 results}
+
+Figures \ref{pentagons-2-31}, \ref{pentagons-2-38} and \ref{pentagons-2-48} show some of the pentagons of type 2 found.
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{figs/pentagons-2-31}
+\caption{Pentagon of type 2 with $a=31$}
+\label{pentagons-2-31}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{figs/pentagons-2-38}
+\caption{Pentagons of type 2 with $a=38$}
+\label{pentagons-2-38}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=15cm]{figs/pentagons-2-48}
+\caption{Pentagons of type 2 with $a=48$}
+\label{pentagons-2-48}
+\end{figure}
 
 \end{document}
