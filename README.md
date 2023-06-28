@@ -21,7 +21,7 @@ Gerard ’t Hooft meccano mathematics:
 
 ### [Heptagons](hepta/README.md)
 
-| <img src="hepta/heptagon-3.svg" width="300px"> | <img src="hepta/figs/heptagon-12.svg" width="300px">
+| <img src="hepta/figs/heptagon-3.svg" width="300px"> | <img src="hepta/figs/heptagon-12.svg" width="300px">
 |----|----
 
 ### [Octagon](octa/README.md)
@@ -43,4 +43,5 @@ Gerard ’t Hooft meccano mathematics:
 
 ### Nonagon
 
-<img src="braced/figs/nonagon.svg">
+| <img src="braced/figs/nonagon.svg">
+|---|

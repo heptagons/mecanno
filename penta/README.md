@@ -15,7 +15,7 @@ We identify in this type, three rods (or sections of rods)
 We want to find a fourth rod **d** with integer size too to make the pentagon.
 Actually, the pentagon shown is the unique solved so far for small values.
 
-<img src="pentagon-type-1.svg">
+<img src="figs/pentagon-type-1.svg">
 
 
 We start by looking the formulas to relate the rods:
@@ -84,9 +84,9 @@ function meccano_pentagons_1(sols)
 
 ```
 
-| <img src="pentagon-12a.svg"> |
+| <img src="figs/pentagon-12a.svg"> |
 |---------------|
-| The smallest pentagon type 1 &nbsp;&nbsp; [**a** = 12](pentagon-12a.svg) |
+| The smallest pentagon type 1 &nbsp;&nbsp; [**a** = 12](figs/pentagon-12a.svg) |
 
 
 ## Pentagon of type 2
@@ -99,7 +99,7 @@ Actually, the image below is the smallest of this type
 `a=12 b=2 c=9 d=6 e=11` and for each solution are two
 versions whether the green rods are used or the blue ones.
 
-<img src="pentagon-type-2.svg">
+<img src="figs/pentagon-type-2.svg">
 
 
 We start with the rods relations formulas:
@@ -171,14 +171,14 @@ function meccano_pentagons_2(sols)
 
 ### Pentagons type 2 examples
 
-| <img src="pentagons-2-31.svg" width="300"> |
+| <img src="figs/pentagons-2-31.svg" width="300"> |
 |--------------------|
-| Pentagon type 2 &nbsp;&nbsp; [**a** = **e** = 31](pentagons-2-31.svg) |
+| Pentagon type 2 &nbsp;&nbsp; [**a** = **e** = 31](figs/pentagons-2-31.svg) |
 
-| <img src="pentagons-2-38.svg" width="400"> |
+| <img src="figs/pentagons-2-38.svg" width="400"> |
 |--------------------|
-| Pentagon type 2 &nbsp;&nbsp; [**a** = 38](pentagons-2-38.svg) |
+| Pentagon type 2 &nbsp;&nbsp; [**a** = 38](figs/pentagons-2-38.svg) |
 
-| <img src="pentagons-2-48.svg" width="500"> |
+| <img src="figs/pentagons-2-48.svg" width="500"> |
 |--------------------|
-| Pentagon type 2 &nbsp;&nbsp; [**a** = 48](pentagons-2-48.svg) |
+| Pentagon type 2 &nbsp;&nbsp; [**a** = 48](figs/pentagons-2-48.svg) |
