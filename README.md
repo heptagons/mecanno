@@ -10,13 +10,13 @@ Gerard ’t Hooft meccano mathematics:
 ## Regular polygons
 
 ### Simple
-<img src="triangle-1.svg">
-<img src="square-4.svg">
-<img src="hexagon-1.svg">
+
+| <img src="triangle-1.svg" width="150px"> | <img src="square-4.svg" width="150px"> | <img src="hexagon-1.svg" width="150px">
+|----|---|----|
 
 ### [Pentagons](penta/README.md)
-<img src="penta/pentagon-12a.svg">
-<img src="penta/pentagon-12b.svg">
+| <img src="penta/pentagon-12a.svg" width="300px"> | <img src="penta/pentagon-12b.svg" width="300px">
+|----|----
 
 ### [Heptagons](hepta/README.md)
 <img src="hepta/heptagon-3.svg">
@@ -28,14 +28,14 @@ Gerard ’t Hooft meccano mathematics:
 
 ### Squares
 
-<img src="braced/square-1.svg">
-<img src="braced/square-2.svg">
+| <img src="braced/square-1.svg"> | <img src="braced/square-2.svg">
+|---|---
 
-## Starred
+### Starred
 
-<img src="braced/pentagon.svg">
-<img src="braced/heptagon.svg">
+| <img src="braced/pentagon.svg"> | <img src="braced/heptagon.svg">
+|---|---
 
-## Nonagon
+### Nonagon
 
 <img src="braced/nonagon.svg">
