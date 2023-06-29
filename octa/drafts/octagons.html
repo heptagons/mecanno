@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Octagon</title>
+<meta charset="utf-8">
+<script src="octagons.js"></script>
+<style>
+svg { border:1px solid gray; }
+td { vertical-align:top; }
+</style>
+
+<script>
+const Svg = new SVG()
+
+
+</script>
+
+</head>
+<body>
+<table>
+<tr>
+<td><h1>1</h1></td>
+<td><div id="fig1"></div></td>
+<td><div id="dat1"></div></td>
+</tr>
+<tr>
+<td><h1>2</h1></td>
+<td><div id="fig2"></div></td>
+<td><div id="dat2"></div></td>
+</tr>
+<tr>
+<td><h1>3</h1></td>
+<td><div id="fig3"></div></td>
+<td><div id="dat3"></div></td>
+</tr>
+</table>
+</body>
+
+<script>
+const o = new Octagon()
+const S = Math.sqrt(2)/2
+
+const a=3, b=4, c=5, d=1, e=2, f=6
+
+const points1 = {
+	s0: { x:    0/*-e*/, y:           0 },
+	s1: { x:        a+d, y:           0 },
+	ab: { x:          0, y:           0 },
+	ac: { x:          a, y:           0 },
+	bc: { x:o.a1(a,b,c), y: o.ay(a,b,c) },
+	ef: { x:    a+d+e*S, y:         e*S }
+}
+const colors1 = {
+	a: "#02f",
+	b: "#02f",
+	c: "#0f2",
+	f: "#f20"
+}
+new Build("fig1", points1, colors1, {
+	width:       400,
+	height:      400,
+	tx:          140,
+	ty:          340,
+	scale:       30,
+	strokeWidth: 0.15
+})
+.octagon(points1.s1)
+.data("dat1")
+
+const points2 = {
+	s0: { x:          -1, y:           0 },
+	s1: { x:         a+d, y:           0 },
+	ab: { x:           0, y:           0 },
+	ac: { x:           a, y:           0 },
+	bc: { x: o.a1(a,b,c), y: o.ay(a,b,c) },
+	ef: { x:     a+d+e*S, y:         e*S }
+}
+const colors2 = {
+	a: "#0f2",
+	b: "#02f",
+	c: "#0f2",
+	f: "#f20"
+}
+new Build("fig2", points2, colors2, {
+	width:       400,
+	height:      400,
+	tx:          140,
+	ty:          340,
+	scale:       25,
+	strokeWidth: 0.35
+})
+.octagon({ x:a+d+1*S, y:1*S })
+.data("dat2")
+
+
+const points3 = {
+	s0: { x:          -e, y:           0 },
+	s1: { x:         a+d, y:           0 },
+	ab: { x:           0, y:           0 },
+	ac: { x:           a, y:           0 },
+	bc: { x: o.a1(a,b,c), y: o.ay(a,b,c) },
+	ef: { x:     a+d+e*S, y:         e*S }
+}
+const colors3 = {
+	a: "#f20",
+	b: "#02f",
+	c: "#0f2",
+	f: "#f20"
+}
+new Build("fig3", points3, colors3, {
+	width:       400,
+	height:      400,
+	tx:          180,
+	ty:          340,
+	scale:        20,
+	strokeWidth:   1
+})
+.octagon(points3.ef)
+.data("dat3")
+
+
+//const a=3, b=5, c=4, d=4, e=2, f=6
+
+
+
+/*{
+	const max = 30
+	for (let a = 1; a < max; a ++) {
+		for (let b = 1; b < max; b++) {
+			for (let c = 1; c < max; c++) {
+				if (b >= (a+c)) continue;
+				if (c >= (a+b)) continue;
+				for (let d = 0; d < max; d++) {
+					const r = o.radical(a,b,c,d)
+					if (r == 0) {
+						for (let e=1; e < max; e++) {
+							const F = o.integer(a,b,c,d,e)
+							const f = Math.sqrt(F)
+							if (parseInt(f) == f)
+								console.log(`a=${a} b=${b} c=${c} d=${d} e=${e} f=${f}`)
+						}
+					}
+				}
+			}
+		}
+	}
+}*/
+</script>
+
+
+
+
+</html>
