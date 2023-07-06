@@ -28,8 +28,8 @@ func triangle_diagonals(max int) {
 				if cd == float64(d) {
 					num := float64(diag + a*a - b*b)
 					den := 2.0 * cd * float64(a)
-					angle := math.Acos(num/den)
-					fmt.Printf("a=%3d b=%3d d=%3d angle=%8.4f\n", a, b, d, 180*angle/math.Pi)
+					angle := 180*math.Acos(num/den)/math.Pi
+					fmt.Printf("a=%3d b=%3d d=%3d angle=%8.4f\n", a, b, d, angle)
 				}
 			}
 		}
@@ -52,9 +52,8 @@ func triangle_diagonals(max int) {
 func gcd(a, b int) int {
 	if b == 0 {
 		return a
-	} else {
-		return gcd(b, a % b)
 	}
+	return gcd(b, a % b)
 }
 
 // Find bars forming octagon internal angle 135°.
