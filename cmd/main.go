@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	//octagons_2()
-	triangle_diagonals(200)
+	octagons_2(60)
+	//triangle_diagonals(200)
 }
 
 // triangle_diagonals finds the integer diagonals inside equilateral meccano
@@ -103,34 +103,20 @@ func octagons_1() {
 // 2) j iterate bc=1,2,3 < cd
 // 3) calculate bd*bd = cd**cd - bc*bc
 // 4) accept when bd*db = 2 * square
-func octagons_2() {
-	for i := 1; i < 60; i++ {
-		for j := 1; j < i; j++ {
-			test := i*i - j*j
-			if test % 2 == 0 {
-				f := math.Sqrt(float64(test / 2))
-				k := int(f)
-				if f == float64(k) {
-					if gcd(k, gcd(j, i)) == 1 {
-						fmt.Printf("CD=%2d BC=%2d AB=AD=%2d\n", i, j, k)
+func octagons_2(max int) {
+	for a := 1; a < max; a++ {
+		for b := 1; b < a; b++ {
+			cc := a*a - b*b
+			if cc % 2 == 0 {
+				f := math.Sqrt(float64(cc/2))
+				c := int(f)
+				if f == float64(c) {
+					if gcd(c, gcd(b, a)) == 1 {
+						s := int(math.Max(float64(b), f))
+						fmt.Printf("a=%2d b=%2d c=%2d s=%2d\n", a, b, c, s)
 					}
 				}
 			}
 		}
 	}
-	// cd= 3 bc= 1 ab=ad= 2
-	// cd= 9 bc= 7 ab=ad= 4
-	// cd=11 bc= 7 ab=ad= 6
-	// cd=17 bc= 1 ab=ad=12
-	// cd=19 bc=17 ab=ad= 6
-	// cd=27 bc=23 ab=ad=10
-	// cd=33 bc=17 ab=ad=20
-	// cd=33 bc=31 ab=ad= 8
-	// cd=41 bc=23 ab=ad=24
-	// cd=43 bc= 7 ab=ad=30
-	// cd=51 bc=47 ab=ad=14
-	// cd=51 bc=49 ab=ad=10
-	// cd=57 bc= 7 ab=ad=40
-	// cd=57 bc=41 ab=ad=28
-	// cd=59 bc=41 ab=ad=30
 }
