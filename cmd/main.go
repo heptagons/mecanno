@@ -6,9 +6,120 @@ import (
 )
 
 func main() {
-	octagons_2(60)
+	pentagons_type_2(500)
+	//octagons_2(60)
 	//triangle_diagonals(200)
 }
+
+type Pentagons struct {
+	sols [][]int
+}
+
+
+
+func pentagons_type_1(max int) {
+
+	sols := make([][]int, 0)
+
+	add := func(a, b, c, d int) {
+		for _, s := range sols {
+			if a % s[0] != 0 { continue }
+			// new a is a factor of previous a
+			f := a / s[0]
+			if t := b % s[1] == 0 && b / s[1] == f; !t { continue }
+			if t := c % s[2] == 0 && c / s[2] == f; !t { continue	}
+			if t := d % s[3] == 0 && d / s[3] == f; !t { continue	}
+			return // scaled solution already found (reject)
+		}
+		// solution!
+		sols = append(sols, []int{ a, b, c, d })
+		fmt.Printf("%3d a=%2d b=%2d c=%2d d=%2d\n", len(sols), a, b, c, d)
+	}
+
+	check := func(a, b, c int) {
+		f := float64(a*a + b*b + c*c - a*c)
+		if f < 0 {
+			return
+		}
+		if d := int(math.Sqrt(f)); math.Pow(float64(d), 2) == f {
+			add(a, b, c, d)
+		}
+	}
+
+	for a := 1; a < max; a++ {
+		for b := 1; b <= max; b++ {
+			for c := 0; c <= a; c++ {
+				if a*c == (a + c)*b {
+					check(a, b, c)
+				}
+			}
+		}
+	}
+}
+/*
+a=12 b=3 c=4 d=11
+*/
+
+func pentagons_type_2(max int) {
+
+	sols := make([][]int, 0)
+
+	add := func(a, b, c, d, e int) {
+		for _, s := range sols {
+			if a % s[0] != 0 { continue }
+			// new a is a factor of previous a
+			f := a / s[0]
+			if t := b % s[1] == 0 && b / s[1] == f; !t { continue }
+			if t := c % s[2] == 0 && c / s[2] == f; !t { continue }
+			if t := d % s[3] == 0 && d / s[3] == f; !t { continue }
+			if t := e % s[4] == 0 && e / s[4] == f; !t { continue	}
+			return // scaled solution already found (reject)
+		}
+		// solution!
+		sols = append(sols, []int{ a, b, c, d, e })
+		fmt.Printf("%3d a=%3d b=%3d c=%3d d=%3d e=%3d\n", len(sols), a, b, c, d, e)
+	}
+
+	check := func(a, b, c, d int) {
+		f := float64(a*a + b*b + c*c + d*d - a*d - b*c - c*d)
+	    if f < 0 {
+	    	return
+	    }
+		if e := int(math.Sqrt(f)); math.Pow(float64(e), 2) == f {
+			add(a, b, c, d, e)
+		}
+	}
+
+    for a := 1 ; a < max; a++ {
+    	for b := 1; b < a; b++ {
+        	for c := 1; c < a; c++ {
+          		for d := 1; d < a; d++ {
+            		if ((a - b)*(c - d) + a*b == c*d) {
+              			check(a, b, c, d)
+              		}
+              	}
+            }
+        }
+    }
+}
+/*
+a=12 b= 2 c= 9 d= 6 e=11
+a=12 b= 6 c= 3 d=10 e=11
+a=24 b= 4 c=18 d=12 e=22
+a=24 b=12 c= 6 d=20 e=22
+a=31 b= 4 c=28 d=16 e=31
+a=31 b=15 c= 3 d=27 e=31
+a=36 b= 6 c=27 d=18 e=33
+a=36 b=18 c= 9 d=30 e=33
+a=38 b=12 c=18 d=21 e=31
+a=38 b=17 c=20 d=26 e=31
+a=48 b= 8 c=24 d=21 e=41
+a=48 b= 8 c=36 d=24 e=44
+a=48 b=12 c= 9 d=20 e=41
+a=48 b=24 c=12 d=40 e=44
+a=48 b=27 c=24 d=40 e=41
+a=48 b=28 c=39 d=36 e=41
+*/
 
 // triangle_diagonals finds the integer diagonals inside equilateral meccano
 // triangles:
