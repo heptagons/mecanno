@@ -22,198 +22,271 @@
 
 \usepackage[margin=0.75in]{geometry}
 
-% inkscape fig.svg --export-pdf=fig.pdf (prior version 1.0)
-
 \usepackage{graphicx}
 \begin{document}
 
 \maketitle
 
-\section{Meccano pentagons}
+\section{Regular pentagon type 1}
 
-To identify a pentagon we use two angles $A$ and $B$. Some identities are solved for $a + b\sqrt{5}$ values to be used later.
-
-\begin{align*}
-5A &= {2\pi} \\
-5B &= {\pi} \\
-4\cos(A) &=  -1 + \sqrt{5} \\
-4\cos(B) &=   1 + \sqrt{5} \\
-8\cos^2(A) &= { 3 - \sqrt{5}} \\
-8\cos^2(B) &= { 3 + \sqrt{5}} \\
-4\cos(A)\cos(B) &= 1 \\
-8\sin^2(A) &= 5 + \sqrt{5} \\
-8\sin^2(B) &= 5 - \sqrt{5} \\
-4\sin(A)\sin(B) &= \sqrt{5}
-\end{align*}
-
-\subsection{Pentagons of type 1}
-
-\begin{figure}
+\begin{figure}[htpb]
 \centering
-\includegraphics[width=10cm]{figs/pentagon-type-1}
-\caption{Meccano pentagon of type 1. From rods $a$, $b$ and $c$ with integer lengths we expect to find the rod $d$ length as integer too. Actually, the pentagon shown is the unique solved so far for small values of rods, $a=12$.}
-\label{pentagon-type-1}
+\includegraphics[scale=0.75]{penta-type-1}
+\caption{Pentagon of type 1.}
+\label{fig:type-1}
 \end{figure}
 
-A pentagon of type 1 is shown in figure \ref{pentagon-type-1}. We note three rods (or sections of rods) $a$, $b$, and $c$ at fixed angles and with integer sizes as it should be for any meccano figure. We want to find the fourth rod $d$ which also needs to be of integer size to make the pentagon.
+\subsection{Type 1 equations}
 
-
-We start by looking the rods' related formulas:
-
+Figure \ref{fig:type-1} show the layout of the meccano regular pentagon of type 1.
+Let define the side of the pentagon as $a$ and define other three variables $b$, $c$ and $d$:
 \begin{align*}
-d_x^2 &= ( (a + c)\cos(A) + b)^2 \\
-      &= (a + c)^2\cos^2(A) + 2(a + c)b\cos(A) + b^2 \\
-d_y^2 &= ( (a - c)\sin(A))^2 \\
-      &= (a - c)^2\sin^2(A) \\
-d^2 &= d_x^2 + d_y^2 \\
-    &= (a + c)^2\cos^2(A)
-    + (a - c)^2\sin^2(A)
-    + 2(a + c)b\cos(A)
-    + b^2 \\
-    &= (a + c)^2(3 - \sqrt{5})/8 \\
-    &\qquad + (a - c)(5 + \sqrt{5})/8 \\
-    &\qquad + 2(a + c)b(-1 + \sqrt{5})/4 \\
-    &\qquad + b^2 \\
-    &= m\sqrt{5} + n \\
+a &= \overline{BC}\\
+b &= \overline{BF}\\
+c &= \overline{FI}\\
+d &= \overline{CI}
 \end{align*}
 
-We define two variables $m$ and $n$. $m$ is the sum of all the terms multiplied by $\sqrt{5}$ while $n$ is the sum of all the terms not multipled by $\sqrt{5}$.
-
+Angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $\frac{2\pi}{5}$ so:
 \begin{align*}
-8m  &= -(a + c)^2 + (a - c)^2 + 4(a + c)b \\
-    &= 4(a + c)b - 4ac \\
-8n &= 3(a + c)^2 + 5(a - c)^2 - 4(a + c)b + 8b^2 \\
+\alpha &= \frac{2\pi}{5}\\
+\overline{BL} &= a\cos{\alpha}\\
+\overline{CL} &= a\sin{\alpha}\\
+\overline{FJ} &= c\cos{\alpha}\\
+\overline{IJ} &= c\sin{\alpha}
 \end{align*}
 
-Simplifying we get a value for the rod $d^2$ in function of the rest of rods.
-
+Let calculate $d$ in function of $a$, $b$ and $c$:
 \begin{align*}
-m  &= \frac{ ab - ac + bc}{2} \\
-n  &= a^2 + b^2 + c^2 - \frac{ ab + ac + bc }{2} \\
-   &= a^2 + b^2 + c^2 - ac - m \\
-d^2 &= m\sqrt{5} + a^2 + b^2 + c^2 - ac - m
+d^2 &= (\overline{CI})^2\\
+    &= (\overline{CK})^2 + (\overline{IK})^2\\
+    &= (\overline{BL} + \overline{BF} + \overline{FJ})^2 + (\overline{CL} - \overline{IJ})^2\\
+    &= (a\cos{\alpha} + b + c\cos{\alpha})^2 + (a\sin{\alpha} - c\sin{\alpha})^2\\
+    &= ((a+c)\cos{\alpha} + b)^2 + ((a-c)\sin{\alpha})^2\\
+    &= (a+c)^2\cos^2{\alpha} + 2(a+c)b\cos{\alpha} + b^2 + (a-c)^2\sin^2{\alpha}\\
+    &= (a^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2\\
+    &= (a^2+c^2) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2\\
 \end{align*}
 
-Now, we want rod $d$ to be as simple as possible so is good idea to make $m = 0$ wich requires $ac = (a + c)b$. This way the rod $d$ is a simpler function of $a$, $b$ and $c$.
-
+For $\alpha = \frac{2\pi}{5}$ we have these regular pentagon identities:
 \begin{align*}
-ac &= (a + c)b \\
-d &= \sqrt{ a^2 + b^2 + c^2 - ac }
+cos{\alpha}   &= \frac{-1 + \sqrt{5}}{4} \\
+cos^2{\alpha} &= \frac{{ 3 - \sqrt{5}}}{8} \\
+sin^2{\alpha} &= \frac{5 + \sqrt{5}}{8} \\
+cos^2{\alpha} - sin^2{\alpha} &= -\frac{1 + \sqrt{5}}{4}
 \end{align*}
 
-\subsubsection{Pentagon type 1 search}
+Applying the identities to the last equation of $d$ we get:
+\begin{align*}
+d^2 &= a^2 + c^2 - (\frac{1 + \sqrt{5}}{2})ac + (\frac{-1 + \sqrt{5}}{2})(a+c)b + b^2\\
+    &= a^2 + c^2 - \frac{ac}{2} - \frac{(a+c)b}{2} + b^2 + [- \frac{ac}{2} + \frac{(a+c)b}{2}]\sqrt{5}\\
+    &= a^2 + b^2 + c^2 - \frac{ac + (a+c)b}{2} + [\frac{-ac + (a+c)b}{2}]\sqrt{5}
+\end{align*}
 
-With last equations, a program can iterate over the integer values of the rods $a$, $b$ and $c$ to discover the rod $d$ to be integer too. Next javascript program was run and found a single solution $a = 12, b = 3, c = 4, d = 11$ after 5000 iterations. Scaled solutions are discarded as repetitions.
+Let define two variables $p$ and $q$ such that $d^2 = p + q\sqrt{5}$ so we have:
+\begin{align*}
+d^2 &= p + q\sqrt{5}\\
+  q &= \frac{-ac + (a + c)b}{2}\\
+  p &= a^2 + b^2 + c^2 - \frac{ac + (a+c)b}{2}\\
+    &= a^2 + b^2 + c^2 - \frac{-ac + (a+c)b}{2} - ac\\
+    &= a^2 + b^2 + c^2 - q - ac
+\end{align*}
 
+For a meccano pentagon we need $d$ to be an integer. If we let the integer $q > 0$ then $d = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $d = \sqrt{p}$ has possibilities to be an integer.
+So before calculating $d$ we force the condition that $q = 0$ or that is the same $-ac + (a+c)b = 0$:
+\begin{align*}
+a  & >= b\\
+a  & >= c\\
+ac &= (a + c)b\\
+ d &= \sqrt{a^2 + b^2 + c^2 + ac}
+\end{align*}
+
+\subsubsection{Type 1 program}
+
+Next \textbf{go} program iterate over three variables $a <= max$, $b <= a$, $c <= a$ (lines 30,31,32).
+The $q = 0$ condition is tested (line 33) and only when valid we check the $d$ is an integer (call in line 34, function in line 20). Only when $d$ is an integer we call function
+add (call in line 26, function in line 5) to print and store a solution without repetitions by scaling.
 \begin{lstlisting}
-function meccano_pentagons_1(sols)
-{
-	this.find = (max)=> {
-		for (let a=1; a < max; a++)
-			for (let b=1; b <= max; b++)
-				for (let c=0; c <= a; c++)
-					if (a*c == (a + c)*b)
-						mZero(a, b, c)
-	}
-	
-	const mZero = (a, b, c)=> {
-		const d = Math.sqrt(a*a + b*b + c*c - a*c)
-		if (d > 0 && d % 1 === 0)
-			dInteger(a, b, c, d)
+func pentagons_type_1(max int) {
+
+	sols := make([][]int, 0)
+
+	add := func(a, b, c, d int) {
+		for _, s := range sols {
+			if a % s[0] != 0 { continue }
+			// new a is a factor of previous a
+			f := a / s[0]
+			if t := b % s[1] == 0 && b / s[1] == f; !t { continue }
+			if t := c % s[2] == 0 && c / s[2] == f; !t { continue	}
+			if t := d % s[3] == 0 && d / s[3] == f; !t { continue	}
+			return // scaled solution already found (reject)
+		}
+		// solution!
+		sols = append(sols, []int{ a, b, c, d })
+		fmt.Printf("%3d a=%2d b=%2d c=%2d d=%2d\n", len(sols), a, b, c, d)
 	}
 
-	const dInteger = (a, b, c, d) => {
-		for (let i=0; i < sols.length; i++) {
-			const s = sols[i]
-			if (a % s.a == 0) {
-				const f = a / s.a
-				const bS = (b % s.b == 0) && b / s.b == f
-				const cS = (c % s.c == 0) && c / s.c == f
-				const dS = (d % s.d == 0) && d / s.d == f
-				if (bS && cS && dS)
-					return // scaled solution already
+	check := func(a, b, c int) {
+		f := float64(a*a + b*b + c*c - a*c)
+		if f < 0 {
+			return
+		}
+		if d := int(math.Sqrt(f)); math.Pow(float64(d), 2) == f {
+			add(a, b, c, d)
+		}
+	}
+
+	for a := 1; a < max; a++ {
+		for b := 1; b <= a; b++ {
+			for c := 0; c <= a; c++ {
+				if a*c == (a + c)*b {
+					check(a, b, c)
+				}
 			}
 		}
-		sols.push({ a:a, b:b, c:c, d:d }) // solution!
 	}
 }
 \end{lstlisting}
 
-\subsubsection{Pentagons of type 1 results}
+\subsubsection{Type 1 results}
+After serching for values of $a <= 5000$ we found a single result:
+
+\begin{lstlisting}
+a=12 b=3 c=4 d=11
+\end{lstlisting}
 
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{figs/pentagon-12a}
-\caption{The smallest and maybe unique of pentagons of type 1. Is composed of 6 rods of
-length 12 in color red, 2 rods of length 11 in green and 1 rod of size 9 in blue.}
+\caption{The smallest and maybe unique (?) of pentagons of type 1.
+Is composed of 6 rods of length $a = 12$ in color red,
+two rods of length $d=11$ in green and one rod of size $a-b = 9$ in blue.}
 \label{pentagon-12a}
 \end{figure}
 
-Figure \ref{pentagon-12a} shows the first pentagon of type 1 found.
+Figure \ref{pentagon-12a} shows the first (unique?) pentagon of type 1 with values
+$a=12$, $b=3$, $c=4$ and $d=11$.
 
+%%%%%%%%%%%%%
 
-\subsection{Pentagons of type 2}
+\section{Regular pentagon type 2}
 
-\begin{figure}[htp]
+\begin{figure}[htpb]
 \centering
-\includegraphics[scale=1.00]{figs/pentagon-type-2.pdf}
-\caption{Meccano pentagon of type 2. For rods $a$, $b$, $c$ and $d$ with integer lengths we expect
-to find the rod $e$ with integer length too. Actually, the example shown is the smallest found $a=12, b=2, c=9, d=6, e=11$. For each solution there are two versions whether the green rods are used or the blue ones.}
-\label{pentagon-type-2}
+\includegraphics[scale=0.75]{penta-type-2}
+\caption{Pentagon of type 2.}
+\label{fig:type-2}
 \end{figure}
 
-A pentagon of type 2 is shown in figure \ref{pentagon-type-2}. We identify in this type of pentagon four rods $a$, $b$, $c$ and $d$ at fixed angles. We want to find a fifth rod $e$ with integer length to make the pentagon.
+\subsection{Type 2 equations}
 
-We start with the rods relation formulas
-
+Figure \ref{fig:type-2} show the layout of the meccano regular pentagon of type 2.
+Let define the side of the pentagon as $a$ and define other four variables $b$, $c$, $d$ and $e$:
 \begin{align*}
-e_x &= b\cos(A) + a + c\cos(A) - d\cos(B) \\
-      &= a + (b + c)\cos(A) - d\cos(B) \\
-e_y &= c\sin(A) - b\sin(A) - d\sin(B) \\
-      &= (c - b)\sin(A) - d\sin(B) 
-\\
-e^2 &= e_x^2 + e_y^2 \\
-    &= a^2 + (b + c)^2\cos^2(A) + d^2\cos^2(B) \\
-    &\qquad + 2a(b + c)\cos(A) - 2ad\cos(B) \\
-    &\qquad - 2(b + c)d\cos(A)cos(B) \\
-    &\qquad + (c - b)^2\sin^2(A) + d^2\sin^2(B) \\
-    &\qquad - 2(c - b)d\sin(A)\sin(B) \\
-    &= a^2 - 2(b + c)d / 4 \\
-    &\qquad + (b + c)^2 ( 3 - \sqrt{5}) / 8 \\
-    &\qquad + d^2       ( 3 + \sqrt{5}) / 8 \\
-    &\qquad + 2a(b + c) (-1 + \sqrt{5}) / 4 \\
-    &\qquad - 2ad( 1 + \sqrt{5}) / 4 \\
-    &\qquad + (c - b)^2 ( 5 + \sqrt{5}) / 8 \\
-    &\qquad + d^2       ( 5 - \sqrt{5}) / 8 \\
-    &\qquad - 2(c - b)d ( \sqrt{5}) / 4 \\
-    &= m\sqrt{5} + n \\
+a &= \overline{AB}\\
+b &= \overline{AH}\\
+c &= \overline{BK}\\
+d &= \overline{HL}\\
+e &= \overline{KL}
 \end{align*}
 
-As we did with the pentagon type 1, we define variables $m$ and $n$:
-
+Angles $\angle{NBC}$ and $\angle{MAH}$ are equal to $\frac{2\pi}{5}$ so:
 \begin{align*}
-8m &= -(b+c)^2 + d^2 + 4a(b+c) - 4ad + (c-b)^2 - d^2 - 4(c-b)d \\
-8n &= 8a^2 + 3(b+c)^2 + 3d^2 - 4a(b+c) - 4ad - 4(b+c)d + 5(c-b)^2 + 5d^2 \\
+\alpha &= \frac{2\pi}{5}\\
+\overline{BN} &= b\cos{\alpha}\\
+\overline{KN} &= b\sin{\alpha}\\
+\overline{AM} &= c\cos{\alpha}\\
+\overline{HM} &= c\sin{\alpha}
 \end{align*}
 
-Simplifying, we get a value for rod $e$ in function of the rest of rods:
-
+Angle $\angle{PLH}$ is equal to $\frac{\pi}{5}$ so:
 \begin{align*}
-m   &= \frac{(a - b)(c - d) + ab - cd}{2} \\
-n   &= a^2 + b^2 + c^2 + d^2 - \frac{(a + b)(c + d) + ab + cd}{2} \\
-    &=  a^2 + b^2 + c^2 + d^2 - ad - bc - cd - m \\
-e^2 &= m\sqrt{5} + a^2 + b^2 + c^2 + d^2 - ad - bc - cd - m
+\beta &= \frac{\pi}{5}\\
+\overline{LP} &= d\cos{\beta}\\
+\overline{HP} &= d\sin{\beta}
 \end{align*}
 
-Again we decide to make $m = 0$ which now requires $cd = (a-b)(c-d)+ab$.
-This way the rod $e$ is a simple function of rods $a$, $b$, $c$ and $d$:
-
+Our goal is to find $e$ as integer as funcion of variables $a$, $b$, $c$ and $d$.
+$e^2$ equals $(\overline{KO})^2 + (\overline{LO})^2$ so we first calculate 
+$\overline{KO}$ and $\overline{LO}$. From figure \ref{fig:type-2}:
 \begin{align*}
-cd &= (a - b)(c - d ) + ab \\
-e &= \sqrt{a^2 + b^2 + c^2 + d^2 - ad - bc - cd}
+\overline{KO} &= \overline{AM} + \overline{AB} + \overline{BN} - \overline{LP}\\
+              &= b\cos{\alpha} + a + c\cos{\alpha} - d\cos{\beta}\\
+              &= (b+c)\cos{\alpha} + a  - d\cos{\beta}\\
+\overline{LO} &= \overline{KN} - \overline{HM} - \overline{HP}\\
+              &= c\sin{\alpha} - b\sin{\alpha} - d\sin{\beta}\\
+              &= (c-b)\sin{\alpha} - d\sin{\beta}
 \end{align*}
 
-\subsubsection{Pentagon type 2 search}
+So by adding the squares we get:
+\begin{align*}
+e^2 &= (\overline{KO})^2 + (\overline{LO})^2\\
+    &= ((b+c)\cos{\alpha})^2 + 2(b+c)\cos{\alpha}(a - d\cos{\beta}) + (a - d\cos{\beta})^2\\
+    &\qquad + ((c-b)\sin{\alpha})^2 - 2(c-b)\sin{\alpha}d\sin{\beta} + (d\sin{\beta})^2\\
+    &= (b^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2bc(cos^2{\alpha}-sin^2{\alpha})\\
+    &\qquad + 2a(b+c)cos{\alpha} - 2(b+c)d\cos{\alpha}\cos{\beta} - 2(c-b)d\sin{\alpha}\sin{\beta}\\
+    &\qquad + a^2 - 2ad\cos{\beta} + d^2(\cos^2{\beta} + \sin^2{\beta})
+\end{align*}
+
+Calculate the $\alpha$ and $\beta$ identities that appear in the last equation:
+\begin{align*}
+\cos^2{\alpha} - \sin^2{\alpha} &= -\frac{1 + \sqrt{5}}{4}\\
+                   \cos{\alpha} &= \frac{-1+\sqrt{5}}{4}\\
+        \cos{\alpha}\cos{\beta} &= \frac{1}{4}\\
+        \sin{\alpha}\sin{\beta} &= \frac{\sqrt{5}}{4}\\
+                    \cos{\beta} &= \frac{1+\sqrt{5}}{4}
+\end{align*}
+
+Replace the identities:
+\begin{align*}
+e^2 &= (b^2+c^2)(1) + 2bc(-\frac{1 + \sqrt{5}}{4})\\
+    &\qquad + 2a(b+c)(\frac{-1+\sqrt{5}}{4}) - 2(b+c)d(\frac{1}{4}) - 2(c-b)d(\frac{\sqrt{5}}{4})\\
+    &\qquad + a^2 - 2ad(\frac{1+\sqrt{5}}{4}) + d^2(1)\\
+    %
+    &= b^2+c^2 - bc(\frac{1 + \sqrt{5}}{2})\\
+    &\qquad + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (b+c)d(\frac{1}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
+    &\qquad + a^2 - ad(\frac{1+\sqrt{5}}{2}) + d^2\\
+    %
+    &= a^2+b^2+c^2 + d^2 - (b+c)d(\frac{1}{2}) \\
+    &\qquad - (ad+bc)(\frac{1 + \sqrt{5}}{2}) + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
+    &= a^2+b^2+c^2 + d^2 - \frac{(b+c)d}{2} \\
+    &\qquad - \frac{(ad+bc)(1 + \sqrt{5})}{2} + \frac{a(b+c)(-1+\sqrt{5})}{2} - \frac{(c-b)d\sqrt{5}}{2}
+\end{align*}
+
+Let define two variables $p$ and $q$ such that $e^2 = p + q\sqrt{5}$:
+\begin{align*}
+p &= a^2+b^2+c^2 + d^2 - \frac{(b+c)d}{2} - \frac{ad+bc}{2} + \frac{-a(b+c)}{2}\\
+  &= a^2+b^2+c^2 + d^2 - \frac{bd +cd +ad +bc +ab + ac}{2}\\
+  &= a^2+b^2+c^2 + d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
+q &= - \frac{ad+bc}{2} + \frac{a(b+c)}{2} - \frac{(c-b)d}{2}\\
+  &= \frac{-ad - bc + ab + ac - cd + bd}{2}\\
+  &= \frac{(a-b)(c-d) + ab - cd}{2}
+\end{align*}
+
+For a meccano pentagon we need $e$ to be an integer. If we let the integer $q > 0$ then $e = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $e = \sqrt{p}$ has possibilities to be an integer.
+So before calculating $e$ we force the condition that $q = 0$ or that is the same $cd = (a-b)(c-d)+ab$:
+\begin{align*}
+a  & >= b\\
+a  & >= c\\
+cd &= (a-b)(c-d)+ab\\
+\end{align*}
+
+From the condition $q=0$ we know replace $cd = (a-b)(c-d)+ab$, replacing $cd$ in 
+in the equation for $p$ we get:
+\begin{align*}
+p &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
+  &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+(a-b)(c-d)+ab}{2}\\
+  &= a^2+b^2+c^2+d^2 -ac -bd -ab
+\end{align*}
+
+So finally, when $q=0$ we calculate $e = \sqrt{p}$ expecting to be an integer:
+\begin{align*}
+e &= \sqrt{a^2 + b^2 + c^2 + d^2 -ac -bd - ab}\\
+  &= \sqrt{a^2 + b^2 + c^2 + d^2 -ad -bc - cd}
+\end{align*}
+
+
+\subsubsection{Type 2 program}
 
 With last equations, another program, for the pentagon type 2, can iterate over the integer values of rods $a$, $b$, $c$ and $d$ to discover a rod $e$ with integer length too. Next javascript program was run and found 40 different pentagons with rods length $<=$ 183.
 

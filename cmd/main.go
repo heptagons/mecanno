@@ -11,12 +11,6 @@ func main() {
 	//triangle_diagonals(200)
 }
 
-type Pentagons struct {
-	sols [][]int
-}
-
-
-
 func pentagons_type_1(max int) {
 
 	sols := make([][]int, 0)
@@ -47,7 +41,7 @@ func pentagons_type_1(max int) {
 	}
 
 	for a := 1; a < max; a++ {
-		for b := 1; b <= max; b++ {
+		for b := 1; b <= a; b++ {
 			for c := 0; c <= a; c++ {
 				if a*c == (a + c)*b {
 					check(a, b, c)
@@ -81,7 +75,8 @@ func pentagons_type_2(max int) {
 	}
 
 	check := func(a, b, c, d int) {
-		f := float64(a*a + b*b + c*c + d*d - a*d - b*c - c*d)
+		//f := float64(a*a + b*b + c*c + d*d - a*d - b*c - c*d)
+		f := float64(a*a + b*b + c*c + d*d - a*c - b*d - a*b)
 	    if f < 0 {
 	    	return
 	    }

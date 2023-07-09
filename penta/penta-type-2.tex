@@ -1,0 +1,81 @@
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}
+
+\newcommand{\rod}[4][000000] % [color][n][sep][prop]
+{
+ \definecolor{main}{HTML}{#1}
+ \draw[main] (0,{{2*#4}})
+   -- ++({#2*#3},0) arc(+90:-90:{2*#4})
+   -- ++({-#2*#3},0) arc(270:90:{2*#4});
+ \foreach \x in {0,1,...,#2}
+  \draw[main] (\x*#3,0) circle (#4);
+}
+
+\def\s {12} \def\f {0.5} \def\p {3pt}
+\def\red {FF3300} \def\blue {0000cc} \def\green {00cc00}
+\begin{scope}
+ \rod[\red]{\s}{\f}{\p} \path (0,0) ++(270:5*\p) node{A};
+ \begin{scope}[shift={(\s*\f,0)},rotate=72]
+  \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{B};
+  
+  \begin{scope}[shift={(3*\f,0)},rotate=90-34.5]
+   \rod[\green]{11}{\f}{\p}
+   \path (0,0) ++(210:5*\p) node{I};
+   \path (11*\f,0) ++(60:5*\p) node{J};
+  \end{scope}
+  \begin{scope}[shift={(9*\f,0)},rotate=90+34.5]
+   \rod[\green]{11}{\f}{\p}
+   \path (0,0) ++(150:5*\p) node{K};
+   \path (11*\f,0) ++(-60:5*\p) node{L};
+  \end{scope}
+  
+  
+  \begin{scope}[shift={(\s*\f,0)},rotate=72]
+   \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{C};
+   \begin{scope}[shift={(\s*\f,0)},rotate=72]
+    \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{D};
+	
+	\begin{scope}[shift={(2*\f,0)},rotate=72]
+	 \rod[\blue]{10}{\f}{\p} \path (0,0) ++(180:5*\p) node{F};
+	 \rod[\blue]{10}{\f}{\p} \path (10*\f,0) ++(230:5*\p) node{G};
+	\end{scope}
+
+    \begin{scope}[shift={(\s*\f,0)},rotate=72]
+     \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{E};
+
+	 \begin{scope}[shift={(10*\f,0)},rotate=72+36]
+	  \rod[\blue]{10}{\f}{\p} \path (0,0) ++(150:5*\p) node{H};
+	 \end{scope}
+
+
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+
+\end{scope}
+
+\def\a{12*\f} \def\b{2*\f} \def\c{9*\f} \def\d{6*\f} \def\e{11*\f}
+\def\cosA{.3090} \def\sinA{.9510} %A=72°
+\def\cosB{.8090} \def\sinB{.5877} %B=36°
+
+\coordinate (M) at (-\b*\cosA,0);
+\coordinate (N) at (\a+\c*\cosA,0);
+\coordinate (K) at (\a+\c*\cosA,\c*\sinA);
+\coordinate (O) at (-\b*\cosA+\d*\cosB,\c*\sinA);
+\coordinate (L) at (-\b*\cosA+\d*\cosB,\b*\sinA+\d*\sinB);
+\coordinate (P) at (-\b*\cosA,\b*\sinA+\d*\sinB);
+
+\draw[] (M) -- (N) -- (K) -- (O) -- (L) -- (P) -- cycle;
+ 
+\path (M) ++(180:4*\p) node{M}; 
+\path (N) ++(0:4*\p) node{N}; 
+\path (O) ++(135:3*\p) node{O}; 
+\path (P) ++(90:3*\p) node{P}; 
+\end{tikzpicture}
+\end{document}
