@@ -1,0 +1,67 @@
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}
+
+\newcommand{\rod}[4][000000] % [color][n][sep][prop]
+{
+ \definecolor{main}{HTML}{#1}
+ \draw[main] (0,{{2*#4}})
+   -- ++({#2*#3},0) arc(+90:-90:{2*#4})
+   -- ++({-#2*#3},0) arc(270:90:{2*#4});
+ \foreach \x in {0,1,...,#2}
+  \draw[main] (\x*#3,0) circle (#4);
+}
+
+\newcommand{\pentagon}[4]
+{
+ \pgfmathsetmacro{\cosA}{cos(72)}
+ \pgfmathsetmacro{\sinA}{sin(72)}
+ \pgfmathsetmacro{\cosB}{cos(36)}
+ \pgfmathsetmacro{\sinB}{sin(36)}
+
+ \def\a{#1} \def\b{#2} \def\c{#3} \def\d{#4}
+ \def\f{0.5}\def\p {3pt}
+
+ \def\red{FF3300} \def\blue{0000cc} \def\green{00cc00}
+ \begin{scope}
+  \rod[\red]{\a}{\f}{\p} \path (0,0) ++(270:5*\p) node{A};
+  \begin{scope}[shift={(\a*\f,0)},rotate=72]
+   \rod[\red]{\a}{\f}{\p} \path (0,0) ++(240:5*\p) node{B};
+   \begin{scope}[shift={(\a*\f,0)},rotate=72]
+    \rod[\red]{\a}{\f}{\p} \path (0,0) ++(240:5*\p) node{C};
+    \begin{scope}[shift={(\a*\f,0)},rotate=72]
+     \rod[\red]{\a}{\f}{\p} \path (0,0) ++(240:5*\p) node{D};
+     \begin{scope}[shift={(\a*\f,0)},rotate=72]
+       \rod[\red]{\a}{\f}{\p} \path (0,0) ++(240:5*\p) node{E};
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+
+
+ \def\Fx{\a*\f + \a*\f*\cosA - \b*\f*\cosB}
+ \def\Fy{\a*\f*\sinA + \b*\f*\sinB}
+ \begin{scope}[shift={(\Fx,\Fy)},rotate=180+36]
+  \pgfmathsetmacro{\ab}{\a-\b}
+  \rod[\blue]{\ab}{\f}{\p}
+  \path (0,0) ++(180:5*\p) node{F};
+  \path (\ab*\f,0) ++(0:5*\p) node{G};
+ \end{scope}
+
+ \def\Hx{\c*\f}
+ \begin{scope}[shift={(\Hx,0)},rotate=55.3]
+   \rod[\green]{\d}{\f}{\p}
+   \path (0,0) ++(180:5*\p) node{H};
+   \path (\d*\f,0) ++(50:5*\p) node{I};
+ \end{scope}
+}
+
+\pentagon{12}{2}{3}{11}
+
+\end{tikzpicture}
+\end{document}
