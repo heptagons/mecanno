@@ -61,21 +61,37 @@
 \end{scope}
 
 \def\a{12*\f} \def\b{2*\f} \def\c{9*\f} \def\d{6*\f} \def\e{11*\f}
-\def\cosA{.3090} \def\sinA{.9510} %A=72°
-\def\cosB{.8090} \def\sinB{.5877} %B=36°
+
+\pgfmathsetmacro{\cosA}{cos(72)}
+\pgfmathsetmacro{\sinA}{sin(72)}
+\pgfmathsetmacro{\cosB}{cos(36)}
+\pgfmathsetmacro{\sinB}{sin(36)}
 
 \coordinate (M) at (-\b*\cosA,0);
+\coordinate (A) at (0,0);
+\coordinate (B) at (\a,0);
 \coordinate (N) at (\a+\c*\cosA,0);
 \coordinate (K) at (\a+\c*\cosA,\c*\sinA);
 \coordinate (O) at (-\b*\cosA+\d*\cosB,\c*\sinA);
 \coordinate (L) at (-\b*\cosA+\d*\cosB,\b*\sinA+\d*\sinB);
 \coordinate (P) at (-\b*\cosA,\b*\sinA+\d*\sinB);
+\coordinate (H) at (-\b*\cosA,\b*\sinA);
 
-\draw[] (M) -- (N) -- (K) -- (O) -- (L) -- (P) -- cycle;
+\draw[dotted] (B) 
+-- (N) node[shift={(1em,0)}]{N}
+-- (K)
+-- (O) node[shift={(-0.5em,0.5em)}]{O}
+-- (L)
+-- (P) node[shift={(0,0.7em)}]{P}
+-- (M) node[shift={(-1em,0)}]{M}
+-- (A);
  
-\path (M) ++(180:4*\p) node{M}; 
-\path (N) ++(0:4*\p) node{N}; 
-\path (O) ++(135:3*\p) node{O}; 
-\path (P) ++(90:3*\p) node{P}; 
+\draw[] (A)
+-- (B) node [midway,yshift=1.3em]{$a$}
+-- (K) node [midway,shift={(-1em,.5em)}]{$c$}
+-- (L) node [midway,shift={(-.5em,-1.5em)}]{$e$}
+-- (H) node [midway,shift={(0.7em,-1em)}]{$d$}
+-- (A) node [midway,shift={(1.3em,.5em)}]{$b$};
+
 \end{tikzpicture}
 \end{document}

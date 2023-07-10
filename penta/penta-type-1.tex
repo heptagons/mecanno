@@ -54,11 +54,33 @@
 
 \end{scope}
 
-\def\x{7.9*\f} \def\y{11.45*\f}
-\draw[dashed] (7.75*\f,0) -- ++(\x,0) -- ++(0,\y) -- ++(-\x,0) -- cycle;
-\path (7.75*\f,0) ++(270:4*\p) node{J};
-\path (7.75*\f,\y) ++(90:4*\p) node{K};
-\path (7.75*\f+\x,0) ++(270:4*\p) node{L};
+\pgfmathsetmacro{\cosA}{cos(72)}
+\pgfmathsetmacro{\sinA}{sin(72)}
+
+\def\a{12*\f}
+\def\c{4*\f}
+\def\ab{9*\f} % a - b
+\coordinate (F) at (\ab,0);
+\coordinate (B) at (\a,0);
+\coordinate (L) at (\a  + \a*\cosA, 0);
+\coordinate (C) at (\a  + \a*\cosA, \a*\sinA);
+\coordinate (K) at (\ab - \c*\cosA, \a*\sinA);
+\coordinate (I) at (\ab - \c*\cosA, \c*\sinA);
+\coordinate (J) at (\ab - \c*\cosA, 0);
+
+\draw[gray] (F) 
+-- (B) node [midway,shift={(0,1.1em)}]{$b$}
+-- (C) node [midway,shift={(-1em,.7em)}]{$a$}
+-- (I) node [midway,shift={(.7em,-1em)}]{$d$}
+-- (F) node [midway,shift={(1.2em,0)}]{$c$};
+
+\draw[dashed,gray] (B) 
+-- (L) node[shift={(.7em,-.7em)}]{L} 
+-- (C)
+-- (K) node[shift={(-.7em,.7em)}]{K} 
+-- (I)
+-- (J) node[shift={(0,-1.2em)}]{J}
+-- (F);    
  
 \end{tikzpicture}
 \end{document}
