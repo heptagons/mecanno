@@ -16,14 +16,18 @@
   \draw[main] (\x*#3,0) circle (#4);
 }
 
-\newcommand{\pentagon}[4]
+\newcommand{\pentagon}[5]
 {
  \pgfmathsetmacro{\cosA}{cos(72)}
  \pgfmathsetmacro{\sinA}{sin(72)}
  \pgfmathsetmacro{\cosB}{cos(36)}
  \pgfmathsetmacro{\sinB}{sin(36)}
 
- \def\a{#1} \def\b{#2} \def\c{#3} \def\d{#4}
+ \def\a{#1} 
+ \def\b{#2}
+ \def\c{#3}
+ \def\d{#4}
+ \def\e{#5}
  \def\f{0.5}\def\p {3pt}
 
  \def\red{FF3300} \def\blue{0000cc} \def\green{00cc00}
@@ -53,15 +57,36 @@
   \path (\ab*\f,0) ++(0:5*\p) node{G};
  \end{scope}
 
- \def\Hx{\c*\f}
+ \pgfmathsetmacro{\cosA}{cos(72)}
+ \pgfmathsetmacro{\sinA}{sin(72)}
+ \pgfmathsetmacro{\cosB}{cos(36)}
+ \pgfmathsetmacro{\sinB}{sin(36)}
+ \pgfmathsetmacro{\ac}{\a - \c}
+
+ \def\Hx{\ac*\f}
  \begin{scope}[shift={(\Hx,0)},rotate=55.3]
-   \rod[\green]{\d}{\f}{\p}
+   \rod[\green]{\e}{\f}{\p}
    \path (0,0) ++(180:5*\p) node{H};
-   \path (\d*\f,0) ++(50:5*\p) node{I};
+   \path (\e*\f,0) ++(50:5*\p) node{I};
  \end{scope}
+ 
+
+ \coordinate (B) at (\a*\f,0);
+ \coordinate (C) at (\a*\f + \a*\f*\cosA, \a*\f*\sinA);
+ \coordinate (F) at (\a*\f + \a*\f*\cosA - \b*\f*\cosB, \a*\f*\sinA + \b*\f*\sinB);
+ \coordinate (I) at (\a*\f + \a*\f*\cosA - \b*\f*\cosB - \d*\f*\cosB, \a*\f*\sinA + \b*\f*\sinB - \d*\f*\sinB);
+ \coordinate (H) at (\ac*\f, 0);
+ 
+ \draw[gray] (B)
+ -- (C) node [midway,shift={(-1em,.7em)}]{$a$}
+ -- (F) node [midway,shift={(-1em,-1em)}]{$b$}
+ -- (I) node [midway,shift={(.5em,-1.2em)}]{$d$}
+ -- (H) node [midway,shift={(.5em,-1.2em)}]{$e$}
+ -- (B) node [midway,shift={(0,1.2em)}]{$c$}
+ ; 
 }
 
-\pentagon{12}{2}{3}{11}
+\pentagon{12}{2}{9}{6}{11}
 
 \end{tikzpicture}
 \end{document}
