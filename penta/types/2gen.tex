@@ -1,0 +1,58 @@
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+
+\begin{document}
+
+\begin{tikzpicture}
+\newcommand{\gen}[6]
+{
+\tikzmath{
+	\cosA = cos(72); \sinA = sin(72);
+	\cosB = cos(36); \sinB = sin(36);
+	\a = #1; \b = #2; \c = #3; \d = #4; \e = #5; \f = #6;
+	%reds
+	coordinate \pa, \pb, \pc, \pd, \pe, \pf, \pg, \ph, \pI;
+	int \nab, \nbc, \ncd, \nde, \nef, \nfg, \ngh, \nHI;
+	\pa = (0,0); \pd = (\a,0);
+	if \a > 2*\c then {
+		\pb = (\c,0); \pc = (\a-\c,0);
+		\nab = \c; \nbc = \a - 2*\c; \ncd = \c;
+	} else {
+		\pb = (\a-\c,0); \pc = (\c,0);
+		\nab = \a-\c; \nbc = 2*\c - \a; \ncd = \a-\c;
+	};
+	\nde = \a;    \pe = (\pd) + ( \nde*\cosA,  \nde*\sinA);
+	\nef = \b;    \pf = (\pe) + (-\nef*\cosB,  \nef*\sinB); 
+	\nfg = \a-\b; \pg = (\pf) + (-\nfg*\cosB,  \nfg*\sinB);
+	\ngh = \a-\b; \ph = (\pg) + (-\nfg*\cosB, -\nfg*\sinB);
+	\nHI = \b;    \pI = (\ph) + (-\nHI*\cosB, -\nHI*\sinB); 
+}
+
+\begin{scope}[scale={\f}]
+	\draw[red] (\pa)
+	-- (\pb) node [midway,below]{\nab}
+	-- (\pc) node [midway,below]{\nbc}
+	-- (\pd) node [midway,below]{\ncd}
+	-- (\pe) node [midway]{\nde}
+	-- (\pf) node [midway]{\nef}
+	-- (\pg) node [midway]{\nfg}
+	-- (\ph) node [midway]{\ngh}
+	-- (\pI) node [midway]{\nHI}
+	-- cycle node [midway]{\a};
+	\foreach \p in {\pa, \pb, \pc, \pd, \pe, \pf, \pg, \ph, \pI} {
+		\fill[red] (\p) circle [radius=3pt];
+	};
+\end{scope}
+
+ 
+ 
+}
+
+%\gen{12}{2}{9}{6}{11}{0.5};
+\gen{12}{6}{3}{10}{11}{0.5};
+
+\end{tikzpicture}
+\end{document}

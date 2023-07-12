@@ -47,3 +47,32 @@ func (s *Sols) Add(rods ...int) {
 	}
 	fmt.Println()
 }
+
+func (s *Sols) Compare(expected [][]int ) error {
+	if exp, got := len(expected), len(s.sols); exp != got {
+		return fmt.Errorf("size expected: %d, got:%d", exp, got)
+	}
+	for i, exp := range expected {
+		sol := s.sols[i]
+		if e, g := len(exp), len(sol); e != g {
+			return fmt.Errorf("Pos:%d size expected: %d, got:%d", i, e, g)		
+		} else {
+			for j, v := range exp {
+				if v != sol[j] {
+					return fmt.Errorf("Pos:%d size expected: %v, got:%v", i, exp, sol)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+// Gcd returns the greatest common divisor of two numbers
+func Gcd(a, b int) int {
+	if b == 0 {
+		return a
+	}
+	return Gcd(b, a % b)
+}
+
+
