@@ -28,29 +28,29 @@
 
 \maketitle
 \begin{abstract}
-We show how to construct two types of meccano\footnote{
+We construct two types of meccano\footnote{
 \href{https://webspace.science.uu.nl/~hooft101/lectures/meccano.pdf}{Meccano mathematics by `t Hooft }
 }
 regular pentagons.
-The process as in another meccano constructions of this site is to build
-the polygon perimeter and attach \textbf{internal diagonals} to make the polygon rigid.
+We use five equal rods to build the polygon perimeter and then we attach \textbf{internal diagonals} to make the polygon regular and rigid.
 
-We prepare general layouts to look for the use of only valid \textbf{meccano rods} testing 
-by increasing the sides lengths and by rotating the diagonals.
+For each type we will change several \textbf{meccano rods} diagonals positions by moving several ``bolts''.
+All except one diagonal, the last one, have integer length always.
+When the iterations found the last diagonal is an integer too we have a solution.
+Simple floating number calculations miss a lot of solutions due to the rounding errors accumulation.
+So is necessary to express algebraically the last diagonal in function of the rest of variables
+in a closed form.
 
-The last diagonal most of the time is not an integer, so the purpose of this study is to find
-when it is as the rest of diagonals and tabulate a so called solution. Formulas are
-prepared exactly for each type instead of using floating numbers to prevent skip solutions by
-rounding errors. Finally a program is run using the algebraic conditions and formulas
-to iterate over a given range of sides to store and print solutions without repetitions by scaling.
+Several programs use the algebraic conditions and formulas to iterate over a given range of 
+pentagons sizes to store and print the solutions preventing the repetitions by scaling.
 \newline\newline
-From the two types of pentagons two conjectures emerges. \textbf{First conjecture} is
+From the two types of pentagons and the results obtained two conjectures emerges.
+\textbf{First conjecture} is
 that the first type of pentagon seems to have a \textbf{unique} solution after testing
 pentagons sides somehow large.
 \newline\newline
-\textbf{Second conjecture} appears in second type of pentagon. For this type we got a lot of solutions 
-but by inspecting the numeric value of the last diagonal called $e$ seems to be always in the form
-\textbf{$10x + 1$} for $x = 1,2,3..$ something unrelated at the moment by the formulas used.
+\textbf{Second conjecture} appears in second type of pentagon. For this type we got apparently
+infinite solutions but by the numeric value of the last diagonal called $e$ seems to be always in the form \textbf{$10x + 1$} for $x = 1,2,3..$.
 \end{abstract}
 
 \section{Regular pentagon type 1}
@@ -73,7 +73,7 @@ c &= \overline{FI}\\
 d &= \overline{CI}
 \end{align*}
 
-Angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $\frac{2\pi}{5}$ so:
+By the figure the angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $\frac{2\pi}{5}$ so:
 \begin{align*}
 \alpha &= \frac{2\pi}{5}\\
 \overline{BL} &= a\cos{\alpha}\\
@@ -82,7 +82,7 @@ Angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $\frac{2\pi}{5}$ so:
 \overline{IJ} &= c\sin{\alpha}
 \end{align*}
 
-Let calculate $d$ in function of $a$, $b$ and $c$:
+For type 1 we have four variables and one angle. Let calculate $d$ in function of $a$, $b$ and $c$:
 \begin{align*}
 d^2 &= (\overline{CI})^2\\
     &= (\overline{CK})^2 + (\overline{IK})^2\\
@@ -94,7 +94,7 @@ d^2 &= (\overline{CI})^2\\
     &= (a^2+c^2) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2\\
 \end{align*}
 
-For $\alpha = \frac{2\pi}{5}$ we have these regular pentagon identities:
+For $\alpha = 2\pi / 5$ we will use the following common pentagon identities:
 \begin{align*}
 cos{\alpha}   &= \frac{-1 + \sqrt{5}}{4} \\
 cos^2{\alpha} &= \frac{{ 3 - \sqrt{5}}}{8} \\
@@ -118,8 +118,10 @@ d^2 &= p + q\sqrt{5}\\
     &= a^2 + b^2 + c^2 - q - ac
 \end{align*}
 
-For a meccano pentagon we need $d$ to be an integer. If we let the integer $q > 0$ then $d = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $d = \sqrt{p}$ has possibilities to be an integer.
-So before calculating $d$ we force the condition that $q = 0$ or that is the same $-ac + (a+c)b = 0$:
+For a meccano pentagon we need $d$ to be an integer. If we let the integer $q > 0$ then $d = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $d = \sqrt{p}$ and $d$ will have possibilities to be an integer.
+
+So before calculating $d$, we \textbf{need} to force the condition $q = 0$ which is 
+equivalent to make $-ac + (a+c)b = 0$:
 \begin{align*}
 a  & > b\\
 a  & > c\\
@@ -129,8 +131,9 @@ ac &= (a + c)b\\
 
 \subsection{Type 1 program}
 
-First we write a \textbf{go} struct called \texttt{Sols} to collect and print solutions found for the following searchinv function of any pentagon type. The struct \texttt{Add} function prevent
-solutations duplicated by scaling:
+First we write a \textbf{go} struct called \texttt{Sols} to store and print solutions 
+eventually found. The function \texttt{Add} prevents duplicated solutions by scaling,
+comparing a prospect with the already collected:
 \begin{lstlisting}
 type Sols struct {
 	sols [][]int
@@ -178,11 +181,12 @@ func (s *Sols) Add(rods ...int) {
 
 \end{lstlisting}
 
-Next \textbf{go} function called \texttt{pentagons\_type\_1} iterate over three variables 
+The following function called \texttt{pentagons\_type\_1} iterate over three variables 
 $a \leq max$, $1 \leq b \leq a$, $0 \leq c \leq a$ (lines 15, 16 and 17).
-The $q = 0$ condition is tested (line 18) and only when is valid we check $d$ to be an integer (see internal function at line 5).
-Only when $d$ is an integer we call function sorts Add (in line 11) to print and store a 
-prospect of solution.
+The $q = 0$ condition mentioned above, is tested (in line 18) and only when the condition holds
+we check whether $d$ is an integer (internal function called \texttt{check} at line 5).
+When $d$ is an integer we call function \texttt{sols.Add} (line 11) to print and store the 
+solution.
 \begin{lstlisting}
 func pentagons_type_1(max int) {
 
@@ -208,7 +212,6 @@ func pentagons_type_1(max int) {
 		}
 	}
 }
-}
 \end{lstlisting}
 
 \subsection{Type 1 results}
@@ -221,7 +224,7 @@ After serching for values of $a <= 5000$ we found a single result:
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{figs/pentagon-12a}
-\caption{The smallest and maybe unique (?) of pentagons of type 1.
+\caption{The smallest and maybe unique pentagons of type 1.
 Is composed of 6 rods of length $a = 12$ in color red,
 two rods of length $d=11$ in green and one rod of size $a-b = 9$ in blue.}
 \label{pentagon-12a}
@@ -234,7 +237,6 @@ $a=12$, $b=3$, $c=4$ and $d=11$.
 There is only a single case for the type 1 with values $a=12$, $b=3$, $c=4$ and $d=11$.
 
 %%%%%%%%%%%%%
-\vspace{100em}
 
 \section{Regular pentagon type 2}
 
@@ -257,17 +259,14 @@ d &= \overline{HL}\\
 e &= \overline{KL}
 \end{align*}
 
-Angles $\angle{NBC}$ and $\angle{MAH}$ are equal to $\frac{2\pi}{5}$ so:
+From the figure the angles $\angle{NBC}$ and $\angle{MAH}$ are equal to $2\pi / 5$ and
+angle $\angle{PLH}$ is equal to $\pi / 5$ so:
 \begin{align*}
 \alpha &= \frac{2\pi}{5}\\
 \overline{BN} &= b\cos{\alpha}\\
 \overline{KN} &= b\sin{\alpha}\\
 \overline{AM} &= c\cos{\alpha}\\
-\overline{HM} &= c\sin{\alpha}
-\end{align*}
-
-Angle $\angle{PLH}$ is equal to $\frac{\pi}{5}$ so:
-\begin{align*}
+\overline{HM} &= c\sin{\alpha}\\
 \beta &= \frac{\pi}{5}\\
 \overline{LP} &= d\cos{\beta}\\
 \overline{HP} &= d\sin{\beta}
@@ -295,7 +294,7 @@ e^2 &= (\overline{KO})^2 + (\overline{LO})^2\\
     &\qquad + a^2 - 2ad\cos{\beta} + d^2(\cos^2{\beta} + \sin^2{\beta})
 \end{align*}
 
-Calculate the $\alpha$ and $\beta$ identities that appear in the last equation:
+We will use the following pentagon identities for angles $\alpha = 2\pi/5$ and $\beta = \pi/5$:
 \begin{align*}
 \cos^2{\alpha} - \sin^2{\alpha} &= -\frac{1 + \sqrt{5}}{4}\\
                    \cos{\alpha} &= \frac{-1+\sqrt{5}}{4}\\
@@ -331,15 +330,14 @@ q &= - \frac{ad+bc}{2} + \frac{a(b+c)}{2} - \frac{(c-b)d}{2}\\
 \end{align*}
 
 For a meccano pentagon we need $e$ to be an integer. If we let the integer $q > 0$ then $e = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $e = \sqrt{p}$ has possibilities to be an integer.
-So before calculating $e$ we force the condition that $q = 0$ or that is the same $cd = (a-b)(c-d)+ab$:
+So before calculating $e$ we \textbf{need} to force the condition that $q = 0$ or that is the same $cd = (a-b)(c-d)+ab$:
 \begin{align*}
 a  & > b\\
 a  & > c\\
 cd &= (a-b)(c-d)+ab\\
 \end{align*}
 
-From the condition $q=0$ we know that $cd = (a-b)(c-d)+ab$, and use this $cd$ value in 
-in the equation for $p$ to get:
+We can use this $cd$ value to simplify $p$:
 \begin{align*}
 p &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
   &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+(a-b)(c-d)+ab}{2}\\
@@ -359,7 +357,7 @@ e &= \sqrt{a^2 + b^2 + c^2 + d^2 -ad -bc - cd}
 
 \subsection{Type 2 first program}
 
-With the last equations, next go function search for solutions of type 2.
+With the type 2 equations ready, we use the next function to search the solutions.
 Is called \texttt{pentagons\_type\_2}, iterates over the integer values of rods 
 $a$ (line 15), $b$ (line 16), $c$ (line 17) and $d$ (line 18)
 to discover a rod $e$ with integer length too. First we check condition $q == 0$ is
@@ -426,7 +424,7 @@ While we found a single solution for type 1, type 2 has several.
 \centering
 \includegraphics[scale=0.75]{figs/type-2-double}
 \caption{Pentagon of type 2 has a symmetry where pair bars green and blue can be switched leaving
-the bars $e$ lengths and positions unmodified. This symmetry appears in the first program when two solutions have same $a$ and same $e$.}
+the rod $e$ lengths and positions unmodified. This symmetry appears in the first program when two solutions have same $a$ and same $e$.}
 \label{fig:type-2-double}
 \end{figure}
 
@@ -656,29 +654,27 @@ func pentagons_type_2_half_with_conjecture(max int) {
 
 \subsection{Type 2 examples}
 
-Figures \ref{pentagons-2-31}, \ref{pentagons-2-38} and \ref{pentagons-2-48} show some of the pentagons of type 2 found.
+Figures \ref{2gen}, \ref{2gen-a} and \ref{2gen-b} show the first 18 pentagons of type 2 found.
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{figs/pentagons-2-31}
-\caption{Pentagon of type 2 with $a=31$. This construction requires 7 rods of 
-length 31 and 2 rods of length 27.}
-\label{pentagons-2-31}
+\includegraphics[width=16cm]{types/2gen}
+\caption{Pentagons 1-6 of type 2 with diagonals 11, 31 and 41.}
+\label{2gen}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{figs/pentagons-2-38}
-\caption{Pentagons of type 2 with $a=38$. Each construction requires 5 rods
-of length 38, 2 rods of length 31 and 2 rods of length 26}
-\label{pentagons-2-38}
+\includegraphics[width=16cm]{types/2gen-b}
+\caption{Pentagons 7-12 of type 2 with diagonals 61, 71 and 101.}
+\label{2gen-a}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=15cm]{figs/pentagons-2-48}
-\caption{Pentagons of type 2 with $a=48$}
-\label{pentagons-2-48}
+\includegraphics[width=16cm]{types/2gen-c}
+\caption{Pentagons 13-18 of type 2 with diagonals 121 and 131.}
+\label{2gen-b}
 \end{figure}
 
 
