@@ -45,3 +45,18 @@ func TriangleDiagonals(max int) {
 	// a= 99 b= 19 d= 91 angle= 10.4174
 }
 
+func Diagonals(max int) {
+	for a := 1; a < max; a++ {
+		for b := 1; b <= a/2; b++ {
+			if meccano.Gcd(a, b) == 1 {
+				diag := (a-b)*(a-b) + a*b
+				cd := math.Sqrt(float64(diag))
+				d := int(cd)
+				if cd == float64(d) {
+					fmt.Printf("s=%3d b=%3d d=%3d\n", a-b, b, d)
+				}
+			}
+		}
+	}
+}
+
