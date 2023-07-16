@@ -1,0 +1,81 @@
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+
+\begin{document}
+
+\newcommand{\gen}[6]
+{
+\tikzmath{
+	\a = #1; \b = #2; \c = #3; \f = #4; \sx= #5; \sy= #6;
+	\aa = 1/\a;
+	\bb = 1/\b;
+	\cc = 1/\c;
+	\d = int(\a - 2*\b);
+	\dd = 1/\d);
+	\A = 180/7;
+	\cosA = cos(1*\A); \sinA = sin(1*\A);
+	\cosB = cos(2*\A); \sinB = sin(2*\A);
+	\cosC = cos(3*\A); \sinC = sin(3*\A);
+	\r = 0.2/(\a*\f);
+	coordinate \pA, \pB, \pC, \pD, \pE, \pF, \pG, \pH, \pI, \pJ, \pK, \pL, \pM;
+	\pA = (0,0);
+	\pB = (\a,0);
+	\pC = (\pB) + ( \b*\cosB,  \b*\sinB);
+	\pD = (\pC) + ( \d*\cosB,  \d*\sinB);
+	\pE = (\pD) + ( \b*\cosB,  \b*\sinB);
+	\pF = (\pE) + (-\a*\cosC,  \a*\sinC);
+	\pG = (\pF) + (-\a*\cosA,  \a*\sinA);
+	\pH = (\pG) + (-\a*\cosA, -\a*\sinA);
+	\pI = (\pH) + (-\a*\cosC, -\a*\sinC);
+	\pJ = (\pI) + ( \b*\cosB, -\b*\sinB);
+	\pK = (\pJ) + ( \d*\cosB, -\d*\sinB);
+	%
+	\pL = (\pG) + ( \a*\cosC, -\a*\sinC);
+	\pM = (\pG) + (-\a*\cosC, -\a*\sinC);
+}
+\begin{scope}[shift={(\sx,\sy)},scale={\f}]
+ \draw[red] (\pA) 
+-- (\pB) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below,black]{\a}
+-- (\pC) foreach \t in {0,\bb,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below right,black]{\b}
+-- (\pD) foreach \t in {0,\dd,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below right,black]{\d}
+-- (\pE) foreach \t in {0,\bb,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below right,black]{\b}
+-- (\pF) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,right,black]{\a}
+-- (\pG) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\a}
+-- (\pH) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\a}
+-- (\pI) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,left,black]{\a}
+-- (\pJ) foreach \t in {0,\bb,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below left,black]{\b}
+-- (\pK) foreach \t in {0,\dd,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below left,black]{\d}
+-- (\pA) foreach \t in {0,\bb,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below left,black]{\b}
+;
+  \draw[blue] (\pE) 
+-- (\pL) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\a}
+-- (\pG) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,right,black]{\a}
+-- (\pM) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,left,black]{\a}
+-- (\pI) foreach \t in {0,\aa,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\a}
+;
+  \draw[green] (\pC) 
+-- (\pM) foreach \t in {0,\cc,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below,black]{\c}
+-- (\pD) foreach \t in {0,\cc,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\c}
+;
+
+  \draw[green] (\pJ)
+-- (\pL) foreach \t in {0,\cc,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,above,black]{\c}
+-- (\pK) foreach \t in {0,\cc,...,1} { pic [pos=\t] {code={\fill circle[radius=\r];}}} node[midway,below,black]{\c}
+;
+  
+\end{scope}
+}
+
+\begin{tikzpicture}
+\gen{ 3}{ 1}{ 4}{1.20}{ 0}{ 0};
+\gen{ 8}{ 1}{11}{0.45}{10}{ 0};
+\gen{33}{ 2}{46}{0.12}{ 0}{-10};
+\gen{40}{17}{53}{0.10}{10}{-10};
+\gen{55}{14}{74}{0.075}{ 0}{-20};
+\gen{65}{31}{86}{0.065}{10}{-20};
+\end{tikzpicture}
+
+\end{document}

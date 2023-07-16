@@ -37,9 +37,9 @@ We construct meccano\footnote{
 regular heptagons.
 We use seven equal strips to build the polygon perimeter and then we attach \textbf{internal diagonals} to make the polygon regular and rigid. Using some
 heptagonal identities we deduce three variables $a$, $b$ and $c$ corresponding
-to the heptagon side, an internal point of the side and a internal diagonal length.
+to the heptagon side, an internal point of the side and an internal diagonal.
 Then we find a closed formula $c = f(a,b)$ and use a program to iterate over $a$ and
-$b$ to get $c$ integer which produces a solution.
+$b$ to get $c$ integer which produces prime solutions.
 \end{abstract}
 
 \section{Meccano heptagons}
@@ -134,8 +134,7 @@ func Diagonals(max int) *meccano.Sols {
 }\end{lstlisting}
 
 \subsection{Results}
-
-Heptagons solutions for $a \leq 500$:
+Heptagons prime solutions for $a \leq 450$:
 \setlength{\columnsep}{100pt}
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -185,15 +184,10 @@ Heptagons solutions for $a \leq 500$:
  44  a=429 b=191 c=568
  45  a=435 b= 34 c=604
  46  a=448 b=137 c=599
- 47  a=451 b= 17 c=632
- 48  a=456 b=119 c=613
- 49  a=465 b= 79 c=634
- 50  a=480 b= 17 c=673
- 51  a=481 b=194 c=638
 \end{lstlisting}
 \end{multicols}
 
-\subsection{Smallest examples}
+\subsection{Examples}
 
 \begin{figure}[htp]
 \centering
@@ -209,10 +203,15 @@ Heptagons solutions for $a \leq 500$:
 \label{heptagon-8}
 \end{figure}
 
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.78]{gen}
+\caption{The first six prime hexagons $a$ = 3, 8, 33, 40, 55 and 65.}
+\label{gen}
+\end{figure}
+
 Figures \ref{heptagon-3} and \ref{heptagon-8} show the first two heptagons.
-
-
-
+Figure \ref{gen} show the first six heptagons for comparison of growing.
 
 \end{document}
 
