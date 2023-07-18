@@ -54,20 +54,47 @@ func Method_1() {
 // 2) j iterate bc=1,2,3 < cd
 // 3) calculate bd*bd = cd**cd - bc*bc
 // 4) accept when bd*db = 2 * square
-func Method_2(max int) {
-	for a := 1; a < max; a++ {
-		for b := 1; b < a; b++ {
-			cc := a*a - b*b
-			if cc % 2 == 0 {
-				f := math.Sqrt(float64(cc/2))
-				c := int(f)
-				if f == float64(c) {
-					if meccano.Gcd(c, meccano.Gcd(b, a)) == 1 {
-						s := int(math.Max(float64(b), f))
-						fmt.Printf("a=%2d b=%2d c=%2d s=%2d\n", a, b, c, s)
+func Angles135(max int) {
+	for x := 1; x < max; x++ {
+		for y := 1; y < x; y++ {
+			if zz := x*x - y*y; zz % 2 == 0 {
+				f := math.Sqrt(float64(zz / 2))
+				if z := int(f); f == float64(z) {
+					if meccano.Gcd(z, meccano.Gcd(x, y)) == 1 {
+						a := int(math.Max(float64(y), f))
+						fmt.Printf("a=%3d x=%3d y=%3d z=%3d\n", a, x, y, z)
 					}
 				}
 			}
 		}
 	}
 }
+
+/*
+func Diagonals(max int) {
+
+	sols := &meccano.Sols{}
+
+	for a := 1; a < max; a++ {
+		for b := 1; b < a; b++ {
+			cc := a*a - b*b
+			if cc % 2 == 0 {
+				f := math.Sqrt(float64(cc/2))
+				if c := int(math.Sqrt(f)); math.Pow(float64(c), 2) == f {
+					sols.Add(a, b, c)
+				}
+			}
+		}
+	}
+}
+
+}
+	for cd := ; a < max; a++ {
+		for b := 1; b <= a; b++ {
+			f := float64(2*a*a + b*b)
+			if c := int(math.Sqrt(f)); math.Pow(float64(c), 2) == f {
+				sols.Add(a, b, c)
+			}
+		}
+	}
+}*/
