@@ -3,51 +3,16 @@
 \author{https://github.com/heptagons/meccano/octa}
 \date{}
 
-\usepackage{amsmath}
-\usepackage{listings}
-\usepackage{xcolor}
-\definecolor{gray}{RGB}{245,245,245}
-\usepackage{float}
-\usepackage{multicol}
-
-\lstset{
-	backgroundcolor=\color{gray},
-	frame=single,
-	numbers=left,
-	stepnumber=1,
-	tabsize=2,
-	basicstyle=\ttfamily\small,
-	breaklines=true
-}
-
-\usepackage[margin=0.75in]{geometry}
-
-\usepackage{tikz}
-\usetikzlibrary{math}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{multicol}
+\usepackage{../meccano} %meccano.sty
 
 \begin{document}
 
 \maketitle
 \begin{abstract}
-We construct meccano\footnote{
-\href{https://webspace.science.uu.nl/~hooft101/lectures/meccano.pdf}{Meccano mathematics by `t Hooft }
-}
-regular octagons using eight equal strips to build the a perimeter and attaching \textbf{internal diagonals} to make the polygon regular and rigid. The attached diagonals form angles of $135^\circ{}$ to fix consecutive sides. We prepare a three variables formula $z = f(x,y)$ and catalog solutions
+We construct meccano\meccanoref regular octagons using eight equal strips to build the a perimeter and attaching \textbf{internal diagonals} to make the polygon regular and rigid. The attached diagonals form angles of $135^\circ{}$ to fix consecutive sides. We prepare a three variables formula $z = f(x,y)$ and catalog solutions
 when the variables are integers.
 \end{abstract}
 
-\newcommand{\rod}[4][000000] % [color]{n}{sep}{prop}
-{
- \definecolor{main}{HTML}{#1}
- \draw[main] (0,{{2*#4}})
-   -- ++({#2*#3},0) arc(+90:-90:{2*#4})
-   -- ++({-#2*#3},0) arc(270:90:{2*#4});
- \foreach \x in {0,1,...,#2}
-  \draw[main] (\x*#3,0) circle (#4);
-}
 
 \begin{figure}[H] %don't float
 \centering
@@ -58,16 +23,16 @@ when the variables are integers.
   \draw[dash dot] (0,0) -- (6,6) node[midway,above right,black]{$\sqrt{2}z$};
   \begin{scope}[rotate=64.5]
    \draw (0,0) -- (9,0) node[midway,above right,black]{x};
-   \rod[FF3300]{9}{1}{\p} % ADn
+   \meccanostrip[FF3300]{9}{1}{\p} % ADn
    \end{scope}
-   \rod{6}{1}{\p} % AB
+   \meccanostrip{6}{1}{\p} % AB
    \path (0,0) ++(222:5*\p) node{A};
    \begin{scope}[shift={(6,0)},rotate=90]
-    \rod[009900]{6}{1}{\p} % BC
+    \meccanostrip[009900]{6}{1}{\p} % BC
     \path (0,0) ++(222:5*\p) node{B};
     \begin{scope}[shift={(6,0)},rotate=45]
      \draw (0,0) -- (3,0) node[midway,above left,black]{y};
-     \rod[009900]{6}{1}{\p} % CE
+     \meccanostrip[009900]{6}{1}{\p} % CE
      \path (0,0) ++(222:5*\p) node{C};
      \path (1,0) ++(-90:5*\p) node{$D_1$};
      \path (2,0) ++(-90:5*\p) node{$D_2$};
@@ -77,7 +42,7 @@ when the variables are integers.
     \end{scope}
    \end{scope}
    \begin{scope}[shift={(2,0)},rotate=37] %FG
-    \rod[0033FF]{5}{1}{\p}
+    \meccanostrip[0033FF]{5}{1}{\p}
     \path (0,0) ++(75:5*\p) node{F};
     \path (5,0) ++(115:5*\p) node{G};
    \end{scope}
@@ -196,12 +161,12 @@ a=132 x=193 y= 49 z=132
 {
  \begin{scope}[shift={(#1*#6,0)}]
   \begin{scope}[rotate=90]
-   \rod[000000]{#3}{#1}{#2}
+   \meccanostrip[000000]{#3}{#1}{#2}
    \begin{scope}[shift={(4*#1,0)},rotate=-143]
-    \rod[0033FF]{5}{#1}{#2}
+    \meccanostrip[0033FF]{5}{#1}{#2}
    \end{scope} 
    \begin{scope}[shift={(#1*#3,0)},rotate=-135+#5]
-    \rod[FF3300]{#4}{#1}{#2}
+    \meccanostrip[FF3300]{#4}{#1}{#2}
    \end{scope} 
   \end{scope}
  \end{scope}
@@ -212,26 +177,26 @@ a=132 x=193 y= 49 z=132
  \begin{tikzpicture}
   \pgfmathsetmacro{\s}{#3+#6}
   \begin{scope}
-   \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{A};
+   \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{A};
    \fixer{#1}{#2}{#3}{#4}{#5}{#6}
    \begin{scope}[shift={(\s*#1,0)},rotate=45]
-    \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{B};
+    \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{B};
     \fixer{#1}{#2}{#3}{#4}{#5}{#6}
     \begin{scope}[shift={(\s*#1,0)},rotate=45]
-     \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{C};
+     \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{C};
      \fixer{#1}{#2}{#3}{#4}{#5}{#6}
      \begin{scope}[shift={(\s*#1,0)},rotate=45]
-      \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{D};
+      \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{D};
       \fixer{#1}{#2}{#3}{#4}{#5}{#6}
       \begin{scope}[shift={(\s*#1,0)},rotate=45]
-       \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{E};
+       \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{E};
        \fixer{#1}{#2}{#3}{#4}{#5}{#6}
        \begin{scope}[shift={(\s*#1,0)},rotate=45]
-        \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{F};
+        \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{F};
         \begin{scope}[shift={(\s*#1,0)},rotate=45]
-         \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{G};
+         \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{G};
          \begin{scope}[shift={(\s*#1,0)},rotate=45]
-          \rod[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{H};
+          \meccanostrip[009900]{\s}{#1}{#2} \path (0,0) ++(240:5*#2) node{H};
          \end{scope}
         \end{scope}
        \end{scope}
@@ -383,23 +348,23 @@ when both have the same $y$, we can use the two diagonals an omit the $5$ rod.
  \begin{tikzpicture}
    \begin{scope}
     \def\f{1} \def\p{3pt}
-    \rod[009900]{7}{\f}{\p}
+    \meccanostrip[009900]{7}{\f}{\p}
     \path (0,0) ++(222:5*\p) node{A};
     \begin{scope}[shift={(7*\f,0)},rotate=45]
-     \rod[009900]{7}{\f}{\p}
+     \meccanostrip[009900]{7}{\f}{\p}
      \path (0,0) ++(222:5*\p) node{B};
      \path (7,0) ++(0:5*\p) node{C};
     \end{scope}
     \begin{scope}[shift={(3*\f,0)},rotate=90]   
-     \rod{4}{\f}{\p}
+     \meccanostrip{4}{\f}{\p}
      \path (0,0) ++(180:5*\p) node{D};
      \path (4,0) ++(60:5*\p) node{E};
      \begin{scope}[shift={(4*\f,0)},rotate=-135+19.5]
-      \rod[FF3300]{6}{\f}{\p}
+      \meccanostrip[FF3300]{6}{\f}{\p}
       \path (6,0) ++(0:5*\p) node{F};
      \end{scope}
      \begin{scope}[shift={(4*\f,0)},rotate=-135+51]
-      \rod[FF3300]{9}{\f}{\p}
+      \meccanostrip[FF3300]{9}{\f}{\p}
       \path (9,0) ++(-30:5*\p) node{G};
      \end{scope}
      

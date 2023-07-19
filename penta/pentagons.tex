@@ -1,48 +1,25 @@
 \documentclass[11pt]{article}
-%Gummi|065|=)
 \title{\textbf{Meccano pentagons}}
 \author{https://github.com/heptagons/meccano/penta}
 \date{}
 
-\usepackage{amsmath}
-\usepackage[pdftex]{graphicx}
-\usepackage{listings}
-\usepackage{xcolor}
-\definecolor{gray}{RGB}{245,245,245}
+\usepackage{../meccano}
 
-\lstset{
-	backgroundcolor=\color{gray},
-	frame=single,
-	numbers=left,
-	stepnumber=1,
-	tabsize=2,
-	basicstyle=\ttfamily\small,
-	breaklines=true
-}
-
-\usepackage[margin=0.75in]{geometry}
-
-\usepackage{graphicx}
-\usepackage{hyperref}
 \begin{document}
 
 \maketitle
 \begin{abstract}
-We construct two types of meccano\footnote{
-\href{https://webspace.science.uu.nl/~hooft101/lectures/meccano.pdf}{Meccano mathematics by `t Hooft }
-}
-regular pentagons.
-We use five equal rods to build the polygon perimeter and then we attach \textbf{internal diagonals} to make the polygon regular and rigid.
+We construct \textbf{two types} of meccano\meccanoref regular pentagons.
+We use five equal strips to build the polygon perimeter and then we attach \textbf{internal diagonals} to make the polygon regular and rigid.
 
-For each type we will change several \textbf{meccano rods} diagonals positions by moving several ``bolts''.
+For each type we test \textbf{meccano rods} diagonals positions.
 All except one diagonal, the last one, have integer length always.
-When the iterations found the last diagonal is an integer too we have a solution.
-Simple floating number calculations miss a lot of solutions due to the rounding errors accumulation.
-So is necessary to express algebraically the last diagonal in function of the rest of variables
-in a closed form.
+When the iterations find the last diagonal is an integer too, we have a solution.
 
-Several programs use the algebraic conditions and formulas to iterate over a given range of 
-pentagons sizes to store and print the solutions preventing the repetitions by scaling.
+Testing using simple floating number calculations miss a lot of solutions due to the rounding errors accumulation, so we first find an algebraic equation which express the last diagonal in function of the rest of variables.
+
+Several programs use the algebra formulas and conditions and iterate over a given range of 
+increasing sizes to look for solutions preventing the repetitions by scaling.
 \newline\newline
 From the two types of pentagons and the results obtained two conjectures emerges.
 \textbf{First conjecture} is
@@ -50,30 +27,30 @@ that the first type of pentagon seems to have a \textbf{unique} solution after t
 pentagons sides somehow large.
 \newline\newline
 \textbf{Second conjecture} appears in second type of pentagon. For this type we got apparently
-infinite solutions but by the numeric value of the last diagonal called $e$ seems to be always in the form \textbf{$10x + 1$} for $x = 1,2,3..$.
+infinite solutions but by the numeric value of the last diagonal called $e$ seems to be always in the form \textbf{$10x + 1$} for $x = 1,2,3,...$.
 \end{abstract}
 
 \section{Regular pentagon type 1}
 
-\begin{figure}[htpb]
+\begin{figure}
 \centering
-\includegraphics[scale=1]{types/1}
+\includegraphics[scale=0.8]{types/1}
 \caption{Pentagon of type 1.}
 \label{fig:type-1}
 \end{figure}
 
-\subsection{Type 1 equations}
+\subsection{Type 1 algebra}
 
 Figure \ref{fig:type-1} show the layout of the meccano regular pentagon of type 1.
 Let define the side of the pentagon as $a$ and define other three variables $b$, $c$ and $d$:
 \begin{align*}
-a &= \overline{BC}\\
-b &= \overline{BF}\\
-c &= \overline{FI}\\
-d &= \overline{CI}
+a = \overline{BC},\quad
+b = \overline{BF},\quad
+c = \overline{FI},\quad
+d = \overline{CI}
 \end{align*}
 
-By the figure the angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $\frac{2\pi}{5}$ so:
+By the figure the angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $2\pi / 5$ so:
 \begin{align*}
 \alpha &= \frac{2\pi}{5}\\
 \overline{BL} &= a\cos{\alpha}\\
@@ -131,55 +108,9 @@ ac &= (a + c)b\\
 
 \subsection{Type 1 program}
 
-First we write a \textbf{go} struct called \texttt{Sols} to store and print solutions 
+First we write a \textbf{go} struct called \texttt{Sols} (see section 3) to store and print solutions 
 eventually found. The function \texttt{Add} prevents duplicated solutions by scaling,
 comparing a prospect with the already collected:
-\begin{lstlisting}
-type Sols struct {
-	sols [][]int
-}
-
-func (s *Sols) Add(rods ...int) {
-	if len(rods) < 0 {
-		return
-	}
-	const RODS = "abcdefhijkl"
-	for _, s := range s.sols {
-		a := rods[0]
-		if a % s[0] != 0 { 
-			continue
-		}
-		// new a is a factor of previous a
-		f := a / s[0]
-		cont := false
-		for r := 1; r < len(rods); r++ {
-			if s[r] == 0 {
-				continue
-			}
-			b := rods[r]
-			if t := b % s[r] == 0 && b / s[r] == f; !t {
-				cont = true
-				break
-			}
-		}
-		if cont {
-			continue // scaled solution already found (reject)
-		}
-		return
-	}
-	// solution!
-	if s.sols == nil {
-		s.sols = make([][]int, 0)
-	}
-	s.sols = append(s.sols, rods)
-	fmt.Printf("%3d ", len(s.sols))
-	for i, r := range rods {
-		fmt.Printf(" %c=%3d", RODS[i], r)
-	}
-	fmt.Println()
-}
-
-\end{lstlisting}
 
 The following function called \texttt{pentagons\_type\_1} iterate over three variables 
 $a \leq max$, $1 \leq b \leq a$, $0 \leq c \leq a$ (lines 15, 16 and 17).
@@ -221,12 +152,12 @@ After serching for values of $a <= 5000$ we found a single result:
   1  a= 12 b=  3 c=  4 d= 11
 \end{lstlisting}
 
-\begin{figure}
+\begin{figure}[H] % prevent float
 \centering
 \includegraphics[width=7cm]{figs/pentagon-12a}
 \caption{The smallest and maybe unique pentagons of type 1.
 Is composed of 6 rods of length $a = 12$ in color red,
-two rods of length $d=11$ in green and one rod of size $a-b = 9$ in blue.}
+two rods of length $d=11$ in green and one strip of size $a-b = 9$ in blue.}
 \label{pentagon-12a}
 \end{figure}
 
@@ -237,27 +168,28 @@ $a=12$, $b=3$, $c=4$ and $d=11$.
 There is only a single case for the type 1 with values $a=12$, $b=3$, $c=4$ and $d=11$.
 
 %%%%%%%%%%%%%
-
+\clearpage
 \section{Regular pentagon type 2}
 
-\begin{figure}[htpb]
+\begin{figure}[H] % prevent float
 \centering
 \includegraphics[scale=0.75]{types/2}
 \caption{Pentagon of type 2.}
 \label{fig:type-2}
 \end{figure}
 
-\subsection{Type 2 equations}
+\subsection{Type 2 algebra}
 
 Figure \ref{fig:type-2} show the layout of the meccano regular pentagon of type 2.
 Let define the side of the pentagon as $a$ and define other four variables $b$, $c$, $d$ and $e$:
 \begin{align*}
-a &= \overline{AB}\\
-b &= \overline{AH}\\
-c &= \overline{BK}\\
-d &= \overline{HL}\\
-e &= \overline{KL}
+a = \overline{AB},\quad
+b = \overline{AH},\quad
+c = \overline{BK},\quad
+d = \overline{HL},\quad
+e = \overline{KL}
 \end{align*}
+
 
 From the figure the angles $\angle{NBC}$ and $\angle{MAH}$ are equal to $2\pi / 5$ and
 angle $\angle{PLH}$ is equal to $\pi / 5$ so:
@@ -308,12 +240,13 @@ Replace the identities:
 e^2 &= (b^2+c^2)(1) + 2bc(-\frac{1 + \sqrt{5}}{4})\\
     &\qquad + 2a(b+c)(\frac{-1+\sqrt{5}}{4}) - 2(b+c)d(\frac{1}{4}) - 2(c-b)d(\frac{\sqrt{5}}{4})\\
     &\qquad + a^2 - 2ad(\frac{1+\sqrt{5}}{4}) + d^2(1)\\
-    %
     &= b^2+c^2 - bc(\frac{1 + \sqrt{5}}{2})\\
     &\qquad + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (b+c)d(\frac{1}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
-    &\qquad + a^2 - ad(\frac{1+\sqrt{5}}{2}) + d^2\\
-    %
-    &= a^2+b^2+c^2 + d^2 - (b+c)d(\frac{1}{2}) \\
+    &\qquad + a^2 - ad(\frac{1+\sqrt{5}}{2}) + d^2
+\end{align*}
+Simplify:
+\begin{align*}
+e^2 &= a^2+b^2+c^2 + d^2 - (b+c)d(\frac{1}{2}) \\
     &\qquad - (ad+bc)(\frac{1 + \sqrt{5}}{2}) + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
     &= a^2+b^2+c^2 + d^2 - \frac{(b+c)d}{2} \\
     &\qquad - \frac{(ad+bc)(1 + \sqrt{5})}{2} + \frac{a(b+c)(-1+\sqrt{5})}{2} - \frac{(c-b)d\sqrt{5}}{2}
@@ -360,7 +293,7 @@ e &= \sqrt{a^2 + b^2 + c^2 + d^2 -ad -bc - cd}
 With the type 2 equations ready, we use the next function to search the solutions.
 Is called \texttt{pentagons\_type\_2}, iterates over the integer values of rods 
 $a$ (line 15), $b$ (line 16), $c$ (line 17) and $d$ (line 18)
-to discover a rod $e$ with integer length too. First we check condition $q == 0$ is
+to discover a strip $e$ with integer length too. First we check condition $q == 0$ is
 true (line 19) and square root is integer (line 10):
 \begin{lstlisting}
 func pentagons_type_2(max int) {
@@ -420,11 +353,11 @@ While we found a single solution for type 1, type 2 has several.
 
 \subsection{Type 2 simpler program}
 
-\begin{figure}[htpb]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.75]{figs/type-2-double}
 \caption{Pentagon of type 2 has a symmetry where pair bars green and blue can be switched leaving
-the rod $e$ lengths and positions unmodified. This symmetry appears in the first program when two solutions have same $a$ and same $e$.}
+the strip $e$ lengths and positions unmodified. This symmetry appears in the first program when two solutions have same $a$ and same $e$.}
 \label{fig:type-2-double}
 \end{figure}
 
@@ -465,7 +398,9 @@ func pentagons_type_2_half(max int) {
 \end{lstlisting}
 
 \subsection{Type 2 simpler results}
-The secont type 2 program found $139$ solutions iterating over $1 \leq a \leq 1000$: 
+The second type 2 program found $139$ solutions iterating over $1 \leq a \leq 1000$: 
+\setlength{\columnsep}{50pt}
+\begin{multicols}{2}
 \begin{lstlisting}
   1  a= 12 b=  2 c=  9 d=  6 e= 11
   2  a= 12 b=  3 c=  0 d=  4 e= 11
@@ -607,6 +542,7 @@ The secont type 2 program found $139$ solutions iterating over $1 \leq a \leq 10
 138  a=961 b=249 c=633 d=513 e=821
 139  a=987 b=350 c=594 d=588 e=811
 \end{lstlisting}
+\end{multicols}
 
 \subsection{Type 2 conjecture}
 The last report of 139 pentagons shows all $e$ values have the form $10x + 1$ for $x$ integer.
@@ -676,6 +612,58 @@ Figures \ref{2gen}, \ref{2gen-a} and \ref{2gen-b} show the first 18 pentagons of
 \caption{Pentagons 13-18 of type 2 with diagonals 121 and 131.}
 \label{2gen-b}
 \end{figure}
+
+%\clearpage
+\section{Solutions code}
+Next code is where the solutions are compared against previous ones and eventually
+stored and printed. This code is used by pentagons and another polygons searchs as
+mentioned in their respective articles.
+\begin{lstlisting}
+type Sols struct {
+	sols [][]int
+}
+
+func (s *Sols) Add(rods ...int) {
+	if len(rods) < 0 {
+		return
+	}
+	const RODS = "abcdefhijkl"
+	for _, s := range s.sols {
+		a := rods[0]
+		if a % s[0] != 0 { 
+			continue
+		}
+		// new a is a factor of previous a
+		f := a / s[0]
+		cont := false
+		for r := 1; r < len(rods); r++ {
+			if s[r] == 0 {
+				continue
+			}
+			b := rods[r]
+			if t := b % s[r] == 0 && b / s[r] == f; !t {
+				cont = true
+				break
+			}
+		}
+		if cont {
+			continue // scaled solution already found (reject)
+		}
+		return
+	}
+	// solution!
+	if s.sols == nil {
+		s.sols = make([][]int, 0)
+	}
+	s.sols = append(s.sols, rods)
+	fmt.Printf("%3d ", len(s.sols))
+	for i, r := range rods {
+		fmt.Printf(" %c=%3d", RODS[i], r)
+	}
+	fmt.Println()
+}
+
+\end{lstlisting}
 
 
 

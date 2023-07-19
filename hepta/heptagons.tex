@@ -1,40 +1,15 @@
 \documentclass[11pt]{article}
-%Gummi|065|=)
 \title{\textbf{Meccano heptagons}}
 \author{https://github.com/heptagons/meccano/hepta}
 \date{}
 
-\usepackage{amsmath}
-\usepackage[pdftex]{graphicx}
-\usepackage{listings}
-\usepackage{xcolor}
-\definecolor{gray}{RGB}{245,245,245}
-\usepackage{hyperref}
-
-\lstset{
-	backgroundcolor=\color{gray},
-	frame=single,
-	numbers=left,
-	stepnumber=1,
-	tabsize=2,
-	basicstyle=\ttfamily\small,
-	breaklines=true
-}
-
-\usepackage[margin=0.75in]{geometry}
-
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{multicol}
+\usepackage{../meccano}
 
 \begin{document}
 
 \maketitle
 \begin{abstract}
-We construct meccano\footnote{
-\href{https://webspace.science.uu.nl/~hooft101/lectures/meccano.pdf}{Meccano mathematics by `t Hooft }
-}
-regular heptagons.
+We construct meccano\meccanoref regular heptagons.
 We use seven equal strips to build the polygon perimeter and then we attach \textbf{internal diagonals} to make the polygon regular and rigid. Using some
 heptagonal identities we deduce three variables $a$, $b$ and $c$ corresponding
 to the heptagon side, an internal point of the side and an internal diagonal.
