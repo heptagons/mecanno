@@ -29,13 +29,13 @@ func TestQ(t *testing.T) {
 		{ q:_ten,        exp: "-10"    },
 		{ q:NewQ(-1,-1), exp:   "1"    },
 
-		{ q:one_17,      exp:"1/17"    },
+		{ q:one_17,      exp:"   1/17" },
 	} {
 		if got := r.q.String(); got != r.exp {
 			t.Fatalf("new got: %s exp: %s", got, r.exp)	
 		}
 	}
-	// Test Addition
+	// Test Add
 	for _, r := range []struct { a *Q; b *Q; exp string } {
 		{ a:nan,    b:nan,    exp:   ""     },
 		{ a:nan,    b:zero,   exp:   ""     },
@@ -56,7 +56,7 @@ func TestQ(t *testing.T) {
 		}
 	}
 
-	// Test Multiplication
+	// Test Times
 	for _, r := range []struct { a *Q; b *Q; exp string } {
 		{ a:nan,    b:nan,    exp:  ""      },
 		{ a:nan,    b:zero,   exp:  ""      },
@@ -132,6 +132,93 @@ func TestTriangles(t *testing.T) {
 	for i, exp := range exp {
 		if got := triangles[i].String(); got != exp {
 			t.Fatalf("got %s exp:%s", got, exp)
+		}
+	}
+}
+
+func TestPrimes(t *testing.T) {
+	primes := PrimesList(0xffff) // max squared uint 32 bits
+	if got, exp := len(primes), 6542; got != exp {
+		t.Fatalf("primes-squared got %d exp:%d", got, exp)
+	}
+	for _, s := range []struct{ pos int; prime uint } {
+		{ pos:     0, prime:      2 },
+		{ pos:     1, prime:      3 },
+		{ pos:     2, prime:      5 },
+		{ pos:     3, prime:      7 },
+		{ pos:    10, prime:     31 },
+		{ pos:   100, prime:    547 },
+		{ pos: 1_000, prime:  7_927 },
+		{ pos: 6_541, prime: 65_521 },
+	} {
+		if got, exp := primes[s.pos], s.prime; got != exp {
+			t.Fatalf("primes-squared pos=%d got=%d exp=%d", s.pos, got, exp)
+		}
+	}
+}
+
+func TestProductRoots(t *testing.T) {
+	squares := NewSquares32() // max squared uint 32 bits
+	for pos, s := range []struct{ a, b, in, out uint; ok bool }	{
+		{ a: 0,  b: 0,  in: 0, out: 0, ok: true },
+		{ a: 0,  b: 1,  in: 0, out: 0, ok: true },
+		{ a: 1,  b: 0,  in: 0, out: 0, ok: true },
+		{ a: 1,  b: 1,  in: 1, out: 1, ok: true },
+		{ a: 2,  b: 1,  in: 2, out: 1, ok: true },
+		{ a: 3,  b: 1,  in: 3, out: 1, ok: true },
+		{ a: 4,  b: 1,  in: 1, out: 2, ok: true },
+
+		{ a:    11*11, b:    10*11, in:110, out:    11, ok:true },
+		{ a:     1024, b:      512, in:  2, out:   512, ok:true },
+		{ a:    3*3*3, b:    7*7*7, in: 21, out:    21, ok:true },
+		{ a:    3*3*5, b:    5*7*7, in:  1, out: 3*5*7, ok:true },
+		{ a:    12345, b:    12345, in:  1, out: 12345, ok:true },
+
+
+		{ a:  0xfffff, b:  0xfffff, in: 1, out:  0xfffff, ok:true },
+		{ a: 0xffffff, b: 0xffffff, in: 1, out: 0xffffff, ok:true },
+		{ a:0x1000000, b:0x1000000, in: 1, out:0x1000000, ok:true },
+		{ a:0x1ffffff, b:0x1ffffff, in: 1, out:0x1ffffff, ok:true },
+		
+		{ a:0xffffffff, b:         1, in:0xffffffff, out:      1, ok:true  }, // max uint32 is prime
+		{ a:0xffffffff, b:       0xf, in: 286331153, out:     15, ok:true  }, // product ok
+		{ a:0xffffffff, b:      0xff, in:  16843009, out:    255, ok:true  }, // product ok
+		{ a:0xffffffff, b:     0xfff, in:         0, out:      0, ok:false }, // prime overflow
+		{ a:0xffffffff, b:    0xffff, in:     65537, out: 0xffff, ok:true  }, // product ok
+		{ a:0xffffffff, b:   0xfffff, in:         0, out:      0, ok:false }, // overflow
+		{ a:0xffffffff, b:  0xffffff, in:         0, out:      0, ok:false }, // overflow
+		{ a:0xffffffff, b: 0xfffffff, in:         0, out:      0, ok:false }, // overflow
+		{ a:0xffffffff, b:0xffffffff, in:         0, out:      0, ok:false }, // overflow
+	} {
+		if in, out, ok := squares.productRoot(s.a, s.b); in != s.in || out != s.out || ok != s.ok {
+			t.Fatalf("productRoot pos=%d a=%d, b=%d got in:%d,out=%d,ok=%t exp in:%d,out=%d,ok=%t",
+				pos,
+				s.a, s.b,
+				in, out, ok,
+				s.in, s.out, s.ok)
+		}
+	}
+}
+
+func TestQRoots(t *testing.T) {
+	squares := NewSquares32() // max squared uint 32 bits
+	for _, s := range []struct{ num, den int; exp string } {
+		{ num: 0, den:1, exp:         "0" },
+		{ num: 1, den:1, exp:         "1" },
+		{ num:-1, den:1, exp:          "" }, // Imaginary
+		{ num: 1, den:0, exp:          "" }, // NaN
+		{ num: 2, den:1, exp:"sqrt(2)(1)" }, // sqrt(2)
+		{ num: 2, den:2, exp:         "1" },
+		{ num: 3, den:1, exp:"sqrt(3)(1)" },
+		{ num: 4, den:1, exp:         "2" },
+
+		{ num: 5, den: 7, exp: "sqrt(35)(1/7)" },
+		{ num: 7, den: 5, exp: "sqrt(35)(1/5)" },
+		{ num: 1, den:18, exp: "sqrt(2)(1/6)"  },
+		{ num:18, den: 1, exp: "sqrt(2)(3)" },
+	} {
+		if got := squares.Root(NewQ(s.num, s.den)).String(); got != s.exp {
+			t.Fatalf("got %s exp:%s", got, s.exp)
 		}
 	}
 }
