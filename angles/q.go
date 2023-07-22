@@ -55,6 +55,68 @@ func NewQ(n, d int) (q *Q) {
 	return
 }
 
+// Times returns a new Q with the addition of this quotient q with given quotient p.
+func (q *Q) Add(p *Q) *Q {
+	if q == nil || p == nil {
+		return nil
+	}
+	n1 := int(q.Num * p.Den)
+	if q.Neg {
+		n1 *= -1
+	}
+	n2 := int(p.Num * q.Den)
+	if p.Neg {
+		n2 *= -1
+	}
+	return NewQ(n1 + n2, int(q.Den * p.Den))
+}
+
+// Times returns new Q with the multiplication of this quotient q with given quotient p.
+func (q *Q) Times(p *Q) *Q {
+	if q == nil || p == nil {
+		return nil
+	}
+	if q.Num == 0 || p.Num == 0 {
+		return &Q{ Den:1 }
+	}
+	n1 := int(q.Num)
+	if q.Neg {
+		n1 *= -1
+	}
+	n2 := int(p.Num)
+	if p.Neg {
+		n2 *= -1
+	}
+	return NewQ(n1 * n2, int(q.Den * p.Den))
+}
+
+// Negate returns new Q with the sign changed.
+func (q *Q) Negate() *Q {
+	if q == nil {
+		return nil
+	}
+	return &Q{
+		Neg: !q.Neg,
+		Num: q.Num,
+		Den: q.Den,
+	}
+}
+
+// Inverse returns new Q with the numerator and denominator reversed
+func (q *Q) Inverse() *Q {
+	if q == nil {
+		return nil
+	}
+	if q.Num == 0 {
+		return nil
+	}
+	return &Q{
+		Neg: q.Neg,
+		Num: q.Den,
+		Den: q.Num,
+	}
+}
+
 func (q *Q) String() string {
 	if q == nil {
 		return ""
