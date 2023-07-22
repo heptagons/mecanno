@@ -141,7 +141,7 @@ func TestPrimes(t *testing.T) {
 	if got, exp := len(primes), 6542; got != exp {
 		t.Fatalf("primes-squared got %d exp:%d", got, exp)
 	}
-	for _, s := range []struct{ pos int; prime uint } {
+	for _, s := range []struct { pos int; prime uint } {
 		{ pos:     0, prime:      2 },
 		{ pos:     1, prime:      3 },
 		{ pos:     2, prime:      5 },
@@ -159,7 +159,7 @@ func TestPrimes(t *testing.T) {
 
 func TestProductRoots(t *testing.T) {
 	squares := NewSquares32() // max squared uint 32 bits
-	for pos, s := range []struct{ a, b, in, out uint; ok bool }	{
+	for pos, s := range []struct { a, b, in, out uint; ok bool }	{
 		{ a: 0,  b: 0,  in: 0, out: 0, ok: true },
 		{ a: 0,  b: 1,  in: 0, out: 0, ok: true },
 		{ a: 1,  b: 0,  in: 0, out: 0, ok: true },
@@ -202,16 +202,19 @@ func TestProductRoots(t *testing.T) {
 
 func TestQRoots(t *testing.T) {
 	squares := NewSquares32() // max squared uint 32 bits
-	for _, s := range []struct{ num, den int; exp string } {
-		{ num: 0, den:1, exp:         "0" },
-		{ num: 1, den:1, exp:         "1" },
-		{ num:-1, den:1, exp:          "" }, // Imaginary
-		{ num: 1, den:0, exp:          "" }, // NaN
-		{ num: 2, den:1, exp:"sqrt(2)(1)" }, // sqrt(2)
-		{ num: 2, den:2, exp:         "1" },
-		{ num: 3, den:1, exp:"sqrt(3)(1)" },
-		{ num: 4, den:1, exp:         "2" },
+	// Test Roots
+	for _, s := range []struct { num, den int; exp string } {
+		{ num: 0, den:1, exp: "0" },
+		{ num: 1, den:1, exp: "1" },
+		{ num:-1, den:1, exp:  "" }, // Imaginary
+		{ num: 1, den:0, exp:  "" }, // NaN
+		{ num: 2, den:2, exp: "1" },
+		{ num: 4, den:1, exp: "2" },
+		{ num: 1, den:4, exp: "1/2" },
 
+		{ num: 2, den: 1, exp:"sqrt(2)(1)"     }, // sqrt(2)
+		{ num: 1, den: 2, exp:"sqrt(2)(1/2)"   }, // 1/sqrt(2)
+		{ num: 3, den: 1, exp:"sqrt(3)(1)"     },
 		{ num: 5, den: 7, exp: "sqrt(35)(1/7)" },
 		{ num: 7, den: 5, exp: "sqrt(35)(1/5)" },
 		{ num: 1, den:18, exp: "sqrt(2)(1/6)"  },
@@ -219,6 +222,24 @@ func TestQRoots(t *testing.T) {
 	} {
 		if got := squares.Root(NewQ(s.num, s.den)).String(); got != s.exp {
 			t.Fatalf("got %s exp:%s", got, s.exp)
+		}
+	}
+
+	// Test Roots Times
+	for _, s := range []struct { a, b *S; exp string } {
+		{ a:NewS(1,1,1), b:NewS( 1,-1,1), exp: "-1"    },
+		{ a:NewS(1,1,1), b:NewS( 0,-1,1), exp:  "0"    },
+		{ a:NewS(1,1,0), b:NewS( 0,-1,1), exp:   ""    },
+		{ a:NewS(2,1,2), b:NewS( 2, 1,2), exp:  "1/2"  }, // sqrt(2)(1/2) * sqrt( 2)(1/2) = 2*1/4
+		{ a:NewS(3,1,3), b:NewS( 3, 1,3), exp:  "1/3"  }, // sqrt(3)(1/3) * sqrt( 3)(1/3) = 3/9
+		{ a:NewS(7,1,7), b:NewS( 7, 1,1), exp:  "1"    },
+
+		{ a:NewS(2,1,2), b:NewS( 3, 1,3), exp: "sqrt(6)(1/6)" }, // sqrt(2)(1/2) * sqrt( 3)(1/3) = sqrt(6)/6
+		{ a:NewS(5,3,8), b:NewS(10, 3,5), exp: "sqrt(2)(9/8)" }, // sqrt(5)(3/8) * sqrt(10)(3/5) = sqrt(2)(9/8)
+		{ a:NewS(5,3,7), b:NewS( 7, 1,3), exp:"sqrt(35)(1/7)" },
+ 	} {
+		if got := squares.Times(s.a, s.b).String(); got != s.exp {
+			t.Fatalf("got %s exp %s", got, s.exp)
 		}
 	}
 }

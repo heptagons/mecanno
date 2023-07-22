@@ -77,6 +77,20 @@ func (s *Squares) Root(q *Q) *S {
 	}
 }
 
+func (s *Squares) Times(a, b *S) *S {
+	if a == nil || b == nil {
+		return nil
+	} else if in, out, ok := s.productRoot(a.In, b.In); !ok {
+		return nil
+	} else {
+		return &S{
+			In: in,
+			Q:  a.Times(NewQ(int(out), 1)).
+					Times(b.Q),
+		}
+	}
+}
+
 type S struct {
 	In uint
 	*Q
@@ -91,11 +105,6 @@ func NewS(in uint, num, den int) *S {
 			Q:  q,
 		}
 	}
-}
-
-func (s *S) Times(t *S) *S {
-
-	return nil
 }
 
 func (s *S) String() string {
