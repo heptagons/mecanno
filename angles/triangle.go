@@ -53,11 +53,34 @@ func NewTriangle(a, b, c int) *Triangle {
 	}
 }
 
-func (t *Triangle) Gcd() int {
-	return meccano.Gcd(int(t.SideA), meccano.Gcd(int(t.SideB), int(t.SideC)))
-}
-
 func (t *Triangle) String() string {
 	return fmt.Sprintf("a=%d,b=%d,c=%d,cosA=%s,cosB=%s,cosC=%s",
 		t.SideA, t.SideB, t.SideC, t.CosA, t.CosB, t.CosC)
 }
+
+// Triangles is an array of different triangles 
+// Scaled triangles are not repeated
+type Triangles []*Triangle
+
+func NewTriangles() Triangles {
+	t := make([]*Triangle, 0)
+	return Triangles(t)
+}
+
+func (t *Triangles) Add(a, b, c int) *Triangle {
+	next := NewTriangle(a, b, c)
+	if next == nil {
+		return nil
+	}
+	gcd := meccano.Gcd(a, meccano.Gcd(b, c))
+	ga, gb, gc := uint(a / gcd), uint(b / gcd), uint(c / gcd)
+	for _, prev := range *t {
+		if prev.SideA == ga && prev.SideB == gb && prev.SideC == gc {
+			// scaled version already stored return nothing
+			return nil
+		}
+	}
+	*t = append(*t, next)
+	return next
+}
+
