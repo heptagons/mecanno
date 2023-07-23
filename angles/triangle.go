@@ -24,12 +24,12 @@ type Triangle struct {
 	SideA uint
 	SideB uint
 	SideC uint
-	CosA  *Q
-	CosB  *Q
-	CosC  *Q
-	Sin2A *Q
-	Sin2B *Q
-	Sin2C *Q
+	CosA  *Rat
+	CosB  *Rat
+	CosC  *Rat
+	Sin2A *Rat
+	Sin2B *Rat
+	Sin2C *Rat
 }
 
 func NewTriangle(a, b, c int) *Triangle {
@@ -42,28 +42,16 @@ func NewTriangle(a, b, c int) *Triangle {
 	} else if a >= b+c {
 		return nil // fmt.Errorf("a > b+c")	
 	}
-	cosZ := func(x, y, z int) *Q {
-		// cosines law
-		// cosC = (a² + b² - c²) / 2ab
-		return NewQ(x*x + y*y - z*z, 2*x*y)
-	}
-	sin2Z := func(x, y, z int) *Q {
-		// sines law
-		// sinC = math.Sqrt(4a²b² - (a²+b²-c²)²) / 2ab
-		a := 4*x*x*y*y
-		b := (x*x + y*y - z*z)
-		return NewQ(a - b*b, 4*x*x*y*y)
-	}
 	return &Triangle {
 		SideA: uint(a),
 		SideB: uint(b),
 		SideC: uint(c),
-		CosA:  cosZ(b, c, a),
-		CosB:  cosZ(c, a, b),
-		CosC:  cosZ(a, b, c),
-		Sin2A: sin2Z(b, c, a),
-		Sin2B: sin2Z(c, a, b),
-		Sin2C: sin2Z(a, b, c),
+		CosA:  NewRatCosC(b, c, a),
+		CosB:  NewRatCosC(c, a, b),
+		CosC:  NewRatCosC(a, b, c),
+		Sin2A: NewRatSin2C(b, c, a),
+		Sin2B: NewRatSin2C(c, a, b),
+		Sin2C: NewRatSin2C(a, b, c),
 	}
 }
 
