@@ -188,58 +188,57 @@ func TestRat(t *testing.T) {
 }
 
 func TestTriangle(t *testing.T) {
+
+	triangles := NewTriangles()
+
 	// test errors
 	for _, triangle := range []*Triangle{
-		NewTriangle(0,1,1), // a = 0
-		NewTriangle(1,0,1), // b = 0
-		NewTriangle(1,1,0), // c = 0
-		NewTriangle(1,2,1), // b > a
-		NewTriangle(1,1,2), // c > b
-		NewTriangle(2,1,1), // a >= c+b (area zero)
+		triangles.Add(0,1,1), // a = 0
+		triangles.Add(1,0,1), // b = 0
+		triangles.Add(1,1,0), // c = 0
+		triangles.Add(1,2,1), // b > a
+		triangles.Add(1,1,2), // c > b
+		triangles.Add(2,1,1), // a >= c+b (area zero)
 	} {
 		if triangle != nil {
 			t.Fatalf("exp nil got %v", t)
 		}
 	}
-}
 
-func TestTriangles(t *testing.T) {
-
-	triangles := NewTriangles()
-
+	// first valid
 	for a := 1; a <= 5; a++ {
 		for b := 1; b <= a; b++ {
 			for c := 1; c <= b; c++ {
 				if next := triangles.Add(a, b, c); next != nil {
-					fmt.Println(len(triangles), next)
+					fmt.Println(next)
 				}
 			}
 		}
 	}
 	exp := []string {
-		"a=1,b=1,c=1,cosA=1/2,cosB=1/2,cosC=1/2,sin2A=3/4,sin2B=3/4,sin2C=3/4",
-		"a=2,b=2,c=1,cosA=1/4,cosB=1/4,cosC=7/8,sin2A=15/16,sin2B=15/16,sin2C=15/64",
-		"a=3,b=2,c=2,cosA=-1/8,cosB=3/4,cosC=3/4,sin2A=63/64,sin2B=7/16,sin2C=7/16",
-		"a=3,b=3,c=1,cosA=1/6,cosB=1/6,cosC=17/18,sin2A=35/36,sin2B=35/36,sin2C=35/324",
-		"a=3,b=3,c=2,cosA=1/3,cosB=1/3,cosC=7/9,sin2A=8/9,sin2B=8/9,sin2C=32/81",
-		"a=4,b=3,c=2,cosA=-1/4,cosB=11/16,cosC=7/8,sin2A=15/16,sin2B=135/256,sin2C=15/64",
-		"a=4,b=3,c=3,cosA=1/9,cosB=2/3,cosC=2/3,sin2A=80/81,sin2B=5/9,sin2C=5/9",
-		"a=4,b=4,c=1,cosA=1/8,cosB=1/8,cosC=31/32,sin2A=63/64,sin2B=63/64,sin2C=63/1024",
-		"a=4,b=4,c=3,cosA=3/8,cosB=3/8,cosC=23/32,sin2A=55/64,sin2B=55/64,sin2C=495/1024",
-		"a=5,b=3,c=3,cosA=-7/18,cosB=5/6,cosC=5/6,sin2A=275/324,sin2B=11/36,sin2C=11/36",
-		"a=5,b=4,c=2,cosA=-5/16,cosB=13/20,cosC=37/40,sin2A=231/256,sin2B=231/400,sin2C=231/1600",
-		"a=5,b=4,c=3,cosA=0,cosB=3/5,cosC=4/5,sin2A=1,sin2B=16/25,sin2C=9/25",
-		"a=5,b=4,c=4,cosA=7/32,cosB=5/8,cosC=5/8,sin2A=975/1024,sin2B=39/64,sin2C=39/64",
-		"a=5,b=5,c=1,cosA=1/10,cosB=1/10,cosC=49/50,sin2A=99/100,sin2B=99/100,sin2C=99/2500",
-		"a=5,b=5,c=2,cosA=1/5,cosB=1/5,cosC=23/25,sin2A=24/25,sin2B=24/25,sin2C=96/625",
-		"a=5,b=5,c=3,cosA=3/10,cosB=3/10,cosC=41/50,sin2A=91/100,sin2B=91/100,sin2C=819/2500",
-		"a=5,b=5,c=4,cosA=2/5,cosB=2/5,cosC=17/25,sin2A=21/25,sin2B=21/25,sin2C=336/625",
+		"a=1,b=1,c=1,cosA=1/2,cosB=1/2,cosC=1/2,sinA=(1/2)√(3),sinB=(1/2)√(3),sinC=(1/2)√(3)",
+		"a=2,b=2,c=1,cosA=1/4,cosB=1/4,cosC=7/8,sinA=(1/4)√(15),sinB=(1/4)√(15),sinC=(1/8)√(15)",
+		"a=3,b=2,c=2,cosA=-1/8,cosB=3/4,cosC=3/4,sinA=(3/8)√(7),sinB=(1/4)√(7),sinC=(1/4)√(7)",
+		"a=3,b=3,c=1,cosA=1/6,cosB=1/6,cosC=17/18,sinA=(1/6)√(35),sinB=(1/6)√(35),sinC=(1/18)√(35)",
+		"a=3,b=3,c=2,cosA=1/3,cosB=1/3,cosC=7/9,sinA=(2/3)√(2),sinB=(2/3)√(2),sinC=(4/9)√(2)",
+		"a=4,b=3,c=2,cosA=-1/4,cosB=11/16,cosC=7/8,sinA=(1/4)√(15),sinB=(3/16)√(15),sinC=(1/8)√(15)",
+		"a=4,b=3,c=3,cosA=1/9,cosB=2/3,cosC=2/3,sinA=(4/9)√(5),sinB=(1/3)√(5),sinC=(1/3)√(5)",
+		"a=4,b=4,c=1,cosA=1/8,cosB=1/8,cosC=31/32,sinA=(3/8)√(7),sinB=(3/8)√(7),sinC=(3/32)√(7)",
+		"a=4,b=4,c=3,cosA=3/8,cosB=3/8,cosC=23/32,sinA=(1/8)√(55),sinB=(1/8)√(55),sinC=(3/32)√(55)",
+		"a=5,b=3,c=3,cosA=-7/18,cosB=5/6,cosC=5/6,sinA=(5/18)√(11),sinB=(1/6)√(11),sinC=(1/6)√(11)",
+		"a=5,b=4,c=2,cosA=-5/16,cosB=13/20,cosC=37/40,sinA=(1/16)√(231),sinB=(1/20)√(231),sinC=(1/40)√(231)",
+		"a=5,b=4,c=3,cosA=0,cosB=3/5,cosC=4/5,sinA=1,sinB=4/5,sinC=3/5",
+		"a=5,b=4,c=4,cosA=7/32,cosB=5/8,cosC=5/8,sinA=(5/32)√(39),sinB=(1/8)√(39),sinC=(1/8)√(39)",
+		"a=5,b=5,c=1,cosA=1/10,cosB=1/10,cosC=49/50,sinA=(3/10)√(11),sinB=(3/10)√(11),sinC=(3/50)√(11)",
+		"a=5,b=5,c=2,cosA=1/5,cosB=1/5,cosC=23/25,sinA=(2/5)√(6),sinB=(2/5)√(6),sinC=(4/25)√(6)",
+		"a=5,b=5,c=3,cosA=3/10,cosB=3/10,cosC=41/50,sinA=(1/10)√(91),sinB=(1/10)√(91),sinC=(3/50)√(91)",
+		"a=5,b=5,c=4,cosA=2/5,cosB=2/5,cosC=17/25,sinA=(1/5)√(21),sinB=(1/5)√(21),sinC=(4/25)√(21)",
 	}
-	if got := len(triangles); got != len(exp) {
+	if got := len(triangles.list); got != len(exp) {
 		t.Fatalf("triangles got:%d exp:%d", got, len(exp))
 	}
 	for i, exp := range exp {
-		if got := triangles[i].String(); got != exp {
+		if got := triangles.list[i].String(); got != exp {
 			t.Fatalf("got %s exp:%s", got, exp)
 		}
 	}

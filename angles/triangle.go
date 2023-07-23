@@ -6,6 +6,39 @@ import (
 	"github.com/heptagons/meccano"
 )
 
+// Triangles is an array of different triangles 
+// Scaled triangles are not repeated
+type Triangles struct {
+	nats *Nats
+	list []*Triangle
+}
+
+func NewTriangles() *Triangles {
+	return &Triangles{
+		nats: NewNats(), // to use Sqrt to calculate sines
+		list: make([]*Triangle, 0),
+	}	
+}
+
+func (t *Triangles) Add(a, b, c int) *Triangle {
+	next := NewTriangle(t.nats, a, b, c)
+	if next == nil {
+		return nil
+	}
+	gcd := meccano.Gcd(a, meccano.Gcd(b, c))
+	ga, gb, gc := uint(a / gcd), uint(b / gcd), uint(c / gcd)
+	for _, prev := range t.list {
+		if prev.SideA == ga && prev.SideB == gb && prev.SideC == gc {
+			// scaled version already stored return nothing
+			return nil
+		}
+	}
+	t.list = append(t.list, next)
+	return next
+}
+
+
+
 // Triangle is a valid triangle with positive sides:
 //	a >= b >= c > 0
 //  a > b+c
@@ -27,12 +60,12 @@ type Triangle struct {
 	CosA  *Rat
 	CosB  *Rat
 	CosC  *Rat
-	Sin2A *Rat
-	Sin2B *Rat
-	Sin2C *Rat
+	SinA  *Alg
+	SinB  *Alg
+	SinC  *Alg
 }
 
-func NewTriangle(a, b, c int) *Triangle {
+func NewTriangle(nats *Nats, a, b, c int) *Triangle {
 	if a <= 0 || b <= 0 || c <= 0 {
 		return nil // fmt.Errorf("side equals or less than 0")
 	} else if a < b {
@@ -49,42 +82,16 @@ func NewTriangle(a, b, c int) *Triangle {
 		CosA:  NewRatCosC(b, c, a),
 		CosB:  NewRatCosC(c, a, b),
 		CosC:  NewRatCosC(a, b, c),
-		Sin2A: NewRatSin2C(b, c, a),
-		Sin2B: NewRatSin2C(c, a, b),
-		Sin2C: NewRatSin2C(a, b, c),
+		SinA:  nats.SinC(b, c, a),
+		SinB:  nats.SinC(c, a, b),
+		SinC:  nats.SinC(a, b, c),
 	}
 }
 
 func (t *Triangle) String() string {
-	return fmt.Sprintf("a=%d,b=%d,c=%d,cosA=%s,cosB=%s,cosC=%s,sin2A=%s,sin2B=%s,sin2C=%s",
+	return fmt.Sprintf("a=%d,b=%d,c=%d,cosA=%s,cosB=%s,cosC=%s,sinA=%s,sinB=%s,sinC=%s",
 		t.SideA, t.SideB, t.SideC,
 		t.CosA,  t.CosB,  t.CosC,
-		t.Sin2A, t.Sin2B, t.Sin2C)
-}
-
-// Triangles is an array of different triangles 
-// Scaled triangles are not repeated
-type Triangles []*Triangle
-
-func NewTriangles() Triangles {
-	t := make([]*Triangle, 0)
-	return Triangles(t)
-}
-
-func (t *Triangles) Add(a, b, c int) *Triangle {
-	next := NewTriangle(a, b, c)
-	if next == nil {
-		return nil
-	}
-	gcd := meccano.Gcd(a, meccano.Gcd(b, c))
-	ga, gb, gc := uint(a / gcd), uint(b / gcd), uint(c / gcd)
-	for _, prev := range *t {
-		if prev.SideA == ga && prev.SideB == gb && prev.SideC == gc {
-			// scaled version already stored return nothing
-			return nil
-		}
-	}
-	*t = append(*t, next)
-	return next
+		t.SinA,  t.SinB,  t.SinC)
 }
 

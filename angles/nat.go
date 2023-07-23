@@ -44,7 +44,7 @@ func NewNats() *Nats {
 // Returns two naturals c,d as the simplification:
 //	√(a*b) = (c)√(d)
 // ok is false for overflow of out or in.
-func (s *Nats) sqrtMul(a, b Nat) (c Nat, d Nat, ok bool) {
+func (n *Nats) sqrtMul(a, b Nat) (c Nat, d Nat, ok bool) {
 	in := uint64(a) * uint64(b)
 	if in == 0 {
 		ok = true
@@ -57,7 +57,7 @@ func (s *Nats) sqrtMul(a, b Nat) (c Nat, d Nat, ok bool) {
 		return // one 1√1 ok
 	}
 	out := uint64(1)
-	for _, prime := range s.primes {
+	for _, prime := range n.primes {
 		p := uint64(prime)
 		if pp := p*p; in >= pp {
 			for {
@@ -128,6 +128,23 @@ func (n *Nats) Mul(a, b *Alg) *Alg {
 		}
 	}
 }
+
+// SinC return the sine of the angle C using the law of sines:
+//	       math.Sqrt(4a²b² - (a²+b²-c²)²)
+//	sinC = ------------------------------
+//	                  2ab 
+func (n *Nats) SinC(a, b, c int) *Alg {
+	p := 4*a*a*b*b
+	q := (a*a + b*b - c*c)
+	d := 2*a*b
+	if rat := NewRat(p - q*q, d*d); rat == nil {
+		return nil
+	} else {
+		return n.Sqrt(rat)
+	}
+}
+
+
 
 
 
