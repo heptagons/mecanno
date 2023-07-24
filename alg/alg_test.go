@@ -1,7 +1,6 @@
 package alg
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -185,8 +184,6 @@ func TestRat(t *testing.T) {
 }
 
 func TestTriangle(t *testing.T) {
-
-
 	// test errors
 	for _, triangle := range []*Triangle{
 		NewTriangle(0,1,1), // a = 0
@@ -204,16 +201,7 @@ func TestTriangle(t *testing.T) {
 	nats := NewNats()
 	algs := NewAlgs(nats)
 	triangles := NewTriangles(algs)
-	// first valid triangles
-	for a := Nat(1); a <= Nat(5); a++ {
-		for b := Nat(1); b <= a; b++ {
-			for c := Nat(1); c <= b; c++ {
-				if next := triangles.Add(a, b, c); next != nil {
-					fmt.Println(next)
-				}
-			}
-		}
-	}
+	triangles.Find(5)
 	exp := []string {
 		"a=1,b=1,c=1,cosA=1/2,cosB=1/2,cosC=1/2,sinA=(1/2)√(3),sinB=(1/2)√(3),sinC=(1/2)√(3)",
 		"a=2,b=2,c=1,cosA=1/4,cosB=1/4,cosC=7/8,sinA=(1/4)√(15),sinB=(1/4)√(15),sinC=(1/8)√(15)",
@@ -237,9 +225,16 @@ func TestTriangle(t *testing.T) {
 		t.Fatalf("triangles got:%d exp:%d", got, len(exp))
 	}
 	for i, exp := range exp {
-		if got := triangles.list[i].String(); got != exp {
+		triangle := triangles.list[i]
+		if got := triangle.String(); got != exp {
 			t.Fatalf("got %s exp:%s", got, exp)
 		}
+	}
+
+	triangles = NewTriangles(algs)
+	triangles.Find(50)
+	for pos, tr := range triangles.list {
+		t.Logf("% 3d area %d,%d,%d: %s", pos+1, tr.a, tr.b, tr.c, tr.area)
 	}
 }
 

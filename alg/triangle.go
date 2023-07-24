@@ -26,10 +26,12 @@ type Triangle struct {
 	cosA *Rat
 	cosB *Rat
 	cosC *Rat
+
 	// sines are algebraic
 	sinA *Alg
 	sinB *Alg
 	sinC *Alg
+	area *Alg
 }
 
 func NewTriangle(a, b, c Nat) *Triangle {
@@ -51,9 +53,7 @@ func NewTriangle(a, b, c Nat) *Triangle {
 
 func (t *Triangle) String() string {
 	return fmt.Sprintf("a=%d,b=%d,c=%d,cosA=%s,cosB=%s,cosC=%s,sinA=%s,sinB=%s,sinC=%s",
-		t.a, t.b, t.c,
-		t.cosA, t.cosB, t.cosC,
-		t.sinA, t.sinB, t.sinC)
+		t.a, t.b, t.c, t.cosA, t.cosB, t.cosC, t.sinA, t.sinB, t.sinC)
 }
 
 
@@ -69,6 +69,17 @@ func NewTriangles(algs *Algs) *Triangles {
 		algs: algs, // to use Sqrt to calculate sines
 		list: make([]*Triangle, 0),
 	}	
+}
+
+func (t *Triangles) Find(max Nat) {
+	// first valid triangles
+	for a := Nat(1); a <= max; a++ {
+		for b := Nat(1); b <= a; b++ {
+			for c := Nat(1); c <= b; c++ {
+				t.Add(a, b, c)
+			}
+		}
+	}
 }
 
 func (t *Triangles) Add(a, b, c Nat) *Triangle {
@@ -90,6 +101,11 @@ func (t *Triangles) Add(a, b, c Nat) *Triangle {
 	next.sinA = t.algs.SinC(b, c, a)
 	next.sinB = t.algs.SinC(c, a, b)
 	next.sinC = t.algs.SinC(a, b, c)
+
+	stable := uint64(a+(b+c))*uint64(c-(a-b))*uint64(c+(a-b))*uint64(a+(b-c))
+	if out, in, ok := t.algs.sqrt(stable); ok {
+		next.area = NewAlg(NewRat(int(out), 4), in)
+	}
 
 	t.list = append(t.list, next)
 	return next

@@ -4,6 +4,8 @@ import (
 	"math"
 )
 
+type Int int32
+
 const MAXNAT = uint64(0xffffffff)
 
 // Nat represents a small natural number in the range 1 - 0xffffffff
@@ -53,8 +55,12 @@ func NewNats() *Nats {
 // Returns two naturals c,d as the simplification:
 //	√(a*b) = (c)√(d)
 // ok is false for overflow of out or in.
-func (n *Nats) sqrtMul(a, b Nat) (c Nat, d Nat, ok bool) {
+func (n *Nats) sqrtMul(a, b Nat) (Nat, Nat, bool) {
 	in := uint64(a) * uint64(b)
+	return n.sqrt(in)
+}
+
+func (n *Nats) sqrt(in uint64) (c Nat, d Nat, ok bool) {
 	if in == 0 {
 		ok = true
 		return // zero 0√0 ok

@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+// Alg is the simplest algebraic number of the form
+// rat.Num
+// ------- * sqrt(In)
+// rat.Den
 type Alg struct {
 	*Rat
 	In Nat

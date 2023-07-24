@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+Let define algebraic A as this irreducible:
+\begin{align*}
+A &\equiv \frac{\pm a\sqrt{c \pm e\sqrt{f}} \pm d }{b}
+\end{align*}
+when we are limited to 32-bit integers:
+\begin{align*}
+0 &\leq a, c, d, e, f \leq 4,294,967,295\\
+1 &\leq b       \leq 4,294,967,295\\
+\end{align*}
+
+When $a > 0$ and $c = d = e = f = 0$ we have a rational Rat.
+When $a,c > 0$ and $c = d = e = 0$ we have an algebraic $Alg^c$.
+When $a,c,d > 0$  and $e = 0$ we have an algebraic $Alg^c$.
+When $a,c,d,e,f > 0$ we have an algebraic $Alg^f$.
+\begin{align*}
+Rat   &\equiv \frac{\pm a}{b}                                & c = d = e = 0\\
+Alg^c &\equiv \frac{\pm a\sqrt{c}}{b}                        & d = e = 0\\
+Alg^d &\equiv \frac{\pm a\sqrt{c} \pm d}{b}                 & e = 0\\
+Alg^f &\equiv \frac{\pm a\sqrt{c \pm e\sqrt{f}} \pm d }{b} & e,f > 0\\
+\end{align*}
+
+\section{Operations}
+\subsection{Rationals $Rat$}
+
+\subsubsection{$Rat_1 + Rat_2 = Rat_3$}
+\begin{align*}
+Rat_1 + Rat_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
+ &= \frac{\pm a_1b_2 \pm a_2b_1 }{b_1b_2} \\
+ &= \frac{\pm a_3}{b_3}
+\end{align*}
+
+\subsubsection{$Rat_1 \times Rat_2 = Rat_3$}
+\begin{align*}
+Rat_1 \times Rat_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
+  &= \frac{\pm a_1a_2}{b_1b_2} \\
+  &= \frac{\pm a_3}{b_3}
+\end{align*}
+
+\subsubsection{$1 / Rat_1 = Rat_2, a > 0$}
+\begin{align*}
+\frac{1}{Rat_1} &= \frac{1}{\frac{\pm a_1}{b_1}}\\
+ &= \frac{\pm b_1}{a_1} \\
+ &= \frac{\pm a_2}{b_2}
+\end{align*}
+
+\subsection{Algebraics $A^c$}
+
+\subsubsection{$\sqrt{Rat_1} = A^c_2$}
+\begin{align*}
+\sqrt{Rat_1} &= \sqrt{\frac{a_1}{b_1}}\\
+  &= \frac{\sqrt{a_1b_1}}{b_1}\\
+  &= \frac{m\sqrt{c_2}}{b_1}    & a_1b_1 = m^2c_2\\
+  &= \frac{a_2\sqrt{c_2}}{b_2}
+\end{align*}
+
+\subsubsection{$A^c_1 \times A^c_2 = A^c_3$}
+\begin{align*}
+A^c_1 \times A^c_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
+ &= \frac{\pm a_1a_2\sqrt{c_1c_2}}{b_1b_2}\\
+ &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
+ &= \frac{\pm a_3\sqrt{c_3}}{b_3}\\
+\end{align*}
+
+\subsection{Algebraics $A^d$}
+
+\subsubsection{$A^c_1 + A^c_2 = A^d_3$}
+\begin{align*}
+ A^c_1 + A^c_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2} \\
+ &= \frac{\pm a_1b_2\sqrt{c_1} \pm a_2b_1\sqrt{c_2}}{b_1b_2} \\
+ &= \frac{\pm m\sqrt{c_1} \pm n\sqrt{c_2}}{o} \\
+ &= \frac{\pm \sqrt{m^2c_1 + n^2c_2 \pm 2mn\sqrt{c_1c_2}}}{o} \\
+ &= \frac{\pm \sqrt{q \pm 2mnp\sqrt{f_3}}}{o}     & c_1c_2 = p^2f_3\\
+ &= \frac{\pm r\sqrt{c_3 \pm e_3\sqrt{f_3}}}{o}   & q = r^2c_3, 2mnp = r^2e_3 \\
+ &= \frac{\pm a_3\sqrt{c_3 \pm e_3\sqrt{f_3}}}{b_3}
+\end{align*}
+
+\subsubsection{$\sqrt{A_1^c} = A_2^d$}
+
+\end{document}
