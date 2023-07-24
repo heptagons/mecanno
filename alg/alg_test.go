@@ -1,4 +1,4 @@
-package angles
+package alg
 
 import (
 	"fmt"
@@ -112,9 +112,6 @@ func TestNat(t *testing.T) {
 }
 
 
-
-
-
 func TestRat(t *testing.T) {
 
 	nan   := NewRat(  1,  0) //   ""
@@ -189,26 +186,28 @@ func TestRat(t *testing.T) {
 
 func TestTriangle(t *testing.T) {
 
-	triangles := NewTriangles()
 
 	// test errors
 	for _, triangle := range []*Triangle{
-		triangles.Add(0,1,1), // a = 0
-		triangles.Add(1,0,1), // b = 0
-		triangles.Add(1,1,0), // c = 0
-		triangles.Add(1,2,1), // b > a
-		triangles.Add(1,1,2), // c > b
-		triangles.Add(2,1,1), // a >= c+b (area zero)
+		NewTriangle(0,1,1), // a = 0
+		NewTriangle(1,0,1), // b = 0
+		NewTriangle(1,1,0), // c = 0
+		NewTriangle(1,2,1), // b > a
+		NewTriangle(1,1,2), // c > b
+		NewTriangle(2,1,1), // a >= c+b (area zero)
 	} {
 		if triangle != nil {
 			t.Fatalf("exp nil got %v", t)
 		}
 	}
 
-	// first valid
-	for a := 1; a <= 5; a++ {
-		for b := 1; b <= a; b++ {
-			for c := 1; c <= b; c++ {
+	nats := NewNats()
+	algs := NewAlgs(nats)
+	triangles := NewTriangles(algs)
+	// first valid triangles
+	for a := Nat(1); a <= Nat(5); a++ {
+		for b := Nat(1); b <= a; b++ {
+			for c := Nat(1); c <= b; c++ {
 				if next := triangles.Add(a, b, c); next != nil {
 					fmt.Println(next)
 				}

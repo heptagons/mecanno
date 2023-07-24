@@ -1,4 +1,4 @@
-package angles
+package alg
 
 import (
 	"math"
@@ -6,7 +6,16 @@ import (
 
 const MAXNAT = uint64(0xffffffff)
 
+// Nat represents a small natural number in the range 1 - 0xffffffff
 type Nat uint32
+
+// NatGCD returns the greatest common divisor of two naturals
+func NatGCD(a, b Nat) Nat {
+	if b == 0 {
+		return a
+	}
+	return NatGCD(b, a % b)
+}
 
 // NatPrimes returns a list of the first primes
 // Use the Sieve of Erathostenes
@@ -126,21 +135,6 @@ func (n *Nats) Mul(a, b *Alg) *Alg {
 			Rat: a.Mul(NewRat(int(out), 1)).Mul(b.Rat),
 			In: in,
 		}
-	}
-}
-
-// SinC return the sine of the angle C using the law of sines:
-//	       math.Sqrt(4a²b² - (a²+b²-c²)²)
-//	sinC = ------------------------------
-//	                  2ab 
-func (n *Nats) SinC(a, b, c int) *Alg {
-	p := 4*a*a*b*b
-	q := (a*a + b*b - c*c)
-	d := 2*a*b
-	if rat := NewRat(p - q*q, d*d); rat == nil {
-		return nil
-	} else {
-		return n.Sqrt(rat)
 	}
 }
 

@@ -1,4 +1,4 @@
-package angles
+package alg
 
 import (
 	"fmt"
@@ -53,12 +53,6 @@ func NewRat(n, d int) (q *Rat) {
 	q.Num = num / a
 	q.Den = den / a
 	return
-}
-
-// NewRatCosZ returns the cosines law:
-// cosC = (a² + b² - c²) / 2ab
-func NewRatCosC(a, b, c int) *Rat {
-	return NewRat(a*a + b*b - c*c, 2*a*b)
 }
 
 // NewRatSin2Z return the sines law:
