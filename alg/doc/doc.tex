@@ -1,9 +1,13 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{../../meccano}
+
 \begin{document}
-Let define algebraic A as this irreducible:
+
+\section{Algebraic $F$ 32 bits numbers}
+Lets define the algebraic $F$ numbers as the next irreducible equation:
 \begin{align*}
-A &\equiv \frac{\pm a\sqrt{c \pm e\sqrt{f}} \pm d }{b}
+F &\equiv \frac{\pm a\sqrt{c \pm e\sqrt{f}} \pm d }{b}
 \end{align*}
 when we are limited to 32-bit integers:
 \begin{align*}
@@ -11,64 +15,71 @@ when we are limited to 32-bit integers:
 1 &\leq b       \leq 4,294,967,295\\
 \end{align*}
 
-When $a > 0$ and $c = d = e = f = 0$ we have a rational Rat.
-When $a,c > 0$ and $c = d = e = 0$ we have an algebraic $Alg^c$.
-When $a,c,d > 0$  and $e = 0$ we have an algebraic $Alg^c$.
-When $a,c,d,e,f > 0$ we have an algebraic $Alg^f$.
+\subsection{Simplifications}
+When $e = 0$ and $a,c,d > 0$ we have an algebraic $D$.
+When $d,e = 0$ and $a,c > 0$ we have an algebraic $C$.
+When $c,d,e = 0$ and $a > 0$ we have a rational B.
 \begin{align*}
-Rat   &\equiv \frac{\pm a}{b}                                & c = d = e = 0\\
-Alg^c &\equiv \frac{\pm a\sqrt{c}}{b}                        & d = e = 0\\
-Alg^d &\equiv \frac{\pm a\sqrt{c} \pm d}{b}                 & e = 0\\
-Alg^f &\equiv \frac{\pm a\sqrt{c \pm e\sqrt{f}} \pm d }{b} & e,f > 0\\
+D &\equiv \frac{\pm a\sqrt{c} \pm d}{b} & e = 0\\
+C &\equiv \frac{\pm a\sqrt{c}}{b}       & d = e = 0\\
+B &\equiv \frac{\pm a}{b}               & c = d = e = 0\\
 \end{align*}
 
 \section{Operations}
-\subsection{Rationals $Rat$}
 
-\subsubsection{$Rat_1 + Rat_2 = Rat_3$}
+\subsection{$B_1 + B_2 = B_3$}
 \begin{align*}
-Rat_1 + Rat_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
+B_1 + B_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
  &= \frac{\pm a_1b_2 \pm a_2b_1 }{b_1b_2} \\
- &= \frac{\pm a_3}{b_3}
+ &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1b_2 \pm a_2b_1, b_1b_2)
 \end{align*}
 
-\subsubsection{$Rat_1 \times Rat_2 = Rat_3$}
+\subsection{$B_1 \times B_2 = B_3$}
 \begin{align*}
-Rat_1 \times Rat_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
+B_1 \times B_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
   &= \frac{\pm a_1a_2}{b_1b_2} \\
-  &= \frac{\pm a_3}{b_3}
+  &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1a_2, b_1b_2)
 \end{align*}
 
-\subsubsection{$1 / Rat_1 = Rat_2, a > 0$}
+\subsection{$1 / B_1 = B_2, a > 0$}
 \begin{align*}
-\frac{1}{Rat_1} &= \frac{1}{\frac{\pm a_1}{b_1}}\\
+\frac{1}{B_1} &= \frac{1}{\frac{\pm a_1}{b_1}}\\
  &= \frac{\pm b_1}{a_1} \\
  &= \frac{\pm a_2}{b_2}
 \end{align*}
 
-\subsection{Algebraics $A^c$}
-
-\subsubsection{$\sqrt{Rat_1} = A^c_2$}
+\subsection{$\sqrt{B_1} = C_2$}
 \begin{align*}
-\sqrt{Rat_1} &= \sqrt{\frac{a_1}{b_1}}\\
+\sqrt{B_1} &= \sqrt{\frac{a_1}{b_1}}\\
   &= \frac{\sqrt{a_1b_1}}{b_1}\\
   &= \frac{m\sqrt{c_2}}{b_1}    & a_1b_1 = m^2c_2\\
-  &= \frac{a_2\sqrt{c_2}}{b_2}
+  &= \frac{a_2\sqrt{c_2}}{b_2}  & (a_2, b_2) = gcd(m, b_1)
 \end{align*}
 
-\subsubsection{$A^c_1 \times A^c_2 = A^c_3$}
+\subsection{$B_1 + C_2 = D_3$}
 \begin{align*}
-A^c_1 \times A^c_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
- &= \frac{\pm a_1a_2\sqrt{c_1c_2}}{b_1b_2}\\
- &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
- &= \frac{\pm a_3\sqrt{c_3}}{b_3}\\
+B_1 + C_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2}\\
+ &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 }{b_1b_2}\\
+ &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd(\pm a_2b_1,b_1b_2,\pm a_1b_2)
 \end{align*}
 
-\subsection{Algebraics $A^d$}
-
-\subsubsection{$A^c_1 + A^c_2 = A^d_3$}
+\subsection{$B_1 + D_2 = D_3$}
 \begin{align*}
- A^c_1 + A^c_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2} \\
+B_1 + D_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2} \pm d_2}{b_2}\\
+ &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 \pm d_2b_1 }{b_1b_2}\\
+ &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd(\pm a_2b_1,b_1b_2,\pm a_1b_2 \pm d_2b_1)
+\end{align*}
+
+\subsection{$B_1 + F_2 = F_3$} %7
+\begin{align*}
+B_1 + F_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_2}{b_2}\\
+ &= \frac{\pm a_2b1\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm a_1b_2 \pm d_2b_1}{b_1b_2}\\
+ &= \frac{\pm a_3\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_3}{b_3} & (\pm a_3, b_3, \pm d_3)=gcd(\pm a_2b1,b_1b_2,\pm a_1b_2 \pm d_2b_1)
+\end{align*}
+
+\subsection{$C_1 + C_2 = F_3$} %8
+\begin{align*}
+ C_1 + C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2} \\
  &= \frac{\pm a_1b_2\sqrt{c_1} \pm a_2b_1\sqrt{c_2}}{b_1b_2} \\
  &= \frac{\pm m\sqrt{c_1} \pm n\sqrt{c_2}}{o} \\
  &= \frac{\pm \sqrt{m^2c_1 + n^2c_2 \pm 2mn\sqrt{c_1c_2}}}{o} \\
@@ -77,6 +88,66 @@ A^c_1 \times A^c_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_
  &= \frac{\pm a_3\sqrt{c_3 \pm e_3\sqrt{f_3}}}{b_3}
 \end{align*}
 
-\subsubsection{$\sqrt{A_1^c} = A_2^d$}
+
+
+\subsection{$C_1 \times C_2 = C_3$}
+\begin{align*}
+C_1 \times C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
+ &= \frac{\pm a_1a_2\sqrt{c_1c_2}}{b_1b_2}\\
+ &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
+ &= \frac{\pm a_3\sqrt{c_3}}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1a_2m,b_1b_2)
+\end{align*}
+
+
+\subsection{$1 / C_1 = C_2$}
+\begin{align*}
+1 / C_1 &= \frac{1}{\frac{\pm a_1\sqrt{c_1}}{b_1}} \\
+ &= \frac{b_1}{\pm a_1\sqrt{c_1}}\\
+ &= \frac{\pm b_1\sqrt{c_1}}{c_1}\\
+ &= \frac{\pm a_2\sqrt{c_1}}{b_2}  & (\pm a_2, b_2) = gcd(\pm b_1, c1)
+\end{align*}
+
+
+\subsection{$\sqrt{C_1} = F_2$} %11
+\begin{align*}
+\sqrt{C_1} &= \sqrt{\frac{a_1\sqrt{c_1}}{b_1}}\\
+ &= \frac{\sqrt{a_1b_1\sqrt{c_1}}}{b_1}     \\
+ &= \frac{m\sqrt{e_2\sqrt{c_1}}}{b_1}       & a_1b_1 = m^2e_2\\
+ &= \frac{a_2\sqrt{e_2\sqrt{c_1}}}{b_2}     & (a_2,b_2) = gcd(m,b_1)
+\end{align*}
+
+
+\subsection{$D_1 + D_2 = F_3$}
+\begin{align*}
+D_1 + D_2 &= \frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1} + \frac{\pm a_2\sqrt{c_2} \pm d_2 }{b_2}\\
+ &= \frac{\pm a_1b_2\sqrt{c_1} \pm a_2b_1\sqrt{c_2} \pm d_1b_2 \pm d_2b_1}{b_1b_2} \\
+ &= \frac{\pm m\sqrt{c_1} \pm n\sqrt{c_2} \pm p }{o}
+     & (\pm m, \pm n, \pm p, o) = gcd(\pm a_1b_2, \pm a_2b_1, \pm d_1b_2 \pm d_2b_1, b_1b_2)\\
+ &= \frac{\sqrt{m^2c_1 + n^2c_2 \pm 2mn\sqrt{c1c_2}} \pm p }{o} \\
+ &= \frac{\sqrt{q \pm 2mnr\sqrt{f_3}} \pm p}{o}     & q = m^2c_1 + n^2c_2, c_1c_2 = r^2f_3\\
+ &= \frac{s\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm p}{o}   & q = s^2c_3, 2mnr = s^2e_3 \\
+ &= \frac{a_3\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm d_3}{b_3}
+    & (a_3, b_3, \pm d_3) = gcd(s, \pm p, o)
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
