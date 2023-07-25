@@ -15,7 +15,10 @@ func (a N) gcd(b N) N {
 	return b.gcd(a % b)
 }
 
+
 type Z int64
+
+const MaxN = Z(0xffffffff)
 
 func gcd(a, b Z) Z {
 	if b == 0 {
@@ -24,36 +27,27 @@ func gcd(a, b Z) Z {
 	return gcd(b, a % b)
 }
 
-
 // I is an integer of 32 bits
 type I struct {
 	s bool
 	n N
 }
 
-func NewI(s bool, n N) *I {
-	return &I{
-		s: s,
-		n: n,
-	}
+func newIplus(n N) *I {
+	return &I{ s:false, n:n }
 }
 
-func (x *I) sgn(y *I) bool {
-	if x.s {
-		return !y.s
-	} else {
-		return y.s
-	}
+func newIminus(n N) *I {
+	return &I{ s:true, n:n }	
 }
 
 func (x *I) mul(n N) Z {
 	if x.s {
-		return Z(n) * -Z(x.n)
+		return -Z(n) * Z(x.n)
 	} else {
-		return Z(n) * Z(x.n)
+		return +Z(n) * Z(x.n)
 	}
 }
-
 
 func (x *I) stringI() string {
 	if x == nil {
@@ -72,75 +66,109 @@ type B struct { // Rational
 	b N
 }
 
-func NewB(s bool, a, b N) *B {
+func NewB(num Z, den Z) *B {
+	if den == 0 {
+		return nil // infinite
+	}
+	if num == 0 {
+		return NewB0() // zero
+	}
+	s := false
+	if num < 0 {
+		num = -num
+		s = !s
+	}
+	if den < 0 {
+		den = -den
+		s = !s
+	}
+	g := gcd(num, den)
+	num /= g
+	den /= g
+	if num > MaxN {
+		return nil // numerator overflow
+	} else if den > MaxN {
+		return nil // denominator overflow
+	}
+	var a *I
+	if s { // fast negative
+		a = newIminus(N(num))
+	} else { // fast positive
+		a = newIplus(N(num))
+	}
+	return &B{
+		a: a,
+		b: N(den),
+	}
+}
+
+func NewB0() *B {
+	return &B{ b:1 }
+}
+
+func NewBplus(a, b N) *B {
+	return newB(false, a, b)
+}
+
+func NewBminus(a, b N) *B {
+	return newB(true, a, b)	
+}
+
+func newB(s bool, a, b N) *B {
 	if b == 0 {
 		return nil // infinity
 	}
 	if a == 0 {
-		return &B{
-			a: NewI(s, 0),
-			b: b,
-		}
+		return NewB0() // zero
 	}
 	num, den := a, b
 	g := num.gcd(den)
 	return &B{
-		a: NewI(s, num / g),
+		a: &I{ s:s, n: num / g },
 		b: den / g,
+	}
+}
+
+func (x *B) clone() *B {
+	if x == nil {
+		return nil // infinite
+	} else if x.a == nil || x.a.n == 0 {
+		return NewB0()
+	} else {
+		return newB(x.a.s, x.a.n, x.b)
 	}
 }
 
 func (x *B) AddB(y *B) *B {
 	if x == nil || y == nil {
-		return nil
-	} else if x.a == nil || y.a == nil {
-		return nil
-	} else if x.b == 0 || y.b == 0 {
-		return nil
+		return nil // infinite
+	} else if x.a == nil || x.a.n == 0 {
+		return y.clone() // y
+	} else if y.a == nil || y.a.n == 0 {
+		return x.clone() // x
 	}
-	num := x.a.mul(y.b) + y.a.mul(x.b)	
+	num := x.a.mul(y.b) + y.a.mul(x.b)
 	den := Z(x.b) * Z(y.b)
-	g := gcd(num, den)
-	num /= g
-	den /= g
-	b := N(den) // TODO check overflow
-	var a *I
-	if num < 0 {
-		// TODO check overflow
-		a = NewI(true, N(-num))
-	} else {
-		// TODO check overflow
-		a = NewI(false, N(num))
-	}
-	return &B{
-		a: a,
-		b: b,
-	}
+	return NewB(num, den)
 }
 
 func (x *B) MulB(y *B) *B {
 	if x == nil || y == nil {
 		return nil
+	} else if x.a == nil || x.a.n == 0 {
+		return NewB0()
+	} else if y.a == nil || y.a.n == 0 {
+		return NewB0()
 	}
-	if x.a == nil || y.a == nil {
-		return nil
-	}
-	if x.b == 0 || y.b == 0 {
-		return nil
-	}
-	num, den := x.a.n * y.a.n, x.b * y.b
-	g := num.gcd(den)
-	return NewB(x.a.sgn(y.a), num / g, den / g)
+	num := Z(x.a.n) * Z(y.a.n)
+	den := Z(x.b) * Z(y.b)
+	return NewB(num, den)
 }
 
 func (x *B) StringB() string {
-	if x == nil {
-		return ""
-	} else if x.a == nil {
-		return "" // undefined
-	} else if x.b == 0 {
+	if x == nil || x.b == 0 {
 		return "" // infinity
-	} else if x.a.n == 0 {
+	} else if x.a == nil || x.a.n == 0 {
 		return "0"
 	} else if x.b == 1 {
 		return x.a.stringI()
