@@ -1,9 +1,9 @@
 \BOOKMARK [1][-]{section.1}{Algebraic F 32 bits numbers}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Simplifications}{section.1}% 2
 \BOOKMARK [1][-]{section.2}{Operations}{}% 3
-\BOOKMARK [2][-]{subsection.2.1}{B1 + B2 = B3}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.2}{B1 B2 = B3}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.3}{1 / B1 = B2, a > 0}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.1}{B1 B2 = B3}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{1 / B1 = B2, a > 0}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.3}{B1 + B2 = B3}{section.2}% 6
 \BOOKMARK [2][-]{subsection.2.4}{B1 = C2}{section.2}% 7
 \BOOKMARK [2][-]{subsection.2.5}{B1 + C2 = D3}{section.2}% 8
 \BOOKMARK [2][-]{subsection.2.6}{B1 + D2 = D3}{section.2}% 9
@@ -12,4 +12,8 @@
 \BOOKMARK [2][-]{subsection.2.9}{C1 C2 = C3}{section.2}% 12
 \BOOKMARK [2][-]{subsection.2.10}{1 / C1 = C2}{section.2}% 13
 \BOOKMARK [2][-]{subsection.2.11}{C1 = F2}{section.2}% 14
-\BOOKMARK [2][-]{subsection.2.12}{D1 + D2 = F3???}{section.2}% 15
+\BOOKMARK [2][-]{subsection.2.12}{C1 + D2 = F3}{section.2}% 15
+\BOOKMARK [2][-]{subsection.2.13}{1 / D1 = D2}{section.2}% 16
+\BOOKMARK [2][-]{subsection.2.14}{D1 = F2 editing...}{section.2}% 17
+\BOOKMARK [2][-]{subsection.2.15}{D1 + D2 = F3}{section.2}% 18
+\BOOKMARK [2][-]{subsection.2.16}{D1 D2 = F3}{section.2}% 19

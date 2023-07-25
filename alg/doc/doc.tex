@@ -27,13 +27,6 @@ B &\equiv \frac{\pm a}{b}               & c = d = e = 0\\
 
 \section{Operations}
 
-\subsection{$B_1 + B_2 = B_3$}
-\begin{align*}
-B_1 + B_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
- &= \frac{\pm a_1b_2 \pm a_2b_1 }{b_1b_2} \\
- &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1b_2 \pm a_2b_1, b_1b_2)
-\end{align*}
-
 \subsection{$B_1 \times B_2 = B_3$}
 \begin{align*}
 B_1 \times B_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
@@ -46,6 +39,13 @@ B_1 \times B_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
 \frac{1}{B_1} &= \frac{1}{\frac{\pm a_1}{b_1}}\\
  &= \frac{\pm b_1}{a_1} \\
  &= \frac{\pm a_2}{b_2}
+\end{align*}
+
+\subsection{$B_1 + B_2 = B_3$}
+\begin{align*}
+B_1 + B_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
+ &= \frac{\pm a_1b_2 \pm a_2b_1 }{b_1b_2} \\
+ &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1b_2 \pm a_2b_1, b_1b_2)
 \end{align*}
 
 \subsection{$\sqrt{B_1} = C_2$}
@@ -108,7 +108,7 @@ C_1 \times C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{
 \end{align*}
 
 
-\subsection{$\sqrt{C_1} = F_2$} %11
+\subsection{$\sqrt{C_1} = F_2$}
 \begin{align*}
 \sqrt{C_1} &= \sqrt{\frac{a_1\sqrt{c_1}}{b_1}}\\
  &= \frac{\sqrt{a_1b_1\sqrt{c_1}}}{b_1}     \\
@@ -116,6 +116,37 @@ C_1 \times C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{
  &= \frac{a_2\sqrt{e_2\sqrt{c_1}}}{b_2}     & (a_2,b_2) = gcd(m,b_1)
 \end{align*}
 
+\subsection{$C_1 + D_2 = F_3$}
+\begin{align*}
+C_1 + D_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} + \frac{\pm a_2\sqrt{c_2} \pm d_2 }{b_2}\\
+ &= \frac{\pm a_1b_2\sqrt{c_1} \pm a_2b_1\sqrt{c_2} \pm d_2b_1}{b_1b_2} \\
+ &= \frac{\pm m\sqrt{c_1} \pm n\sqrt{c_2} \pm p}{o} 
+ & (\pm m, \pm n, \pm p, o) = gcd(\pm a_1b_2, \pm a_2b_1, \pm d_2b_1, b_1b_2)\\
+ &= \frac{\sqrt{m^2c_1 + n^2c_2 \pm 2mn\sqrt{c1c_2}} \pm p }{o} \\
+ &= \frac{\sqrt{q \pm 2mnr\sqrt{f_3}} \pm p}{o}     & q = m^2c_1 + n^2c_2, c_1c_2 = r^2f_3\\
+ &= \frac{s\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm p}{o}   & q = s^2c_3, 2mnr = s^2e_3 \\
+ &= \frac{a_3\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm d_3}{b_3}
+    & (a_3, b_3, \pm d_3) = gcd(s, \pm p, o)
+\end{align*}
+
+\subsection{$1 / D_1 = D_2$}
+\begin{align*}
+1 / D_1 &= \frac{b_1}{\pm a_1\sqrt{c_1} \pm d_1 }\\
+ &= \frac{\pm a_1b_1\sqrt{c_1} \mp b_1d_1 }{a_1^2c_1 - d_1^2}\\
+ &= \frac{a_2\sqrt{c_1} \pm d_2}{b_2}
+    & (a_2, b_2, d_2) = gcd(\pm a_1b_1, \mp b_1d_1, a_1^2c_1 - d_1^2)
+\end{align*}
+
+\subsection{$\sqrt{D_1} = F_2$ editing...}
+\begin{align*}
+\sqrt{D_1} &= \sqrt{\frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1}}\\
+ &= \frac{\sqrt{\pm b_1d_1 \pm a_1b_1\sqrt{f_2}}}{b_1}
+    & f_2 = c_1\\
+ &= \frac{m\sqrt{c_2 \pm e_2\sqrt{f_2}}}{b_1}
+    & \pm b_1d_1 = m^2c_2, \pm a_1b_1 = m^2e_2\\
+ &= \frac{a_2\sqrt{c_2 \pm e_2\sqrt{f_2}}}{b_2}
+    & (a_2, b_2) = gcd(m, b_1)
+\end{align*}
 
 \subsection{$D_1 + D_2 = F_3$}
 \begin{align*}
@@ -128,6 +159,12 @@ D_1 + D_2 &= \frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1} + \frac{\pm a_2\sqrt{c_2} \p
  &= \frac{s\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm p}{o}   & q = s^2c_3, 2mnr = s^2e_3 \\
  &= \frac{a_3\sqrt{c_3 \pm e_3\sqrt{f_3}} \pm d_3}{b_3}
     & (a_3, b_3, \pm d_3) = gcd(s, \pm p, o)
+\end{align*}
+
+\subsection{$D_1 \times D_2 = F_3$}
+\begin{align*}
+D_1 \times D_2 &= \frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1} \times \frac{\pm a_2\sqrt{c_2} \pm d_2 }{b_2}\\
+ &= \frac{\pm a_1a_2\sqrt{c_1c_2} \pm a_1d_2\sqrt{c1} \pm a_2d_1\sqrt{c_2} \pm d_1d_2}{b_1b_2}\\
 \end{align*}
 
 
