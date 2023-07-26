@@ -51,6 +51,17 @@ func NewB(num Z, den Z) *B {
 	}
 }
 
+// NewBcosC returns the rational cosine of the angle opposed to segment c
+// using the law of cosines:
+//	       a² + b² - c²
+//	cosC = ------------
+//	           2ab
+func NewBcosC(a, b, c N32) *B {
+	num := Z(a*a) + Z(b*b) - Z(c*c)
+	den := 2*Z(a*b)
+	return NewB(num, den)
+}
+
 func NewBplus(num, den N32) *B {
 	return newB(false, num, den)
 }

@@ -142,3 +142,29 @@ func (q *Rat) String() string {
 	}
 	return fmt.Sprintf("%s%d/%d", neg, q.Num, q.Den)
 }
+
+
+// Sqrt returns the square root of the rational r as an algebraic.
+// returns nil when rational is negative (imaginary) or natural overflow.
+//
+//	            sqrt(rat.Num*rat.Den)     out
+//	sqrt(rat) = --------------------- = ------- * sqrt(in)
+//	                  rat.Den           rat.Den
+func (r *Rat) Sqrt(n *N32s) *Alg {
+	if r == nil {
+		return nil // invalid rational
+	}
+	if r.Neg {
+		return nil // Imaginary
+	}
+	if out, in, ok := n.Sqrt32(1, uint64(r.Num)*uint64(r.Den)); !ok {
+		return nil // overflow
+	} else if r2 := NewRat(int(out), int(r.Den)); r2 == nil {
+		// update rational since sqrtMul updated numerator which
+		// can be simplied with previos denominator
+		return nil // rare
+	} else {
+		return NewAlg(r2, in)
+	}
+}
+

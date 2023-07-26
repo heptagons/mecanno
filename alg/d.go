@@ -11,5 +11,6 @@ type R struct {
 
 type D struct {
 	ab *B // mandatory denominator a and optional integer b
-	cd *R // mandatory integer multiplying radical
+	c  *I
+	d  N32
 }

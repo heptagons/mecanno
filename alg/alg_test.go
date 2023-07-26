@@ -6,7 +6,7 @@ import (
 
 func TestNat(t *testing.T) {
 
-	nats := NewNats()
+	nats := NewN32s()
 
 	// primes
 	if got, exp := len(nats.primes), 6542; got != exp {
@@ -27,7 +27,7 @@ func TestNat(t *testing.T) {
 		}
 	}
 
-	// sqrtMul
+	// sqrt32
 	for pos, s := range []struct { a, b, in, out N32; ok bool }	{
 		{ a: 0,  b: 0,  in: 0, out: 0, ok: true },
 		{ a: 0,  b: 1,  in: 0, out: 0, ok: true },
@@ -59,8 +59,9 @@ func TestNat(t *testing.T) {
 		{ a:0xffffffff, b: 0xfffffff, in:         0, out:      0, ok:false }, // overflow
 		{ a:0xffffffff, b:0xffffffff, in:         0, out:      0, ok:false }, // overflow
 	} {
-		if out, in, ok := nats.sqrtMul(s.a, s.b); in != s.in || out != s.out || ok != s.ok {
-			t.Fatalf("nats.sqrtMul pos=%d a=%d, b=%d got in:%d,out=%d,ok=%t exp in:%d,out=%d,ok=%t",
+		m := uint64(s.a) * uint64(s.b)
+		if out, in, ok := nats.Sqrt32(1, m); in != s.in || out != s.out || ok != s.ok {
+			t.Fatalf("nats.sqrt32 pos=%d a=%d, b=%d got in:%d,out=%d,ok=%t exp in:%d,out=%d,ok=%t",
 				pos,
 				s.a, s.b,
 				in, out, ok,
@@ -86,7 +87,7 @@ func TestNat(t *testing.T) {
 		{ num: 1, den:18, exp: "(1/6)√(2)"  },
 		{ num:18, den: 1, exp: "(3)√(2)"    },
 	} {
-		if got := nats.Sqrt(NewRat(s.num, s.den)).String(); got != s.exp {
+		if got := NewRat(s.num, s.den).Sqrt(nats).String(); got != s.exp {
 			t.Fatalf("got %s exp:%s", got, s.exp)
 		}
 	}
@@ -104,7 +105,7 @@ func TestNat(t *testing.T) {
 		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,3), 3), exp:  "(1/6)√(6)" },
 		{ a:NewAlg(NewRat(5,3), 8), b:NewAlg(NewRat( 3,5),10), exp:  "(4)√(5)"   },
  	} {
-		if got := nats.Mul(s.a, s.b).String(); got != s.exp {
+		if got := s.a.Multiply(s.b, nats).String(); got != s.exp {
 			t.Fatalf("got %s exp %s", got, s.exp)
 		}
 	}
@@ -198,7 +199,7 @@ func TestTriangle(t *testing.T) {
 		}
 	}
 
-	nats := NewNats()
+	nats := NewN32s()
 	algs := NewAlgs(nats)
 	triangles := NewTriangles(algs)
 	triangles.Find(5)
