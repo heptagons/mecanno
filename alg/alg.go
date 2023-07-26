@@ -41,7 +41,7 @@ func (a *Alg) Multiply(b *Alg, n *N32s) *Alg {
 	if a == nil || b == nil {
 		return nil
 	}
-	out, in, ok := n.Sqrt32(1, uint64(a.In) * uint64(b.In))
+	out, in, ok := n.Sqrt(1, uint64(a.In) * uint64(b.In))
 	if !ok {
 		return nil
 	}

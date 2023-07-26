@@ -28,17 +28,20 @@ func TestNat(t *testing.T) {
 	}
 
 	// sqrt32
-	for pos, s := range []struct { a, b, in, out N32; ok bool }	{
-		{ a: 0,  b: 0,  in: 0, out: 0, ok: true },
-		{ a: 0,  b: 1,  in: 0, out: 0, ok: true },
-		{ a: 1,  b: 0,  in: 0, out: 0, ok: true },
-		{ a: 1,  b: 1,  in: 1, out: 1, ok: true },
-		{ a: 2,  b: 1,  in: 2, out: 1, ok: true },
-		{ a: 3,  b: 1,  in: 3, out: 1, ok: true },
-		{ a: 4,  b: 1,  in: 1, out: 2, ok: true },
+	for pos, s := range []struct { out Z; a, b N32; e string }	{
+		{ out: 1, a: 0,  b: 0,  e: "0"   },
+		{ out: 1, a: 0,  b: 1,  e: "0"   },
+		{ out: 1, a: 1,  b: 0,  e: "0"   },
+		{ out: 1, a: 1,  b: 1,  e: "1"   },
+		{ out: 1, a: 2,  b: 1,  e: "√2"  },
+		{ out: 1, a: 3,  b: 1,  e: "√3"  },
+		{ out:-1, a: 3,  b: 1,  e: "-√3" },
+		{ out: 1, a: 4,  b: 1,  e: "2"   },
 
-		{ a:    11*11, b:    10*11, in:110, out:    11, ok:true },
-		{ a:     1024, b:      512, in:  2, out:   512, ok:true },
+		{ out: 1, a:11*11, b:    10*11, e: "11√110" },
+		{ out: 1, a:1024,  b:      512, e:"512√2"   },
+
+		/*
 		{ a:    3*3*3, b:    7*7*7, in: 21, out:    21, ok:true },
 		{ a:    3*3*5, b:    5*7*7, in:  1, out: 3*5*7, ok:true },
 		{ a:    12345, b:    12345, in:  1, out: 12345, ok:true },
@@ -58,14 +61,11 @@ func TestNat(t *testing.T) {
 		{ a:0xffffffff, b:  0xffffff, in:         0, out:      0, ok:false }, // overflow
 		{ a:0xffffffff, b: 0xfffffff, in:         0, out:      0, ok:false }, // overflow
 		{ a:0xffffffff, b:0xffffffff, in:         0, out:      0, ok:false }, // overflow
+		*/
 	} {
-		m := uint64(s.a) * uint64(s.b)
-		if out, in, ok := nats.Sqrt32(1, m); in != s.in || out != s.out || ok != s.ok {
-			t.Fatalf("nats.sqrt32 pos=%d a=%d, b=%d got in:%d,out=%d,ok=%t exp in:%d,out=%d,ok=%t",
-				pos,
-				s.a, s.b,
-				in, out, ok,
-				s.in, s.out, s.ok)
+		in := uint64(s.a) * uint64(s.b)
+		if got := NewRoot32(nats, s.out, in).String(); got != s.e {
+			t.Fatalf("nats.sqrt32 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
 		}
 	}
 

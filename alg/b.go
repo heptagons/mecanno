@@ -5,8 +5,8 @@ import (
 )
 
 type B struct { // Rational
-	b *I  // numerator integer optional
-	a N32 // denominator natural >= 1
+	b *I32 // numerator integer optional
+	a N32  // denominator natural >= 1
 }
 
 func NewB0() *B {
@@ -39,11 +39,11 @@ func NewB(num Z, den Z) *B {
 	} else if den > MaxN {
 		return nil // denominator overflow
 	}
-	var b *I
+	var b *I32
 	if s { // fast negative
-		b = newIminus(N32(num))
+		b = newI32minus(N32(num))
 	} else { // fast positive
-		b = newIplus(N32(num))
+		b = newI32plus(N32(num))
 	}
 	return &B{
 		b: b,
@@ -80,7 +80,7 @@ func newB(s bool, num, den N32) *B {
 	n, d := num, den
 	g := n.gcd(d)
 	return &B{
-		b: &I{ s:s, n: n / g },
+		b: &I32{ s:s, n: n / g },
 		a: d / g,
 	}
 }
@@ -113,7 +113,7 @@ func (x *B) Inv() *B {
 		return nil
 	} 
 	return &B{
-		b: &I{ s:x.b.s, n: x.a },
+		b: &I32{ s:x.b.s, n: x.a },
 		a: x.b.n,
 	}
 }
@@ -140,8 +140,8 @@ func (x *B) String() string {
 	} else if x.b == nil || x.b.n == 0 {
 		return "0"
 	} else if x.a == 1 {
-		return x.b.string()
+		return x.b.String(false)
 	} else {
-		return fmt.Sprintf("%s/%d", x.b.string(), x.a)
+		return fmt.Sprintf("%s/%d", x.b.String(false), x.a)
 	}
 }

@@ -1,6 +1,7 @@
 package alg
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -69,10 +70,10 @@ func NewN32s() *N32s {
 	return nil
 }*/
 
-// Sqrt32 reduces the radical (out)√(in) in in two parts
+// Sqrt reduces the radical (out)√(in) in in two parts
 // Example: -3√(20) returns -6√(5)
 // Return ok as false when returned values are larger than 32 bits (overflow).
-func (n *N32s) Sqrt32(out, in uint64) (o N32, i N32, ok bool) {
+func (n *N32s) Sqrt(out, in uint64) (o N32, i N32, ok bool) {
 	if out == 0 {
 		return 0, 0, true
 	}
@@ -110,3 +111,61 @@ func (n *N32s) Sqrt32(out, in uint64) (o N32, i N32, ok bool) {
 	}
 	return N32(out), N32(in), true
 }
+
+type Z int64
+
+const MaxN = Z(0xffffffff)
+
+func gcd(a, b Z) Z {
+	if b == 0 {
+		return a
+	}
+	return gcd(b, a % b)
+}
+
+// I is an integer of 32 bits
+type I32 struct {
+	s bool
+	n N32
+}
+
+func newI32plus(n N32) *I32 {
+	return &I32{ s:false, n:n }
+}
+
+func newI32minus(n N32) *I32 {
+	return &I32{ s:true, n:n }	
+}
+
+func (i *I32) mul(n N32) Z {
+	if i.s {
+		return -Z(n) * Z(i.n)
+	} else {
+		return +Z(n) * Z(i.n)
+	}
+}
+
+func (i *I32) String(omitone bool) string {
+	if i == nil {
+		return ""
+	} else if i.n == 0 {
+		return "0"
+	} else if i.s {
+		if i.n == 1 && omitone {
+			return "-"
+		}
+		return fmt.Sprintf("-%d", i.n)
+	} else {
+		if i.n == 1 && omitone {
+			return ""
+		}
+		return fmt.Sprintf("%d", i.n)
+	}
+}
+
+
+
+
+
+
+

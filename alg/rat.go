@@ -157,7 +157,7 @@ func (r *Rat) Sqrt(n *N32s) *Alg {
 	if r.Neg {
 		return nil // Imaginary
 	}
-	if out, in, ok := n.Sqrt32(1, uint64(r.Num)*uint64(r.Den)); !ok {
+	if out, in, ok := n.Sqrt(1, uint64(r.Num)*uint64(r.Den)); !ok {
 		return nil // overflow
 	} else if r2 := NewRat(int(out), int(r.Den)); r2 == nil {
 		// update rational since sqrtMul updated numerator which
