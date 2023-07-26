@@ -1,150 +1,186 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage{../../meccano}
+\usepackage{chngcntr}
+\counterwithin{equation}{section}
 
 \begin{document}
 
-\section{32 bits algebra}
-Define one rational number $B$ and three algebraic numbers $C$, $E$ and $G$ all irreducibles:
-\begin{align*}
-B &\equiv \frac{\pm b_1}{a}\\
-C &\equiv \frac{\pm b_1\pm b_2\sqrt{c_1}}{a}\\
-E &\equiv \frac{\pm b_1\pm b_2\sqrt{c_1} \pm b_3\sqrt{c_2 \pm d_1\sqrt{e_1}}}{a}\\
-G &\equiv \frac{\pm b_1\pm b_2\sqrt{c_1} \pm b_3\sqrt{c_2 \pm d_1\sqrt{e_1}} \pm b_4\sqrt{c_3 \pm d_2\sqrt{e_2 \pm f_1\sqrt{g_1}}}}{a}\\
-\end{align*}
+\section{32 bits algebraic numbers}
 
-for 32-bit natural numbers:
-\begin{align*}
-1 &\leq a       \leq 4,294,967,295\\
-0 &\leq b,c,d,e,f,g \leq 4,294,967,295\\
-\end{align*}
+Let $r_0$, $r_1$, $r_2$ and $r_3$ irreducibles radicals with nesting 0, 1, 2 and 3:
+\begin{align}
+r_0 &= \pm b\\
+r_1 &= \pm c\sqrt{d}\\
+r_2 &= \pm e\sqrt{f \pm g\sqrt{h}}\\
+r_3 &= \pm i\sqrt{j \pm k\sqrt{l \pm m\sqrt{n}}}
+\end{align}
 
-\subsection{functions}
-\begin{align*}
-f_1 &= f(\pm b_1)\\
-f_2 &= f(\pm b_2, c_1)\\
-f_3 &= f(\pm b_3, c_2, \pm d_1, e_1)\\
-f_4 &= f(\pm b_4, c_3, \pm d_2, e_2, \pm f_1, g_1)\\
-\\
-f_B &= f(f_1(), a)\\
-f_C &= f(f_1(), f_2(), a)\\
-f_E &= f(f_1(), f_2(), f_3(), a)\\
-f_G &= f(f_1(), f_2(), f_3(), f_4(), a)\\
-\end{align*}
+We will use fourteen different 32-bit natural numbers, where $a$ goes in the denominators and $b,...n$ 
+in the numerators.
+\begin{align}
+1 &\leq a       \leq 2^{32} - 1\\
+0 &\leq b,c,d,e,f,g,h,i,j,k,l,m,n \leq 2^{32} - 1
+\end{align}
+The signs are managed appart as extra boolean variables and there is one for each of the seven variables
+$b$, $c$, $e$, $g$, $i$, $k$ and $m$.
+
+We define four numbers of increasing complexity:
+\begin{align}
+B &\equiv \frac{r_0}{a} \\
+D &\equiv \frac{r_0 + r_1}{a} \iff c,d > 0 \\
+H &\equiv \frac{r_0 + r_1 + r_2}{a} \iff e,f,g,h > 0 \\
+N &\equiv \frac{r_0 + r_1 + r_2 + r_3}{a} \iff i,j,k,l,m,n > 0
+\end{align}
 
 
-$f_B$ examples:
-\begin{align*}
-\cos{0}             &= 1           \implies f_B(f_1(1),1)\\
-\sin{\frac{\pi}{6}} &= \frac{1}{2} \implies f_B(f_1(1),2)
-\end{align*}
+\section{functions}
+Each of the radicals $r_0,...,r_3$ has a function to read their corresponding signs and integers variables:
+\begin{align}
+f_0 &\equiv f(\pm b)\\
+f_1 &\equiv f(\pm c, d)\\
+f_2 &\equiv f(\pm e, f, \pm g, h)\\
+f_3 &\equiv f(\pm i, j, \pm k, l, \pm m, n)
+\end{align}
+Each $f_0,...f_4$ reduces the values with $\gcd$ and root simplifications.
 
-$f_C$ examples:
-\begin{align*}
-\sin{\frac{\pi}{4}}  &= \frac{\sqrt{2}}{2}    \implies f_C(\emptyset,f_2(1,2),2)\\
-\sin{\frac{\pi}{10}} &= \frac{-1+\sqrt{5}}{4} \implies f_C(f_1(-1),f_2(1,5),4)
-\end{align*}
+Each of the algebraic numbers $B$, $D$, $H$ and $N$ has a function to read their radicals functions as inputs:
+\begin{align}
+f_B &\equiv f(f_0(...), a)\\
+f_D &\equiv f(f_0(...), f_1(...), a)\\
+f_H &\equiv f(f_0(...), f_1(...), f_2(...), a)\\
+f_N &\equiv f(f_0(...), f_1(...), f_2(...), f_3(...), a)
+\end{align}
+Each $f_B,...f_N$ adds the radicals reducing once more the variables with $\gcd$ root simplifications
+and now considering the denominator $a$.
 
-$f_E$ examples:
-\begin{align*}
-\sin{\frac{\pi}{5}}  &= \frac{\sqrt{10-2\sqrt{5}}}{4} \implies f_E(\emptyset,\emptyset,f_3(1,10,-2,5),4)\\
-\sin{\frac{\pi}{12}} &= \frac{\sqrt{6} + \sqrt{2}}{4} \implies f_E(\emptyset,f_1(1,6),f_3(1,2,0,0),4) *\\
-\sin{\frac{\pi}{12}} &= \frac{\sqrt{2 + \sqrt{3}}}{2} \implies f_E(\emptyset,\emptyset,f_3(1,2,1,3),2)\\
-\cos{\frac{\pi}{15}} &= \frac{1+\sqrt{5}+\sqrt{30-6\sqrt{5}}}{8} \implies f_E(f_1(1),f_2(1,5),f_3(1,30,-6,5),8)
-\end{align*}
+\section{Examples}
 
-$f_G$ examples:
-\begin{align*}
+\subsection{$f_B$ examples}
+\begin{align}
+\cos{0}             &= 1           \implies f_B(f_0(1),1)\\
+\sin{\frac{\pi}{6}} &= \frac{1}{2} \implies f_B(f_0(1),2)
+\end{align}
+
+\subsection{$f_D$ examples}
+\begin{align}
+\sin{\frac{\pi}{4}}  &= \frac{\sqrt{2}}{2}    \implies f_D(\emptyset,f_1(1,2),2)\\
+\sin{\frac{\pi}{10}} &= \frac{-1+\sqrt{5}}{4} \implies f_D(f_0(-1),f_1(1,5),4)
+\end{align}
+
+\subsection{$f_H$ examples}
+\begin{align}
+\sin{\frac{\pi}{5}}  &= \frac{\sqrt{10-2\sqrt{5}}}{4} \implies f_H(\emptyset,\emptyset,f_2(1,10,-2,5),4)\\
+\sin{\frac{\pi}{12}} &= \frac{\sqrt{6} + \sqrt{2}}{4} \implies f_H(\emptyset,f_1(1,6),f_2(1,2,0,0),4) *\\
+\sin{\frac{\pi}{12}} &= \frac{\sqrt{2 + \sqrt{3}}}{2} \implies f_H(\emptyset,\emptyset,f_2(1,2,1,3),2)\\
+\cos{\frac{\pi}{15}} &= \frac{1+\sqrt{5}+\sqrt{30-6\sqrt{5}}}{8} \implies f_E(f_0(1),f_1(1,5),f_2(1,30,-6,5),8)
+\end{align}
+
+\subsection{$f_N$ examples}
+\begin{align}
 \cos{\frac{\pi}{16}} &= \frac{\sqrt{2+\sqrt{2+\sqrt{2}}}}{2}
-  \\&\implies f_G(\emptyset,\emptyset,\emptyset,f_4(1,2,1,2,1,2),2)\\
+  \\&\implies f_N(\emptyset,\emptyset,\emptyset,f_3(1,2,1,2,1,2),2) \nonumber \\
 \cos{\frac{\pi}{24}} &= \frac{\sqrt{2+\sqrt{2+\sqrt{3}}}}{2}
-  \\&\implies f_G(\emptyset,\emptyset,\emptyset,f_4(1,2,1,2,1,3),2)\\
+  \\&\implies f_N(\emptyset,\emptyset,\emptyset,f_3(1,2,1,2,1,3),2) \nonumber \\
 \cos{\frac{2\pi}{17}} &=
 \frac{-1+\sqrt{17}+\sqrt{34-2\sqrt{17}}+2\sqrt{17+3\sqrt{17}-\sqrt{170+38\sqrt{17}}}}{16}
-    \\&\implies f_G(f_1(-1),f_2(1,17),f_3(1,34,-2,17),f_4(2,17,3,17,-1,170,+38,17),16)\\
-\end{align*}
+    \\&\implies f_N(f_0(-1),f_1(1,17),f_2(1,34,-2,17),f_3(2,17,3,17,-1,170,+38,17),16) \nonumber \\
+\end{align}
 
-\section{Operations}
+\section{B operations}
 
-\subsection{$B_1 \times B_2 = B_3$}
+\subsection{New $B_1 \mapsto B$}
+\begin{align}
+B1 &= \frac{\pm b_1}{a_1}\\
+ &= \frac{\pm b}{a} \implies \{ \pm b, a \} = \gcd\{ \pm b_1, a_1 \}
+\end{align}
+
+\subsection{Add $B_1 + B_2 \mapsto B$}
+\begin{align}
+B_1 + B_2 &= \frac{\pm b_1}{a_1} + \frac{\pm b_2}{a_2} \\
+ &= \frac{\pm b_1a_2 \pm b_2a_1 }{a_1a_2} \\
+ &= \frac{\pm b}{a} \implies (\pm b, a) = \gcd(\pm b_1a_2 \pm b_2a_1, a_1a_2)
+\end{align}
+
+\subsection{Mul $B_1 \times B_2 \mapsto B$}
+\begin{align}
+B_1 \times B_2 &= \frac{\pm b_1}{a_1} \times \frac{\pm b_2}{a_2} \\
+  &= \frac{\pm b_1b_2}{a_1a_2} \\
+  &= \frac{\pm b}{a} \implies (\pm b,a) = \gcd(\pm b_1b_2, a_1a_2)
+\end{align}
+
+\subsection{Inv $1 / B_1 \mapsto B \iff a_1 > 0$}
+\begin{align}
+\frac{1}{B_1} &= \frac{1}{\pm b_1 / a_1}\\
+ &= \frac{\pm a_1}{b_1} \\
+ &= \frac{\pm b}{a} \implies \{ b \} = a_1, \{ a \} = b_1
+\end{align}
+
+\section{D operations}
+
+\subsection{SqrtB $\sqrt{B_1} \mapsto D \iff b_1 > 0$}
+\begin{align}
+\sqrt{B_1} &= \sqrt{\frac{+b_1}{a_1}}\\
+  &= \frac{\sqrt{a_1b_1}}{a_1}\\
+  &= \frac{x\sqrt{d}}{a_1}    \implies \{ x^2d \} = a_1b_1 \\
+  &= \frac{c\sqrt{d}}{a}  \implies \{ a, c \} = gcd\{ a_1, x\}
+\end{align}
+
+%\subsection{$B_1 + C_2 = D_3$}
+%\begin{align*}
+%B_1 + C_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2}\\
+% &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 }{b_1b_2}\\
+% &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd{\pm a_2b_1}{b_1b_2}{\pm a_1b_2}
+%\end{align*}
+
+%\subsection{$B_1 + D_2 = D_3$}
+%\begin{align*}
+%B_1 + D_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2} \pm d_2}{b_2}\\
+% &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 \pm d_2b_1 }{b_1b_2}\\
+% &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd(\pm a_2b_1,b_1b_2,\pm a_1b_2 \pm d_2b_1)
+%\end{align*}
+
+%\subsection{$B_1 + F_2 = F_3$} %7
+%\begin{align*}
+%B_1 + F_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_2}{b_2}\\
+% &= \frac{\pm a_2b1\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm a_1b_2 \pm d_2b_1}{b_1b_2}\\
+% &= \frac{\pm a_3\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_3}{b_3} & (\pm a_3, b_3, \pm d_3)=gcd(\pm a_2b1,b_1b_2,\pm a_1b_2 \pm %d_2b_1)
+%\end{align*}
+
+
+\subsection{Mul $D_1 \times D_2 \mapsto D$}
 \begin{align*}
-B_1 \times B_2 &= \frac{\pm a_1}{b_1} \times \frac{\pm a_2}{b_2} \\
-  &= \frac{\pm a_1a_2}{b_1b_2} \\
-  &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = \gcd(\pm a_1a_2, b_1b_2)
-\end{align*}
-
-\subsection{$1 / B_1 = B_2, a > 0$}
-\begin{align*}
-\frac{1}{B_1} &= \frac{1}{\pm a_1 / b_1}\\
- &= \frac{\pm b_1}{a_1} \\
- &= \frac{\pm a_2}{b_2}
-\end{align*}
-
-\subsection{$B_1 + B_2 = B_3$}
-\begin{align*}
-B_1 + B_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2}{b_2} \\
- &= \frac{\pm a_1b_2 \pm a_2b_1 }{b_1b_2} \\
- &= \frac{\pm a_3}{b_3} & (\pm a_3,b_3) = \gcd(\pm a_1b_2, \pm a_2b_1,b_1b_2)
-\end{align*}
-
-\subsection{$\sqrt{B_1} = C_2$}
-\begin{align*}
-\sqrt{B_1} &= \sqrt{\frac{a_1}{b_1}}\\
-  &= \frac{\sqrt{a_1b_1}}{b_1}\\
-  &= \frac{m\sqrt{c_2}}{b_1}    & a_1b_1 = m^2c_2\\
-  &= \frac{a_2\sqrt{c_2}}{b_2}  & (a_2, b_2) = gcd(m, b_1)
-\end{align*}
-
-\subsection{$B_1 + C_2 = D_3$}
-\begin{align*}
-B_1 + C_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2}\\
- &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 }{b_1b_2}\\
- &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd{\pm a_2b_1}{b_1b_2}{\pm a_1b_2}
-\end{align*}
-
-\subsection{$B_1 + D_2 = D_3$}
-\begin{align*}
-B_1 + D_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2} \pm d_2}{b_2}\\
- &= \frac{\pm a_2b_1\sqrt{c_2} \pm a_1b_2 \pm d_2b_1 }{b_1b_2}\\
- &= \frac{\pm a_3\sqrt{c_2} \pm d_3 }{b_3} & (\pm a_3, b_3, \pm d_3) = gcd(\pm a_2b_1,b_1b_2,\pm a_1b_2 \pm d_2b_1)
-\end{align*}
-
-\subsection{$B_1 + F_2 = F_3$} %7
-\begin{align*}
-B_1 + F_2 &= \frac{\pm a_1}{b_1} + \frac{\pm a_2\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_2}{b_2}\\
- &= \frac{\pm a_2b1\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm a_1b_2 \pm d_2b_1}{b_1b_2}\\
- &= \frac{\pm a_3\sqrt{c_2 \pm e_2\sqrt{f_2}} \pm d_3}{b_3} & (\pm a_3, b_3, \pm d_3)=gcd(\pm a_2b1,b_1b_2,\pm a_1b_2 \pm d_2b_1)
-\end{align*}
-
-\subsection{$C_1 + C_2 = F_3$} %8
-\begin{align*}
- C_1 + C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} + \frac{\pm a_2\sqrt{c_2}}{b_2} \\
- &= \frac{\pm a_1b_2\sqrt{c_1} \pm a_2b_1\sqrt{c_2}}{b_1b_2} \\
- &= \frac{\pm m\sqrt{c_1} \pm n\sqrt{c_2}}{o} \\
- &= \frac{\pm \sqrt{m^2c_1 + n^2c_2 \pm 2mn\sqrt{c_1c_2}}}{o} \\
- &= \frac{\pm \sqrt{q \pm 2mnp\sqrt{f_3}}}{o}     & c_1c_2 = p^2f_3\\
- &= \frac{\pm r\sqrt{c_3 \pm e_3\sqrt{f_3}}}{o}   & q = r^2c_3, 2mnp = r^2e_3 \\
- &= \frac{\pm a_3\sqrt{c_3 \pm e_3\sqrt{f_3}}}{b_3}
-\end{align*}
-
-
-
-\subsection{$C_1 \times C_2 = C_3$}
-\begin{align*}
-C_1 \times C_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
+D_1 \times D_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
  &= \frac{\pm a_1a_2\sqrt{c_1c_2}}{b_1b_2}\\
  &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
  &= \frac{\pm a_3\sqrt{c_3}}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1a_2m,b_1b_2)
 \end{align*}
 
 
-\subsection{$1 / C_1 = C_2$}
+\subsection{Inv $1 / D_1 \mapsto D$}
 \begin{align*}
-1 / C_1 &= \frac{1}{\frac{\pm a_1\sqrt{c_1}}{b_1}} \\
+1 / D_1 &= \frac{1}{\frac{\pm a_1\sqrt{c_1}}{b_1}} \\
  &= \frac{b_1}{\pm a_1\sqrt{c_1}}\\
  &= \frac{\pm b_1\sqrt{c_1}}{c_1}\\
  &= \frac{\pm a_2\sqrt{c_1}}{b_2}  & (\pm a_2, b_2) = gcd(\pm b_1, c1)
 \end{align*}
+
+\section{H operations}
+
+\subsection{$D_1 + D_2 \mapsto H$ <<<<<}
+\begin{align}
+D_1 + D_2 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} + \frac{\pm b_2 \pm c_2\sqrt{d_2}}{a_2}\\
+ &= \frac{(\pm a_2b_1 \pm a_1b_2) \pm a_2c_1\sqrt{d_1} \pm a_1c_2\sqrt{d_2}}{a_1a_2}\\
+ &= \frac{\pm q \pm r\sqrt{d_1} \pm s\sqrt{d_2}}{p} \\
+ &\quad \textbf{ where } \{ p,q,r,s \} = \gcd \{ a_1a_2, (\pm a_2b_1 \pm a_1b_2), \pm a_2c_1, \pm a_1c_2 \} \nonumber \\
+ &= \frac{\pm q \pm \sqrt{r^2d_1 + s^2d_2 \pm 2rs\sqrt{d_1d_2}}}{p} \\
+ &= \frac{\pm q \pm \sqrt{t \pm 2rsu\sqrt{h}}}{p} \\
+ &\quad \textbf{ where } \{ t \} = r^2d_1 + s^2d_2 \textbf{ and } \{ u^2h \} = d_1d_2 \nonumber \\
+ &= \frac{\pm q \pm v\sqrt{f \pm g\sqrt{h}}}{p} \\
+ &\quad \textbf{ where } \{ v^2f \} = t \textbf{ and } \{ v^2g \} = 2rsu \nonumber \\
+ &= \frac{\pm d \pm e\sqrt{f \pm g\sqrt{h}}}{a} \\
+ &\quad \textbf{ where } \{a,d,e\} = \gcd\{ p, \pm q, \pm qv \} \nonumber \\
+\end{align}
 
 
 \subsection{$\sqrt{C_1} = F_2$}
