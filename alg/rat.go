@@ -6,8 +6,8 @@ import (
 
 type Rat struct {
 	Neg bool // negative when true
-	Num Nat  // natural numerator
-	Den Nat  // natural denominator
+	Num N32  // natural numerator
+	Den N32  // natural denominator
 }
 
 // NewRat creates a new quotient when n and d are numerator and denominator.
@@ -19,23 +19,23 @@ func NewRat(n, d int) (q *Rat) {
 	}
 	q = &Rat{}
 	// set negative sign and convert to uint
-	num := Nat(0)
-	den := Nat(0)
+	num := N32(0)
+	den := N32(0)
 	if n < 0 {
 		if d > 0 {
 			q.Neg = true
 		}
-		num = Nat(-n)
+		num = N32(-n)
 	} else {
-		num = Nat(n)
+		num = N32(n)
 	}
 	if d < 0 {
 		if n > 0 {
 			q.Neg = true
 		}
-		den = Nat(-d)
+		den = N32(-d)
 	} else {
-		den = Nat(d)
+		den = N32(d)
 	}
 	// return zero
 	if num == 0 {

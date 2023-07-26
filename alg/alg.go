@@ -10,10 +10,10 @@ import (
 // rat.Den
 type Alg struct {
 	*Rat
-	In Nat
+	In N32
 }
 
-func NewAlg(rat *Rat, in Nat) *Alg {
+func NewAlg(rat *Rat, in N32) *Alg {
 	if rat == nil {
 		return nil
 	}
@@ -36,12 +36,12 @@ func (s *Alg) String() string {
 }
 
 type Algs struct {
-	*Nats
+	*N32s
 }
 
-func NewAlgs(nats *Nats) *Algs {
+func NewAlgs(nats *N32s) *Algs {
 	return &Algs{
-		Nats: nats,
+		N32s: nats,
 	}
 }
 
@@ -49,7 +49,7 @@ func NewAlgs(nats *Nats) *Algs {
 //	       a² + b² - c²
 //	cosC = ------------
 //	           2ab
-func (algs *Algs) CosC(a, b, c Nat) *Rat {
+func (algs *Algs) CosC(a, b, c N32) *Rat {
 	num := int(a*a + b*b - c*c)
 	den := int(2*a*b)
 	return NewRat(num, den)
@@ -59,7 +59,7 @@ func (algs *Algs) CosC(a, b, c Nat) *Rat {
 //	       math.Sqrt(4a²b² - (a²+b²-c²)²)
 //	sinC = ------------------------------
 //	                  2ab 
-func (algs *Algs) SinC(a, b, c Nat) *Alg {
+func (algs *Algs) SinC(a, b, c N32) *Alg {
 	p := int(4*a*a*b*b)
 	q := int((a*a + b*b - c*c))
 	d := int(2*a*b)

@@ -8,11 +8,20 @@ type Int int32
 
 const MAXNAT = uint64(0xffffffff)
 
-// Nat represents a small natural number in the range 1 - 0xffffffff
-type Nat uint32
+// N32 represents a small natural number in the range 1 - 0xffffffff
+type N32 uint32
+
+
+// gcd returns the greatest common divisor of two numbers
+func (a N32) gcd(b N32) N32 {
+	if b == 0 {
+		return a
+	}
+	return b.gcd(a % b)
+}
 
 // NatGCD returns the greatest common divisor of two naturals
-func NatGCD(a, b Nat) Nat {
+func NatGCD(a, b N32) N32 {
 	if b == 0 {
 		return a
 	}
@@ -21,7 +30,7 @@ func NatGCD(a, b Nat) Nat {
 
 // NatPrimes returns a list of the first primes
 // Use the Sieve of Erathostenes
-func NatPrimes() []Nat {
+func NatPrimes() []N32 {
 	value := 0xffff
     f := make([]bool, value)
     for i := 2; i <= int(math.Sqrt(float64(value))); i++ {
@@ -31,8 +40,8 @@ func NatPrimes() []Nat {
             }
         }
     }
-    list := make([]Nat, 0)
-    for i := Nat(2); i < Nat(value); i++ {
+    list := make([]N32, 0)
+    for i := N32(2); i < N32(value); i++ {
         if f[i] == false {
             list = append(list, i)
         }
@@ -40,13 +49,13 @@ func NatPrimes() []Nat {
     return list
 }
 
-type Nats struct {
-	primes []Nat
+type N32s struct {
+	primes []N32
 }
 
 
-func NewNats() *Nats {
-	return &Nats{
+func NewNats() *N32s {
+	return &N32s{
 		primes: NatPrimes(),
 	}
 }
@@ -55,12 +64,12 @@ func NewNats() *Nats {
 // Returns two naturals c,d as the simplification:
 //	√(a*b) = (c)√(d)
 // ok is false for overflow of out or in.
-func (n *Nats) sqrtMul(a, b Nat) (Nat, Nat, bool) {
+func (n *N32s) sqrtMul(a, b N32) (N32, N32, bool) {
 	in := uint64(a) * uint64(b)
 	return n.sqrt(in)
 }
 
-func (n *Nats) sqrt(in uint64) (c Nat, d Nat, ok bool) {
+func (n *N32s) sqrt(in uint64) (c N32, d N32, ok bool) {
 	if in == 0 {
 		ok = true
 		return // zero 0√0 ok
@@ -98,8 +107,8 @@ func (n *Nats) sqrt(in uint64) (c Nat, d Nat, ok bool) {
 	} else if out > MAXNAT {
 		return // not ok OVERFLOW
 	} else {
-		c = Nat(out)
-		d = Nat(in)
+		c = N32(out)
+		d = N32(in)
 		ok = true
 		return // (out)√(in) ok
 	}
@@ -111,7 +120,7 @@ func (n *Nats) sqrt(in uint64) (c Nat, d Nat, ok bool) {
 //	            sqrt(rat.Num*rat.Den)     out
 //	sqrt(rat) = --------------------- = ------- * sqrt(in)
 //	                  rat.Den           rat.Den
-func (n *Nats) Sqrt(r *Rat) *Alg {
+func (n *N32s) Sqrt(r *Rat) *Alg {
 	if r == nil {
 		return nil // invalid rational
 	}
@@ -131,7 +140,7 @@ func (n *Nats) Sqrt(r *Rat) *Alg {
 
 // Mul multiply two algebraic numbers a and b to return another algrebraic
 // returns nil if a or b are nil or after operation overflow
-func (n *Nats) Mul(a, b *Alg) *Alg {
+func (n *N32s) Mul(a, b *Alg) *Alg {
 	if a == nil || b == nil {
 		return nil
 	} else if out, in, ok := n.sqrtMul(a.In, b.In); !ok {

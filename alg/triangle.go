@@ -19,9 +19,9 @@ import (
 // A,B, and C the angles to opposite sides a,b and c.
 type Triangle struct {
 	// sides are naturals > 0
-	a Nat
-	b Nat
-	c Nat
+	a N32
+	b N32
+	c N32
 	// cosines are rational
 	cosA *Rat
 	cosB *Rat
@@ -34,7 +34,7 @@ type Triangle struct {
 	area *Alg
 }
 
-func NewTriangle(a, b, c Nat) *Triangle {
+func NewTriangle(a, b, c N32) *Triangle {
 	if a <= 0 || b <= 0 || c <= 0 {
 		return nil // fmt.Errorf("side equals or less than 0")
 	} else if a < b {
@@ -71,18 +71,18 @@ func NewTriangles(algs *Algs) *Triangles {
 	}	
 }
 
-func (t *Triangles) Find(max Nat) {
+func (t *Triangles) Find(max N32) {
 	// first valid triangles
-	for a := Nat(1); a <= max; a++ {
-		for b := Nat(1); b <= a; b++ {
-			for c := Nat(1); c <= b; c++ {
+	for a := N32(1); a <= max; a++ {
+		for b := N32(1); b <= a; b++ {
+			for c := N32(1); c <= b; c++ {
 				t.Add(a, b, c)
 			}
 		}
 	}
 }
 
-func (t *Triangles) Add(a, b, c Nat) *Triangle {
+func (t *Triangles) Add(a, b, c N32) *Triangle {
 	next := NewTriangle(a, b, c)
 	if next == nil {
 		return nil

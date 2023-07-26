@@ -12,7 +12,7 @@ func TestNat(t *testing.T) {
 	if got, exp := len(nats.primes), 6542; got != exp {
 		t.Fatalf("nat-primes got %d exp:%d", got, exp)
 	}
-	for _, s := range []struct { pos int; prime Nat } {
+	for _, s := range []struct { pos int; prime N32 } {
 		{ pos:     0, prime:      2 },
 		{ pos:     1, prime:      3 },
 		{ pos:     2, prime:      5 },
@@ -28,7 +28,7 @@ func TestNat(t *testing.T) {
 	}
 
 	// sqrtMul
-	for pos, s := range []struct { a, b, in, out Nat; ok bool }	{
+	for pos, s := range []struct { a, b, in, out N32; ok bool }	{
 		{ a: 0,  b: 0,  in: 0, out: 0, ok: true },
 		{ a: 0,  b: 1,  in: 0, out: 0, ok: true },
 		{ a: 1,  b: 0,  in: 0, out: 0, ok: true },

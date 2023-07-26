@@ -5,16 +5,16 @@
 \BOOKMARK [2][-]{subsection.3.2}{fD examples}{section.3}% 5
 \BOOKMARK [2][-]{subsection.3.3}{fH examples}{section.3}% 6
 \BOOKMARK [2][-]{subsection.3.4}{fN examples}{section.3}% 7
-\BOOKMARK [1][-]{section.4}{B operations}{}% 8
-\BOOKMARK [2][-]{subsection.4.1}{New B1 B}{section.4}% 9
-\BOOKMARK [2][-]{subsection.4.2}{Add B1 + B2 B}{section.4}% 10
-\BOOKMARK [2][-]{subsection.4.3}{Mul B1 B2 B}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.4}{Inv 1 / B1 B -3mua1 > 0}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{D operations}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{SqrtB B1 D -3mub1 > 0}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{Mul D1 D2 D}{section.5}% 15
-\BOOKMARK [2][-]{subsection.5.3}{Inv 1 / D1 D}{section.5}% 16
-\BOOKMARK [1][-]{section.6}{H operations}{}% 17
+\BOOKMARK [1][-]{section.4}{Operations with result B}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{NewB B1 B}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{AddBB B1 + B2 B}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{MulBB B1 B2 B}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.4}{InvB 1 / B1 B -3mua1 > 0}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Operations with result D}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{NewD D1 D }{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{SqrtB B1 D -3mub1 > 0}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.3}{InvD 1 / D1 D}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Operations with result H}{}% 17
 \BOOKMARK [2][-]{subsection.6.1}{D1 + D2 H <<<<<}{section.6}% 18
 \BOOKMARK [2][-]{subsection.6.2}{C1 = F2}{section.6}% 19
 \BOOKMARK [2][-]{subsection.6.3}{C1 + D2 = F3}{section.6}% 20
@@ -22,3 +22,4 @@
 \BOOKMARK [2][-]{subsection.6.5}{D1 = F2 editing...}{section.6}% 22
 \BOOKMARK [2][-]{subsection.6.6}{D1 + D2 = F3}{section.6}% 23
 \BOOKMARK [2][-]{subsection.6.7}{D1 D2 = F3}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.8}{MulDD D1 D2 H ???}{section.6}% 25

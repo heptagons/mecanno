@@ -87,44 +87,68 @@ and now considering the denominator $a$.
     \\&\implies f_N(f_0(-1),f_1(1,17),f_2(1,34,-2,17),f_3(2,17,3,17,-1,170,+38,17),16) \nonumber \\
 \end{align}
 
-\section{B operations}
+\section{Operations with result B}
 
-\subsection{New $B_1 \mapsto B$}
+\subsection{NewB $B_1 \mapsto B$}
 \begin{align}
 B1 &= \frac{\pm b_1}{a_1}\\
- &= \frac{\pm b}{a} \implies \{ \pm b, a \} = \gcd\{ \pm b_1, a_1 \}
+ &= \frac{\pm b}{a} \\
+ &\quad \textbf{ where } \{ \pm b, a \} = \gcd\{ \pm b_1, a_1 \} \nonumber
 \end{align}
 
-\subsection{Add $B_1 + B_2 \mapsto B$}
+\subsection{AddBB $B_1 + B_2 \mapsto B$}
 \begin{align}
 B_1 + B_2 &= \frac{\pm b_1}{a_1} + \frac{\pm b_2}{a_2} \\
  &= \frac{\pm b_1a_2 \pm b_2a_1 }{a_1a_2} \\
- &= \frac{\pm b}{a} \implies (\pm b, a) = \gcd(\pm b_1a_2 \pm b_2a_1, a_1a_2)
+ &= \frac{\pm b}{a} \\
+ &\quad \textbf{ where } \{ \pm b, a \} = \gcd \{ \pm b_1a_2 \pm b_2a_1, a_1a_2 \} \nonumber
 \end{align}
 
-\subsection{Mul $B_1 \times B_2 \mapsto B$}
+\subsection{MulBB $B_1 \times B_2 \mapsto B$}
 \begin{align}
 B_1 \times B_2 &= \frac{\pm b_1}{a_1} \times \frac{\pm b_2}{a_2} \\
   &= \frac{\pm b_1b_2}{a_1a_2} \\
-  &= \frac{\pm b}{a} \implies (\pm b,a) = \gcd(\pm b_1b_2, a_1a_2)
+  &= \frac{\pm b}{a} \\
+  &\quad \textbf{ where } \{ \pm b,a \} = \gcd \{ \pm b_1b_2, a_1a_2 \} \nonumber
 \end{align}
 
-\subsection{Inv $1 / B_1 \mapsto B \iff a_1 > 0$}
+\subsection{InvB $1 / B_1 \mapsto B \iff a_1 > 0$}
 \begin{align}
 \frac{1}{B_1} &= \frac{1}{\pm b_1 / a_1}\\
  &= \frac{\pm a_1}{b_1} \\
- &= \frac{\pm b}{a} \implies \{ b \} = a_1, \{ a \} = b_1
+ &= \frac{\pm b}{a} \\
+ &\quad \textbf{ where } \{ \pm b \} = a_1, \{ a \} = b_1 \nonumber
 \end{align}
 
-\section{D operations}
+\section{Operations with result D}
+
+\subsection{NewD $D_1 \mapsto D $}
+\begin{align}
+D_1 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1}\\
+ &= \frac{\pm b_1 \pm c_1p\sqrt{d}}{a_1}\\
+ &\quad \textbf{ where } \{ d \} = p^2d_1 \textbf{ when } p>1 \nonumber \\
+ &= \frac{\pm b \pm c\sqrt{d}}{a}\\
+ &\quad \textbf{ where } \{ a,b,c \} = \gcd \{ a_1, \pm b_1, c_1p \} \nonumber
+\end{align}
 
 \subsection{SqrtB $\sqrt{B_1} \mapsto D \iff b_1 > 0$}
 \begin{align}
 \sqrt{B_1} &= \sqrt{\frac{+b_1}{a_1}}\\
   &= \frac{\sqrt{a_1b_1}}{a_1}\\
-  &= \frac{x\sqrt{d}}{a_1}    \implies \{ x^2d \} = a_1b_1 \\
-  &= \frac{c\sqrt{d}}{a}  \implies \{ a, c \} = gcd\{ a_1, x\}
+  &= \frac{x\sqrt{d}}{a_1}\\
+  &\quad \textbf{ where } \{ x^2d \} = a_1b_1 \nonumber \\
+  &= \frac{c\sqrt{d}}{a}\\
+  &\quad \textbf{ where } \{ a, c \} = gcd\{ a_1, x\} \textbf{ and } \{ b \} = 0 \nonumber
 \end{align}
+
+\subsection{InvD $1 / D_1 \mapsto D$}
+\begin{align*}
+1 / D_1 &= \frac{1}{\frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1}} \\
+ &= \frac{b_1}{\pm a_1\sqrt{c_1}}\\
+ &= \frac{\pm b_1\sqrt{c_1}}{c_1}\\
+ &= \frac{\pm a_2\sqrt{c_1}}{b_2}  & (\pm a_2, b_2) = gcd(\pm b_1, c1)
+\end{align*}
+
 
 %\subsection{$B_1 + C_2 = D_3$}
 %\begin{align*}
@@ -148,24 +172,8 @@ B_1 \times B_2 &= \frac{\pm b_1}{a_1} \times \frac{\pm b_2}{a_2} \\
 %\end{align*}
 
 
-\subsection{Mul $D_1 \times D_2 \mapsto D$}
-\begin{align*}
-D_1 \times D_2 &= \frac{\pm a_1\sqrt{c_1}}{b_1} \times \frac{\pm a_2\sqrt{c_2}}{b_2}\\
- &= \frac{\pm a_1a_2\sqrt{c_1c_2}}{b_1b_2}\\
- &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
- &= \frac{\pm a_3\sqrt{c_3}}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1a_2m,b_1b_2)
-\end{align*}
 
-
-\subsection{Inv $1 / D_1 \mapsto D$}
-\begin{align*}
-1 / D_1 &= \frac{1}{\frac{\pm a_1\sqrt{c_1}}{b_1}} \\
- &= \frac{b_1}{\pm a_1\sqrt{c_1}}\\
- &= \frac{\pm b_1\sqrt{c_1}}{c_1}\\
- &= \frac{\pm a_2\sqrt{c_1}}{b_2}  & (\pm a_2, b_2) = gcd(\pm b_1, c1)
-\end{align*}
-
-\section{H operations}
+\section{Operations with result $H$}
 
 \subsection{$D_1 + D_2 \mapsto H$ <<<<<}
 \begin{align}
@@ -241,6 +249,15 @@ D_1 + D_2 &= \frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1} + \frac{\pm a_2\sqrt{c_2} \p
 D_1 \times D_2 &= \frac{\pm a_1\sqrt{c_1} \pm d_1 }{b_1} \times \frac{\pm a_2\sqrt{c_2} \pm d_2 }{b_2}\\
  &= \frac{\pm a_1a_2\sqrt{c_1c_2} \pm a_1d_2\sqrt{c1} \pm a_2d_1\sqrt{c_2} \pm d_1d_2}{b_1b_2}\\
 \end{align*}
+
+\subsection{MulDD $D_1 \times D_2 \mapsto H$ ???}
+\begin{align*}
+D_1 \times D_2 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} \times \frac{\pm b_2 \pm c_2\sqrt{d_2}}{a_2}\\
+ &= \frac{\pm b_1b_2 \pm b_1c_2\sqrt{d_2} \pm b_2c_1\sqrt{d_1} \pm c_1c_2\sqrt{d_1d_2} }{a_1a_2}\\
+ &= \frac{\pm a_1a_2m\sqrt{c_3}}{b_1b_2} & c_1c_2 = m^2c_3\\
+ &= \frac{\pm a_3\sqrt{c_3}}{b_3} & (\pm a_3,b_3) = gcd(\pm a_1a_2m,b_1b_2)
+\end{align*}
+
 
 
 
