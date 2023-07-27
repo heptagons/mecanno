@@ -1,10 +1,5 @@
 package alg
 
-import (
-	"fmt"
-	"strings"
-)
-
 type B struct { // Rational
 	b *I32 // numerator integer optional
 	a N32  // denominator natural >= 1
@@ -137,18 +132,24 @@ func (x *B) MulB(y *B) *B {
 	return NewB(num, den)
 }
 
-func (x *B) WriteString(sb *strings.Builder) {
+func (x *B) Str(s *Str) {
 	if x == nil || x.a == 0 {
-		sb.WriteString("∞")
+		s.Infinite()
 	} else if x.b == nil || x.b.n == 0 {
-		sb.WriteString("+0")
+		s.Zero()
 	} else if x.a == 1 {
-		x.b.WriteString(sb)
+		x.b.Str(s)
 	} else {
-		x.b.WriteString(sb)
-		sb.WriteString("/")
-		sb.WriteString(fmt.Sprintf("%d", x.a))
+		x.b.Str(s)
+		s.Divisor()
+		s.N32(x.a)
 	}
+}
+
+func (x *B) String() string {
+	s := NewStr()
+	x.Str(s)
+	return s.String()
 }
 
 func (x *B) Reduce3(third *I32) {

@@ -1,7 +1,6 @@
 package alg
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -76,14 +75,6 @@ func NewN32s() *N32s {
 		primes: NatPrimes(),
 	}
 }
-
-/*func (n *N32s) f1(c, d Z) *R {
-	out, in, ok := n.Sqrt32(d)
-	if !ok {
-		return nil
-	}
-	return nil
-}*/
 
 // Sqrt reduces the radical (out)√(in) in in two parts
 // Example: -3√(20) returns -6√(5)

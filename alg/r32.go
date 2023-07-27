@@ -1,10 +1,5 @@
 package alg
 
-import (
-	"fmt"
-	"strings"
-)
-
 type R32 struct {
 	out *I32 // external 
 	in  N32  // internal
@@ -35,19 +30,21 @@ func NewR32(nats *N32s, out Z, in uint64) *R32 {
 // For nil, out or in zero appends "+0"
 // For n > 0 always appends +n or -n including N=1
 // For in > 1 appends √ and then in (always positive)
-func (r *R32) WriteString(sb *strings.Builder) {
+func (r *R32) Str(s *Str) {
 	if r == nil || r.out == nil || r.out.n == 0 || r.in == 0 {
-		sb.WriteString("+0")
+		s.Zero()
 	} else {
-		if r.out.s  {
-			sb.WriteString("-")
-		} else {
-			sb.WriteString("+")
-		}
-		sb.WriteString(fmt.Sprintf("%d", r.out.n))
+		s.Sign(r.out.s)
+		s.N32(r.out.n)
 		if r.in > 1 {
-			sb.WriteString("√")	
-			sb.WriteString(fmt.Sprintf(r.in))
+			s.Root()
+			s.N32(r.in)
 		}
 	}
+}
+
+func (r *R32) String() string {
+	s := NewStr()
+	r.Str(s)
+	return s.String()
 }

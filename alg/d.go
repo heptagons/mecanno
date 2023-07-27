@@ -1,10 +1,5 @@
 package alg
 
-import (
-	"fmt"
-	"strings"
-)
-
 type D struct {
 	ab *B
 	cd *R32
@@ -12,16 +7,12 @@ type D struct {
 
 func NewD(nats *N32s, a, b, c, d Z) *D {
 
-	if a == 0 {
-		return nil // infinite
-	} else if d < 0 {
-		return nil // imaginary
-	}
-
 	(&a).Reduce3(&b, &c)
 
 	if ab := NewB(b, a); ab == nil {
 		return nil // overflow
+	} else if d < 0 {
+		return nil // imaginary
 	} else if cd := NewR32(nats, c, uint64(d)); cd != nil {
 		return nil // overflow
 	} else {
@@ -35,17 +26,21 @@ func NewD(nats *N32s, a, b, c, d Z) *D {
 	}
 }
 
-func (d *D) WriteString(sb *strings.Builder) {
-	a := d.ab.a // denominator
-	if a > 1 {
-		sb.WriteString("(")
-	}
-	if b := d.ab.b; b != nil {
-		b.WriteString(sb)
-	}
-	d.cd.WriteString(sb)
-	if a > 1 {
-		sb.WriteString(fmt.Sprintf("%d)", a))
-		sb.WriteString(")")
+func (d *D) Str(s *Str) {
+	if d == nil || d.ab == nil || d.cd == nil {
+		s.Infinite()
+	} else {
+		a := d.ab.a // denominator
+		if a > 1 {
+			s.WriteString("(")
+		}
+		if b := d.ab.b; b != nil {
+			b.Str(s)
+		}
+		d.cd.Str(s)
+		if a > 1 {
+			s.N32(a)
+			s.WriteString(")")
+		}
 	}
 }

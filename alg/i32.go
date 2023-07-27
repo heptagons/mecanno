@@ -1,10 +1,5 @@
 package alg
 
-import (
-	"fmt"
-	"strings"
-)
-
 // I is an integer of 32 bits
 type I32 struct {
 	s bool
@@ -27,34 +22,12 @@ func (i *I32) mul(n N32) Z {
 	}
 }
 
-/*func (i *I32) String(omitone bool) string {
-	if i == nil {
-		return ""
-	} else if i.n == 0 {
-		return "0"
-	} else if i.s {
-		if i.n == 1 && omitone {
-			return "-"
-		}
-		return fmt.Sprintf("-%d", i.n)
-	} else {
-		if i.n == 1 && omitone {
-			return ""
-		}
-		return fmt.Sprintf("%d", i.n)
-	}
-}*/
-
-func (i *I32) WriteString(sb *strings.Builder) {
+func (i *I32) Str(s *Str) {
 	if i == nil || i.n == 0 {
-		sb.WriteString("+0")
+		s.Zero()
 	} else {
-		if i.s {
-			sb.WriteString("-")
-		} else {
-			sb.WriteString("+")
-		}
-		sb.WriteString(fmt.Sprintf("%d", i.n))
+		s.Sign(i.s)
+		s.N32(i.n)
 	}
 }
 
