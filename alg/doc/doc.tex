@@ -125,10 +125,12 @@ B_1 \times B_2 &= \frac{\pm b_1}{a_1} \times \frac{\pm b_2}{a_2} \\
 \subsection{NewD $D_1 \mapsto D $}
 \begin{align}
 D_1 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1}\\
- &= \frac{\pm b_1 \pm c_1p\sqrt{d}}{a_1}\\
- &\quad \textbf{ where } \{ d \} = p^2d_1 \textbf{ when } p>1 \nonumber \\
- &= \frac{\pm b \pm c\sqrt{d}}{a}\\
- &\quad \textbf{ where } \{ a,b,c \} = \gcd \{ a_1, \pm b_1, c_1p \} \nonumber
+ &\quad \textbf{ Do } \{p,q,r\} = \{a_1/G,b_1/G,c_1/G\} \iff G = \gcd \{a_1,b_1,c_1\} > 1 \nonumber \\
+ &= \frac{\pm q \pm r\sqrt{d_1}}{p} \\
+ &\quad \textbf{ Do } \{ d \} = s^2d_1 \iff s>1 \nonumber \\
+ &= \frac{\pm q \pm rs\sqrt{d}}{p}\\
+ &\quad \textbf{ Do } \{a,b,c\} = \{p/G,q/G,rs/G\} \iff G = \gcd \{p,q,rs\} \nonumber \\
+ &= \frac{\pm b \pm c\sqrt{d}}{a}
 \end{align}
 
 \subsection{SqrtB $\sqrt{B_1} \mapsto D \iff b_1 > 0$}
@@ -138,7 +140,7 @@ D_1 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1}\\
   &= \frac{x\sqrt{d}}{a_1}\\
   &\quad \textbf{ where } \{ x^2d \} = a_1b_1 \nonumber \\
   &= \frac{c\sqrt{d}}{a}\\
-  &\quad \textbf{ where } \{ a, c \} = gcd\{ a_1, x\} \textbf{ and } \{ b \} = 0 \nonumber
+  &\quad \textbf{ where } \{ a, c \} = gcd\{ a_1, x\} \textbf{ and } \{ b \} = 0 > 1 \nonumber
 \end{align}
 
 \subsection{InvD $1 / D_1 \mapsto D$}

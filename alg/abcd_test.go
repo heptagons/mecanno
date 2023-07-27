@@ -1,8 +1,33 @@
 package alg
 
 import (
+	"fmt"
 	"testing"
 )
+
+func TestZ(t *testing.T) {
+
+	//a := Z(-30) // -2*15
+	//b := Z(+45) // +3*15
+	//c := Z(-60) // +4*15
+
+	for _, u := range []struct{ a, b, c Z; exp string } {
+		{ a:0,    b:0,    c:0,    exp:"0,0,0" },
+		{ a:1,    b:0,    c:0,    exp:"1,0,0" },
+		{ a:1,    b:1,    c:0,    exp:"1,1,0" },
+		{ a:1,    b:1,    c:1,    exp:"1,1,1" },
+		{ a:19,   b:23,   c:29,   exp:"19,23,29" },
+		{ a:1001, b:1001, c:1001, exp:"1,1,1" },
+		{ a:3003, b:1001, c:7007, exp:"3,1,7" },
+		{ a:1000, b:1001, c:1002, exp:"1000,1001,1002" },
+		{ a:-30,  b:+45,  c:-60,  exp:"-2,3,-4" },
+	} {
+		(&u.a).Reduce3(&u.b, &u.c)
+		if got := fmt.Sprintf("%d,%d,%d", u.a, u.b, u.c); got != u.exp {
+			t.Fatalf("Z.Reduce3 got %s exp %s", got, u.exp)
+		}
+	}
+}
 
 func TestB(t *testing.T) {
 

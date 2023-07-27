@@ -2,6 +2,7 @@ package alg
 
 import (
 	"fmt"
+	"strings"
 )
 
 type B struct { // Rational
@@ -31,9 +32,11 @@ func NewB(num Z, den Z) *B {
 		den = -den
 		s = !s
 	}
+	////// TODO replace with (&num.Reduce2(&den))
 	g := gcd(num, den)
 	num /= g
 	den /= g
+	////// end replace
 	if num > MaxN {
 		return nil // numerator overflow
 	} else if den > MaxN {
@@ -134,14 +137,28 @@ func (x *B) MulB(y *B) *B {
 	return NewB(num, den)
 }
 
-func (x *B) String() string {
+func (x *B) WriteString(sb *strings.Builder) {
 	if x == nil || x.a == 0 {
-		return "" // infinity
+		sb.WriteString("∞")
 	} else if x.b == nil || x.b.n == 0 {
-		return "0"
+		sb.WriteString("+0")
 	} else if x.a == 1 {
-		return x.b.String(false)
+		x.b.WriteString(sb)
 	} else {
-		return fmt.Sprintf("%s/%d", x.b.String(false), x.a)
+		x.b.WriteString(sb)
+		sb.WriteString("/")
+		sb.WriteString(fmt.Sprintf("%d", x.a))
+	}
+}
+
+func (x *B) Reduce3(third *I32) {
+	if third == nil {
+		return
+	}
+	if x.b == nil {
+		// this B is zero just reduce denominator and given not nil third
+		(&(x.a)).Reduce2(&(third.n))
+	} else {
+		(&(x.a)).Reduce3(&(x.b.n), &(third.n))
 	}
 }

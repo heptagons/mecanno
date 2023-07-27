@@ -31,6 +31,21 @@ func NatGCD(a, b N32) N32 {
 	return NatGCD(b, a % b)
 }
 
+func (a *N32) Reduce2(b *N32) {
+	if g := NatGCD(*a, *b); g > 1 {
+		*a /= g
+		*b /= g
+	}
+}
+
+func (a *N32) Reduce3(b, c *N32) {
+	if g := NatGCD(NatGCD(*a, *b), *c); g > 1 {
+		*a /= g
+		*b /= g
+		*c /= g
+	}
+}
+
 // NatPrimes returns a list of the first primes
 // Use the Sieve of Erathostenes
 func NatPrimes() []N32 {
@@ -112,9 +127,8 @@ func (n *N32s) Sqrt(out, in uint64) (o N32, i N32, ok bool) {
 	return N32(out), N32(in), true
 }
 
-type Z int64
-
 const MaxN = Z(0xffffffff)
+
 
 func gcd(a, b Z) Z {
 	if b == 0 {
@@ -122,50 +136,4 @@ func gcd(a, b Z) Z {
 	}
 	return gcd(b, a % b)
 }
-
-// I is an integer of 32 bits
-type I32 struct {
-	s bool
-	n N32
-}
-
-func newI32plus(n N32) *I32 {
-	return &I32{ s:false, n:n }
-}
-
-func newI32minus(n N32) *I32 {
-	return &I32{ s:true, n:n }	
-}
-
-func (i *I32) mul(n N32) Z {
-	if i.s {
-		return -Z(n) * Z(i.n)
-	} else {
-		return +Z(n) * Z(i.n)
-	}
-}
-
-func (i *I32) String(omitone bool) string {
-	if i == nil {
-		return ""
-	} else if i.n == 0 {
-		return "0"
-	} else if i.s {
-		if i.n == 1 && omitone {
-			return "-"
-		}
-		return fmt.Sprintf("-%d", i.n)
-	} else {
-		if i.n == 1 && omitone {
-			return ""
-		}
-		return fmt.Sprintf("%d", i.n)
-	}
-}
-
-
-
-
-
-
 

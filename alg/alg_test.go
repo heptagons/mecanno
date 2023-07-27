@@ -1,15 +1,16 @@
 package alg
 
 import (
+	"fmt"
 	"testing"
 )
 
-func TestNat(t *testing.T) {
+func TestN32(t *testing.T) {
 
-	nats := NewN32s()
+	n32s := NewN32s()
 
 	// primes
-	if got, exp := len(nats.primes), 6542; got != exp {
+	if got, exp := len(n32s.primes), 6542; got != exp {
 		t.Fatalf("nat-primes got %d exp:%d", got, exp)
 	}
 	for _, s := range []struct { pos int; prime N32 } {
@@ -22,8 +23,8 @@ func TestNat(t *testing.T) {
 		{ pos: 1_000, prime:  7_927 },
 		{ pos: 6_541, prime: 65_521 },
 	} {
-		if got, exp := nats.primes[s.pos], s.prime; got != exp {
-			t.Fatalf("nats.primes pos=%d got=%d exp=%d", s.pos, got, exp)
+		if got, exp := n32s.primes[s.pos], s.prime; got != exp {
+			t.Fatalf("n32s.primes pos=%d got=%d exp=%d", s.pos, got, exp)
 		}
 	}
 
@@ -38,75 +39,30 @@ func TestNat(t *testing.T) {
 		{ out:-1, a: 3,  b: 1,  e: "-√3" },
 		{ out: 1, a: 4,  b: 1,  e: "2"   },
 
-		{ out: 1, a:11*11, b:    10*11, e: "11√110" },
-		{ out: 1, a:1024,  b:      512, e:"512√2"   },
+		{ out: 1, a:11*11, b: 10*11, e:     "11√110" },
+		{ out: 1, a:1024,  b:   512, e:    "512√2"   },
+		{ out: 1, a:3*3*3, b: 7*7*7, e:     "21√21"  },
+		{ out: 1, a:3*3*5, b: 5*7*7, e:    "105"     },
+		{ out:-1, a:12345, b: 12345, e: "-12345"     },
 
-		/*
-		{ a:    3*3*3, b:    7*7*7, in: 21, out:    21, ok:true },
-		{ a:    3*3*5, b:    5*7*7, in:  1, out: 3*5*7, ok:true },
-		{ a:    12345, b:    12345, in:  1, out: 12345, ok:true },
+		{ out:1, a:  0xfffff, b:  0xfffff, e:fmt.Sprintf("%d", 0xfffff)   },
+		{ out:1, a: 0xffffff, b: 0xffffff, e:fmt.Sprintf("%d", 0xffffff)  },
+		{ out:1, a:0x1000000, b:0x1000000, e:fmt.Sprintf("%d", 0x1000000) },
+		{ out:1, a:0x1ffffff, b:0x1ffffff, e:fmt.Sprintf("%d", 0x1ffffff) },
 
-
-		{ a:  0xfffff, b:  0xfffff, in: 1, out:  0xfffff, ok:true },
-		{ a: 0xffffff, b: 0xffffff, in: 1, out: 0xffffff, ok:true },
-		{ a:0x1000000, b:0x1000000, in: 1, out:0x1000000, ok:true },
-		{ a:0x1ffffff, b:0x1ffffff, in: 1, out:0x1ffffff, ok:true },
-		
-		{ a:0xffffffff, b:         1, in:0xffffffff, out:      1, ok:true  }, // max uint32 is prime
-		{ a:0xffffffff, b:       0xf, in: 286331153, out:     15, ok:true  }, // product ok
-		{ a:0xffffffff, b:      0xff, in:  16843009, out:    255, ok:true  }, // product ok
-		{ a:0xffffffff, b:     0xfff, in:         0, out:      0, ok:false }, // prime overflow
-		{ a:0xffffffff, b:    0xffff, in:     65537, out: 0xffff, ok:true  }, // product ok
-		{ a:0xffffffff, b:   0xfffff, in:         0, out:      0, ok:false }, // overflow
-		{ a:0xffffffff, b:  0xffffff, in:         0, out:      0, ok:false }, // overflow
-		{ a:0xffffffff, b: 0xfffffff, in:         0, out:      0, ok:false }, // overflow
-		{ a:0xffffffff, b:0xffffffff, in:         0, out:      0, ok:false }, // overflow
-		*/
+		{ out:1, a:0xffffffff, b:         1, e:     "√4294967295"  }, // max uint32 is prime
+		{ out:1, a:0xffffffff, b:       0xf, e:   "15√286331153"   }, // product ok
+		{ out:1, a:0xffffffff, b:      0xff, e:  "255√16843009"    }, // product ok
+		{ out:1, a:0xffffffff, b:     0xfff, e:    ""              }, // prime overflow
+		{ out:1, a:0xffffffff, b:    0xffff, e:"65535√65537"       }, // product ok
+		{ out:1, a:0xffffffff, b:   0xfffff, e:    ""              }, // overflow
+		{ out:1, a:0xffffffff, b:  0xffffff, e:    ""              }, // overflow
+		{ out:1, a:0xffffffff, b: 0xfffffff, e:    ""              }, // overflow
+		{ out:1, a:0xffffffff, b:0xffffffff, e:    ""              }, // overflow
 	} {
 		in := uint64(s.a) * uint64(s.b)
-		if got := NewRoot32(nats, s.out, in).String(); got != s.e {
-			t.Fatalf("nats.sqrt32 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
-		}
-	}
-
-	// Sqrt
-	for _, s := range []struct { num, den int; exp string } {
-		{ num: 0, den:1, exp: "0" },
-		{ num: 1, den:1, exp: "1" },
-		{ num:-1, den:1, exp:  "" }, // Imaginary
-		{ num: 1, den:0, exp:  "" }, // NaN
-		{ num: 2, den:2, exp: "1" },
-		{ num: 4, den:1, exp: "2" },
-		{ num: 1, den:4, exp: "1/2" },
-
-		{ num: 2, den: 1, exp: "(1)√(2)"    }, // sqrt(2)
-		{ num: 1, den: 2, exp: "(1/2)√(2)"  }, // 1/sqrt(2)
-		{ num: 3, den: 1, exp: "(1)√(3)"    },
-		{ num: 5, den: 7, exp: "(1/7)√(35)" },
-		{ num: 7, den: 5, exp: "(1/5)√(35)" },
-		{ num: 1, den:18, exp: "(1/6)√(2)"  },
-		{ num:18, den: 1, exp: "(3)√(2)"    },
-	} {
-		if got := NewRat(s.num, s.den).Sqrt(nats).String(); got != s.exp {
-			t.Fatalf("got %s exp:%s", got, s.exp)
-		}
-	}
-
-	// Mult
-	for _, s := range []struct { a, b *Alg; exp string } {
-		{ a:NewAlg(NewRat(1,1), 1), b:NewAlg(NewRat(-1,1), 1), exp: "-1"    },
-		{ a:NewAlg(NewRat(1,1), 1), b:NewAlg(NewRat(-1,1), 0), exp:  "0"    },
-		{ a:NewAlg(NewRat(1,1), 0), b:NewAlg(NewRat(-1,0), 0), exp:  ""     },
-		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,2), 2), exp:  "1/2"  },
-		{ a:NewAlg(NewRat(1,3), 3), b:NewAlg(NewRat( 1,3), 3), exp:  "1/3"  },
-		{ a:NewAlg(NewRat(7,1), 7), b:NewAlg(NewRat( 1,1), 7), exp: "49"    },
-		{ a:NewAlg(NewRat(5,3), 7), b:NewAlg(NewRat( 1,3), 7), exp: "35/9"  },
-
-		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,3), 3), exp:  "(1/6)√(6)" },
-		{ a:NewAlg(NewRat(5,3), 8), b:NewAlg(NewRat( 3,5),10), exp:  "(4)√(5)"   },
- 	} {
-		if got := s.a.Multiply(s.b, nats).String(); got != s.exp {
-			t.Fatalf("got %s exp %s", got, s.exp)
+		if got := NewR32(n32s, s.out, in).String(); got != s.e {
+			t.Fatalf("n32s.sqrt32 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
 		}
 	}
 }
@@ -182,6 +138,49 @@ func TestRat(t *testing.T) {
 			t.Fatalf("times got: %s exp: %s", got, r.exp)	
 		}
 	}
+
+	n32s := NewN32s()
+	// Sqrt
+	for _, s := range []struct { num, den int; exp string } {
+		{ num: 0, den:1, exp: "0" },
+		{ num: 1, den:1, exp: "1" },
+		{ num:-1, den:1, exp:  "" }, // Imaginary
+		{ num: 1, den:0, exp:  "" }, // NaN
+		{ num: 2, den:2, exp: "1" },
+		{ num: 4, den:1, exp: "2" },
+		{ num: 1, den:4, exp: "1/2" },
+
+		{ num: 2, den: 1, exp: "(1)√(2)"    }, // sqrt(2)
+		{ num: 1, den: 2, exp: "(1/2)√(2)"  }, // 1/sqrt(2)
+		{ num: 3, den: 1, exp: "(1)√(3)"    },
+		{ num: 5, den: 7, exp: "(1/7)√(35)" },
+		{ num: 7, den: 5, exp: "(1/5)√(35)" },
+		{ num: 1, den:18, exp: "(1/6)√(2)"  },
+		{ num:18, den: 1, exp: "(3)√(2)"    },
+	} {
+		if got := NewRat(s.num, s.den).Sqrt(n32s).String(); got != s.exp {
+			t.Fatalf("got %s exp:%s", got, s.exp)
+		}
+	}
+
+	// Mult
+	for _, s := range []struct { a, b *Alg; exp string } {
+		{ a:NewAlg(NewRat(1,1), 1), b:NewAlg(NewRat(-1,1), 1), exp: "-1"    },
+		{ a:NewAlg(NewRat(1,1), 1), b:NewAlg(NewRat(-1,1), 0), exp:  "0"    },
+		{ a:NewAlg(NewRat(1,1), 0), b:NewAlg(NewRat(-1,0), 0), exp:  ""     },
+		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,2), 2), exp:  "1/2"  },
+		{ a:NewAlg(NewRat(1,3), 3), b:NewAlg(NewRat( 1,3), 3), exp:  "1/3"  },
+		{ a:NewAlg(NewRat(7,1), 7), b:NewAlg(NewRat( 1,1), 7), exp: "49"    },
+		{ a:NewAlg(NewRat(5,3), 7), b:NewAlg(NewRat( 1,3), 7), exp: "35/9"  },
+
+		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,3), 3), exp:  "(1/6)√(6)" },
+		{ a:NewAlg(NewRat(5,3), 8), b:NewAlg(NewRat( 3,5),10), exp:  "(4)√(5)"   },
+ 	} {
+		if got := s.a.Multiply(s.b, n32s).String(); got != s.exp {
+			t.Fatalf("got %s exp %s", got, s.exp)
+		}
+	}
+
 }
 
 func TestTriangle(t *testing.T) {
@@ -199,8 +198,8 @@ func TestTriangle(t *testing.T) {
 		}
 	}
 
-	nats := NewN32s()
-	algs := NewAlgs(nats)
+	n32s := NewN32s()
+	algs := NewAlgs(n32s)
 	triangles := NewTriangles(algs)
 	triangles.Find(5)
 	exp := []string {
