@@ -29,14 +29,30 @@ func (s *Str) N32(n N32) {
 	s.WriteString(fmt.Sprintf("%d", n))
 }
 
-func (s *Str) Sign(sign bool) {
-	if sign {
+func (s *Str) Integer32(i *I32) {
+	if s == nil {
+		s.WriteString("+0")
+	} else if i.s {
 		s.WriteString("-")
+		s.N32(i.n)
 	} else {
 		s.WriteString("+")
+		s.N32(i.n)
 	}
 }
 
-func (s *Str) Root() {
-	s.WriteString("√")	
+func (s *Str) Radical32(i *I32) {
+	if s == nil {
+		return
+	} else if i.n == 0 {
+		s.Zero()
+	} else {
+		if i.s { // Imaginary
+			s.WriteString("i")	
+		}
+		if i.n > 1 {
+			s.WriteString("√")
+			s.N32(i.n)
+		}
+	}
 }

@@ -128,3 +128,106 @@ func gcd(a, b Z) Z {
 	return gcd(b, a % b)
 }
 
+// I is an integer of 32 bits
+type I32 struct {
+	s bool
+	n N32
+}
+
+func newI32plus(n N32) *I32 {
+	return &I32{ s:false, n:n }
+}
+
+func newI32minus(n N32) *I32 {
+	return &I32{ s:true, n:n }	
+}
+
+func (i *I32) mul(n N32) Z {
+	if i.s {
+		return -Z(n) * Z(i.n)
+	} else {
+		return +Z(n) * Z(i.n)
+	}
+}
+
+func (i *I32) Str(s *Str) {
+	if i == nil || i.n == 0 {
+		s.Zero()
+	} else {
+		s.Integer32(i)
+	}
+}
+
+type R32 struct {
+	out *I32 // external integer with sign=true means whole R32 is negative
+	in  *I32 // internal integer with sign=true means whole R32 is imaginary
+}
+
+func NewR32zero() *R32 {
+	return &R32{
+		out: nil,
+		in:  nil,
+	}
+}
+
+func NewR32(nats *N32s, out, in Z) *R32 {
+	if out == 0 || in == 0 {
+		return NewR32zero()
+	}
+	out64 := out
+	if out < 0 { // radical negative
+		out64 = -out
+	}
+	in64 := in
+	if in < 0 { // radical imaginary
+		in64 = -in
+	}
+	out32, in32, ok := nats.Sqrt(uint64(out64), uint64(in64))
+	if !ok {
+		return nil // reject overflows
+	}
+	r := &R32{}
+	if out < 0 { // fast negative -out
+		r.out = newI32minus(out32)
+	} else { // fast positive +out
+		r.out = newI32plus(out32)
+	}
+	if in < 0 { // fast imaginary √-in
+		r.in = newI32minus(in32)
+	} else { // fast real √+in
+		r.in = newI32plus(in32)
+	}
+	return r
+}
+
+func (r *R32) IsZero() bool {
+	if r == nil || r.out == nil || r.in == nil || r.out.n == 0 || r.in.n == 0 {
+		return true
+	}
+	return false
+}
+
+// WriteString appends to given buffer very SIMPLE format:
+// For nil, out or in zero appends "+0"
+// For n > 0 always appends +n or -n including N=1
+// For in > 1 appends √ and then in (always positive)
+func (r *R32) Str(s *Str) {
+	if r == nil {
+		s.Infinite()
+	} else if r.out == nil || r.out.n == 0 {
+		s.Zero()
+	} else if r.in == nil || r.in.n == 0 {
+		s.Zero()
+	} else {
+		s.Integer32(r.out)
+		s.Radical32(r.in)
+	}
+}
+
+func (r *R32) String() string {
+	s := NewStr()
+	r.Str(s)
+	return s.String()
+}
+
+

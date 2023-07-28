@@ -16,6 +16,7 @@ func TestZ(t *testing.T) {
 		{ a:3003, b:1001, c:7007, exp:"3,1,7" },
 		{ a:1000, b:1001, c:1002, exp:"1000,1001,1002" },
 		{ a:-30,  b:+45,  c:-60,  exp:"-2,3,-4" },
+		{ a:2,    b:0,    c:1,    exp:"2,0,1" },
 	} {
 		(&u.a).Reduce3(&u.b, &u.c)
 		if got := fmt.Sprintf("%d,%d,%d", u.a, u.b, u.c); got != u.exp {
@@ -100,5 +101,33 @@ func TestB(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
-	
+	a1 := Z(1)
+	a2 := Z(2)
+	n32s := NewN32s()
+	infinite := NewD(n32s,   0, 0,0,  0)
+	zero     := NewD(n32s,   0, 0,0, a1)
+	minus1   := NewD(n32s,  -1, 0,0, a1)
+	half     := NewD(n32s,   1, 0,0, a2)
+	ten      := NewD(n32s,  10, 0,0, a1)
+	one_17th := NewD(n32s,  2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
+
+	for p, r := range []struct { d *D; exp string } {
+		{ d: infinite, exp:"∞" },
+		{ d: zero,     exp:"+0" },
+		{ d: minus1,   exp:"-1" },
+		{ d: half,     exp:"+1/2" },
+		{ d: ten,      exp:"+10" },
+		{ d: one_17th, exp:"+1/17" },
+
+		{ d: NewD(n32s, 0, 1,2, a1),   exp: "+1√2"    },
+		{ d: NewD(n32s, 0, 1,2, a2),   exp:"+1√2/2" },
+	} {
+		if p >= 7 {
+			fmt.Printf("b=%v out=%v in=%v a=%v\n", r.d.ab.b, r.d.cd.out, r.d.cd.in, r.d.ab.a)
+		}
+
+		if got := r.d.String(); got != r.exp {
+			t.Fatalf("D-new got %s exp %s", got, r.exp)	
+		}
+	}
 }
