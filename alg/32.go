@@ -6,11 +6,24 @@ import (
 
 type Int int32
 
-const MAXNAT = uint64(0xffffffff)
+const N32_MAX = N(0xffffffff)
+//const MAXNAT = uint64(0xffffffff)
 
 // N32 represents a small natural number in the
 // range 1 - 0xffffffff
 type N32 uint32
+
+func N32overflowZ(z Z) bool {
+	if z > 0 {
+		return z > Z(N32_MAX)
+	} else {
+		return -z > Z(N32_MAX)
+	}
+}
+
+func N32overflowN(n N) bool {
+	return n > N32_MAX
+}
 
 
 // gcd returns the greatest common divisor of 
@@ -66,60 +79,6 @@ func NatPrimes() []N32 {
     return list
 }
 
-type N32s struct {
-	primes []N32
-}
-
-func NewN32s() *N32s {
-	return &N32s{
-		primes: NatPrimes(),
-	}
-}
-
-// Sqrt reduces the radical (out)√(in) in in two parts
-// Example: -3√(20) returns -6√(5)
-// Return ok as false when returned values are larger than 32 bits (overflow).
-func (n *N32s) Sqrt(out, in uint64) (o N32, i N32, ok bool) {
-	if out == 0 {
-		return 0, 0, true
-	}
-	if in == 0 {
-		return 0, 0, true
-	}
-	if in > 1 {
-		// Try to modify out and in
-		for _, prime := range n.primes {
-			p := uint64(prime)
-			if pp := p*p; in >= pp {
-				for {
-					if in % pp == 0 {
-						// product has a prime factor squared move from in to out
-						in  /= pp
-						out *= p
-						// look for more prime factor squared repeated in in.
-						continue
-					} else {
-						// check with next prime squared
-						break
-					}
-				}
-			} else {
-				// no more factors to check
-				break
-			}
-		}
-	}
-	if out > MAXNAT {
-		return 0, 0, false
-	}
-	if in > MAXNAT {
-		return 0, 0, false
-	}
-	return N32(out), N32(in), true
-}
-
-const MaxN = Z(0xffffffff)
-
 
 func gcd(a, b Z) Z {
 	if b == 0 {
@@ -134,12 +93,28 @@ type I32 struct {
 	n N32
 }
 
+func NewI32(z Z) (*I32, bool) {
+	if N32overflowZ(z) {
+		return nil, false
+	} else if z > 0 {
+		return newI32plus(N32(z)), true
+	} else {
+		return newI32minus(N32(-z)), true
+	}
+}
+
 func newI32plus(n N32) *I32 {
-	return &I32{ s:false, n:n }
+	return &I32{
+		s: false,
+		n: n,
+	}
 }
 
 func newI32minus(n N32) *I32 {
-	return &I32{ s:true, n:n }	
+	return &I32{
+		s: true,
+		n: n,
+	}	
 }
 
 func (i *I32) mul(n N32) Z {
@@ -159,13 +134,55 @@ func (i *I32) Str(s *Str) {
 }
 
 type R32s struct {
-	nats *N32s
+	primes []N32
 }
 
 func NewR32s() *R32s {
 	return &R32s{
-		nats: NewN32s(),
+		primes: NatPrimes(),
 	}
+}
+
+// sqrt reduces the radical (out)√(in) in in two parts
+// Example: -3√(20) returns -6√(5)
+// Return ok as false when returned values are larger than 32 bits (overflow).
+func (r *R32s) sqrt(out, in N) (o N32, i N32, ok bool) {
+	if out == 0 {
+		return 0, 0, true
+	}
+	if in == 0 {
+		return 0, 0, true
+	}
+	if in > 1 {
+		// Try to modify out and in
+		for _, prime := range r.primes {
+			p := N(prime)
+			if pp := p*p; in >= pp {
+				for {
+					if in % pp == 0 {
+						// product has a prime factor squared move from in to out
+						in  /= pp
+						out *= p
+						// look for more prime factor squared repeated in in.
+						continue
+					} else {
+						// check with next prime squared
+						break
+					}
+				}
+			} else {
+				// no more factors to check
+				break
+			}
+		}
+	}
+	if N32overflowN(out) {
+		return 0, 0, false
+	}
+	if N32overflowN(in) {
+		return 0, 0, false
+	}
+	return N32(out), N32(in), true
 }
 
 func (rs *R32s) NewR32(out, in Z) *R32 {
@@ -180,7 +197,7 @@ func (rs *R32s) NewR32(out, in Z) *R32 {
 	if in < 0 { // radical imaginary
 		in64 = -in
 	}
-	out32, in32, ok := rs.nats.Sqrt(uint64(out64), uint64(in64))
+	out32, in32, ok := rs.sqrt(N(out64), N(in64))
 	if !ok {
 		return nil // reject overflows
 	}

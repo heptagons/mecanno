@@ -5,8 +5,8 @@ type B struct { // Rational
 	a N32  // denominator natural >= 1
 }
 
-func NewB0(den Z) *B {
-	if den > MaxN {
+func NewB0(den N) *B {
+	if N32overflowN(den) {
 		return nil // overflow
 	}
 	return &B{
@@ -15,41 +15,26 @@ func NewB0(den Z) *B {
 	}
 }
 
-func NewB(num Z, den Z) *B {
+func NewB(num Z, den N) *B {
 	if den == 0 {
 		return nil // infinite
 	}
 	if num == 0 {
 		return NewB0(den)
 	}
-	s := false
-	if num < 0 {
-		num = -num
-		s = !s
+
+	(&den).Reduce2(&num)
+
+	if N32overflowN(den) {
+		return nil // overflow denominator
 	}
-	if den < 0 {
-		den = -den
-		s = !s
-	}
-	////// TODO replace with (&num.Reduce2(&den))
-	g := gcd(num, den)
-	num /= g
-	den /= g
-	////// end replace
-	if num > MaxN {
-		return nil // numerator overflow
-	} else if den > MaxN {
-		return nil // denominator overflow
-	}
-	var b *I32
-	if s { // fast negative
-		b = newI32minus(N32(num))
-	} else { // fast positive
-		b = newI32plus(N32(num))
-	}
-	return &B{
-		b: b,
-		a: N32(den),
+	if b, ok := NewI32(num); !ok {
+		return nil // overflow numerator
+	} else {
+		return &B{
+			b: b,
+			a: N32(den),
+		}
 	}
 }
 
@@ -60,7 +45,7 @@ func NewB(num Z, den Z) *B {
 //	           2ab
 func NewBcosC(a, b, c N32) *B {
 	num := Z(a*a) + Z(b*b) - Z(c*c)
-	den := 2*Z(a*b)
+	den := 2*N(a)*N(b)
 	return NewB(num, den)
 }
 
@@ -77,7 +62,7 @@ func newB(s bool, num, den N32) *B {
 		return nil // infinity
 	}
 	if num == 0 {
-		return NewB0(Z(den)) // zero
+		return NewB0(N(den)) // zero
 	}
 	n, d := num, den
 	g := n.gcd(d)
@@ -98,7 +83,7 @@ func (x *B) clone() *B {
 	if x == nil || x.a == 0 {
 		return nil // infinite
 	} else if x.b == nil || x.b.n == 0 {
-		return NewB0(Z(x.a))
+		return NewB0(N(x.a))
 	} else {
 		return newB(x.b.s, x.b.n, x.a)
 	}
@@ -113,7 +98,7 @@ func (x *B) AddB(y *B) *B {
 		return x.clone() // x
 	}
 	num := x.b.mul(y.a) + y.b.mul(x.a)
-	den := Z(x.a) * Z(y.a)
+	den := N(x.a) * N(y.a)
 	return NewB(num, den)
 }
 
@@ -131,15 +116,15 @@ func (x *B) MulB(y *B) *B {
 	if x == nil || y == nil {
 		return nil
 	} else if x.b == nil || x.b.n == 0 {
-		return NewB0(Z(x.a) * Z(y.a))
+		return NewB0(N(x.a) * N(y.a))
 	} else if y.b == nil || y.b.n == 0 {
-		return NewB0(Z(x.a) * Z(y.a))
+		return NewB0(N(x.a) * N(y.a))
 	}
 	num := Z(x.b.n) * Z(y.b.n)
 	if x.b.s != y.b.s {
 		num = -num
 	}
-	den := Z(x.a) * Z(y.a)
+	den := N(x.a) * N(y.a)
 	return NewB(num, den)
 }
 

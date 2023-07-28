@@ -6,7 +6,7 @@ import (
 )
 
 func TestZ(t *testing.T) {
-	for _, u := range []struct{ a, b, c Z; exp string } {
+	for _, u := range []struct{ a N; b, c Z; exp string } {
 		{ a:0,    b:0,    c:0,    exp:"0,0,0" },
 		{ a:1,    b:0,    c:0,    exp:"1,0,0" },
 		{ a:1,    b:1,    c:0,    exp:"1,1,0" },
@@ -15,7 +15,7 @@ func TestZ(t *testing.T) {
 		{ a:1001, b:1001, c:1001, exp:"1,1,1" },
 		{ a:3003, b:1001, c:7007, exp:"3,1,7" },
 		{ a:1000, b:1001, c:1002, exp:"1000,1001,1002" },
-		{ a:-30,  b:+45,  c:-60,  exp:"-2,3,-4" },
+		{ a:30,   b:-45,  c:-60,  exp:"2,-3,-4" },
 		{ a:2,    b:0,    c:1,    exp:"2,0,1" },
 	} {
 		(&u.a).Reduce3(&u.b, &u.c)
@@ -26,24 +26,31 @@ func TestZ(t *testing.T) {
 }
 
 func TestB(t *testing.T) {
-
 	none     := NewB( 0,0)
 	zero     := NewB( 0,1)
 	minus1   := NewB(-1,1)
 	half     := NewB( 2,4)
 	ten      := NewB( 10,1)
 	one_17th := NewB( 2*3*5*7*11*13, 2*3*5*7*11*13*17)
-	for exp, b := range map[string]*B {
-		"∞":     none,
-		"+0":    zero,
-		"-1":    minus1,
-		"+1/2":  half,
-		"-7/3":  NewB(-2*5*7*11, 2*3*5*11),
-		"+1/17": one_17th,
-		"+10":   ten,
+	for _, b := range []struct { e string; b *B } {
+		{ e:"∞",     b:none },
+		{ e:"+0",    b:zero },
+		{ e:"-1",    b:minus1 },
+		{ e:"+1/2",  b:half },
+		{ e:"-7/3",  b:NewB(-2*5*7*11, 2*3*5*11) },
+		{ e:"+1/17", b:one_17th },
+		{ e:"+10",   b:ten },
+
+		{ e:"+1",            b:NewB(+Z(N32_MAX),   N32_MAX  ) },
+		{ e:"+4294967295",   b:NewB(+Z(N32_MAX),   1        ) }, // max positive
+		{ e:"+1/4294967295", b:NewB(1,             N32_MAX  ) }, // min positive
+
+		{ e:"∞", b:NewB(1,             N32_MAX+1) }, // overflow
+		{ e:"∞", b:NewB(+Z(N32_MAX+1), 1        ) }, // overflow
+		{ e:"∞", b:NewB(-Z(N32_MAX+1), 1        ) }, // overflow
 	} {
-		if got := b.String(); got != exp {
-			t.Fatalf("B got %s exp %s", got, exp)
+		if got := b.b.String(); got != b.e {
+			t.Fatalf("B got %s exp %s", got, b.e)
 		}
 	}
 	// AddB
@@ -63,8 +70,10 @@ func TestB(t *testing.T) {
 			t.Fatalf("B-add got %s exp %s", got, exp)
 		}
 	}
-	// InvB
 	for _, b := range []struct { e string; b *B } {
+
+
+		// InvB
 		{ e:"∞",     b: none.Inv() },
 		{ e:"∞",     b: zero.Inv() },
 		{ e:"-1",    b: minus1.Inv() },
@@ -76,7 +85,7 @@ func TestB(t *testing.T) {
 		{ e:"+10",   b: ten.Inv().Inv() },
 	} {
 		if got := b.b.String(); got != b.e {
-			t.Fatalf("B-inv got %s exp %s", got, b.e)
+			t.Fatalf("B got %s exp %s", got, b.e)
 		}
 	}
 
@@ -102,8 +111,8 @@ func TestB(t *testing.T) {
 
 func TestD(t *testing.T) {
 	rs := NewR32s()
-	a1 := Z(1)
-	a2 := Z(2)
+	a1 := N(1)
+	a2 := N(2)
 	infinite := NewD(rs,   0, 0,0,  0)
 	zero     := NewD(rs,   0, 0,0, a1)
 	minus1   := NewD(rs,  -1, 0,0, a1)
@@ -133,8 +142,20 @@ func TestD(t *testing.T) {
 			t.Fatalf("D-new got %s exp %s", got, r.exp)	
 		}
 	}
-	//a2 := Z(2)
-	//d := NewD(n32s, 0, 1,2, a2)
-	//fmt.Println("a2", a2)
-	//fmt.Printf("b=%v c=%v d=%v a=%v s=%s\n", d.ab.b, d.cd.out, d.cd.in, d.ab.a, d)
+
+	// B sqrts
+	for _, r := range []struct { b Z; a N; exp string } {
+		// reals
+		{ b: 0, a:0, exp:"∞"       },
+		{ b: 0, a:1, exp:"+0"      },
+		{ b:+1, a:1, exp:"+1"      },
+		{ b: 1, a:5, exp:"+1√5/5"  },
+		// imaginaries
+		{ b:-1, a:1, exp:"+1i"     },
+		{ b:-1, a:2, exp:"+1i√2/2" },
+	} {
+		if got := NewDsqrtB(rs, r.b, r.a).String(); got != r.exp {
+			t.Fatalf("D-sqrtB got %s exp %s", got, r.exp)		
+		}
+	}
 }

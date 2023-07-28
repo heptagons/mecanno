@@ -9,7 +9,7 @@ type D struct {
 	cd *R32
 }
 
-func NewD(rs *R32s, b, c, d, a Z) *D {
+func NewD(rs *R32s, b, c, d Z, a N) *D {
 	if a == 0 {
 		return nil // infinite
 	}
@@ -41,6 +41,15 @@ func NewD(rs *R32s, b, c, d, a Z) *D {
 			cd: cd,
 		}
 	}
+}
+
+//	 _____    ____
+//	√(b/a) = √(ab)/a
+func NewDsqrtB(rs *R32s, b1 Z, a1 N) *D {
+	b2 := Z(0)
+	c2 := Z(1)
+	d2 := Z(a1) * Z(b1)
+	return NewD(rs, b2, c2, d2, a1)
 }
 
 func (d *D) Str(s *Str) {

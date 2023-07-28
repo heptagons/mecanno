@@ -74,7 +74,7 @@ func TestRat(t *testing.T) {
 		}
 	}
 
-	n32s := NewN32s()
+	rs := NewR32s()
 	// Sqrt
 	for _, s := range []struct { num, den int; exp string } {
 		{ num: 0, den:1, exp: "0" },
@@ -93,7 +93,7 @@ func TestRat(t *testing.T) {
 		{ num: 1, den:18, exp: "(1/6)√(2)"  },
 		{ num:18, den: 1, exp: "(3)√(2)"    },
 	} {
-		if got := NewRat(s.num, s.den).Sqrt(n32s).String(); got != s.exp {
+		if got := NewRat(s.num, s.den).Sqrt(rs).String(); got != s.exp {
 			t.Fatalf("got %s exp:%s", got, s.exp)
 		}
 	}
@@ -111,7 +111,7 @@ func TestRat(t *testing.T) {
 		{ a:NewAlg(NewRat(1,2), 2), b:NewAlg(NewRat( 1,3), 3), exp:  "(1/6)√(6)" },
 		{ a:NewAlg(NewRat(5,3), 8), b:NewAlg(NewRat( 3,5),10), exp:  "(4)√(5)"   },
  	} {
-		if got := s.a.Multiply(s.b, n32s).String(); got != s.exp {
+		if got := s.a.Multiply(s.b, rs).String(); got != s.exp {
 			t.Fatalf("got %s exp %s", got, s.exp)
 		}
 	}
@@ -133,8 +133,8 @@ func TestTriangle(t *testing.T) {
 		}
 	}
 
-	n32s := NewN32s()
-	algs := NewAlgs(n32s)
+	rs := NewR32s()
+	algs := NewAlgs(rs)
 	triangles := NewTriangles(algs)
 	triangles.Find(5)
 	exp := []string {

@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
-func Test32N(t *testing.T) {
+func Test32R(t *testing.T) {
 
-	n32s := NewN32s()
+	rs := NewR32s()
 
 	// primes
-	if got, exp := len(n32s.primes), 6542; got != exp {
+	if got, exp := len(rs.primes), 6542; got != exp {
 		t.Fatalf("nat-primes got %d exp:%d", got, exp)
 	}
 	for _, s := range []struct { pos int; prime N32 } {
@@ -23,15 +23,11 @@ func Test32N(t *testing.T) {
 		{ pos: 1_000, prime:  7_927 },
 		{ pos: 6_541, prime: 65_521 },
 	} {
-		if got, exp := n32s.primes[s.pos], s.prime; got != exp {
+		if got, exp := rs.primes[s.pos], s.prime; got != exp {
 			t.Fatalf("n32s.primes pos=%d got=%d exp=%d", s.pos, got, exp)
 		}
 	}
-}
 
-func Test32R(t *testing.T) {
-
-	rs := NewR32s()
 	// sqrt32
 	for pos, s := range []struct { out, a, b Z; e string }	{
 		{ out: 1, a: 0,  b: 0,  e: "+0"   },

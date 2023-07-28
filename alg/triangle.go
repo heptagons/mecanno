@@ -102,8 +102,8 @@ func (t *Triangles) Add(a, b, c N32) *Triangle {
 	next.sinB = t.algs.SinC(c, a, b)
 	next.sinC = t.algs.SinC(a, b, c)
 
-	stable := uint64(a+(b+c))*uint64(c-(a-b))*uint64(c+(a-b))*uint64(a+(b-c))
-	if out, in, ok := t.algs.Sqrt(1, stable); ok {
+	stable := N(a+(b+c)) * N(c-(a-b)) * N(c+(a-b)) * N(a+(b-c))
+	if out, in, ok := t.algs.sqrt(1, stable); ok {
 		next.area = NewAlg(NewRat(int(out), 4), in)
 	}
 
