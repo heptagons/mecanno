@@ -5,9 +5,13 @@ type B struct { // Rational
 	a N32  // denominator natural >= 1
 }
 
-func NewB0() *B {
+func NewB0(den Z) *B {
+	if den > MaxN {
+		return nil // overflow
+	}
 	return &B{
-		a:1,
+		// keep denominator intact
+		a: N32(den),
 	}
 }
 
@@ -16,7 +20,7 @@ func NewB(num Z, den Z) *B {
 		return nil // infinite
 	}
 	if num == 0 {
-		return NewB0() // zero
+		return NewB0(den)
 	}
 	s := false
 	if num < 0 {
@@ -73,7 +77,7 @@ func newB(s bool, num, den N32) *B {
 		return nil // infinity
 	}
 	if num == 0 {
-		return NewB0() // zero
+		return NewB0(Z(den)) // zero
 	}
 	n, d := num, den
 	g := n.gcd(d)
@@ -94,7 +98,7 @@ func (x *B) clone() *B {
 	if x == nil || x.a == 0 {
 		return nil // infinite
 	} else if x.b == nil || x.b.n == 0 {
-		return NewB0()
+		return NewB0(Z(x.a))
 	} else {
 		return newB(x.b.s, x.b.n, x.a)
 	}
@@ -127,9 +131,9 @@ func (x *B) MulB(y *B) *B {
 	if x == nil || y == nil {
 		return nil
 	} else if x.b == nil || x.b.n == 0 {
-		return NewB0()
+		return NewB0(Z(x.a) * Z(y.a))
 	} else if y.b == nil || y.b.n == 0 {
-		return NewB0()
+		return NewB0(Z(x.a) * Z(y.a))
 	}
 	num := Z(x.b.n) * Z(y.b.n)
 	if x.b.s != y.b.s {

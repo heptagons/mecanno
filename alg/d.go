@@ -1,19 +1,23 @@
 package alg
 
+import (
+//	"fmt"
+)
+
 type D struct {
 	ab *B
 	cd *R32
 }
 
-func NewD(nats *N32s, b, c, d, a Z) *D {
-
-	// Reduce a, b and c
+func NewD(rs *R32s, b, c, d, a Z) *D {
+	if a == 0 {
+		return nil // infinite
+	}
 	if b == 0 {
 		(&a).Reduce2(&c)	
 	} else {
 		(&a).Reduce3(&b, &c)
 	}
-
 	ab := NewB(b, a)
 	if ab == nil {
 		return nil // infinite
@@ -24,13 +28,13 @@ func NewD(nats *N32s, b, c, d, a Z) *D {
 			cd: NewR32zero(),
 		}
 	}
-	if cd := NewR32(nats, c, d); cd == nil {
+	if cd := rs.NewR32(c, d); cd == nil {
 		return nil // overflow
 	} else {
 		// after the d simplification, c was increased
 		// specially when b is 0, we need to try reduce a and c
 		
-		//ab.Reduce3(cd.out)
+		ab.Reduce3(cd.out)
 		
 		return &D{
 			ab: ab,
@@ -63,11 +67,11 @@ func (d *D) Str(s *Str) {
 		d.cd.Str(s)
 	}
 	if a > 1 {
-		s.Divisor()
-		s.N32(a)
 		if !abZero && !cdZero {
 			s.WriteString(")")
 		}
+		s.Divisor()
+		s.N32(a)
 	}
 }
 

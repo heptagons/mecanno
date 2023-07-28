@@ -158,19 +158,17 @@ func (i *I32) Str(s *Str) {
 	}
 }
 
-type R32 struct {
-	out *I32 // external integer with sign=true means whole R32 is negative
-	in  *I32 // internal integer with sign=true means whole R32 is imaginary
+type R32s struct {
+	nats *N32s
 }
 
-func NewR32zero() *R32 {
-	return &R32{
-		out: nil,
-		in:  nil,
+func NewR32s() *R32s {
+	return &R32s{
+		nats: NewN32s(),
 	}
 }
 
-func NewR32(nats *N32s, out, in Z) *R32 {
+func (rs *R32s) NewR32(out, in Z) *R32 {
 	if out == 0 || in == 0 {
 		return NewR32zero()
 	}
@@ -182,7 +180,7 @@ func NewR32(nats *N32s, out, in Z) *R32 {
 	if in < 0 { // radical imaginary
 		in64 = -in
 	}
-	out32, in32, ok := nats.Sqrt(uint64(out64), uint64(in64))
+	out32, in32, ok := rs.nats.Sqrt(uint64(out64), uint64(in64))
 	if !ok {
 		return nil // reject overflows
 	}
@@ -198,6 +196,18 @@ func NewR32(nats *N32s, out, in Z) *R32 {
 		r.in = newI32plus(in32)
 	}
 	return r
+}
+
+type R32 struct {
+	out *I32 // external integer with sign=true means whole R32 is negative
+	in  *I32 // internal integer with sign=true means whole R32 is imaginary
+}
+
+func NewR32zero() *R32 {
+	return &R32{
+		out: nil,
+		in:  nil,
+	}
 }
 
 func (r *R32) IsZero() bool {

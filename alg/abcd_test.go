@@ -101,17 +101,17 @@ func TestB(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
+	rs := NewR32s()
 	a1 := Z(1)
 	a2 := Z(2)
-	n32s := NewN32s()
-	infinite := NewD(n32s,   0, 0,0,  0)
-	zero     := NewD(n32s,   0, 0,0, a1)
-	minus1   := NewD(n32s,  -1, 0,0, a1)
-	half     := NewD(n32s,   1, 0,0, a2)
-	ten      := NewD(n32s,  10, 0,0, a1)
-	one_17th := NewD(n32s,  2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
+	infinite := NewD(rs,   0, 0,0,  0)
+	zero     := NewD(rs,   0, 0,0, a1)
+	minus1   := NewD(rs,  -1, 0,0, a1)
+	half     := NewD(rs,   1, 0,0, a2)
+	ten      := NewD(rs,  10, 0,0, a1)
+	one_17th := NewD(rs,  2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
 
-	for p, r := range []struct { d *D; exp string } {
+	for _, r := range []struct { d *D; exp string } {
 		{ d: infinite, exp:"∞" },
 		{ d: zero,     exp:"+0" },
 		{ d: minus1,   exp:"-1" },
@@ -119,15 +119,22 @@ func TestD(t *testing.T) {
 		{ d: ten,      exp:"+10" },
 		{ d: one_17th, exp:"+1/17" },
 
-		{ d: NewD(n32s, 0, 1,2, a1),   exp: "+1√2"    },
-		{ d: NewD(n32s, 0, 1,2, a2),   exp:"+1√2/2" },
-	} {
-		if p >= 7 {
-			fmt.Printf("b=%v out=%v in=%v a=%v\n", r.d.ab.b, r.d.cd.out, r.d.cd.in, r.d.ab.a)
-		}
+		{ d: NewD(rs,  0,  1,+2, a1),   exp: "+1√2"       },
+		{ d: NewD(rs,  0,  1,+2, a2),   exp: "+1√2/2"     },
+		{ d: NewD(rs,  1,  1,+2, a2),   exp: "(+1+1√2)/2" },
+		{ d: NewD(rs, -2, -2,+2, a2),   exp: "-1-1√2"     },
+		{ d: NewD(rs, -2, -1,+8, a2),   exp: "-1-2√2"     },
+		{ d: NewD(rs,  0, +1,+2, a2),   exp: "+1√2/2"     }, // sin(pi/4)
+		{ d: NewD(rs, -1, +1,+5,  4),   exp: "(-1+1√5)/4" }, // sin(pi/10)
 
+		{ d: NewD(rs,  0,  1,-1, a1),   exp: "+1i"        }, // imag
+	} {
 		if got := r.d.String(); got != r.exp {
 			t.Fatalf("D-new got %s exp %s", got, r.exp)	
 		}
 	}
+	//a2 := Z(2)
+	//d := NewD(n32s, 0, 1,2, a2)
+	//fmt.Println("a2", a2)
+	//fmt.Printf("b=%v c=%v d=%v a=%v s=%s\n", d.ab.b, d.cd.out, d.cd.in, d.ab.a, d)
 }

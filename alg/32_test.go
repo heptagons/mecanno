@@ -31,7 +31,7 @@ func Test32N(t *testing.T) {
 
 func Test32R(t *testing.T) {
 
-	n32s := NewN32s()
+	rs := NewR32s()
 	// sqrt32
 	for pos, s := range []struct { out, a, b Z; e string }	{
 		{ out: 1, a: 0,  b: 0,  e: "+0"   },
@@ -74,7 +74,7 @@ func Test32R(t *testing.T) {
 		{ out:-2, a:1, b:-4, e: "-4i"   },
 	} {
 		in := s.a * s.b
-		if got := NewR32(n32s, s.out, in).String(); got != s.e {
+		if got := rs.NewR32(s.out, in).String(); got != s.e {
 			t.Fatalf("n32s.sqrt32 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
 		}
 	}
