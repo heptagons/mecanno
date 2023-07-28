@@ -38,6 +38,26 @@ func NewB(num Z, den N) *B {
 	}
 }
 
+func NewBnotReduce(num Z, den N) *B {
+	if den == 0 {
+		return nil // infinite
+	}
+	if num == 0 {
+		return NewB0(den)
+	}
+	if N32overflowN(den) {
+		return nil // overflow denominator
+	}
+	if b, ok := NewI32(num); !ok {
+		return nil // overflow numerator
+	} else {
+		return &B{
+			b: b,
+			a: N32(den),
+		}
+	}
+}
+
 // NewBcosC returns the rational cosine of the angle opposed to segment c
 // using the law of cosines:
 //	       a² + b² - c²
@@ -159,3 +179,21 @@ func (x *B) Reduce3(third *I32) {
 		(&(x.a)).Reduce3(&(x.b.n), &(third.n))
 	}
 }
+
+func (x *B) aVal() Z {
+	return Z(x.a)
+}
+
+func (x *B) aValPow2() Z {
+	return Z(x.a) * Z(x.a)
+}
+
+func (x *B) bVal() Z {
+	return x.b.val()
+}
+
+func (x *B) bValPow2() Z {
+	return x.b.valPow2()
+}
+
+

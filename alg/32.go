@@ -80,12 +80,12 @@ func NatPrimes() []N32 {
 }
 
 
-func gcd(a, b Z) Z {
+/*func gcd(a, b Z) Z {
 	if b == 0 {
 		return a
 	}
 	return gcd(b, a % b)
-}
+}*/
 
 // I is an integer of 32 bits
 type I32 struct {
@@ -119,9 +119,27 @@ func newI32minus(n N32) *I32 {
 
 func (i *I32) mul(n N32) Z {
 	if i.s {
-		return -Z(n) * Z(i.n)
+		return - Z(n)*Z(i.n)
 	} else {
-		return +Z(n) * Z(i.n)
+		return + Z(n)*Z(i.n)
+	}
+}
+
+func (i *I32) val() Z {
+	if i == nil {
+		return 0
+	} else if i.s {
+		return -Z(i.n)
+	} else {
+		return +Z(i.n)
+	}
+}
+
+func (i *I32) valPow2() Z {
+	if i == nil || i.n == 0 {
+		return 0
+	} else {
+		return Z(i.n)*Z(i.n)
 	}
 }
 
@@ -132,6 +150,7 @@ func (i *I32) Str(s *Str) {
 		s.Integer32(i)
 	}
 }
+
 
 type R32s struct {
 	primes []N32
@@ -201,23 +220,37 @@ func (rs *R32s) NewR32(out, in Z) *R32 {
 	if !ok {
 		return nil // reject overflows
 	}
-	r := &R32{}
-	if out < 0 { // fast negative -out
-		r.out = newI32minus(out32)
-	} else { // fast positive +out
-		r.out = newI32plus(out32)
+	zo := Z(out32); if out < 0 { zo = -zo }
+	zi := Z(in32);  if in  < 0 { zi = -zi }
+
+
+	if out, ok := NewI32(zo); !ok {
+		return nil
+	} else if in, ok := NewI32(zi); !ok {
+		return nil
+	} else {
+		return &R32{
+			out: out,
+			in:  in,
+		}
 	}
-	if in < 0 { // fast imaginary √-in
-		r.in = newI32minus(in32)
-	} else { // fast real √+in
-		r.in = newI32plus(in32)
-	}
-	return r
 }
 
 type R32 struct {
 	out *I32 // external integer with sign=true means whole R32 is negative
 	in  *I32 // internal integer with sign=true means whole R32 is imaginary
+}
+
+func (r *R32) outVal() Z {
+	return r.out.val()
+}
+
+func (r *R32) outValPow2() Z {
+	return r.out.valPow2()
+}
+
+func (r *R32) inVal() Z {
+	return r.in.val()
 }
 
 func NewR32zero() *R32 {

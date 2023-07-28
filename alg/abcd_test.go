@@ -7,19 +7,23 @@ import (
 
 func TestZ(t *testing.T) {
 	for _, u := range []struct{ a N; b, c Z; exp string } {
-		{ a:0,    b:0,    c:0,    exp:"0,0,0" },
-		{ a:1,    b:0,    c:0,    exp:"1,0,0" },
-		{ a:1,    b:1,    c:0,    exp:"1,1,0" },
-		{ a:1,    b:1,    c:1,    exp:"1,1,1" },
-		{ a:19,   b:23,   c:29,   exp:"19,23,29" },
-		{ a:1001, b:1001, c:1001, exp:"1,1,1" },
-		{ a:3003, b:1001, c:7007, exp:"3,1,7" },
-		{ a:1000, b:1001, c:1002, exp:"1000,1001,1002" },
-		{ a:30,   b:-45,  c:-60,  exp:"2,-3,-4" },
-		{ a:2,    b:0,    c:1,    exp:"2,0,1" },
+		{ a:0,    b:0,    c:0,    exp:"0: 0,0,0" },
+		{ a:1,    b:0,    c:0,    exp:"1: 1,0,0" },
+		{ a:1,    b:1,    c:0,    exp:"1: 1,1,0" },
+		{ a:1,    b:1,    c:1,    exp:"1: 1,1,1" },
+
+		{ a:3,    b:4,    c:6,    exp:"1: 3,4,6"  },
+		{ a:1,    b:10,   c:20,   exp:"1: 1,10,20"},
+		
+		{ a:19,   b:23,   c:29,   exp:"1: 19,23,29" },
+		{ a:1001, b:1001, c:1001, exp:"1001: 1,1,1" },
+		{ a:3003, b:1001, c:7007, exp:"1001: 3,1,7" },
+		{ a:1000, b:1001, c:1002, exp:"1: 1000,1001,1002" },
+		{ a:30,   b:-45,  c:-60,  exp:"15: 2,-3,-4" },
+		{ a:2,    b:0,    c:1,    exp:"1: 2,0,1" },
 	} {
-		(&u.a).Reduce3(&u.b, &u.c)
-		if got := fmt.Sprintf("%d,%d,%d", u.a, u.b, u.c); got != u.exp {
+		g := (&u.a).Reduce3(&u.b, &u.c)
+		if got := fmt.Sprintf("%d: %d,%d,%d", g, u.a, u.b, u.c); got != u.exp {
 			t.Fatalf("Z.Reduce3 got %s exp %s", got, u.exp)
 		}
 	}
@@ -121,22 +125,28 @@ func TestD(t *testing.T) {
 	one_17th := NewD(rs,  2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
 
 	for _, r := range []struct { d *D; exp string } {
+
 		{ d: infinite, exp:"∞" },
 		{ d: zero,     exp:"+0" },
 		{ d: minus1,   exp:"-1" },
 		{ d: half,     exp:"+1/2" },
 		{ d: ten,      exp:"+10" },
 		{ d: one_17th, exp:"+1/17" },
+		
+		{ d: NewD(rs,  0,  1,-1, a1),   exp: "+1i"        }, // imag
 
 		{ d: NewD(rs,  0,  1,+2, a1),   exp: "+1√2"       },
 		{ d: NewD(rs,  0,  1,+2, a2),   exp: "+1√2/2"     },
 		{ d: NewD(rs,  1,  1,+2, a2),   exp: "(+1+1√2)/2" },
 		{ d: NewD(rs, -2, -2,+2, a2),   exp: "-1-1√2"     },
-		{ d: NewD(rs, -2, -1,+8, a2),   exp: "-1-2√2"     },
+		{ d: NewD(rs, -2, -1,+8, a2),   exp: "-1-1√2"     },
 		{ d: NewD(rs,  0, +1,+2, a2),   exp: "+1√2/2"     }, // sin(pi/4)
 		{ d: NewD(rs, -1, +1,+5,  4),   exp: "(-1+1√5)/4" }, // sin(pi/10)
 
-		{ d: NewD(rs,  0,  1,-1, a1),   exp: "+1i"        }, // imag
+		{ d: NewD(rs,   3,   4, 1,   6), exp: "(+3+4)/6" },
+		{ d: NewD(rs, 158, 632, 5, 316), exp: "(+1+4√5)/2" }, 
+
+
 	} {
 		if got := r.d.String(); got != r.exp {
 			t.Fatalf("D-new got %s exp %s", got, r.exp)	
@@ -156,6 +166,36 @@ func TestD(t *testing.T) {
 	} {
 		if got := NewDsqrtB(rs, r.b, r.a).String(); got != r.exp {
 			t.Fatalf("D-sqrtB got %s exp %s", got, r.exp)		
+		}
+	}
+
+	// D inversions
+	for _, r := range []struct { d *D; exp string } {
+		// reals
+		{ d: NewD(rs,  1, 2, 3,  4),  exp: "(-4+8√3)/11"    },
+		{ d: NewD(rs, -4, 8, 3, 11),  exp: "(+1+2√3)/4"     },
+
+		{ d: NewD(rs,  2, 3,  4, 5),  exp: "(-5+15)/16"     }, // 5/8
+		{ d: NewD(rs, -5, 15, 1, 16), exp: "(+2+6)/5"       }, // 8/5
+
+		{ d: NewD(rs,  3,  4, 5,  6), exp: "(-18+24√5)/71"  }, // 
+		{ d: NewD(rs,-18, 24, 5, 71), exp: "(+3+4√5)/6"     },
+
+		{ d: NewD(rs,  4,  5, 6,  7), exp: "(-28+35√6)/134" },
+		{ d: NewD(rs,-28, 35, 6,134), exp: "(+4+5√6)/7"     },
+
+		{ d: NewD(rs,  5,  6, 7,  8), exp: "(-40+48√7)/227" },
+		{ d: NewD(rs,-40, 48, 7,227), exp: "(+5+6√7)/8"     },
+
+		{ d: NewD(rs,  6,  7, 8,  9), exp: "(-27+63√2)/178" },
+		{ d: NewD(rs,-27, 63, 2,178), exp: "(+6+14√2)/9"    },
+
+		{ d: NewD(rs,  7,  8, 9, 10), exp: "(-70+240)/527"  },
+		{ d: NewD(rs,-70,240, 1,527), exp: "(+7+24)/10"     },
+
+	} {
+		if got := r.d.InvD(rs).String(); got != r.exp {
+			t.Fatalf("D-inv got %s exp %s", got, r.exp)		
 		}
 	}
 }
