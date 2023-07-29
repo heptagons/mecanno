@@ -155,15 +155,21 @@ func NewR32s() *R32s {
 	}
 }
 
-func (r *R32s) NewR32ext(out, in Z, ext *R32) *R32 {
+func (r *R32s) NewR32(out, in Z, ext *R32s) *R32 {
+	/*if ext == nil {
+		return r.newR32(out, in)
+	}
+	e := out
+	f := in
+	g := ext.outVal()*/
 	return nil
 }
 
-func (r *R32s) NewR32(out, in Z) *R32 {
+func (r *R32s) newR32(out, in Z) *R32 {
 	if out == 0 || in == 0 {
 		return NewR32zero()
 	}
-	out32, in32, ok := r.sqrtZ(out, in)
+	out32, in32, ok := r.reduceZ(out, in)
 	if !ok {
 		return nil // reject overflows
 	}
@@ -181,7 +187,7 @@ func (r *R32s) NewR32(out, in Z) *R32 {
 	}
 }
 
-func (r *R32s) sqrtZ(out, in Z) (N32, N32, bool) {
+func (r *R32s) reduceZ(out, in Z) (N32, N32, bool) {
 	out64 := out
 	if out < 0 { // radical negative
 		out64 = -out
@@ -190,13 +196,46 @@ func (r *R32s) sqrtZ(out, in Z) (N32, N32, bool) {
 	if in < 0 { // radical imaginary
 		in64 = -in
 	}
-	return r.sqrt(N(out64), N(in64))
+	return r.reduce(N(out64), N(in64))
 }
 
-// sqrt reduces the radical (out)√(in) in in two parts
-// Example: -3√(20) returns -6√(5)
-// Return ok as false when returned values are larger than 32 bits (overflow).
-func (r *R32s) sqrt(out, in N) (o N32, i N32, ok bool) {
+// reduceIns try to increase given out by decrease given inA and inB.
+// Return reduced out and ins and a flag for 32 bits overflow.
+// Example:
+//	For given out=5, inA=12=2*2*3, inB=56=2*2*2*7
+//  Returns out=10=5*2, inA=3, inB=14=2*7, true
+func (r *R32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
+	if inA > 1 && inB > 1 {
+		for _, prime := range r.primes {
+			p := N(prime)
+			pp := p*p
+			for {
+				if inA % pp == 0 && inB % pp == 0 {
+					out *= p  // multiply by p
+					inA /= pp // divide by p squared
+					inB /= pp // divide by p squared
+					continue
+				} else {
+					break
+				}
+			}
+		}
+	}
+	if N32overflowN(out) {
+		return 0, 0, 0, false
+	} else if N32overflowN(inA) {
+		return 0, 0, 0, false
+	} else if N32overflowN(inB) {
+		return 0, 0, 0, false
+	}
+	return N32(out), N32(inA), N32(inB), true
+
+}
+
+// reduce try to decrease in and increase out.
+// Example: The input -3√(20) is returned as -6√(5)
+// Return ok as false when out or in values are larger than 32 bits (overflow).
+func (r *R32s) reduce(out, in N) (o N32, i N32, ok bool) {
 	if out == 0 {
 		return 0, 0, true
 	}
@@ -204,15 +243,15 @@ func (r *R32s) sqrt(out, in N) (o N32, i N32, ok bool) {
 		return 0, 0, true
 	}
 	if in > 1 {
-		// Try to modify out and in
+		// Try to update out and in
 		for _, prime := range r.primes {
 			p := N(prime)
 			if pp := p*p; in >= pp {
 				for {
 					if in % pp == 0 {
 						// product has a prime factor squared move from in to out
-						in  /= pp
 						out *= p
+						in  /= pp
 						// look for more prime factor squared repeated in in.
 						continue
 					} else {

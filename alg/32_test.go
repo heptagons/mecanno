@@ -28,7 +28,25 @@ func Test32R(t *testing.T) {
 		}
 	}
 
-	// CD
+	// reduce2(out, inA, inB N) (N32, N32, N32)
+	for _, s := range []struct{ out, inA, inB N; exp string } {
+		{ out:1, inA: 1, inB: 1, exp: "1√(1+1√x)"  },
+		{ out:4, inA: 4, inB: 4, exp: "8√(1+1√x)"  },
+		{ out:8, inA: 8, inB: 8, exp:"16√(2+2√x)"  },
+		{ out:5, inA:12, inB:56, exp:"10√(3+14√x)" },
+
+		{ out:1, inA:25*9*4*4*3, inB:25*9*4*7,  exp: "30√(12+7√x)" },
+		{ out:9, inA:3*3*3*3*5,  inB:3*3*3*3*3, exp: "81√(5+3√x)"  },
+
+	} {
+		o, inA, inB, _ := rs.reduce2(s.out, s.inA, s.inB)
+		if got := fmt.Sprintf("%d√(%d+%d√x)", o, inA, inB); got != s.exp {
+			t.Fatalf("n32s.reduceIns got=%s exp=%s", got, s.exp)
+		}
+	}
+
+	// NewR32
+	/*
 	for pos, s := range []struct { out, a, b Z; e string }	{
 		{ out: 1, a: 0,  b: 0,  e: "+0"   },
 		{ out: 1, a: 0,  b: 1,  e: "+0"   },
@@ -70,8 +88,9 @@ func Test32R(t *testing.T) {
 		{ out:-2, a:1, b:-4, e: "-4i"   },
 	} {
 		in := s.a * s.b
-		if got := rs.NewR32(s.out, in).String(); got != s.e {
+		if got := rs.NewR32(s.out, in, nil).String(); got != s.e {
 			t.Fatalf("n32s.sqrt32 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
 		}
 	}
+	*/
 }

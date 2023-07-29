@@ -18,11 +18,11 @@ func NewHs(rs *R32s) *Hs {
 }
 
 func (s *Hs) NewH(b, c, d, e, f, g, h Z, a N) *H {
-	gh := s.NewR32(g, h)
+	gh := s.NewR32(g, h, nil)
 	if gh == nil {
 		return nil // overflow
 	}
-	ef := s.NewR32(e, f)
+	ef := s.NewR32(e, f, nil) // TODO
 	if ef == nil {
 		return nil
 	}

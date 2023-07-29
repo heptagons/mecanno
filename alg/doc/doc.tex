@@ -25,6 +25,52 @@ in the numerators.
 The signs are managed appart as extra boolean variables and there is one for each of the seven variables
 $b$, $c$, $e$, $g$, $i$, $k$ and $m$.
 
+\subsection{Reduction of $r_1$}
+\begin{align}
+r_1 &= \pm c\sqrt{d}\\
+d   &= p^2c\\
+d_1 &= \begin{cases}
+ d &\text{if } p = 1\\
+ q &\text{if } p > 1\\
+\end{cases}\\
+c_1 &= \begin{cases}
+ c  &\text{if } p = 1\\
+ cp &\text{if } p > 1\\
+\end{cases}\\
+r_1 &= \pm c_1\sqrt{d_1}
+\end{align}
+
+\subsection{Reduction of $r_2$}
+\begin{align}
+r_2 &= \pm e\sqrt{f \pm g\sqrt{h}}\\
+h   &= p^2q\\
+h_1 &= \begin{cases}
+ h &\text{if } p = 1\\
+ q &\text{if } p > 1\\
+\end{cases}\\
+g_1 &= \begin{cases}
+ g  &\text{if } p = 1\\
+ gp &\text{if } p > 1\\
+\end{cases}\\
+r_2 &= \pm e\sqrt{f \pm g_1\sqrt{h_1}}\\
+f &= r^2s \textbf{ and } g_1 = r^2t, r^2 \textbf{ lcc of } f \textbf{ and } g\\
+g_2 &= \begin{cases}
+ g_1 &\text{if } r = 1\\
+ t   &\text{if } r > 1\\
+\end{cases}\\
+f_1 &= \begin{cases}
+ f &\text{if } r = 1\\
+ s &\text{if } r > 1\\
+\end{cases}\\
+e_1 &= \begin{cases}
+ e &\text{if } r = 1\\
+ r &\text{if } r > 1\\
+\end{cases}\\
+r_2 &= \pm e_1\sqrt{f_1 \pm g_2\sqrt{h_1}}\\
+\end{align}
+
+
+
 We define four numbers of increasing complexity:
 \begin{align}
 B &\equiv \frac{r_0}{a} \\

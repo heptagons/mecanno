@@ -63,7 +63,7 @@ func (ds *Ds) NewD(b, c, d Z, a N) *D {
 	if ab == nil {
 		return nil // infinite
 	}
-	if cd := ds.NewR32(c, d); cd == nil {
+	if cd := ds.NewR32(c, d, nil); cd == nil {
 		return nil // overflow
 	} else {
 		// after the d simplification, c was increased
