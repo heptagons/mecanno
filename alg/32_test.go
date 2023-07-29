@@ -29,18 +29,22 @@ func Test32R(t *testing.T) {
 	}
 
 	// reduce2(out, inA, inB N) (N32, N32, N32)
-	for _, s := range []struct{ out, inA, inB N; exp string } {
-		{ out:1, inA: 1, inB: 1, exp: "1√(1+1√x)"  },
-		{ out:4, inA: 4, inB: 4, exp: "8√(1+1√x)"  },
-		{ out:8, inA: 8, inB: 8, exp:"16√(2+2√x)"  },
-		{ out:5, inA:12, inB:56, exp:"10√(3+14√x)" },
+	for _, s := range []struct{ out, inA, inB Z; exp string } {
 
-		{ out:1, inA:25*9*4*4*3, inB:25*9*4*7,  exp: "30√(12+7√x)" },
-		{ out:9, inA:3*3*3*3*5,  inB:3*3*3*3*3, exp: "81√(5+3√x)"  },
+		{ out:0, inA:0,  inB: 0, exp: "+0√(+0+0√x)"  },
 
+		{ out:1, inA: 1, inB: 1, exp: "+1√(+1+1√x)"  },
+		{ out:4, inA: 4, inB: 4, exp: "+8√(+1+1√x)"  },
+		{ out:8, inA: 8, inB: 8, exp:"+16√(+2+2√x)"  },
+		{ out:5, inA:12, inB:56, exp:"+10√(+3+14√x)" },
+
+		{ out:1, inA:25*9*4*4*3, inB:25*9*4*7,  exp: "+30√(+12+7√x)" },
+		{ out:9, inA:3*3*3*3*5,  inB:3*3*3*3*3, exp: "+81√(+5+3√x)"  },
+
+		{ out:-4, inA:-4,  inB: -4, exp: "-8√(-1-1√x)"  },
 	} {
-		o, inA, inB, _ := rs.reduce2(s.out, s.inA, s.inB)
-		if got := fmt.Sprintf("%d√(%d+%d√x)", o, inA, inB); got != s.exp {
+		o, a, b, _ := rs.reduce2Z(s.out, s.inA, s.inB)
+		if got := fmt.Sprintf("%s√(%s%s√x)", o, a, b); got != s.exp {
 			t.Fatalf("n32s.reduceIns got=%s exp=%s", got, s.exp)
 		}
 	}

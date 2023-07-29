@@ -41,7 +41,7 @@ func (a *Alg) Multiply(b *Alg, r *R32s) *Alg {
 	if a == nil || b == nil {
 		return nil
 	}
-	out, in, ok := r.reduce(1, N(a.In) * N(b.In))
+	out, in, ok := r.reduce1(1, N(a.In) * N(b.In))
 	if !ok {
 		return nil
 	}
