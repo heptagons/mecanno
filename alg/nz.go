@@ -30,8 +30,6 @@ func (a *N) Reduce2(b *Z) N {
 	return g
 }
 
-
-
 func (a *N) Reduce3(b, c *Z) N {
 	var bb, cc N
 	if *b < 0 {
@@ -49,6 +47,33 @@ func (a *N) Reduce3(b, c *Z) N {
 		*a /= g
 		*b /= Z(g)
 		*c /= Z(g)
+	}
+	return g
+}
+
+func (a *N) Reduce4(b, c, e *Z) N {
+	var bb, cc, ee N
+	if *b < 0 {
+		bb = N(-*b)
+	} else {
+		bb = N(*b)
+	}
+	if *c < 0 {
+		cc = N(-*c)
+	} else {
+		cc = N(*c)
+	}
+	if *e < 0 {
+		ee = N(-*e)
+	} else {
+		ee = N(*e)
+	}
+	g := Ngcd(Ngcd(Ngcd(*a, bb), cc), ee)
+	if g > 1 {
+		*a /= g
+		*b /= Z(g)
+		*c /= Z(g)
+		*e /= Z(g)
 	}
 	return g
 }

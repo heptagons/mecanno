@@ -80,13 +80,6 @@ func NatPrimes() []N32 {
 }
 
 
-/*func gcd(a, b Z) Z {
-	if b == 0 {
-		return a
-	}
-	return gcd(b, a % b)
-}*/
-
 // I is an integer of 32 bits
 type I32 struct {
 	s bool
@@ -162,6 +155,44 @@ func NewR32s() *R32s {
 	}
 }
 
+func (r *R32s) NewR32ext(out, in Z, ext *R32) *R32 {
+	return nil
+}
+
+func (r *R32s) NewR32(out, in Z) *R32 {
+	if out == 0 || in == 0 {
+		return NewR32zero()
+	}
+	out32, in32, ok := r.sqrtZ(out, in)
+	if !ok {
+		return nil // reject overflows
+	}
+	zo := Z(out32); if out < 0 { zo = -zo }
+	zi := Z(in32);  if in  < 0 { zi = -zi }
+	if out, ok := NewI32(zo); !ok {
+		return nil
+	} else if in, ok := NewI32(zi); !ok {
+		return nil
+	} else {
+		return &R32{
+			out: out,
+			in:  in,
+		}
+	}
+}
+
+func (r *R32s) sqrtZ(out, in Z) (N32, N32, bool) {
+	out64 := out
+	if out < 0 { // radical negative
+		out64 = -out
+	}
+	in64 := in
+	if in < 0 { // radical imaginary
+		in64 = -in
+	}
+	return r.sqrt(N(out64), N(in64))
+}
+
 // sqrt reduces the radical (out)√(in) in in two parts
 // Example: -3√(20) returns -6√(5)
 // Return ok as false when returned values are larger than 32 bits (overflow).
@@ -204,41 +235,12 @@ func (r *R32s) sqrt(out, in N) (o N32, i N32, ok bool) {
 	return N32(out), N32(in), true
 }
 
-func (rs *R32s) NewR32(out, in Z) *R32 {
-	if out == 0 || in == 0 {
-		return NewR32zero()
-	}
-	out64 := out
-	if out < 0 { // radical negative
-		out64 = -out
-	}
-	in64 := in
-	if in < 0 { // radical imaginary
-		in64 = -in
-	}
-	out32, in32, ok := rs.sqrt(N(out64), N(in64))
-	if !ok {
-		return nil // reject overflows
-	}
-	zo := Z(out32); if out < 0 { zo = -zo }
-	zi := Z(in32);  if in  < 0 { zi = -zi }
 
-
-	if out, ok := NewI32(zo); !ok {
-		return nil
-	} else if in, ok := NewI32(zi); !ok {
-		return nil
-	} else {
-		return &R32{
-			out: out,
-			in:  in,
-		}
-	}
-}
 
 type R32 struct {
 	out *I32 // external integer with sign=true means whole R32 is negative
 	in  *I32 // internal integer with sign=true means whole R32 is imaginary
+	ext *R32
 }
 
 func (r *R32) outVal() Z {

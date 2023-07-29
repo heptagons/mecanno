@@ -115,14 +115,15 @@ func TestB(t *testing.T) {
 
 func TestD(t *testing.T) {
 	rs := NewR32s()
+	ds := NewDs(rs)
 	a1 := N(1)
 	a2 := N(2)
-	infinite := NewD(rs,   0, 0,0,  0)
-	zero     := NewD(rs,   0, 0,0, a1)
-	minus1   := NewD(rs,  -1, 0,0, a1)
-	half     := NewD(rs,   1, 0,0, a2)
-	ten      := NewD(rs,  10, 0,0, a1)
-	one_17th := NewD(rs,  2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
+	infinite := ds.NewD( 0, 0,0,  0)
+	zero     := ds.NewD( 0, 0,0, a1)
+	minus1   := ds.NewD(-1, 0,0, a1)
+	half     := ds.NewD( 1, 0,0, a2)
+	ten      := ds.NewD(10, 0,0, a1)
+	one_17th := ds.NewD(2*3*5*7*11*13, 0,0, 2*3*5*7*11*13*17)
 
 	for _, r := range []struct { d *D; exp string } {
 
@@ -133,18 +134,18 @@ func TestD(t *testing.T) {
 		{ d: ten,      exp:"+10" },
 		{ d: one_17th, exp:"+1/17" },
 		
-		{ d: NewD(rs,  0,  1,-1, a1),   exp: "+1i"        }, // imag
+		{ d: ds.NewD(  0,  1,-1, a1),   exp: "+1i"        }, // imag
 
-		{ d: NewD(rs,  0,  1,+2, a1),   exp: "+1√2"       },
-		{ d: NewD(rs,  0,  1,+2, a2),   exp: "+1√2/2"     },
-		{ d: NewD(rs,  1,  1,+2, a2),   exp: "(+1+1√2)/2" },
-		{ d: NewD(rs, -2, -2,+2, a2),   exp: "-1-1√2"     },
-		{ d: NewD(rs, -2, -1,+8, a2),   exp: "-1-1√2"     },
-		{ d: NewD(rs,  0, +1,+2, a2),   exp: "+1√2/2"     }, // sin(pi/4)
-		{ d: NewD(rs, -1, +1,+5,  4),   exp: "(-1+1√5)/4" }, // sin(pi/10)
+		{ d: ds.NewD(  0,  1,+2, a1),   exp: "+1√2"       },
+		{ d: ds.NewD(  0,  1,+2, a2),   exp: "+1√2/2"     },
+		{ d: ds.NewD(  1,  1,+2, a2),   exp: "(+1+1√2)/2" },
+		{ d: ds.NewD( -2, -2,+2, a2),   exp: "-1-1√2"     },
+		{ d: ds.NewD( -2, -1,+8, a2),   exp: "-1-1√2"     },
+		{ d: ds.NewD(  0, +1,+2, a2),   exp: "+1√2/2"     }, // sin(pi/4)
+		{ d: ds.NewD( -1, +1,+5,  4),   exp: "(-1+1√5)/4" }, // sin(pi/10)
 
-		{ d: NewD(rs,   3,   4, 1,   6), exp: "(+3+4)/6" },
-		{ d: NewD(rs, 158, 632, 5, 316), exp: "(+1+4√5)/2" }, 
+		{ d: ds.NewD(   3,   4, 1,   6), exp: "(+3+4)/6" },
+		{ d: ds.NewD( 158, 632, 5, 316), exp: "(+1+4√5)/2" }, 
 
 
 	} {
@@ -164,7 +165,7 @@ func TestD(t *testing.T) {
 		{ b:-1, a:1, exp:"+1i"     },
 		{ b:-1, a:2, exp:"+1i√2/2" },
 	} {
-		if got := NewDsqrtB(rs, r.b, r.a).String(); got != r.exp {
+		if got := ds.NewDsqrtB(r.b, r.a).String(); got != r.exp {
 			t.Fatalf("D-sqrtB got %s exp %s", got, r.exp)		
 		}
 	}
@@ -172,30 +173,45 @@ func TestD(t *testing.T) {
 	// D inversions
 	for _, r := range []struct { d *D; exp string } {
 		// reals
-		{ d: NewD(rs,  1, 2, 3,  4),  exp: "(-4+8√3)/11"    },
-		{ d: NewD(rs, -4, 8, 3, 11),  exp: "(+1+2√3)/4"     },
+		{ d: ds.NewD(  1, 2, 3,  4),  exp: "(-4+8√3)/11"    },
+		{ d: ds.NewD( -4, 8, 3, 11),  exp: "(+1+2√3)/4"     },
 
-		{ d: NewD(rs,  2, 3,  4, 5),  exp: "(-5+15)/16"     }, // 5/8
-		{ d: NewD(rs, -5, 15, 1, 16), exp: "(+2+6)/5"       }, // 8/5
+		{ d: ds.NewD(  2, 3,  4, 5),  exp: "(-5+15)/16"     }, // 5/8
+		{ d: ds.NewD( -5, 15, 1, 16), exp: "(+2+6)/5"       }, // 8/5
 
-		{ d: NewD(rs,  3,  4, 5,  6), exp: "(-18+24√5)/71"  }, // 
-		{ d: NewD(rs,-18, 24, 5, 71), exp: "(+3+4√5)/6"     },
+		{ d: ds.NewD(  3,  4, 5,  6), exp: "(-18+24√5)/71"  }, // 
+		{ d: ds.NewD(-18, 24, 5, 71), exp: "(+3+4√5)/6"     },
 
-		{ d: NewD(rs,  4,  5, 6,  7), exp: "(-28+35√6)/134" },
-		{ d: NewD(rs,-28, 35, 6,134), exp: "(+4+5√6)/7"     },
+		{ d: ds.NewD(  4,  5, 6,  7), exp: "(-28+35√6)/134" },
+		{ d: ds.NewD(-28, 35, 6,134), exp: "(+4+5√6)/7"     },
 
-		{ d: NewD(rs,  5,  6, 7,  8), exp: "(-40+48√7)/227" },
-		{ d: NewD(rs,-40, 48, 7,227), exp: "(+5+6√7)/8"     },
+		{ d: ds.NewD(  5,  6, 7,  8), exp: "(-40+48√7)/227" },
+		{ d: ds.NewD(-40, 48, 7,227), exp: "(+5+6√7)/8"     },
 
-		{ d: NewD(rs,  6,  7, 8,  9), exp: "(-27+63√2)/178" },
-		{ d: NewD(rs,-27, 63, 2,178), exp: "(+6+14√2)/9"    },
+		{ d: ds.NewD(  6,  7, 8,  9), exp: "(-27+63√2)/178" },
+		{ d: ds.NewD(-27, 63, 2,178), exp: "(+6+14√2)/9"    },
 
-		{ d: NewD(rs,  7,  8, 9, 10), exp: "(-70+240)/527"  },
-		{ d: NewD(rs,-70,240, 1,527), exp: "(+7+24)/10"     },
+		{ d: ds.NewD(  7,  8, 9, 10), exp: "(-70+240)/527"  },
+		{ d: ds.NewD(-70,240, 1,527), exp: "(+7+24)/10"     },
 
 	} {
-		if got := r.d.InvD(rs).String(); got != r.exp {
+		if got := ds.NewInvD(r.d).String(); got != r.exp {
 			t.Fatalf("D-inv got %s exp %s", got, r.exp)		
+		}
+	}
+}
+
+func TestH(t *testing.T) {
+
+	rs := NewR32s()
+	hs := NewHs(rs)
+
+	for _, r := range []struct { b, c, d, e, f, g, h Z; a N; exp string } {
+		// reals
+		{ b:1, c:2, d:3, e:4, f:5, g:6, h:7, a:9, exp: "+6√7" },
+	} {
+		if got := hs.NewH(r.b, r.c, r.d, r.e, r.f, r.g, r.h, r.a).String(); got != r.exp {
+			t.Fatalf("H got %s exp %s", got, r.exp)		
 		}
 	}
 }

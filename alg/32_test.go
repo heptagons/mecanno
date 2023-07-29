@@ -28,7 +28,7 @@ func Test32R(t *testing.T) {
 		}
 	}
 
-	// sqrt32
+	// CD
 	for pos, s := range []struct { out, a, b Z; e string }	{
 		{ out: 1, a: 0,  b: 0,  e: "+0"   },
 		{ out: 1, a: 0,  b: 1,  e: "+0"   },

@@ -89,66 +89,64 @@ and now considering the denominator $a$.
 
 \section{Operations with result B}
 
-\subsection{NewB $B_1 \mapsto B$}
+\subsection{NewB $B = B_1$}
 \begin{align}
-B1 &= \frac{\pm b_1}{a_1}\\
- &= \frac{\pm b}{a} \\
- &\quad \textbf{ where } \{ \pm b, a \} = \gcd\{ \pm b_1, a_1 \} \nonumber
+B_1 &= \frac{\pm b_1}{a_1}\\
+ &\quad \textbf{ Reduce } \{ a,b \} = \{a_1/G,b_1/G\} \iff G = \gcd \{a_1,b_1\} > 1 \nonumber \\
+ &= \frac{\pm b}{a}
 \end{align}
 
-\subsection{AddBB $B_1 + B_2 \mapsto B$}
+\subsection{AddBB $B = B_2 + B_3$}
 \begin{align}
-B_1 + B_2 &= \frac{\pm b_1}{a_1} + \frac{\pm b_2}{a_2} \\
- &= \frac{\pm b_1a_2 \pm b_2a_1 }{a_1a_2} \\
- &= \frac{\pm b}{a} \\
- &\quad \textbf{ where } \{ \pm b, a \} = \gcd \{ \pm b_1a_2 \pm b_2a_1, a_1a_2 \} \nonumber
+B_2 + B_3 &= \frac{\pm b_2}{a_2} + \frac{\pm b_3}{a_3} \\
+ &= \frac{\pm b_2a_3 \pm b_3a_2 }{a_2a_3} = \frac{q}{p} \\
+ &\quad \textbf{ Reduce } \{ a_1,b_1 \} = \{p/G, q/G\} \iff G = \gcd \{ p,q \} > 1 \nonumber \\
+ &= \frac{\pm b_1 }{ a_1 } \textbf{ Solve as NewB }
 \end{align}
 
-\subsection{MulBB $B_1 \times B_2 \mapsto B$}
+\subsection{MulBB $B = B_2 \times B_3$}
 \begin{align}
-B_1 \times B_2 &= \frac{\pm b_1}{a_1} \times \frac{\pm b_2}{a_2} \\
-  &= \frac{\pm b_1b_2}{a_1a_2} \\
-  &= \frac{\pm b}{a} \\
-  &\quad \textbf{ where } \{ \pm b,a \} = \gcd \{ \pm b_1b_2, a_1a_2 \} \nonumber
+B_2 \times B_3 &= \frac{\pm b_2}{a_2} \times \frac{\pm b_3}{a_3} \\
+  &= \frac{\pm b_2b_3}{a_2a_3} = \frac{q}{p} \\
+ &\quad \textbf{ Reduce } \{ a_1,b_1 \} = \{p/G, q/G\} \iff G = \gcd \{ p,q \} > 1 \nonumber \\
+ &= \frac{\pm b_1 }{ a_1 } \textbf{ Solve as NewB }
 \end{align}
 
-\subsection{InvB $1 / B_1 \mapsto B \iff a_1 > 0$}
+\subsection{InvB $B = 1 / B_2$}
 \begin{align}
-\frac{1}{B_1} &= \frac{1}{\pm b_1 / a_1}\\
- &= \frac{\pm a_1}{b_1} \\
- &= \frac{\pm b}{a} \\
- &\quad \textbf{ where } \{ \pm b \} = a_1, \{ a \} = b_1 \nonumber
+\frac{1}{B_2} &= \frac{1}{\pm b_2 / a_2}\\
+ &= \frac{\pm a_2}{b_2} = \frac{q}{p} \\
+ &\quad \textbf{ Reduce } \{ a_1,b_1 \} = \{p/G, q/G\} \iff G = \gcd \{ p,q \} > 1 \nonumber \\
+ &= \frac{\pm b_1 }{ a_1 } \textbf{ Solve as NewB }
 \end{align}
 
 \section{Operations with result D}
 
-\subsection{NewD $D_1 \mapsto D $}
+\subsection{NewD $D = D_1$}
 \begin{align}
 D_1 &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1}\\
- &\quad \textbf{ Do } \{p,q,r\} = \{a_1/G,b_1/G,c_1/G\} \iff G = \gcd \{a_1,b_1,c_1\} > 1 \nonumber \\
+ &\quad \textbf{ Reduce } \{p,q,r\} = \{a_1/G,b_1/G,c_1/G\} \iff G = \gcd \{a_1,b_1,c_1\} > 1 \nonumber \\
  &= \frac{\pm q \pm r\sqrt{d_1}}{p} \\
- &\quad \textbf{ Do } \{ d \} = s^2d_1 \iff s>1 \nonumber \\
+ &\quad \textbf{ Reduce } \{ d \} = s^2d_1 \iff s>1 \nonumber \\
  &= \frac{\pm q \pm rs\sqrt{d}}{p}\\
- &\quad \textbf{ Do } \{a,b,c\} = \{p/G,q/G,rs/G\} \iff G = \gcd \{p,q,rs\} \nonumber \\
+ &\quad \textbf{ Reduce } \{a,b,c\} = \{p/G,q/G,rs/G\} \iff G = \gcd \{p,q,rs\} \nonumber \\
  &= \frac{\pm b \pm c\sqrt{d}}{a}
 \end{align}
 
-\subsection{SqrtB $\sqrt{B_2} \mapsto D_1$}
+\subsection{SqrtB $D = \sqrt{B_2}$}
 \begin{align}
-\sqrt{B_2} &= \sqrt{\frac{+b_2}{a_2}}\\
+\sqrt{B_2} &= \sqrt{\frac{\pm b_2}{a_2}}\\
  &= \frac{\sqrt{a_2b_2}}{a_2}\\
- &\quad \textbf{ Do } \{ a_1, b_1, c_1, d_1\} = \{ a_2, 0, 1, a_2b_2\} \nonumber \\
- &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} \\
- &\quad \textbf{ Solve as NewD } \nonumber
+ &\quad \textbf{ Set } \{ a_1, b_1, c_1, d_1\} = \{ a_2, 0, 1, a_2b_2\} \nonumber \\
+ &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} \textbf{ Solve as NewD }
 \end{align}
 
-\subsection{InvD $1 / D_2 \mapsto D$}
+\subsection{InvD $D = 1 / D_2$}
 \begin{align*}
 1 / D_2 &= \frac{a_2}{\pm b_2 \pm c_2\sqrt{d_2}} \\
  &= \frac{\pm a_2b_2 \mp a_2c_2\sqrt{d_2}}{b_2^2 - c_2^2d_2}\\
- &\quad \textbf{ Do } \{ a_1, b_1, c_1, d_1\} = \{ b_2^2 - c_2^2d_2, \pm a_2b_2, \mp a_2c_2, d_2\} \nonumber\\
- &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} \\
- &\quad \textbf{ Solve as NewD } \nonumber
+ &\quad \textbf{ Set } \{ a_1, b_1, c_1, d_1\} = \{ b_2^2 - c_2^2d_2, \pm a_2b_2, \mp a_2c_2, d_2\} \nonumber\\
+ &= \frac{\pm b_1 \pm c_1\sqrt{d_1}}{a_1} \textbf{ Solve as NewD } \nonumber
 \end{align*}
 
 

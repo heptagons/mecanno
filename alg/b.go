@@ -18,8 +18,7 @@ func NewB0(den N) *B {
 func NewB(num Z, den N) *B {
 	if den == 0 {
 		return nil // infinite
-	}
-	if num == 0 {
+	} else if num == 0 {
 		return NewB0(den)
 	}
 
@@ -27,8 +26,7 @@ func NewB(num Z, den N) *B {
 
 	if N32overflowN(den) {
 		return nil // overflow denominator
-	}
-	if b, ok := NewI32(num); !ok {
+	} else if b, ok := NewI32(num); !ok {
 		return nil // overflow numerator
 	} else {
 		return &B{
@@ -41,14 +39,12 @@ func NewB(num Z, den N) *B {
 func NewBnotReduce(num Z, den N) *B {
 	if den == 0 {
 		return nil // infinite
-	}
-	if num == 0 {
+	} else if num == 0 {
 		return NewB0(den)
 	}
 	if N32overflowN(den) {
 		return nil // overflow denominator
-	}
-	if b, ok := NewI32(num); !ok {
+	} else if b, ok := NewI32(num); !ok {
 		return nil // overflow numerator
 	} else {
 		return &B{
