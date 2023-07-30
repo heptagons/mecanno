@@ -153,8 +153,7 @@ func (x *B) Str(s *Str) {
 		x.b.Str(s)
 	} else {
 		x.b.Str(s)
-		s.Divisor()
-		s.N32(x.a)
+		s.Over(x.a)
 	}
 }
 

@@ -2,6 +2,7 @@ package alg
 
 import (
 	"math"
+//	"fmt"
 )
 
 type Int int32
@@ -110,6 +111,17 @@ func newI32minus(n N32) *I32 {
 	}	
 }
 
+func (i *I32) clone() *I32 {
+	if i == nil {
+		return nil
+	} else {
+		return &I32 {
+			s: i.s,
+			n: i.n,
+		}
+	}
+}
+
 func (i *I32) mul(n N32) Z {
 	if i.s {
 		return - Z(n)*Z(i.n)
@@ -140,13 +152,13 @@ func (i *I32) Str(s *Str) {
 	if i == nil || i.n == 0 {
 		s.Zero()
 	} else {
-		s.Integer32(i)
+		s.I32(i)
 	}
 }
 
 func (i *I32) String() string {
 	str := &Str{}
-	str.Integer32(i)
+	str.I32(i)
 	return str.String()
 }
 
@@ -161,48 +173,55 @@ func NewR32s() *R32s {
 	}
 }
 
-func (r *R32s) NewR32(out, in Z, ext *R32s) *R32 {
-	/*if ext == nil {
-		return r.newR32(out, in)
+func (r *R32s) Radical(out, in Z, ext *R32) *R32 {
+	if ext == nil {
+		if out == 0 || in == 0 {
+			return NewR32zero() // zero
+		} else if o, i, ok := r.reduce1Z(out, in); ok {
+			return NewR32(o, i, nil)
+		}
+		return nil
 	}
 	e := out
 	f := in
-	g := ext.outVal()*/
+	g := ext.outVal()
+	h := ext.inVal()
+	if o, a, b, ok := r.reduce2Z(e, f, g); ok {
+		return NewR32(o, a, r.Radical(b.val(), h, ext.ext))
+	}
 	return nil
 }
 
-func (r *R32s) newR32(out, in Z) *R32 {
-	if out == 0 || in == 0 {
-		return NewR32zero()
-	}
-	o, i, ok := r.reduce1Z(out, in)
+
+func (r *R32s) reduce1Z(out, inA Z) (*I32, *I32, bool) {
+	io := out; if out < 0 { io = -out }
+	ia := inA; if inA < 0 { ia = -inA }
+	o, a, ok := r.reduce1(N(io), N(ia))
 	if !ok {
-		return nil // reject overflows
+		return nil, nil, false
 	}
 	zo := Z(o); if out < 0 { zo = -zo }
-	zi := Z(i); if in  < 0 { zi = -zi }
-	if out, ok := NewI32(zo); !ok {
-		return nil
-	} else if in, ok := NewI32(zi); !ok {
-		return nil
-	} else {
-		return &R32{
-			out: out,
-			in:  in,
-		}
-	}
+	za := Z(a); if inA < 0 { za = -za }
+	ro, _ := NewI32(zo)
+	ra, _ := NewI32(za)
+	return ro, ra, true
 }
 
-func (r *R32s) reduce1Z(out, in Z) (N32, N32, bool) {
-	o := out
-	if out < 0 { // radical negative
-		o = -out
+func (r *R32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
+	io := out; if out < 0 { io = -out }
+	ia := inA; if inA < 0 { ia = -inA }
+	ib := inB; if inB < 0 { ib = -inB }
+	o, a, b, ok := r.reduce2(N(io), N(ia), N(ib))
+	if !ok {
+		return nil, nil, nil, false
 	}
-	i := in
-	if in < 0 { // radical imaginary
-		i = -in
-	}
-	return r.reduce1(N(o), N(i))
+	zo := Z(o); if out < 0 { zo = -zo }
+	za := Z(a); if inA < 0 { za = -za }
+	zb := Z(b); if inB < 0 { zb = -zb }
+	ro, _ := NewI32(zo)
+	ra, _ := NewI32(za)
+	rb, _ := NewI32(zb)
+	return ro, ra, rb, true
 }
 
 // reduce try to decrease in and increase out.
@@ -246,23 +265,6 @@ func (r *R32s) reduce1(out, in N) (o N32, i N32, ok bool) {
 	return N32(out), N32(in), true
 }
 
-func (r *R32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
-	io := out; if out < 0 { io = -out }
-	ia := inA; if inA < 0 { ia = -inA }
-	ib := inB; if inB < 0 { ib = -inB }
-	o, a, b, ok := r.reduce2(N(io), N(ia), N(ib))
-	if !ok {
-		return nil, nil, nil, false
-	}
-	zo := Z(o); if out < 0 { zo = -zo }
-	za := Z(a); if inA < 0 { za = -za }
-	zb := Z(b); if inB < 0 { zb = -zb }
-	ro, _ := NewI32(zo)
-	ra, _ := NewI32(za)
-	rb, _ := NewI32(zb)
-	return ro, ra, rb, true
-}
-
 // reduce2 try to increase given out by decrease given inA and inB.
 // Return reduced out and ins and a flag for 32 bits overflow.
 // Example:
@@ -303,8 +305,27 @@ type R32 struct {
 	ext *R32
 }
 
+func NewR32zero() *R32 {
+	return &R32{
+		out: nil,
+		in:  nil,
+	}
+}
+
+func NewR32(out, in *I32, ext *R32) *R32 {
+	return &R32{
+		out: out,
+		in:  in,
+		ext: ext,
+	}
+}
+
 func (r *R32) outVal() Z {
 	return r.out.val()
+}
+
+func (r *R32) outSet(out *I32) {
+	r.out = out.clone()
 }
 
 func (r *R32) outValPow2() Z {
@@ -313,13 +334,6 @@ func (r *R32) outValPow2() Z {
 
 func (r *R32) inVal() Z {
 	return r.in.val()
-}
-
-func NewR32zero() *R32 {
-	return &R32{
-		out: nil,
-		in:  nil,
-	}
 }
 
 func (r *R32) IsZero() bool {
@@ -341,8 +355,14 @@ func (r *R32) Str(s *Str) {
 	} else if r.in == nil || r.in.n == 0 {
 		s.Zero()
 	} else {
-		s.Integer32(r.out)
-		s.Radical32(r.in)
+		s.I32(r.out)
+		if r.ext == nil {
+			s.Radical32(r.in, nil)
+		} else {
+			s.Radical32(r.in, func(s *Str) {
+				r.ext.Str(s)
+			})
+		}
 	}
 }
 
