@@ -2,7 +2,7 @@ package alg
 
 type D struct {
 	ab *B
-	cd *R32
+	cd *AI32
 }
 
 func (d *D) Str(s *Str) {
@@ -44,12 +44,12 @@ func (d *D) String() string {
 
 
 type Ds struct {
-	*R32s
+	*AI32s
 }
 
-func NewDs(rs *R32s) *Ds {
+func NewDs(rs *AI32s) *Ds {
 	return &Ds{
-		R32s: rs,
+		AI32s: rs,
 	}
 }
 
@@ -62,12 +62,12 @@ func (ds *Ds) NewD(b, c, d Z, a N) *D {
 	if ab == nil {
 		return nil // infinite
 	}
-	if cd := ds.Radical(c, d, nil); cd == nil {
+	if cd := ds.AI(c, d, nil); cd == nil {
 		return nil // overflow
 	} else {
 		// after the d simplification, c was increased
 		// specially when b is 0, we need to try reduce a and c
-		ab.Reduce3(cd.out)
+		ab.Reduce3(cd.o)
 		return &D{
 			ab: ab,
 			cd: cd,

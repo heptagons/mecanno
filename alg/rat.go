@@ -150,7 +150,7 @@ func (q *Rat) String() string {
 //	            sqrt(rat.Num*rat.Den)     out
 //	sqrt(rat) = --------------------- = ------- * sqrt(in)
 //	                  rat.Den           rat.Den
-func (r *Rat) Sqrt(rs *R32s) *Alg {
+func (r *Rat) Sqrt(rs *AI32s) *Alg {
 	if r == nil {
 		return nil // invalid rational
 	}

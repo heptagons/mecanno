@@ -114,7 +114,7 @@ func TestB(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
-	rs := NewR32s()
+	rs := NewAI32s()
 	ds := NewDs(rs)
 	a1 := N(1)
 	a2 := N(2)
@@ -203,7 +203,7 @@ func TestD(t *testing.T) {
 
 func TestH(t *testing.T) {
 
-	rs := NewR32s()
+	rs := NewAI32s()
 	hs := NewHs(rs)
 
 	for _, r := range []struct { b, c, d, e, f, g, h Z; a N; exp string } {

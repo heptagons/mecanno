@@ -1,28 +1,28 @@
 package alg
 
 type H struct {
-	gh *R32
-	ef *R32
-	cd *R32
+	gh *AI32
+	ef *AI32
+	cd *AI32
 	ab *B
 }
 
 type Hs struct {
-	*R32s
+	*AI32s
 }
 
-func NewHs(rs *R32s) *Hs {
+func NewHs(rs *AI32s) *Hs {
 	return &Hs{
-		R32s: rs,
+		AI32s: rs,
 	}
 }
 
 func (s *Hs) NewH(b, c, d, e, f, g, h Z, a N) *H {
-	gh := s.Radical(g, h, nil)
+	gh := s.AI(g, h, nil)
 	if gh == nil {
 		return nil // overflow
 	}
-	ef := s.Radical(e, f, nil) // TODO
+	ef := s.AI(e, f, nil) // TODO
 	if ef == nil {
 		return nil
 	}

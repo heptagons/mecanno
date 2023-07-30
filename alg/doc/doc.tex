@@ -6,14 +6,14 @@
 
 \begin{document}
 
-\section{32 bits algebraic numbers}
+\section{32 bits algebraic integers}
 
-Let $r_0$, $r_1$, $r_2$ and $r_3$ irreducibles radicals with nesting 0, 1, 2 and 3:
+Let $A_0$, $A_1$, $A_2$ and $A_3$ algebraic integers with levels 0, 1, 2 and 3:
 \begin{align}
-r_0 &= \pm b\\
-r_1 &= \pm c\sqrt{d}\\
-r_2 &= \pm e\sqrt{f \pm g\sqrt{h}}\\
-r_3 &= \pm i\sqrt{j \pm k\sqrt{l \pm m\sqrt{n}}}
+A_0 &= \pm b\\
+A_1 &= \pm c\sqrt{\pm d}\\
+A_2 &= \pm e\sqrt{f \pm g\sqrt{\pm h}}\\
+A_3 &= \pm i\sqrt{j \pm k\sqrt{l \pm m\sqrt{\pm n}}}
 \end{align}
 
 We will use fourteen different 32-bit natural numbers, where $a$ goes in the denominators and $b,...n$ 
@@ -25,58 +25,88 @@ in the numerators.
 The signs are managed appart as extra boolean variables and there is one for each of the seven variables
 $b$, $c$, $e$, $g$, $i$, $k$ and $m$.
 
-\subsection{Reduction of $r_1$}
+\subsection{N32, I32 and AI32}
+
+\setlength{\columnsep}{30pt}
+\begin{multicols}{2}
+\begin{lstlisting}
+type N32 uint32 // range 0 - 0xffffffff
+
+type I32 struct {
+  s bool // sign: true means negative
+  n N32  // positive value
+}
+
+type AI32 struct {
+  o *I32  // outside radical
+  i *I32  // inside radical square-free
+  e *AI32 // inside radical extension
+}
+\end{lstlisting}
+In this list we define three 32 bit numbers in Golang code.\\
+In line 1 we define the natural number $N32$ with a range of $0 < n \leq 2^{32} - 1$.\\
+In line 3 we define the integer number $I32$, the number sign is negative if $s$ is true 
+and the number value always is a positive. If $I32$ is nil, then we assume the number
+is zero.\\
+In line 8 we define the algebraci integer number $AI32$. The number is recursive with a value of
 \begin{align}
-r_1 &= \pm c\sqrt{d}\\
-d   &= p^2c\\
-d_1 &= \begin{cases}
- d &\text{if } p = 1\\
- q &\text{if } p > 1\\
-\end{cases}\\
-c_1 &= \begin{cases}
- c  &\text{if } p = 1\\
- cp &\text{if } p > 1\\
-\end{cases}\\
-r_1 &= \pm c_1\sqrt{d_1}
+\pm o\sqrt{\pm i \pm e.o\sqrt{\pm e.i \pm e.e.o ... }}
+\end{align}
+where each sign $\pm$ corresponds to its integer sign $s$ of the values of integers $o$ and $i$.
+\end{multicols}
+
+\subsection{$A_1$ reduction}
+\begin{align}
+A_1 &= \pm c\sqrt{\pm d}\\
+d   &= p^2d_1 \qquad \textbf{ From $d$ find $p,d_1$ where $d_1$ is square-free or $1$} \\
+A_1 &= \begin{cases}
+ 0                    &\text{case 1: if } c = 0 \lor d = 0\\
+ \pm cp               &\text{case 2: if } d_1 = +1\\
+ \pm c\sqrt{\pm d}    &\text{case 3: if } p = 1 \text{ (already reduced)}\\
+ \pm cp\sqrt{\pm d_1} &\text{case 4: otherwise }\\
+\end{cases}
+\end{align}
+For cases $1$ and $2$ we got $A_1$ degenerated into $A_0$.
+For case $3$ nothing changed.
+For case $4$ we got reduced $A_1$ with new values $c_1=cp$ and $d_1$:
+\begin{align}
+A_1 &= \pm c_1\sqrt{\pm d_1}
 \end{align}
 
-\subsection{Reduction of $r_2$}
+\subsection{$A_2$ reduction}
 \begin{align}
-r_2 &= \pm e\sqrt{f \pm g\sqrt{h}}\\
-h   &= p^2q\\
-h_1 &= \begin{cases}
- h &\text{if } p = 1\\
- q &\text{if } p > 1\\
+A_2 &= \pm e\sqrt{\pm f \pm g\sqrt{\pm h}}\\
+h   &= p^2h_1 \qquad \textbf{ From $d$ find $p,h_1$ where $h_1$ is square-free or $1$} \\
+A_2 &= \begin{cases}
+ 0                                    &case 1: \text{if } e = 0\\
+ \pm e\sqrt{\pm f}                    &case 2: \text{if } g = 0 \lor h = 0\\
+ \pm e\sqrt{\pm f \pm gp}             &case 3: \text{if } h_1 = 1\\
+ \pm e\sqrt{\pm f \pm g\sqrt{\pm h}}  &case 4: \text{if } p = 1 \text{ nothing changed}\\
+ \pm e\sqrt{\pm f \pm gp\sqrt{\pm h_1}} &case 5: \text{otherwise }
 \end{cases}\\
-g_1 &= \begin{cases}
- g  &\text{if } p = 1\\
- gp &\text{if } p > 1\\
-\end{cases}\\
-r_2 &= \pm e\sqrt{f \pm g_1\sqrt{h_1}}\\
-f &= r^2s \textbf{ and } g_1 = r^2t, r^2 \textbf{ lcc of } f \textbf{ and } g \nonumber \\
-g_2 &= \begin{cases}
- g_1 &\text{if } r = 1\\
- t   &\text{if } r > 1\\
-\end{cases}\\
-f_1 &= \begin{cases}
- f &\text{if } r = 1\\
- s &\text{if } r > 1\\
-\end{cases}\\
-e_1 &= \begin{cases}
- e &\text{if } r = 1\\
- r &\text{if } r > 1\\
-\end{cases}\\
-r_2 &= \pm e_1\sqrt{f_1 \pm g_2\sqrt{h_1}}\\
+\end{align}
+For case $1$ we have that $A_2$ degenerated into $A_0$ so we finish.
+For cases $2$ and $3$ we have that $A_2$ degenerated into $A_1$, so we proceed to go
+to reduce further this new $A_1$ as in previous section. For cases $4$ and $5$ we rewrite
+the $A_2$ with reduced values $g_1$ and square-free $h_1$:
+\begin{align}
+A_2 &= \pm e\sqrt{\pm f \pm g_1\sqrt{\pm h_1}}\\
+g_1 &= r^2g_2 \qquad \textbf{From $g_1$ found $r,g_2$ where $r$ matches with next equation's}\\
+f   &= r^2f_1 \qquad \textbf{From $f$ found $r,f_1$ where $r$ matches with previous equation's}\\
+A_2 &= \begin{cases}
+ \pm e\sqrt{\pm f \pm g_1\sqrt{\pm h_1}} &case 6: \text{if } r = 1 \text{ nothing changed}\\
+ \pm er\sqrt{\pm f_1 \pm g_2\sqrt{\pm h_1}}  &case 7: \text{otherwise }
+\end{cases}
 \end{align}
 
-
+\subsection{B, D, H, N}
 
 We define four numbers of increasing complexity:
 \begin{align}
-B &\equiv \frac{r_0}{a} \\
-D &\equiv \frac{r_0 + r_1}{a} \iff c,d > 0 \\
-H &\equiv \frac{r_0 + r_1 + r_2}{a} \iff e,f,g,h > 0 \\
-N &\equiv \frac{r_0 + r_1 + r_2 + r_3}{a} \iff i,j,k,l,m,n > 0
+B &\equiv \frac{A_0}{a}\\
+D &\equiv \frac{A_0 + A_1}{a}\\
+H &\equiv \frac{A_0 + A_1 + A_2}{a}\\
+N &\equiv \frac{A_0 + A_1 + A_2 + A_3}{a}
 \end{align}
 
 

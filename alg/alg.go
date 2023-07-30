@@ -37,7 +37,7 @@ func (s *Alg) String() string {
 
 // Mul multiply two algebraic numbers a and b to return another algrebraic
 // returns nil if a or b are nil or after operation overflow
-func (a *Alg) Multiply(b *Alg, r *R32s) *Alg {
+func (a *Alg) Multiply(b *Alg, r *AI32s) *Alg {
 	if a == nil || b == nil {
 		return nil
 	}
@@ -52,12 +52,12 @@ func (a *Alg) Multiply(b *Alg, r *R32s) *Alg {
 }
 
 type Algs struct {
-	*R32s
+	*AI32s
 }
 
-func NewAlgs(nats *R32s) *Algs {
+func NewAlgs(nats *AI32s) *Algs {
 	return &Algs{
-		R32s: nats,
+		AI32s: nats,
 	}
 }
 
@@ -82,7 +82,7 @@ func (algs *Algs) SinC(a, b, c N32) *Alg {
 	if rat := NewRat(p - q*q, d*d); rat == nil {
 		return nil
 	} else {
-		return rat.Sqrt(algs.R32s)
+		return rat.Sqrt(algs.AI32s)
 	}
 }
 

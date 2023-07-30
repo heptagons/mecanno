@@ -2,17 +2,35 @@ package alg
 
 import (
 	"math"
-//	"fmt"
 )
 
-type Int int32
+type N32 uint32 // range 0 - 0xffffffff
+
+type I32 struct {
+  s bool // sign: true means negative
+  n N32  // positive value
+}
+
+type AI32 struct {
+  o *I32  // outside
+  i *I32  // inside
+  e *AI32 // inside extension
+}
+
+type AI32s struct {
+	primes []N32
+}
+
+
+
+
+
+
 
 const N32_MAX = N(0xffffffff)
 //const MAXNAT = uint64(0xffffffff)
 
-// N32 represents a small natural number in the
-// range 1 - 0xffffffff
-type N32 uint32
+
 
 func N32overflowZ(z Z) bool {
 	if z > 0 {
@@ -57,34 +75,6 @@ func (a *N32) Reduce3(b, c *N32) {
 		*b /= g
 		*c /= g
 	}
-}
-
-// NatPrimes returns a list of the first primes
-// Use the Sieve of Erathostenes
-func NatPrimes() []N32 {
-	value := 0xffff
-    f := make([]bool, value)
-    for i := 2; i <= int(math.Sqrt(float64(value))); i++ {
-        if f[i] == false {
-            for j := i * i; j < value; j += i {
-                f[j] = true
-            }
-        }
-    }
-    list := make([]N32, 0)
-    for i := N32(2); i < N32(value); i++ {
-        if f[i] == false {
-            list = append(list, i)
-        }
-    }
-    return list
-}
-
-
-// I is an integer of 32 bits
-type I32 struct {
-	s bool
-	n N32
 }
 
 func NewI32(z Z) (*I32, bool) {
@@ -162,38 +152,49 @@ func (i *I32) String() string {
 	return str.String()
 }
 
-
-type R32s struct {
-	primes []N32
-}
-
-func NewR32s() *R32s {
-	return &R32s{
-		primes: NatPrimes(),
+// NewAI32s creates algebraic integers factory
+// A fixed internal 32-bit primes list is used to create
+// algebraic integers reduced
+func NewAI32s() *AI32s {
+	value := 0xffff
+    f := make([]bool, value)
+    for i := 2; i <= int(math.Sqrt(float64(value))); i++ {
+        if f[i] == false {
+            for j := i * i; j < value; j += i {
+                f[j] = true
+            }
+        }
+    }
+    primes := make([]N32, 0)
+    for i := N32(2); i < N32(value); i++ {
+        if f[i] == false {
+            primes = append(primes, i)
+        }
+    }
+	return &AI32s{
+		primes: primes,
 	}
 }
 
-func (r *R32s) Radical(out, in Z, ext *R32) *R32 {
+func (r *AI32s) AI(out, in Z, ext *AI32) *AI32 {
 	if ext == nil {
-		if out == 0 || in == 0 {
-			return NewR32zero() // zero
+		if out == 0 {
+			return NewAI32zero() // zero
 		} else if o, i, ok := r.reduce1Z(out, in); ok {
-			return NewR32(o, i, nil)
+			return NewAI32(o, i, nil)
 		}
 		return nil
 	}
-	e := out
-	f := in
-	g := ext.outVal()
-	h := ext.inVal()
-	if o, a, b, ok := r.reduce2Z(e, f, g); ok {
-		return NewR32(o, a, r.Radical(b.val(), h, ext.ext))
+	eo := ext.outVal()
+	ei := ext.inVal()
+	if o, ia, ib, ok := r.reduce2Z(out, in, eo); ok {
+		return NewAI32(o, ia, r.AI(ib.val(), ei, ext.e))
 	}
 	return nil
 }
 
 
-func (r *R32s) reduce1Z(out, inA Z) (*I32, *I32, bool) {
+func (r *AI32s) reduce1Z(out, inA Z) (*I32, *I32, bool) {
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
 	o, a, ok := r.reduce1(N(io), N(ia))
@@ -204,10 +205,14 @@ func (r *R32s) reduce1Z(out, inA Z) (*I32, *I32, bool) {
 	za := Z(a); if inA < 0 { za = -za }
 	ro, _ := NewI32(zo)
 	ra, _ := NewI32(za)
+	// TODO only here because we have the ra sign
+	// if ra = +squared (not integer imaginary)
+	// set ro = ro + √(ra)
+	// set ra = nil
 	return ro, ra, true
 }
 
-func (r *R32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
+func (r *AI32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
 	ib := inB; if inB < 0 { ib = -inB }
@@ -227,7 +232,7 @@ func (r *R32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
 // reduce try to decrease in and increase out.
 // Example: The input -3√(20) is returned as -6√(5)
 // Return ok as false when out or in values are larger than 32 bits (overflow).
-func (r *R32s) reduce1(out, in N) (o N32, i N32, ok bool) {
+func (r *AI32s) reduce1(out, in N) (o N32, i N32, ok bool) {
 	if out == 0 {
 		return 0, 0, true
 	}
@@ -270,7 +275,7 @@ func (r *R32s) reduce1(out, in N) (o N32, i N32, ok bool) {
 // Example:
 //	For given out=5, inA=12=2*2*3, inB=56=2*2*2*7
 //  Returns out=10=5*2, inA=3, inB=14=2*7, true
-func (r *R32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
+func (r *AI32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
 	if inA > 1 && inB > 1 {
 		for _, prime := range r.primes {
 			p := N(prime)
@@ -299,45 +304,40 @@ func (r *R32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
 
 
 
-type R32 struct {
-	out *I32 // external integer with sign=true means whole R32 is negative
-	in  *I32 // internal integer with sign=true means whole R32 is imaginary
-	ext *R32
-}
 
-func NewR32zero() *R32 {
-	return &R32{
-		out: nil,
-		in:  nil,
+func NewAI32zero() *AI32 {
+	return &AI32{
+		o: nil,
+		i: nil,
 	}
 }
 
-func NewR32(out, in *I32, ext *R32) *R32 {
-	return &R32{
-		out: out,
-		in:  in,
-		ext: ext,
+func NewAI32(out, in *I32, ext *AI32) *AI32 {
+	return &AI32{
+		o: out,
+		i: in,
+		e: ext,
 	}
 }
 
-func (r *R32) outVal() Z {
-	return r.out.val()
+func (r *AI32) outVal() Z {
+	return r.o.val()
 }
 
-func (r *R32) outSet(out *I32) {
-	r.out = out.clone()
+func (r *AI32) outSet(out *I32) {
+	r.o = out.clone()
 }
 
-func (r *R32) outValPow2() Z {
-	return r.out.valPow2()
+func (r *AI32) outValPow2() Z {
+	return r.o.valPow2()
 }
 
-func (r *R32) inVal() Z {
-	return r.in.val()
+func (r *AI32) inVal() Z {
+	return r.i.val()
 }
 
-func (r *R32) IsZero() bool {
-	if r == nil || r.out == nil || r.in == nil || r.out.n == 0 || r.in.n == 0 {
+func (r *AI32) IsZero() bool {
+	if r == nil || r.o == nil || r.i == nil || r.o.n == 0 || r.i.n == 0 {
 		return true
 	}
 	return false
@@ -347,26 +347,26 @@ func (r *R32) IsZero() bool {
 // For nil, out or in zero appends "+0"
 // For n > 0 always appends +n or -n including N=1
 // For in > 1 appends √ and then in (always positive)
-func (r *R32) Str(s *Str) {
+func (r *AI32) Str(s *Str) {
 	if r == nil {
 		s.Infinite()
-	} else if r.out == nil || r.out.n == 0 {
+	} else if r.o == nil || r.o.n == 0 {
 		s.Zero()
-	} else if r.in == nil || r.in.n == 0 {
+	} else if r.i == nil || r.i.n == 0 {
 		s.Zero()
 	} else {
-		s.I32(r.out)
-		if r.ext == nil {
-			s.Radical32(r.in, nil)
+		s.I32(r.o)
+		if r.e == nil {
+			s.Radical32(r.i, nil)
 		} else {
-			s.Radical32(r.in, func(s *Str) {
-				r.ext.Str(s)
+			s.Radical32(r.i, func(s *Str) {
+				r.e.Str(s)
 			})
 		}
 	}
 }
 
-func (r *R32) String() string {
+func (r *AI32) String() string {
 	s := NewStr()
 	r.Str(s)
 	return s.String()
