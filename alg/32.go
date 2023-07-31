@@ -177,42 +177,60 @@ func NewAI32s() *AI32s {
 }
 
 func (r *AI32s) AI(out, in Z, ext *AI32) *AI32 {
-	if ext == nil {
-		if out == 0 {
-			return NewAI32zero() // zero
-		} else if o, i, ok := r.reduce1Z(out, in); ok {
-			return NewAI32(o, i, nil)
+	if out == 0 { 
+		// out value is zero
+		// return only o = 0
+		return &AI32{
+			o: &I32{ n:0 }, // zero
 		}
-		return nil
 	}
-	eo := ext.outVal()
-	ei := ext.inVal()
-	if o, ia, ib, ok := r.reduce2Z(out, in, eo); ok {
-		return NewAI32(o, ia, r.AI(ib.val(), ei, ext.e))
-	}
-	return nil
+	if ext != nil {
+		eo := ext.outVal()
+		ei := ext.inVal()
+		if o, ia, ib, ok := r.reduceExtra(out, in, eo); !ok {
+			// return overflow
+			return nil
+		} else {
+			return &AI32{
+				o: o,
+				i: ia,
+				e: r.AI(ib.val(), ei, ext.e),
+			}
+		}
+	}	
+	return r.reduceOI(out, in)
 }
 
-
-func (r *AI32s) reduce1Z(out, inA Z) (*I32, *I32, bool) {
+func (r *AI32s) reduceOI(out, inA Z) *AI32 {
+	// convert to natural to reduce
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
-	o, a, ok := r.reduce1(N(io), N(ia))
-	if !ok {
-		return nil, nil, false
+	if no, na, ok := r.reduce1N(N(io), N(ia)); !ok {
+		// return overflow
+		return nil
+	} else if na == 0 {
+		// natural-in na is 0
+		// return only o = ±no
+		return &AI32{
+			o: &I32{ n:no, s:out < 0 }, // ±no
+		}
+	} else if na == 1 && inA > 0 {
+		// natural-in na is +1
+		// return only o = ±no*na = ±no*1 = ±no
+		return &AI32{
+			o: &I32{ n:no, s:out < 0 }, // ±no
+		}
+	} else {
+		// default: natural-in na is < 0 (imaginary) or > 1 (real square-free)
+		// return both o = ±no and i = ±na
+		return &AI32{
+			o: &I32{ n:no, s:out < 0 }, // ±no
+			i: &I32{ n:na, s:inA < 0 }, // ±na
+		}
 	}
-	zo := Z(o); if out < 0 { zo = -zo }
-	za := Z(a); if inA < 0 { za = -za }
-	ro, _ := NewI32(zo)
-	ra, _ := NewI32(za)
-	// TODO only here because we have the ra sign
-	// if ra = +squared (not integer imaginary)
-	// set ro = ro + √(ra)
-	// set ra = nil
-	return ro, ra, true
 }
 
-func (r *AI32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
+func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, *I32, bool) {
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
 	ib := inB; if inB < 0 { ib = -inB }
@@ -232,7 +250,7 @@ func (r *AI32s) reduce2Z(out, inA, inB Z) (*I32, *I32, *I32, bool) {
 // reduce try to decrease in and increase out.
 // Example: The input -3√(20) is returned as -6√(5)
 // Return ok as false when out or in values are larger than 32 bits (overflow).
-func (r *AI32s) reduce1(out, in N) (o N32, i N32, ok bool) {
+func (r *AI32s) reduce1N(out, in N) (o N32, i N32, ok bool) {
 	if out == 0 {
 		return 0, 0, true
 	}
@@ -304,22 +322,6 @@ func (r *AI32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
 
 
 
-
-func NewAI32zero() *AI32 {
-	return &AI32{
-		o: nil,
-		i: nil,
-	}
-}
-
-func NewAI32(out, in *I32, ext *AI32) *AI32 {
-	return &AI32{
-		o: out,
-		i: in,
-		e: ext,
-	}
-}
-
 func (r *AI32) outVal() Z {
 	return r.o.val()
 }
@@ -343,23 +345,41 @@ func (r *AI32) IsZero() bool {
 	return false
 }
 
+/*
+func newI32mul(a, b Z) *I32 {
+	if mul := a*b; mul > 0 { // positive
+		if n := N32(mul); n <= N32_MAX {
+			return &I32{ n:n }
+		}
+	} else { // negative
+		if N(-mul) <= N32_MAX {
+			return &I32{ n:N32(-mul), s:true }
+		}
+	}
+	// return overflow
+	return nil
+}*/
+
 // WriteString appends to given buffer very SIMPLE format:
 // For nil, out or in zero appends "+0"
 // For n > 0 always appends +n or -n including N=1
 // For in > 1 appends √ and then in (always positive)
 func (r *AI32) Str(s *Str) {
 	if r == nil {
-		s.Infinite()
+		s.Infinite() // return ∞
 	} else if r.o == nil || r.o.n == 0 {
-		s.Zero()
-	} else if r.i == nil || r.i.n == 0 {
-		s.Zero()
+		s.Zero() // return +0
 	} else {
-		s.I32(r.o)
+		s.I32(r.o) // append ±out
+		if r.i == nil || r.i.n == 0 {
+			return // return only printed out
+		}
 		if r.e == nil {
+			// append √±in and return
 			s.Radical32(r.i, nil)
 		} else {
 			s.Radical32(r.i, func(s *Str) {
+				// append √±in( ... ) and return
 				r.e.Str(s)
 			})
 		}
