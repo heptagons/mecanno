@@ -57,24 +57,33 @@ func Test32(t *testing.T) {
 		}
 	}
 
-	// reduceExtra(out, inA, inB N) (N32, N32, N32)
+	// reduceExtra with irreducible extra.in = +17
 	for _, s := range []struct{ o, inA, inB Z; exp string } {
 
-		{ o:0, inA:0,  inB: 0, exp:"+0√(+0+0√x)" },
+		{ o:0, inA:0,  inB: 0, exp:"+0" },
+		{ o:1, inA:0,  inB: 0, exp:"+0" },
+		{ o:1, inA:1,  inB: 0, exp:"+1" },
+		{ o:1, inA:2,  inB: 0, exp:"+1√2" },
+		{ o:1, inA:3,  inB: 0, exp:"+1√3" },
+		{ o:1, inA:4,  inB: 0, exp:"+2" },
+		{ o:1, inA:1,  inB: 1, exp:"+1√(1+1√17)" },
 
-		{ o:1, inA: 1, inB: 1, exp:"+1√(+1+1√x)" },
-		{ o:4, inA: 4, inB: 4, exp:"+8√(+1+1√x)" },
-		{ o:8, inA: 8, inB: 8, exp:"+16√(+2+2√x)" },
-		{ o:5, inA:12, inB:56, exp:"+10√(+3+14√x)" },
+		{ o:4, inA: 4, inB: 4, exp:"+8√(1+1√17)" },
+		{ o:8, inA: 8, inB: 8, exp:"+16√(2+2√17)" },
+		{ o:5, inA:12, inB:56, exp:"+10√(3+14√17)" },
 
-		{ o:1, inA:25*9*4*4*3, inB:25*9*4*7,  exp:"+30√(+12+7√x)" },
-		{ o:9, inA:3*3*3*3*5,  inB:3*3*3*3*3, exp:"+81√(+5+3√x)"  },
+		{ o:1, inA:25*9*4*4*3, inB:25*9*4*7,  exp:"+30√(12+7√17)" },
+		{ o:9, inA:3*3*3*3*5,  inB:3*3*3*3*3, exp:"+81√(5+3√17)"  },
 
-		{ o:-4, inA:-4,  inB: -4, exp:"-8√(-1-1√x)" },
+		{ o:-4, inA:-4,  inB: -4, exp:"-8√(-1-1√17)" },
 	} {
-		o, a, b, _ := r.reduceExtra(s.o, s.inA, s.inB)
-		if got := fmt.Sprintf("%s√(%s%s√x)", o, a, b); got != s.exp {
-			t.Fatalf("n32s.reduceIns got=%s exp=%s", got, s.exp)
+		if o, i, eo, ok := r.reduceExtra(s.o, s.inA, s.inB); !ok {
+			t.Fatalf("unexpected infinite")
+		} else {
+			alg := r.AI(o.val(), i.val(), r.AI(eo, +17, nil))
+			if got := alg.String(); got != s.exp {
+				t.Fatalf("reduceExtra got=%s exp=%s", got, s.exp)
+			}
 		}
 	}
 
@@ -132,7 +141,8 @@ func Test32(t *testing.T) {
 		{ o:10, i:20, e:r.AI(30,40,nil), exp:"+20√(5+15√10)" },
 
 		{ o: 1, i: 1, e:r.AI( 1, 1,nil), exp:"+1√(1+0)" },
-		//{ o: 1, i: 3, e:r.AI( 1, 1,nil), exp:"+1√(3+0)" }, // TODO is +2
+		{ o: 1, i: 3, e:r.AI( 1, 1,nil), exp:"+1√(3+0)" },
+		{ o: 1, i: 4, e:r.AI( 1, 1,nil), exp:"+2" },
 	} {
 		if got := r.AI(s.o, s.i, s.e).String(); got != s.exp {
 			t.Fatalf("Reduce2 got=%s exp=%s", got, s.exp)

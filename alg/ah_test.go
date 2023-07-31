@@ -144,7 +144,7 @@ func TestD(t *testing.T) {
 		{ d: ds.NewD(  0, +1,+2, a2),   exp: "+1√2/2"     }, // sin(pi/4)
 		{ d: ds.NewD( -1, +1,+5,  4),   exp: "(-1+1√5)/4" }, // sin(pi/10)
 
-		{ d: ds.NewD(   3,   4, 1,   6), exp: "(+3+4)/6" },
+		{ d: ds.NewD(   3,   4, 1,   6), exp: "+3/6" },
 		{ d: ds.NewD( 158, 632, 5, 316), exp: "(+1+4√5)/2" }, 
 
 

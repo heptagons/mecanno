@@ -28,22 +28,6 @@ type AI32s struct {
 
 
 const N32_MAX = N(0xffffffff)
-//const MAXNAT = uint64(0xffffffff)
-
-
-
-func N32overflowZ(z Z) bool {
-	if z > 0 {
-		return z > Z(N32_MAX)
-	} else {
-		return -z > Z(N32_MAX)
-	}
-}
-
-func N32overflowN(n N) bool {
-	return n > N32_MAX
-}
-
 
 // gcd returns the greatest common divisor of 
 // this natural and the given
@@ -77,65 +61,62 @@ func (a *N32) Reduce3(b, c *N32) {
 	}
 }
 
-func NewI32(z Z) (*I32, bool) {
-	if N32overflowZ(z) {
-		return nil, false
-	} else if z >= 0 {
-		return newI32plus(N32(z)), true
-	} else {
-		return newI32minus(N32(-z)), true
+// newI32 returns a 32 bit integer
+// for z = 0 returns nil, true
+// for overflow return nil, false
+// for 0 < z <= N32_MAX return positive i32, true
+// for 0 < -z <= N32_MAX return negative i32, true
+func newI32(z Z) (*I32, bool) {
+	if z == 0 {
+		return nil, true // zero
 	}
-}
-
-func newI32plus(n N32) *I32 {
-	return &I32{
-		s: false,
-		n: n,
+	if z > 0 {
+		if N(z) > N32_MAX {
+			return nil, false // overflow
+		}
+		return &I32{ s:false, n:N32(z) }, true // positive
 	}
-}
-
-func newI32minus(n N32) *I32 {
-	return &I32{
-		s: true,
-		n: n,
-	}	
+	if N(-z) > N32_MAX {
+		return nil, false // overflow
+	}
+	return &I32{ s:true, n:N32(-z) }, true // negative
 }
 
 func (i *I32) clone() *I32 {
 	if i == nil {
 		return nil
-	} else {
-		return &I32 {
-			s: i.s,
-			n: i.n,
-		}
+	}
+	return &I32 {
+		s: i.s,
+		n: i.n,
 	}
 }
 
 func (i *I32) mul(n N32) Z {
+	if i == nil || i.n == 0 || n == 0 {
+		return 0
+	}
 	if i.s {
 		return - Z(n)*Z(i.n)
-	} else {
-		return + Z(n)*Z(i.n)
 	}
+	return + Z(n)*Z(i.n)
 }
 
 func (i *I32) val() Z {
-	if i == nil {
+	if i == nil || i.n == 0 {
 		return 0
-	} else if i.s {
-		return -Z(i.n)
-	} else {
-		return +Z(i.n)
 	}
+	if i.s {
+		return -Z(i.n)
+	}
+	return +Z(i.n)
 }
 
 func (i *I32) valPow2() Z {
 	if i == nil || i.n == 0 {
 		return 0
-	} else {
-		return Z(i.n)*Z(i.n)
 	}
+	return Z(i.n)*Z(i.n) // always positive
 }
 
 func (i *I32) Str(s *Str) {
@@ -177,52 +158,50 @@ func NewAI32s() *AI32s {
 }
 
 func (r *AI32s) AI(out, in Z, ext *AI32) *AI32 {
-	if out == 0 { 
-		// out value is zero
-		// return only o = 0
-		return &AI32{
-			o: &I32{ n:0 }, // zero
-		}
+	if ext == nil {
+		return r.reduceOI(out, in)
 	}
-	if ext != nil {
-		eo := ext.outVal()
-		ei := ext.inVal()
-		if o, ia, ib, ok := r.reduceExtra(out, in, eo); !ok {
-			// return overflow
-			return nil
-		} else {
-			return &AI32{
-				o: o,
-				i: ia,
-				e: r.AI(ib.val(), ei, ext.e),
-			}
-		}
-	}	
-	return r.reduceOI(out, in)
+	eo1 := ext.outVal() // extra-out to optionally reduce
+	if eo1 == 0 { // downgrade to reduceOI
+		return r.reduceOI(out, in)
+	}
+	oi, ii, eo2, ok := r.reduceExtra(out, in, eo1)
+	if !ok {
+		return nil // overflow
+	}
+	return &AI32{
+		o: oi, // equals to out or reduced (increased)
+		i: ii, // equals to in or reduced (decreased)
+		e: r.AI( // recurse...
+			eo2,         // equals to eoi or reduced (decreased)
+			ext.inVal(), // extra-in original expected irreducible
+			ext.e,       // extra-extra original expected irreducible
+		),
+	}
 }
 
+// reduceOI tries to increment out and decrease inA within a new IA32.
+// Looks the value inA can be expressed as a product of p*p*inB where inB is square-free.
+// Then returns a new AI32 with values o=out*p and i=inA/p
+// Case 1: For out = inA = 0 returns empty AI32 which means is zero.
+// Case 2: When iB = +1, return AI32 with only o = out*p*inA
+// Case 3: When p = 1, returns AI32 with o=out, i=inA
+// Case 4: When p > 1, returns AI32 with o=out*p, i=inB/p
+// Returns nil for overflows
 func (r *AI32s) reduceOI(out, inA Z) *AI32 {
-	// convert to natural to reduce
+	if out == 0 || inA == 0 { // case 1
+		return &AI32{ } // zero
+	}
+	// convert to natural to try reduction
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
 	if no, na, ok := r.reduce1N(N(io), N(ia)); !ok {
-		// return overflow
-		return nil
-	} else if na == 0 {
-		// natural-in na is 0
-		// return only o = ±no
+		return nil // overflow
+	} else if na == 1 && inA > 0 { // case 2
 		return &AI32{
 			o: &I32{ n:no, s:out < 0 }, // ±no
 		}
-	} else if na == 1 && inA > 0 {
-		// natural-in na is +1
-		// return only o = ±no*na = ±no*1 = ±no
-		return &AI32{
-			o: &I32{ n:no, s:out < 0 }, // ±no
-		}
-	} else {
-		// default: natural-in na is < 0 (imaginary) or > 1 (real square-free)
-		// return both o = ±no and i = ±na
+	} else { // cases 3 and 4
 		return &AI32{
 			o: &I32{ n:no, s:out < 0 }, // ±no
 			i: &I32{ n:na, s:inA < 0 }, // ±na
@@ -230,59 +209,55 @@ func (r *AI32s) reduceOI(out, inA Z) *AI32 {
 	}
 }
 
-func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, *I32, bool) {
+func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, Z, bool) {
+	if out == 0 { // case 1
+		// out value is zero, return empty
+		return nil, nil, 0, true
+	}
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
 	ib := inB; if inB < 0 { ib = -inB }
-	o, a, b, ok := r.reduce2(N(io), N(ia), N(ib))
+	no, na, nb, ok := r.reduce2(N(io), N(ia), N(ib))
 	if !ok {
-		return nil, nil, nil, false
+		return nil, nil, 0, false
 	}
-	zo := Z(o); if out < 0 { zo = -zo }
-	za := Z(a); if inA < 0 { za = -za }
-	zb := Z(b); if inB < 0 { zb = -zb }
-	ro, _ := NewI32(zo)
-	ra, _ := NewI32(za)
-	rb, _ := NewI32(zb)
-	return ro, ra, rb, true
+	zo := Z(no); if out < 0 { zo = -zo }
+	za := Z(na); if inA < 0 { za = -za }
+	zb := Z(nb); if inB < 0 { zb = -zb }
+	ro, _ := newI32(zo)
+	ra, _ := newI32(za)
+	return ro, ra, zb, true
 }
 
-// reduce try to decrease in and increase out.
+
+
+// reduce1N try to decrease in and increase out.
 // Example: The input -3√(20) is returned as -6√(5)
 // Return ok as false when out or in values are larger than 32 bits (overflow).
 func (r *AI32s) reduce1N(out, in N) (o N32, i N32, ok bool) {
-	if out == 0 {
+	if out == 0 || in == 0 {
 		return 0, 0, true
-	}
-	if in == 0 {
-		return 0, 0, true
-	}
-	if in > 1 {
-		// Try to update out and in
+	} else if in > 1 {
 		for _, prime := range r.primes {
 			p := N(prime)
 			if pp := p*p; in >= pp {
 				for {
 					if in % pp == 0 {
-						// product has a prime factor squared move from in to out
+						// reduce ok: increase out, decrease in.
 						out *= p
 						in  /= pp
-						// look for more prime factor squared repeated in in.
+						// look for repeated squares in reduced in
 						continue
-					} else {
-						// check with next prime squared
-						break
 					}
+					break // check next prime
 				}
 			} else {
-				// no more factors to check
+				// in has no more factors to check
 				break
 			}
 		}
 	}
-	if N32overflowN(out) {
-		return 0, 0, false
-	} else if N32overflowN(in) {
+	if out > N32_MAX || in > N32_MAX {
 		return 0, 0, false
 	}
 	return N32(out), N32(in), true
@@ -310,11 +285,7 @@ func (r *AI32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
 			}
 		}
 	}
-	if N32overflowN(out) {
-		return 0, 0, 0, false
-	} else if N32overflowN(inA) {
-		return 0, 0, 0, false
-	} else if N32overflowN(inB) {
+	if out > N32_MAX || inA > N32_MAX || inB > N32_MAX {
 		return 0, 0, 0, false
 	}
 	return N32(out), N32(inA), N32(inB), true
@@ -344,21 +315,6 @@ func (r *AI32) IsZero() bool {
 	}
 	return false
 }
-
-/*
-func newI32mul(a, b Z) *I32 {
-	if mul := a*b; mul > 0 { // positive
-		if n := N32(mul); n <= N32_MAX {
-			return &I32{ n:n }
-		}
-	} else { // negative
-		if N(-mul) <= N32_MAX {
-			return &I32{ n:N32(-mul), s:true }
-		}
-	}
-	// return overflow
-	return nil
-}*/
 
 // WriteString appends to given buffer very SIMPLE format:
 // For nil, out or in zero appends "+0"

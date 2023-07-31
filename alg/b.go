@@ -6,7 +6,7 @@ type B struct { // Rational
 }
 
 func NewB0(den N) *B {
-	if N32overflowN(den) {
+	if den > N32_MAX {
 		return nil // overflow
 	}
 	return &B{
@@ -24,9 +24,9 @@ func NewB(num Z, den N) *B {
 
 	(&den).Reduce2(&num)
 
-	if N32overflowN(den) {
+	if den > N32_MAX {
 		return nil // overflow denominator
-	} else if b, ok := NewI32(num); !ok {
+	} else if b, ok := newI32(num); !ok {
 		return nil // overflow numerator
 	} else {
 		return &B{
@@ -42,9 +42,9 @@ func NewBnotReduce(num Z, den N) *B {
 	} else if num == 0 {
 		return NewB0(den)
 	}
-	if N32overflowN(den) {
+	if den > N32_MAX {
 		return nil // overflow denominator
-	} else if b, ok := NewI32(num); !ok {
+	} else if b, ok := newI32(num); !ok {
 		return nil // overflow numerator
 	} else {
 		return &B{

@@ -55,41 +55,69 @@ In line 8 we define the algebraci integer number $AI32$. The number is recursive
 where each sign $\pm$ corresponds to its integer sign $s$ of the values of integers $o$ and $i$.
 \end{multicols}
 
-\subsection{$A_1$ reduction}
+\subsection{Reductions}
+Reductions simplify and standarize the numbers representations. Are applied to the 
+inputs and outputs numbers in operations like
+copy, addition, multiplication, inversion and square roots extraction.
+Any complicated abstract integer is reduced from the inside to the outside.
+\begin{align}
+A_3 &= \pm i\sqrt{\pm j \pm k\sqrt{\pm l \pm m\sqrt{\pm n}}}\\
+ &\qquad m_1, n_1 = reduceOI(m, n) \nonumber\\
+ &= \pm i\sqrt{\pm j \pm k\sqrt{\pm l \pm m_1\sqrt{\pm n_1}}}\\
+ &\qquad k_1, l_1, m_2 = reduceOII(k, l, m_1) \nonumber\\
+ &= \pm i\sqrt{\pm j \pm k_1\sqrt{\pm l_1 \pm m_2\sqrt{\pm n_1}}}\\
+ &\qquad i_1, j_1, k_2 = reduceOII(i, j, k_1) \nonumber\\
+ &= \pm i_2\sqrt{\pm j_2 \pm k_3\sqrt{\pm l_1 \pm m_2\sqrt{\pm n_1}}}
+\end{align}
+
+\subsection{Reduction $roi$}
+This reduction is done for $AI32$ numbers \textbf{without} extension $e$. This is the case of
+part $\pm c\sqrt{\pm d}$ of $A_1$,
+part $\pm g\sqrt{\pm h}$ of $A_2$ and
+part $\pm m\sqrt{\pm n}$ of $A_3$.
+Example of reducing $A_1$:
 \begin{align}
 A_1 &= \pm c\sqrt{\pm d}\\
 d   &= p^2d_1 \qquad \textbf{ From $d$ find $p,d_1$ where $d_1$ is square-free or $1$} \\
-A_1 &= \begin{cases}
- 0                    &\text{case 1: if } c = 0 \lor d = 0\\
+roi(c,d) &= \begin{cases}
+ 0                    &\text{case 1: if } c = 0 \text{ or } d = 0\\
  \pm cp               &\text{case 2: if } d_1 = +1\\
- \pm c\sqrt{\pm d}    &\text{case 3: if } p = 1 \text{ (already reduced)}\\
+ \pm c\sqrt{\pm d}    &\text{case 3: if } p = 1\\
  \pm cp\sqrt{\pm d_1} &\text{case 4: otherwise }\\
 \end{cases}
 \end{align}
 For cases $1$ and $2$ we got $A_1$ degenerated into $A_0$.
-For case $3$ nothing changed.
-For case $4$ we got reduced $A_1$ with new values $c_1=cp$ and $d_1$:
-\begin{align}
-A_1 &= \pm c_1\sqrt{\pm d_1}
-\end{align}
+For case $3$ values remain the same because the number was irreducible.
+For case $4$ we got reduced $A_1$ with new values $c_1=cp$ and $d_1$.
 
-\subsection{$A_2$ reduction}
+\subsection{Reduction $roie$}
+This reduction is done for $AI32$ numbers \textbf{with} extension $e$. This is the case of 
+part $\pm e\sqrt{\pm f + g\sqrt{...}}$ of $A_2$,
+part $\pm i\sqrt{\pm j + k\sqrt{...}}$ of $A_3$ and
+part $\pm k\sqrt{\pm l + m\sqrt{...}}$ of $A_3$.
+Example of reducing $A_2$. First we reduce part $\pm g\sqrt{\pm h}$ with reduceOII 
+function:
 \begin{align}
-A_2 &= \pm e\sqrt{\pm f \pm g\sqrt{\pm h}}\\
-h   &= p^2h_1 \qquad \textbf{ From $d$ find $p,h_1$ where $h_1$ is square-free or $1$} \\
-A_2 &= \begin{cases}
- 0                                    &case 1: \text{if } e = 0\\
- \pm e\sqrt{\pm f}                    &case 2: \text{if } g = 0 \lor h = 0\\
- \pm e\sqrt{\pm f \pm gp}             &case 3: \text{if } h_1 = 1\\
- \pm e\sqrt{\pm f \pm g\sqrt{\pm h}}  &case 4: \text{if } p = 1 \text{ nothing changed}\\
- \pm e\sqrt{\pm f \pm gp\sqrt{\pm h_1}} &case 5: \text{otherwise }
+A_1 &= \pm g\sqrt{\pm h}\\
+roi(g,h) &= \begin{cases}
+ \pm g_1               &\text{reduceOII cases 1 or 2}\\
+ \pm g_2\sqrt{\pm h_2} &\text{reduceOII cases 3 or 4}\\
 \end{cases}\\
+A_2 &= \begin{cases}
+ 0                                       &case 1: \text{if } e = 0\\
+ \pm e\sqrt{\pm f \pm g_1}               &case 2: \text{if } h_2 = +1\\
+ \pm e\sqrt{\pm f \pm g_2\sqrt{\pm h_2}} &case 3: \text{otherwise }
+\end{cases}
 \end{align}
-For case $1$ we have that $A_2$ degenerated into $A_0$ so we finish.
-For cases $2$ and $3$ we have that $A_2$ degenerated into $A_1$, so we proceed to go
+For case $1$ we have that $A_2$ degenerated into a $A_0$ so we finish.
+For case $2$ we have that $A_2$ degenerated into a $A_1$ with values
+$\pm e$ and $\pm f+g_1$ and is then reduced with function $reduceOI$.
+
+
+and $3$ we have that $A_2$ degenerated into $A_1$, so we proceed to go
 to reduce further this new $A_1$ as in previous section. For cases $4$ and $5$ we rewrite
 the $A_2$ with reduced values $g_1$ and square-free $h_1$:
-\begin{align}
+\begin{align}\\
 A_2 &= \pm e\sqrt{\pm f \pm g_1\sqrt{\pm h_1}}\\
 g_1 &= r^2g_2 \qquad \textbf{From $g_1$ found $r,g_2$ where $r$ matches with next equation's}\\
 f   &= r^2f_1 \qquad \textbf{From $f$ found $r,f_1$ where $r$ matches with previous equation's}\\
