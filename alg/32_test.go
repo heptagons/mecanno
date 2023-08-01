@@ -7,6 +7,38 @@ import (
 
 func Test32(t *testing.T) {
 
+	i0, _ := newI32(0)
+	i1, _ := newI32(1)
+	i2, _ := newI32(2)
+	i4, _ := newI32(4)
+
+	// AI32 (not irreducible)
+	for _, s := range []struct{ exp string; ai *AI32 } {
+		{ "+0", &AI32{} },
+		{ "+0", &AI32{ o:i0 }},
+		{ "+0", &AI32{ o:i1 }},
+		{ "+1", &AI32{ o:i1, i:i1 }}, // 1√1
+		{ "+2", &AI32{ o:i2, i:i1 }}, // 2√1
+		
+		{ "+1√2", &AI32{ o:i1, i:i2 }}, // 1√2
+		{ "+1√4", &AI32{ o:i1, i:i4 }}, // 1√4
+
+		{ "+1√4", &AI32{o:i1, i:i4, e:&AI32{} }},
+		{ "+1√4", &AI32{o:i1, i:i4, e:&AI32{ o:i0 } }}, // 1√(4+0)
+		{ "+1√4", &AI32{o:i1, i:i4, e:&AI32{ o:i1 } }}, // 1√(4+1√0)
+		
+		{ "+1√(4+1)",   &AI32{o:i1, i:i4, e:&AI32{ o:i1, i:i1 } }}, // 1√(4+1√1)
+		{ "+1√(4+1√2)", &AI32{o:i1, i:i4, e:&AI32{ o:i1, i:i2 } }}, // 1√(4+1√2)
+		{ "+1√(4+1√4)", &AI32{o:i1, i:i4, e:&AI32{ o:i1, i:i4 } }}, // 1√(4+1√4)
+	} {
+		if got := s.ai.String(); got != s.exp {
+			t.Fatalf("AI32 got=%s exp=%s", got, s.exp)
+		}
+	}
+
+	//t.Skip()
+
+
 	r := NewAI32s()
 
 	// primes
@@ -24,9 +56,10 @@ func Test32(t *testing.T) {
 		{ pos: 6_541, prime: 65_521 },
 	} {
 		if got, exp := r.primes[s.pos], s.prime; got != exp {
-			t.Fatalf("n32s.primes pos=%d got=%d exp=%d", s.pos, got, exp)
+			t.Fatalf("primes pos=%d got=%d exp=%d", s.pos, got, exp)
 		}
 	}
+
 
 	// roi
 	for _, s := range []struct{ o, i Z; exp string; overflow bool } {
@@ -160,12 +193,6 @@ func Test32(t *testing.T) {
 		{ o:1, i:1, eo:1,       exp:"+1" }, // +1√(1+1√0) = +1√(1+0) = +1√1 = +1
 		{ o:1, i:1, eo:1, ei:9, exp:"+2" }, // +1√(1+1√9) = +1√(1+3) = +1√4 = +2
 
-		{ o:1, i:0, eo:1, ei:1, exp:"+1"  }, // +1√(0+1√1) = +1√(0+1) = +1√1 = +1
-		
-		{ o:1, i:0, eo:1, ei:2, exp:"..."  }, // +1√(0+1√2) = +1√(0+1√2) = TODO!!!
-
-
-
 		{ o: 1, i: 1, eo: 1, ei:-2,  exp:"+1√(1+1i√2)" }, // +1√(1+1√-2) = +1√(1+2i)
 		{ o: 1, i: 1, eo: 1, ei:-1,  exp:"+1√(1+1i)"   }, // +1√(1+1√-1) = +1√(1+1i)
 		{ o: 1, i: 1, eo: 1, ei: 1,  exp:"+1√2"        }, // +1√(1+1√1) = +1√(1+1) = +1√2
@@ -199,6 +226,13 @@ func Test32(t *testing.T) {
 		{ o: 1, i: 1, eo:-2, ei: 1,  exp:"+1i" }, // +1√(1-2√1) = +1√(1-2) = +1i
 		{ o: 1, i: 1, eo:-1, ei: 1,  exp:"+0" }, // +1√(1-1√1) = +1√(1-1) = 0
 		{ o: 1, i:-1, eo: 1, ei: 1,  exp:"+0" }, // +1√(-1+1√1) = +1√(-1+1) = 0
+
+
+		//{ o:1, i:0, eo:1, ei:1, exp:"+1"  }, // +1√(0+1√1) = +1√(0+1) = +1√1 = +1
+		//{ o:2, i:0, eo:2, ei:1, exp:"..."  }, // +1√(0+1√2) = +1√(0+1√2) 2√√2
+		//{ o:1, i:0, eo:1, ei:2, exp:"..."  }, // +1√(0+1√2) = +1√(0+1√2) = TODO!!!
+
+
 
 
 	} {

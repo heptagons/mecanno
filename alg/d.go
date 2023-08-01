@@ -10,8 +10,8 @@ func (d *D) Str(s *Str) {
 		s.Zero()
 		return
 	}
-	abZero := d.ab.IsZero()
-	cdZero := d.cd.IsZero()
+	abZero := d.ab.isZero()
+	cdZero := d.cd.isZero()
 	if abZero && cdZero {
 		s.Zero()
 		return

@@ -88,7 +88,7 @@ func newB(s bool, num, den N32) *B {
 	}
 }
 
-func (x *B) IsZero() bool {
+func (x *B) isZero() bool {
 	if x == nil || x.b == nil || x.b.n == 0 {
 		return true
 	}

@@ -2,8 +2,27 @@ package alg
 
 import (
 	"math"
-	//"fmt"
+	"fmt"
+	"strings"
 )
+
+type Str struct {
+	strings.Builder
+}
+
+func NewStr() *Str {
+	return &Str{}
+}
+
+func (s *Str) Zero() {
+	s.WriteString("+0")	
+}
+
+func (s *Str) Over(n N32) {
+	s.WriteString(fmt.Sprintf("/%d", n))
+}
+
+
 
 type N32 uint32 // range 0 - 0xffffffff
 
@@ -29,6 +48,103 @@ type AI32s struct {
 
 
 const N32_MAX = N(0xffffffff)
+
+
+func (r *AI32) outVal() Z {
+	return r.o.val()
+}
+
+func (r *AI32) outSet(out *I32) {
+	r.o = out.clone()
+}
+
+func (r *AI32) outValPow2() Z {
+	return r.o.valPow2()
+}
+
+func (r *AI32) inVal() Z {
+	return r.i.val()
+}
+
+func (a *AI32) isZero() bool {
+	if a == nil || a.o == nil || a.o.n == 0 {
+		return true
+	} else if a.e == nil {
+		if a.i == nil || a.i.n == 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func (a *AI32) Str(s *Str) { 
+	if a.isZero() {
+		// For 0√x return +0
+		s.Zero()
+	} else if a.e.isZero() {
+		if a.i == nil || a.i.n == 0 {
+			// For ±x√0 return +0
+			s.Zero()
+		} else if a.i.n == 1 && a.i.s == false {
+			// For ±x√+1 return ±x
+			a.o.Str(s)
+		} else if a.i.s {
+			// For ±x√-y return ±xi√y
+			a.o.Str(s)
+			s.WriteString("i")
+			if a.i.n > 1 {
+				s.WriteString(fmt.Sprintf("√%d", a.i.n))
+			}
+		} else {
+			// For ±x√+y return ±xi√y
+			a.o.Str(s)
+			s.WriteString(fmt.Sprintf("√%d", a.i.n))
+		}
+	} else {
+		// For ±x√±y ± e return ±xi√(±y RECURSE )
+		a.o.Str(s)
+		s.WriteString("√(")
+		// internal
+		if a.i.isZero() {
+			//s.WriteString("0")
+		} else {
+			if a.i.s {
+				s.WriteString("-")	
+			}
+			s.WriteString(fmt.Sprintf("%d", a.i.n))
+		}
+		// extension
+		a.e.Str(s) // recurse
+		s.WriteString(")")
+	}
+}
+
+
+// WriteString appends to given buffer very SIMPLE format:
+// For nil, out or in zero appends "+0"
+// For n > 0 always appends +n or -n including N=1
+// For in > 1 appends √ and then in (always positive)
+//func (a *AI32) Str(s *Str) {
+//	s.AI32(a)
+//}
+
+func (r *AI32) String() string {
+	s := NewStr()
+	r.Str(s)
+	return s.String()
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // gcd returns the greatest common divisor of 
 // this natural and the given
@@ -83,6 +199,13 @@ func newI32(z Z) (*I32, bool) {
 	return &I32{ s:true, n:N32(-z) }, true // negative
 }
 
+func (i *I32) isZero() bool {
+	if i == nil || i.n == 0 {
+		return true
+	}
+	return false
+}
+
 func (i *I32) clone() *I32 {
 	if i == nil {
 		return nil
@@ -121,18 +244,27 @@ func (i *I32) valPow2() Z {
 }
 
 func (i *I32) Str(s *Str) {
-	if i == nil || i.n == 0 {
-		s.Zero()
+	if i == nil {
+		s.WriteString("+0")
+	} else if i.s {
+		s.WriteString(fmt.Sprintf("-%d", i.n))
 	} else {
-		s.I32(i)
+		s.WriteString(fmt.Sprintf("+%d", i.n))
 	}
 }
 
 func (i *I32) String() string {
-	str := &Str{}
-	str.I32(i)
-	return str.String()
+	s := &Str{}
+	i.Str(s)
+	return s.String()
 }
+
+
+
+
+
+
+
 
 // NewAI32s creates algebraic integers factory
 // A fixed internal 32-bit primes list is used to create
@@ -176,7 +308,7 @@ func (r *AI32s) AI(out, in Z, ext *AI32) (ai *AI32, overflow bool) {
 	
 	}
 	if ext.e == nil {
-		if ext.inVal() == +1 {
+		if ext.inVal() == +1 && ii.val() != 0 {
 			// e√(f+g√h) or k√(l+m√n) ... where h == +1, n == +1, ...
 			// return reduced e√(f+g) or k√(l+m) ...
 			return r.roi(oi.val(), ii.val() + eo2)
@@ -308,57 +440,5 @@ func (r *AI32s) reduce2(out, inA, inB N) (N32, N32, N32, bool) {
 
 
 
-func (r *AI32) outVal() Z {
-	return r.o.val()
-}
-
-func (r *AI32) outSet(out *I32) {
-	r.o = out.clone()
-}
-
-func (r *AI32) outValPow2() Z {
-	return r.o.valPow2()
-}
-
-func (r *AI32) inVal() Z {
-	return r.i.val()
-}
-
-func (r *AI32) IsZero() bool {
-	if r == nil || r.o == nil || r.i == nil || r.o.n == 0 || r.i.n == 0 {
-		return true
-	}
-	return false
-}
-
-// WriteString appends to given buffer very SIMPLE format:
-// For nil, out or in zero appends "+0"
-// For n > 0 always appends +n or -n including N=1
-// For in > 1 appends √ and then in (always positive)
-func (r *AI32) Str(s *Str) {
-	if r == nil || r.o == nil || r.o.n == 0 {
-		s.Zero() // return +0
-	} else {
-		s.I32(r.o) // append ±out
-		if r.i == nil || r.i.n == 0 {
-			return // return only printed out
-		}
-		if r.e == nil {
-			// append √±in and return
-			s.Radical32(r.i, nil)
-		} else {
-			s.Radical32(r.i, func(s *Str) {
-				// append √±in( ... ) and return
-				r.e.Str(s)
-			})
-		}
-	}
-}
-
-func (r *AI32) String() string {
-	s := NewStr()
-	r.Str(s)
-	return s.String()
-}
 
 
