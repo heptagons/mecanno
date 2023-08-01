@@ -2,6 +2,7 @@ package alg
 
 import (
 	"math"
+	//"fmt"
 )
 
 type N32 uint32 // range 0 - 0xffffffff
@@ -157,61 +158,75 @@ func NewAI32s() *AI32s {
 	}
 }
 
-func (r *AI32s) AI(out, in Z, ext *AI32) *AI32 {
+func (r *AI32s) AI(out, in Z, ext *AI32) (ai *AI32, overflow bool) {
 	if ext == nil {
-		return r.reduceOI(out, in)
+		// out√in is c√d or g√h or m√n ...
+		return r.roi(out, in)
 	}
-	eo1 := ext.outVal() // extra-out to optionally reduce
-	if eo1 == 0 { // downgrade to reduceOI
-		return r.reduceOI(out, in)
+	eo1 := ext.outVal()
+	if eo1 == 0 {
+		// out√in ext.o = 0
+		// e√f g=0 or i√j k=0 or k√l m=0 or ...
+		return r.roi(out, in)
 	}
-	oi, ii, eo2, ok := r.reduceExtra(out, in, eo1)
+	oi, ii, eo2, ok := r.roie(out, in, eo1)
 	if !ok {
-		return nil // overflow
+		// c, dd, g, hh, m, nn overflow
+		return nil, true
+	
 	}
+	if ext.e == nil {
+		if ext.inVal() == +1 {
+			// e√(f+g√h) or k√(l+m√n) ... where h == +1, n == +1, ...
+			// return reduced e√(f+g) or k√(l+m) ...
+			return r.roi(oi.val(), ii.val() + eo2)
+		}
+	}
+	// i√(j+k√l+(...)) or ...
+	ext, over2 := r.AI( // extension
+		eo2,         // equals to eoi or reduced (decreased)
+		ext.inVal(), // extra-in original expected irreducible
+		ext.e,       // extra-extra original expected irreducible
+	)
 	return &AI32{
-		o: oi, // equals to out or reduced (increased)
-		i: ii, // equals to in or reduced (decreased)
-		e: r.AI( // recurse...
-			eo2,         // equals to eoi or reduced (decreased)
-			ext.inVal(), // extra-in original expected irreducible
-			ext.e,       // extra-extra original expected irreducible
-		),
-	}
+		o: oi, // equals to out or out increased
+		i: ii, // equals to in or in decreased
+		e: ext,
+	}, over2
 }
 
-// reduceOI tries to increment out and decrease inA within a new IA32.
-// Looks the value inA can be expressed as a product of p*p*inB where inB is square-free.
+// roi returns a AI32 with a maximum o, minimum i and without e.
+// Looks value inA can be expressed as a product of p*p*inB where inB is square-free.
 // Then returns a new AI32 with values o=out*p and i=inA/p
 // Case 1: For out = inA = 0 returns empty AI32 which means is zero.
 // Case 2: When iB = +1, return AI32 with only o = out*p*inA
 // Case 3: When p = 1, returns AI32 with o=out, i=inA
 // Case 4: When p > 1, returns AI32 with o=out*p, i=inB/p
 // Returns nil for overflows
-func (r *AI32s) reduceOI(out, inA Z) *AI32 {
+func (r *AI32s) roi(out, inA Z) (ai *AI32, overflow bool) {
 	if out == 0 || inA == 0 { // case 1
-		return &AI32{ } // zero
+		return // zero
 	}
-	// convert to natural to try reduction
 	io := out; if out < 0 { io = -out }
 	ia := inA; if inA < 0 { ia = -inA }
-	if no, na, ok := r.reduce1N(N(io), N(ia)); !ok {
-		return nil // overflow
+	if no, na, ok := r.reduce1(N(io), N(ia)); !ok {
+		overflow = true
 	} else if na == 1 && inA > 0 { // case 2
-		return &AI32{
-			o: &I32{ n:no, s:out < 0 }, // ±no
+		ai = &AI32{
+			o: &I32{ n:no, s:out < 0 },
+			i: &I32{ n:na, s:inA < 0 },
 		}
 	} else { // cases 3 and 4
-		return &AI32{
-			o: &I32{ n:no, s:out < 0 }, // ±no
-			i: &I32{ n:na, s:inA < 0 }, // ±na
+		ai = &AI32{
+			o: &I32{ n:no, s:out < 0 },
+			i: &I32{ n:na, s:inA < 0 },
 		}
 	}
+	return
 }
 
-func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, Z, bool) {
+func (r *AI32s) roie(out, inA, inB Z) (*I32, *I32, Z, bool) {
 	if out == 0 { // case 1
-		// out value is zero, return empty
 		return nil, nil, 0, true
 	}
 	io := out; if out < 0 { io = -out }
@@ -219,7 +234,7 @@ func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, Z, bool) {
 	ib := inB; if inB < 0 { ib = -inB }
 	no, na, nb, ok := r.reduce2(N(io), N(ia), N(ib))
 	if !ok {
-		return nil, nil, 0, false
+		return nil, nil, 0, false // overflow
 	}
 	zo := Z(no); if out < 0 { zo = -zo }
 	za := Z(na); if inA < 0 { za = -za }
@@ -234,7 +249,7 @@ func (r *AI32s) reduceExtra(out, inA, inB Z) (*I32, *I32, Z, bool) {
 // reduce1N try to decrease in and increase out.
 // Example: The input -3√(20) is returned as -6√(5)
 // Return ok as false when out or in values are larger than 32 bits (overflow).
-func (r *AI32s) reduce1N(out, in N) (o N32, i N32, ok bool) {
+func (r *AI32s) reduce1(out, in N) (o N32, i N32, ok bool) {
 	if out == 0 || in == 0 {
 		return 0, 0, true
 	} else if in > 1 {
@@ -321,9 +336,7 @@ func (r *AI32) IsZero() bool {
 // For n > 0 always appends +n or -n including N=1
 // For in > 1 appends √ and then in (always positive)
 func (r *AI32) Str(s *Str) {
-	if r == nil {
-		s.Infinite() // return ∞
-	} else if r.o == nil || r.o.n == 0 {
+	if r == nil || r.o == nil || r.o.n == 0 {
 		s.Zero() // return +0
 	} else {
 		s.I32(r.o) // append ±out

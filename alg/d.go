@@ -7,7 +7,7 @@ type D struct {
 
 func (d *D) Str(s *Str) {
 	if d == nil || d.ab == nil || d.cd == nil {
-		s.Infinite()
+		s.Zero()
 		return
 	}
 	abZero := d.ab.IsZero()
@@ -62,7 +62,7 @@ func (ds *Ds) NewD(b, c, d Z, a N) *D {
 	if ab == nil {
 		return nil // infinite
 	}
-	if cd := ds.AI(c, d, nil); cd == nil {
+	if cd, ok := ds.AI(c, d, nil); !ok {
 		return nil // overflow
 	} else {
 		// after the d simplification, c was increased

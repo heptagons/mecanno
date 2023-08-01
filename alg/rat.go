@@ -157,7 +157,7 @@ func (r *Rat) Sqrt(rs *AI32s) *Alg {
 	if r.Neg {
 		return nil // Imaginary
 	}
-	if out, in, ok := rs.reduce1N(1, N(r.Num)*N(r.Den)); !ok {
+	if out, in, ok := rs.reduce1(1, N(r.Num)*N(r.Den)); !ok {
 		return nil // overflow
 	} else if r2 := NewRat(int(out), int(r.Den)); r2 == nil {
 		// update rational since sqrtMul updated numerator which

@@ -13,9 +13,9 @@ func NewStr() *Str {
 	return &Str{}
 }
 
-func (s *Str) Infinite() {
-	s.WriteString("∞")
-}
+//func (s *Str) Empty() {
+//	s.WriteString("")
+//}
 
 func (s *Str) Zero() {
 	s.WriteString("+0")	

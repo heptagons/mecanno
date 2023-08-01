@@ -146,7 +146,7 @@ func (x *B) MulB(y *B) *B {
 
 func (x *B) Str(s *Str) {
 	if x == nil || x.a == 0 {
-		s.Infinite()
+		// do nothing
 	} else if x.b == nil || x.b.n == 0 {
 		s.Zero()
 	} else if x.a == 1 {

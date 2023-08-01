@@ -18,18 +18,16 @@ func NewHs(rs *AI32s) *Hs {
 }
 
 func (s *Hs) NewH(b, c, d, e, f, g, h Z, a N) *H {
-	gh := s.AI(g, h, nil)
-	if gh == nil {
+	if gh, ok := s.AI(g, h, nil); !ok {
 		return nil // overflow
-	}
-	ef := s.AI(e, f, nil) // TODO
-	if ef == nil {
+	} else if _, ok := s.AI(e, f, nil); !ok {
 		return nil
-	}
-	ab := NewBnotReduce(b, a)
-	return &H {
-		gh: gh,
-		ab: ab,
+	} else {
+		ab := NewBnotReduce(b, a)
+		return &H {
+			gh: gh,
+			ab: ab,
+		}
 	}
 
 

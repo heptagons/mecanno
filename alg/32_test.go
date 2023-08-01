@@ -28,13 +28,16 @@ func Test32(t *testing.T) {
 		}
 	}
 
-	for _, s := range []struct{ o, i Z; exp string } {
+	// roi
+	for _, s := range []struct{ o, i Z; exp string; overflow bool } {
 		{ o: 0, i: 0, exp:"+0" },
 		{ o: 0, i: 1, exp:"+0" },
 		{ o: 0, i:-1, exp:"+0" },
 		{ o:-1, i: 0, exp:"+0" },
 		{ o: 1, i: 0, exp:"+0" },
 		{ o: 1, i: 1, exp:"+1" },
+		{ o: 1, i: 2, exp:"+1√2" },
+		{ o: 1, i: 4, exp:"+2" },
 		{ o: 2, i: 2, exp:"+2√2" },
 		{ o: 3, i: 3, exp:"+3√3" },
 		{ o: 4, i: 4, exp:"+8" },
@@ -47,17 +50,20 @@ func Test32(t *testing.T) {
 		{ o:1, i:25*9*4*4*3*25*9*4*7,     exp:"+1800√21" },
 		{ o:9, i:3*3*3*3*5*3*3*3*3*3,     exp:"+729√15"  },
 
-		{ o:1,            i:3*5*7*11*13*17*19*23*29*31, exp:"∞" },
-		{ o:Z(N32_MAX+1), i:1,                          exp:"∞" },
-		{ o:1,            i:Z(N32_MAX+2),               exp:"∞" },
+		{ o:1,            i:3*5*7*11*13*17*19*23*29*31, overflow:true },
+		{ o:Z(N32_MAX+1), i:1,                          overflow:true },
+		{ o:1,            i:Z(N32_MAX+2),               overflow:true },/**/
 	} {
-		ai := r.reduceOI(s.o , s.i)
-		if got := ai.String(); got != s.exp {
-			t.Fatalf("reduceOI got=%s exp=%s", got, s.exp)
+		if ai, overflow := r.roi(s.o , s.i); overflow {
+			if !s.overflow {
+				t.Fatalf("roi overflow expected")
+			}
+		} else if got := ai.String(); got != s.exp {
+			t.Fatalf("roi got=%s exp=%s", got, s.exp)
 		}
 	}
 
-	// reduceExtra with irreducible extra.in = +17
+	// roie with irreducible extra in e.i = +17
 	for _, s := range []struct{ o, inA, inB Z; exp string } {
 
 		{ o:0, inA:0,  inB: 0, exp:"+0" },
@@ -77,18 +83,19 @@ func Test32(t *testing.T) {
 
 		{ o:-4, inA:-4,  inB: -4, exp:"-8√(-1-1√17)" },
 	} {
-		if o, i, eo, ok := r.reduceExtra(s.o, s.inA, s.inB); !ok {
+		if o, i, eo, ok := r.roie(s.o, s.inA, s.inB); !ok {
 			t.Fatalf("unexpected infinite")
 		} else {
-			alg := r.AI(o.val(), i.val(), r.AI(eo, +17, nil))
+			ext, _ := r.AI(eo, +17, nil)
+			alg, _ := r.AI(o.val(), i.val(), ext)
 			if got := alg.String(); got != s.exp {
 				t.Fatalf("reduceExtra got=%s exp=%s", got, s.exp)
 			}
 		}
 	}
 
-	// ±c√±d
-	for pos, s := range []struct { o, a, b Z; e string }	{
+	// A1 ±c√±d
+	for pos, s := range []struct { o, a, b Z; e string; overflow bool } {
 		{ o: 1, a: 0,  b: 0,  e: "+0" },
 		{ o: 1, a: 0,  b: 1,  e: "+0" },
 		{ o: 1, a: 1,  b: 0,  e: "+0" },
@@ -112,15 +119,15 @@ func Test32(t *testing.T) {
 		{ o:1, a:0xffffffff, b:         1, e:"+1√4294967295" }, // max uint32 is prime
 		{ o:1, a:0xffffffff, b:       0xf, e:"+15√286331153" }, // product ok
 		{ o:1, a:0xffffffff, b:      0xff, e:"+255√16843009" }, // product ok
-		{ o:1, a:0xffffffff, b:     0xfff, e:"∞"             }, // prime overflow
+		{ o:1, a:0xffffffff, b:     0xfff, overflow: true    }, // prime overflow
 		{ o:1, a:0xffffffff, b:    0xffff, e:"+65535√65537"  }, // product ok
-		{ o:1, a:0xffffffff, b:   0xfffff, e:"∞"             }, // overflow
-		{ o:1, a:0xffffffff, b:  0xffffff, e:"∞"             }, // overflow
-		{ o:1, a:0xffffffff, b: 0xfffffff, e:"∞"             }, // overflow
-		{ o:1, a:0xffffffff, b:0xffffffff, e:"∞"             }, // overflow
+		{ o:1, a:0xffffffff, b:   0xfffff, overflow: true    }, // overflow
+		{ o:1, a:0xffffffff, b:  0xffffff, overflow: true    }, // overflow
+		{ o:1, a:0xffffffff, b: 0xfffffff, overflow: true    }, // overflow
+		{ o:1, a:0xffffffff, b:0xffffffff, overflow: true    }, // overflow
 
-		{ o:+1, a:1, b:-1, e: "+1i" }, // imaginaries
-		{ o:+2, a:1, b:-1, e: "+2i" },
+		{ o:+1, a:1, b:-1, e: "+1i"   }, // imaginary
+		{ o:+2, a:1, b:-1, e: "+2i"   },
 		{ o:+2, a:1, b:-2, e: "+2i√2" },
 		{ o:+2, a:1, b:-4, e: "+4i"   },
 		{ o:-1, a:1, b:-1, e: "-1i"   },
@@ -129,23 +136,80 @@ func Test32(t *testing.T) {
 		{ o:-2, a:1, b:-4, e: "-4i"   },
 	} {
 		in := s.a * s.b
-		if got := r.AI(s.o, in, nil).String(); got != s.e {
+		if ai, overflow := r.AI(s.o, in, nil); overflow  {
+			if !s.overflow {
+				t.Fatalf("Reduce1 pos=%d a=%d, b=%d overflow exp=true", pos, s.a, s.b)
+			}
+		} else if got := ai.String(); got != s.e {
 			t.Fatalf("Reduce1 pos=%d a=%d, b=%d got:%s exp=%s", pos, s.a, s.b, got, s.e)
 		}
 	}
 
-	// ±e√(±f±g√±h)
-	for _, s := range[]struct { o, i Z; e *AI32; exp string } {
+	// A2 ±e√(±f±g√±h)
+	for _, s := range[]struct { o, i, eo, ei Z; exp string; overflow bool } {
 
-		{ o: 2, i: 3, e:r.AI( 4, 5,nil), exp:"+2√(3+4√5)" },
-		{ o:10, i:20, e:r.AI(30,40,nil), exp:"+20√(5+15√10)" },
+		{ o: Z(N32_MAX+1), i:1,              overflow:true },
+		{ o: 1,            i:Z(N32_MAX+2),   overflow:true },
 
-		{ o: 1, i: 1, e:r.AI( 1, 1,nil), exp:"+1√(1+0)" },
-		{ o: 1, i: 3, e:r.AI( 1, 1,nil), exp:"+1√(3+0)" },
-		{ o: 1, i: 4, e:r.AI( 1, 1,nil), exp:"+2" },
+		{ o: 1, i:1, eo:Z(N32_MAX+1), ei:1,            overflow:true },
+		{ o: 1, i:1, eo:1,            ei:Z(N32_MAX+2), overflow:true },
+
+		{                       exp:"+0" }, // +0√(0+0√0) = +0
+		{ o:1,                  exp:"+0" }, // +1√(0+0√0) = +1√(0+0) = +1√0 = +0
+		{ o:1, i:1,             exp:"+1" }, // +1√(1+0√0) = +1√(1+0) = +1√1 = +1
+		{ o:1, i:1, eo:1,       exp:"+1" }, // +1√(1+1√0) = +1√(1+0) = +1√1 = +1
+		{ o:1, i:1, eo:1, ei:9, exp:"+2" }, // +1√(1+1√9) = +1√(1+3) = +1√4 = +2
+
+		{ o:1, i:0, eo:1, ei:1, exp:"+1"  }, // +1√(0+1√1) = +1√(0+1) = +1√1 = +1
+		
+		{ o:1, i:0, eo:1, ei:2, exp:"..."  }, // +1√(0+1√2) = +1√(0+1√2) = TODO!!!
+
+
+
+		{ o: 1, i: 1, eo: 1, ei:-2,  exp:"+1√(1+1i√2)" }, // +1√(1+1√-2) = +1√(1+2i)
+		{ o: 1, i: 1, eo: 1, ei:-1,  exp:"+1√(1+1i)"   }, // +1√(1+1√-1) = +1√(1+1i)
+		{ o: 1, i: 1, eo: 1, ei: 1,  exp:"+1√2"        }, // +1√(1+1√1) = +1√(1+1) = +1√2
+		{ o: 1, i: 1, eo: 1, ei: 2,  exp:"+1√(1+1√2)"  }, 
+		{ o: 1, i: 1, eo: 1, ei: 3,  exp:"+1√(1+1√3)"  }, 
+		{ o: 1, i: 1, eo: 1, ei: 4,  exp:"+1√3"        }, // +1√(1+1√4) = +1√(1+2) = +1√3
+		{ o: 1, i: 1, eo: 1, ei: 5,  exp:"+1√(1+1√5)"  }, 
+
+		{ o: 1, i: 1, eo: 2, ei:-1,  exp:"+1√(1+2i)"   }, // +1√(1+1√-1) = +1√(1+1i)
+		{ o: 1, i: 1, eo: 2, ei: 1,  exp:"+1√3"        }, // +1√(1+2√1) = +1√(1+2) = +1√3
+		{ o: 1, i: 1, eo: 2, ei: 2,  exp:"+1√(1+2√2)"  }, // +1√(1+2√2)
+		{ o: 1, i: 1, eo: 2, ei: 3,  exp:"+1√(1+2√3)"  }, 
+		{ o: 1, i: 1, eo: 2, ei: 4,  exp:"+1√5"        }, // +1√(1+2√4) = +1√(1+4) = +1√5
+		{ o: 1, i: 1, eo: 2, ei: 5,  exp:"+1√(1+2√5)"  }, 
+
+		{ o: 1, i: 1, eo: 3, ei:-1,  exp:"+1√(1+3i)"   }, // +1√(1+1√-1) = +1√(1+1i)
+		{ o: 1, i: 1, eo: 3, ei: 1,  exp:"+2"          }, // +1√(1+3√1) = +1√(1+3) = +1√4 = +2
+		{ o: 1, i: 1, eo: 3, ei: 2,  exp:"+1√(1+3√2)"  }, // +1√(1+3√2)
+		{ o: 1, i: 1, eo: 3, ei: 3,  exp:"+1√(1+3√3)"  }, 
+		{ o: 1, i: 1, eo: 3, ei: 4,  exp:"+1√7"        }, // +1√(1+3√4) = +1√(1+6) = +1√7
+		{ o: 1, i: 1, eo: 3, ei: 5,  exp:"+1√(1+3√5)"  }, 
+
+		{ o: 2, i: 3, eo: 4, ei:5,  exp:"+2√(3+4√5)" },
+		{ o:10, i:20, eo:30, ei:40, exp:"+20√(5+15√10)" },
+
+		{ o: 1, i: 3, eo: 1, ei:1,  exp:"+2"   }, // +1√(3+1√1) = +1√(3+1) = +1√4 = +2
+		{ o: 1, i: 4, eo: 1, ei:1,  exp:"+1√5" }, // +1√(4+1√1) = +1√(4+1) = +1√5
+		
+		{ o:-3, i:-5, eo:-7, ei:-11,  exp:"-3√(-5-7i√11)" },
+
+		{ o: 1, i: 1, eo:-2, ei: 1,  exp:"+1i" }, // +1√(1-2√1) = +1√(1-2) = +1i
+		{ o: 1, i: 1, eo:-1, ei: 1,  exp:"+0" }, // +1√(1-1√1) = +1√(1-1) = 0
+		{ o: 1, i:-1, eo: 1, ei: 1,  exp:"+0" }, // +1√(-1+1√1) = +1√(-1+1) = 0
+
+
 	} {
-		if got := r.AI(s.o, s.i, s.e).String(); got != s.exp {
-			t.Fatalf("Reduce2 got=%s exp=%s", got, s.exp)
+		ext, o1 := r.AI(s.eo, s.ei, nil)
+		ai, o2 := r.AI(s.o, s.i, ext)
+		if o1 || o2 {
+			if !s.overflow {
+				t.Fatalf("A2 overflow expected for %s", ai)
+			}
+		} else if got := ai.String(); got != s.exp {
+			t.Fatalf("A2 got=%s exp=%s for %d√(%d %d√%d)", got, s.exp, s.o, s.i, s.eo, s.ei)
 		}
 	}
 }

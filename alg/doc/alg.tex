@@ -79,7 +79,7 @@ Example of reducing $A_1$:
 \begin{align}
 A_1 &= \pm c\sqrt{\pm d}\\
 d   &= p^2d_1 \qquad \textbf{ From $d$ find $p,d_1$ where $d_1$ is square-free or $1$} \\
-roi(c,d) &= \begin{cases}
+A_1 &= \begin{cases}
  0                    &\text{case 1: if } c = 0 \text{ or } d = 0\\
  \pm cp               &\text{case 2: if } d_1 = +1\\
  \pm c\sqrt{\pm d}    &\text{case 3: if } p = 1\\
@@ -90,20 +90,24 @@ For cases $1$ and $2$ we got $A_1$ degenerated into $A_0$.
 For case $3$ values remain the same because the number was irreducible.
 For case $4$ we got reduced $A_1$ with new values $c_1=cp$ and $d_1$.
 
+
 \subsection{Reduction $roie$}
 This reduction is done for $AI32$ numbers \textbf{with} extension $e$. This is the case of 
 part $\pm e\sqrt{\pm f + g\sqrt{...}}$ of $A_2$,
 part $\pm i\sqrt{\pm j + k\sqrt{...}}$ of $A_3$ and
 part $\pm k\sqrt{\pm l + m\sqrt{...}}$ of $A_3$.
-Example of reducing $A_2$. First we reduce part $\pm g\sqrt{\pm h}$ with reduceOII 
-function:
+Example of reducing $A_2$. First we reduce $roi(g, h)$:
 \begin{align}
 A_1 &= \pm g\sqrt{\pm h}\\
 roi(g,h) &= \begin{cases}
- \pm g_1               &\text{reduceOII cases 1 or 2}\\
- \pm g_2\sqrt{\pm h_2} &\text{reduceOII cases 3 or 4}\\
-\end{cases}\\
-A_2 &= \begin{cases}
+ \pm g_1               &\text{roi cases 1 or 2}\\
+ \pm g_2\sqrt{\pm h_2} &\text{roi cases 3 or 4}\\
+\end{cases}
+\end{align}
+Then we apply this reduction to $A_2$:
+\begin{align}
+A_2 &= \pm e\sqrt{f \pm g\sqrt{\pm h}}\\
+ roie(e,f,g) &= \begin{cases}
  0                                       &case 1: \text{if } e = 0\\
  \pm e\sqrt{\pm f \pm g_1}               &case 2: \text{if } h_2 = +1\\
  \pm e\sqrt{\pm f \pm g_2\sqrt{\pm h_2}} &case 3: \text{otherwise }
