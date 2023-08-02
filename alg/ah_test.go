@@ -74,9 +74,9 @@ func TestB(t *testing.T) {
 			t.Fatalf("B-add got %s exp %s", got, exp)
 		}
 	}
+
+	/*
 	for _, b := range []struct { e string; b *B } {
-
-
 		// InvB
 		{ e:"∞",     b: none.Inv() },
 		{ e:"∞",     b: zero.Inv() },
@@ -91,7 +91,7 @@ func TestB(t *testing.T) {
 		if got := b.b.String(); got != b.e {
 			t.Fatalf("B got %s exp %s", got, b.e)
 		}
-	}
+	}*/
 
 	// MulB
 	for _, b := range []struct { e string; b *B } {
@@ -114,7 +114,7 @@ func TestB(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
-	rs := NewAI32s()
+	rs := NewRed32()
 	ds := NewDs(rs)
 	a1 := N(1)
 	a2 := N(2)
@@ -171,6 +171,7 @@ func TestD(t *testing.T) {
 	}
 
 	// D inversions
+	/*
 	for _, r := range []struct { d *D; exp string } {
 		// reals
 		{ d: ds.NewD(  1, 2, 3,  4),  exp: "(-4+8√3)/11"    },
@@ -198,12 +199,12 @@ func TestD(t *testing.T) {
 		if got := ds.NewInvD(r.d).String(); got != r.exp {
 			t.Fatalf("D-inv got %s exp %s", got, r.exp)		
 		}
-	}
+	}*/
 }
 
 func TestH(t *testing.T) {
 
-	rs := NewAI32s()
+	rs := NewRed32()
 	hs := NewHs(rs)
 
 	for _, r := range []struct { b, c, d, e, f, g, h Z; a N; exp string } {

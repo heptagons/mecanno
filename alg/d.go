@@ -44,12 +44,12 @@ func (d *D) String() string {
 
 
 type Ds struct {
-	*AI32s
+	*Red32
 }
 
-func NewDs(rs *AI32s) *Ds {
+func NewDs(rs *Red32) *Ds {
 	return &Ds{
-		AI32s: rs,
+		Red32: rs,
 	}
 }
 
@@ -89,7 +89,15 @@ func (ds *Ds) NewDsqrtB(b Z, a N) *D {
 // +- ab -+ac√d
 // ------------
 //   bb - ccd
+/*
 func (ds *Ds) NewInvD(dd *D) *D {
+
+	if ab, overflow := dd.ab.a.mul(dd.ab.b); overflow {
+		return nil
+	}
+
+
+
 	ab     := dd.ab.aVal() * dd.ab.bVal()             // will be the new b
 	ac     := dd.ab.aVal() * dd.cd.outVal()           // will be the new c
 	d      := dd.cd.inVal()                           // the same d pass as d
@@ -101,5 +109,5 @@ func (ds *Ds) NewInvD(dd *D) *D {
 	} else {
 		return ds.NewD(-ab, +ac, d, N(-bb_ccd))
 	}
-}
+}*/
 

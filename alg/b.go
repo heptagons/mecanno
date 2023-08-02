@@ -113,9 +113,16 @@ func (x *B) AddB(y *B) *B {
 	} else if y.b == nil || y.b.n == 0 {
 		return x.clone() // x
 	}
-	num := x.b.mul(y.a) + y.b.mul(x.a)
-	den := N(x.a) * N(y.a)
-	return NewB(num, den)
+	if a, overflow := x.b.mulN(y.a); overflow {
+		return nil
+	} else if b, overflow := y.b.mulN(x.a); overflow {
+		return nil
+	} else if num, overflow := a.add(b); overflow {
+		return nil
+	} else {
+		den := N(x.a) * N(y.a)
+		return NewB(num.val(), den)
+	}
 }
 
 func (x *B) Inv() *B {
@@ -136,12 +143,12 @@ func (x *B) MulB(y *B) *B {
 	} else if y.b == nil || y.b.n == 0 {
 		return NewB0(N(x.a) * N(y.a))
 	}
-	num := Z(x.b.n) * Z(y.b.n)
-	if x.b.s != y.b.s {
-		num = -num
+	if num, overflow := x.b.mul(y.b); overflow {
+		return nil
+	} else {
+		den := N(x.a) * N(y.a)
+		return NewB(num.val(), den)
 	}
-	den := N(x.a) * N(y.a)
-	return NewB(num, den)
 }
 
 func (x *B) Str(s *Str) {
@@ -187,8 +194,8 @@ func (x *B) bVal() Z {
 	return x.b.val()
 }
 
-func (x *B) bValPow2() Z {
-	return x.b.valPow2()
+func (x *B) bValPow2() (*I32, bool) {
+	return x.b.mul(x.b)
 }
 
 

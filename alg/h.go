@@ -8,12 +8,12 @@ type H struct {
 }
 
 type Hs struct {
-	*AI32s
+	*Red32
 }
 
-func NewHs(rs *AI32s) *Hs {
+func NewHs(rs *Red32) *Hs {
 	return &Hs{
-		AI32s: rs,
+		Red32: rs,
 	}
 }
 

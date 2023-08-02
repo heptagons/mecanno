@@ -74,7 +74,7 @@ func TestRat(t *testing.T) {
 		}
 	}
 
-	rs := NewAI32s()
+	rs := NewRed32()
 	// Sqrt
 	for _, s := range []struct { num, den int; exp string } {
 		{ num: 0, den:1, exp: "0" },
@@ -133,7 +133,7 @@ func TestTriangle(t *testing.T) {
 		}
 	}
 
-	rs := NewAI32s()
+	rs := NewRed32()
 	algs := NewAlgs(rs)
 	triangles := NewTriangles(algs)
 	triangles.Find(5)

@@ -25,7 +25,7 @@ in the numerators.
 The signs are managed appart as extra boolean variables and there is one for each of the seven variables
 $b$, $c$, $e$, $g$, $i$, $k$ and $m$.
 
-\subsection{N32, I32 and AI32}
+\subsection{N32, I32, AI32, AQ32}
 
 \setlength{\columnsep}{30pt}
 \begin{multicols}{2}
@@ -33,103 +33,216 @@ $b$, $c$, $e$, $g$, $i$, $k$ and $m$.
 type N32 uint32 // range 0 - 0xffffffff
 
 type I32 struct {
-  s bool // sign: true means negative
-  n N32  // positive value
+	s bool // sign: true means negative
+	n N32  // positive value
 }
 
 type AI32 struct {
-  o *I32  // outside radical
-  i *I32  // inside radical square-free
-  e *AI32 // inside radical extension
+	o *I32  // outside radical
+	i *I32  // inside radical square-free
+	e *AI32 // inside radical extension
+}
+
+type AQ32 struct {
+	nums []*AI32 // numerator sum
+	den  N32     // denominator
 }
 \end{lstlisting}
-In this list we define three 32 bit numbers in Golang code.\\
+In this list we define four 32 bit numbers in Golang code.\\
 In line 1 we define the natural number $N32$ with a range of $0 < n \leq 2^{32} - 1$.\\
 In line 3 we define the integer number $I32$, the number sign is negative if $s$ is true 
 and the number value always is a positive. If $I32$ is nil, then we assume the number
 is zero.\\
-In line 8 we define the algebraci integer number $AI32$. The number is recursive with a value of
+In line 8 we define the algebraic integer number $AI32$. The number is recursive with a value of
 \begin{align}
 \pm o\sqrt{\pm i \pm e.o\sqrt{\pm e.i \pm e.e.o ... }}
 \end{align}
-where each sign $\pm$ corresponds to its integer sign $s$ of the values of integers $o$ and $i$.
+where each sign $\pm$ corresponds to its integer sign $s$ of the values of integers $o$ and $i$;
+a $AI32$ with value nil corresponds to a zero.
+In line 14 we define the algebraic rational number $AQ32$. In the numerator has a sum of several
+integer numbers $AI32$ and in the denominator a natural number $N32$ other than zero.
 \end{multicols}
 
-\subsection{Reductions}
-Reductions simplify and standarize the numbers representations. Are applied to the 
-inputs and outputs numbers in operations like
-copy, addition, multiplication, inversion and square roots extraction.
-Any complicated abstract integer is reduced from the inside to the outside.
+\subsection{Reductions $R32$}
+Reductions factory $R32$ produce irreducibles $AI32$ and $AQ32$ using a precomputed fixed list of 32-bit primes. The reduction simplify and standarize the algebraic numbers for further
+operations like cloning, addition, multiplication, inversion and square root extractions with results also reduced.
+\begin{lstlisting}
+type Red32 struct {
+	primes []N32
+}
+
+func NewRed32() *Red32 {
+	value := 0xffff
+    f := make([]bool, value)
+    for i := 2; i <= int(math.Sqrt(float64(value))); i++ {
+        if f[i] == false {
+            for j := i * i; j < value; j += i {
+                f[j] = true
+            }
+        }
+    }
+    primes := make([]N32, 0)
+    for i := N32(2); i < N32(value); i++ {
+        if f[i] == false {
+            primes = append(primes, i)
+        }
+    }
+	return &Red32{
+		primes: primes,
+	}
+}
+\end{lstlisting}
+Numbers of the form $x\sqrt{y}$ are reduced with a function call named $roi(x,y)$.
+Numbers of the form $x\sqrt{y + z\sqrt{...}}$ are reduced with function named $roie(x,y,z)$.
+The factory produces $AI32$ numbers calling both functions as necessary to return
+irreducible algebraic integers. As an example, this is the process to reduce number $A_3$:
 \begin{align}
 A_3 &= \pm i\sqrt{\pm j \pm k\sqrt{\pm l \pm m\sqrt{\pm n}}}\\
- &\qquad m_1, n_1 = reduceOI(m, n) \nonumber\\
+ &\qquad \boxed{ m_1, n_1 = roi(m, n) }\\
  &= \pm i\sqrt{\pm j \pm k\sqrt{\pm l \pm m_1\sqrt{\pm n_1}}}\\
- &\qquad k_1, l_1, m_2 = reduceOII(k, l, m_1) \nonumber\\
+ &\qquad \boxed{ k_1, l_1, m_2 = roie(k, l, m_1) }\\
  &= \pm i\sqrt{\pm j \pm k_1\sqrt{\pm l_1 \pm m_2\sqrt{\pm n_1}}}\\
- &\qquad i_1, j_1, k_2 = reduceOII(i, j, k_1) \nonumber\\
+ &\qquad \boxed{ i_1, j_1, k_2 = roie(i, j, k_1) }\\
  &= \pm i_2\sqrt{\pm j_2 \pm k_3\sqrt{\pm l_1 \pm m_2\sqrt{\pm n_1}}}
 \end{align}
 
 \subsection{Reduction $roi$}
-This reduction is done for $AI32$ numbers \textbf{without} extension $e$. This is the case of
-part $\pm c\sqrt{\pm d}$ of $A_1$,
+This reduction is done for $AI32$ numbers parts \textbf{without} extension $e$. This is the case of whole part $\pm c\sqrt{\pm d}$ of $A_1$,
 part $\pm g\sqrt{\pm h}$ of $A_2$ and
 part $\pm m\sqrt{\pm n}$ of $A_3$.
-Example of reducing $A_1$:
+Example of reducing $A_1 = \pm c\sqrt{\pm d}$.
+From $d$ find two numbers $p$ and $d_1$, so $p$ is the product of some primes even repeated
+and $d_1$ is square-free or $1$:
 \begin{align}
 A_1 &= \pm c\sqrt{\pm d}\\
-d   &= p^2d_1 \qquad \textbf{ From $d$ find $p,d_1$ where $d_1$ is square-free or $1$} \\
+ &\qquad \boxed{ d = p^2d_1 }\\
 A_1 &= \begin{cases}
  0                    &\text{case 1: if } c = 0 \text{ or } d = 0\\
- \pm cp               &\text{case 2: if } d_1 = +1\\
+ \pm cp\sqrt{+1}      &\text{case 2: if } d_1 = +1\\
  \pm c\sqrt{\pm d}    &\text{case 3: if } p = 1\\
- \pm cp\sqrt{\pm d_1} &\text{case 4: otherwise }\\
+ \pm cp\sqrt{\pm d/p} &\text{case 4: otherwise }\\
 \end{cases}
 \end{align}
-For cases $1$ and $2$ we got $A_1$ degenerated into $A_0$.
-For case $3$ values remain the same because the number was irreducible.
-For case $4$ we got reduced $A_1$ with new values $c_1=cp$ and $d_1$.
+For case 1 and case 2 we got $A_1$ degenerated into $A_0$.
+For case 3 the number remains the same because was irreducible. For case 4 the reduction
+updates the values where $p > 1$ and $c_1=cp$ and $d_1 = d/p$.
+\begin{lstlisting}
+func (r *Red32) roi(out, inA Z) (ai *AI32, overflow bool) {
+	if out == 0 || inA == 0 { // case 1
+		return nil, false // zero
+	}
+	io := out; if out < 0 { io = -out }
+	ia := inA; if inA < 0 { ia = -inA }
+	if no, na, overflow := r.roiN(N(io), N(ia)); overflow {
+		return nil, true
+	} else { // cases 2,3,4
+		return &AI32{
+			o: &I32{ n:no, s:out < 0 },
+			i: &I32{ n:na, s:inA < 0 },
+		}, false
+	}
+}
 
+func (r *Red32) roiN(out, in N) (o N32, i N32, overflow bool) {
+	if out == 0 || in == 0 {
+		return 0, 0, false // zero
+	}
+	for _, prime := range r.primes {
+		p := N(prime)
+		if pp := p*p; in >= pp {
+			for {
+				if in % pp == 0 { // reduce ok
+					out *= p
+					in  /= pp
+					continue // look for repeated squares in reduced in
+				}
+				break // check next prime
+			}
+		} else { // in has no more factors to check
+			break
+		}
+	}
+	if out > N32_MAX || in > N32_MAX {
+		return 0, 0, true // overflow
+	}
+	return N32(out), N32(in), false
+}
+\end{lstlisting}
 
 \subsection{Reduction $roie$}
 This reduction is done for $AI32$ numbers \textbf{with} extension $e$. This is the case of 
 part $\pm e\sqrt{\pm f + g\sqrt{...}}$ of $A_2$,
 part $\pm i\sqrt{\pm j + k\sqrt{...}}$ of $A_3$ and
 part $\pm k\sqrt{\pm l + m\sqrt{...}}$ of $A_3$.
-Example of reducing $A_2$. First we reduce $roi(g, h)$:
+Example of reducing $A_2$. First we reduce part $\pm g\sqrt{\pm h}$ with $roi(g, h)$
+and apply the four cases to A2:
 \begin{align}
 A_1 &= \pm g\sqrt{\pm h}\\
-roi(g,h) &= \begin{cases}
- \pm g_1               &\text{roi cases 1 or 2}\\
- \pm g_2\sqrt{\pm h_2} &\text{roi cases 3 or 4}\\
+ &\qquad \boxed{ h = p^2h_1 }\\
+A_2 &= \pm e\sqrt{f \pm gp\sqrt{\pm h_1}}\\
+ A_2 &= \begin{cases}
+ 0                                       &case 5: \text{if } e = 0\\
+ \pm e\sqrt{\pm f}                       &case 6: \text{if } g = 0 \text{ or } h = 0\\
+ \pm e\sqrt{\pm f \pm gp}                &case 7: \text{if } h_1 = +1\\
+ \pm e\sqrt{\pm f \pm gp\sqrt{\pm h_1}} &case 8: \text{if } p \geq 1\\
 \end{cases}
 \end{align}
-Then we apply this reduction to $A_2$:
+For case 5 we have that $A_2$ is zero.
+For case 6 we reduce $A_2$ with $roi(\pm e,\pm f)$.
+For case 7 we reduce $A_2$ with $roi(\pm e,\pm f\pm gp)$.
+\\
+\\
+For case 8 we reduce $A_2$ with $roia(\pm e,\pm f, \pm gp)$ where $h_1$ is irreducible.
+Reduction $roie$ look for another product of primes $q$ such that at the same time 
+$f = q^2f_1$ and $gp = q^2g_1$:
 \begin{align}
-A_2 &= \pm e\sqrt{f \pm g\sqrt{\pm h}}\\
- roie(e,f,g) &= \begin{cases}
- 0                                       &case 1: \text{if } e = 0\\
- \pm e\sqrt{\pm f \pm g_1}               &case 2: \text{if } h_2 = +1\\
- \pm e\sqrt{\pm f \pm g_2\sqrt{\pm h_2}} &case 3: \text{otherwise }
-\end{cases}
+A_2 &= \pm e\sqrt{\pm f \pm gp\sqrt{\pm h1}}\\
+ &\qquad \boxed{ f = q^2f_1 }\\
+ &\qquad \boxed{ gp = q^2g_1 }\\
+A_2 &= \pm e_1\sqrt{\pm f_1 \pm g_1\sqrt{\pm h_1}}
 \end{align}
-For case $1$ we have that $A_2$ degenerated into a $A_0$ so we finish.
-For case $2$ we have that $A_2$ degenerated into a $A_1$ with values
-$\pm e$ and $\pm f+g_1$ and is then reduced with function $reduceOI$.
+Where $e_1 = eq$, $f_1 = f/{q^2}$, $g_1 = gp/{q^2}$.
+\begin{lstlisting}
+func (r *Red32) roie(out, inA, inB Z) (o, i, j Z, overflow bool) {
+	if out == 0 { // case 1
+		return 0, 0, 0, false // zero
+	}
+	io := out; if out < 0 { io = -out }
+	ia := inA; if inA < 0 { ia = -inA }
+	ib := inB; if inB < 0 { ib = -inB }
+	if no, na, nb, overflow := r.roieN(N(io), N(ia), N(ib)); overflow {
+		return 0, 0, 0, true // overflow
+	} else {
+		zo := Z(no); if out < 0 { zo = -zo }
+		za := Z(na); if inA < 0 { za = -za }
+		zb := Z(nb); if inB < 0 { zb = -zb }
+		return zo, za, zb, false
+	}
+}
 
-
-and $3$ we have that $A_2$ degenerated into $A_1$, so we proceed to go
-to reduce further this new $A_1$ as in previous section. For cases $4$ and $5$ we rewrite
-the $A_2$ with reduced values $g_1$ and square-free $h_1$:
-\begin{align}\\
-A_2 &= \pm e\sqrt{\pm f \pm g_1\sqrt{\pm h_1}}\\
-g_1 &= r^2g_2 \qquad \textbf{From $g_1$ found $r,g_2$ where $r$ matches with next equation's}\\
-f   &= r^2f_1 \qquad \textbf{From $f$ found $r,f_1$ where $r$ matches with previous equation's}\\
-A_2 &= \begin{cases}
- \pm e\sqrt{\pm f \pm g_1\sqrt{\pm h_1}} &case 6: \text{if } r = 1 \text{ nothing changed}\\
- \pm er\sqrt{\pm f_1 \pm g_2\sqrt{\pm h_1}}  &case 7: \text{otherwise }
-\end{cases}
-\end{align}
+func (r *Red32) roieN(out, inA, inB N) (o, i, j N32, overflow bool) {
+	if inA > 1 && inB > 1 {
+		for _, prime := range r.primes {
+			p := N(prime)
+			pp := p*p
+			for {
+				if inA % pp == 0 && inB % pp == 0 {
+					out *= p  // multiply by p
+					inA /= pp // divide by p squared
+					inB /= pp // divide by p squared
+					continue
+				} else {
+					break
+				}
+			}
+		}
+	}
+	if out > N32_MAX || inA > N32_MAX || inB > N32_MAX {
+		return 0, 0, 0, true // overflow
+	}
+	return N32(out), N32(inA), N32(inB), false 
+}
+\end{lstlisting}
 
 \subsection{B, D, H, N}
 
