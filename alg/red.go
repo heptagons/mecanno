@@ -154,13 +154,12 @@ func (r *Red32) roieN(out, inA, inB N) (o, i, j N32, overflow bool) {
 			pp := p*p
 			for {
 				if inA % pp == 0 && inB % pp == 0 {
-					out *= p  // multiply by p
-					inA /= pp // divide by p squared
-					inB /= pp // divide by p squared
+					out *= p
+					inA /= pp
+					inB /= pp
 					continue
-				} else {
-					break
 				}
+				break
 			}
 		}
 	}
