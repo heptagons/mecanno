@@ -36,10 +36,10 @@ type AI32 struct {
 	e *AI32 // inside extension
 }
 
-type AQ32 struct {
-	nums []*AI32 // numerators
-	den  N32     // denominator
-}
+//type AQ32 struct {
+//	nums []*AI32 // numerators
+//	den  N32     // denominator
+//}
 
 
 
