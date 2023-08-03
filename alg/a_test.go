@@ -56,14 +56,50 @@ func TestA32Red(t *testing.T) {
 
 	factory := NewA32s() // with primes for reductions
 
+	// primes
+	if got, exp := len(factory.primes), 6542; got != exp {
+		t.Fatalf("primes32 got %d exp:%d", got, exp)
+	}
+	for _, s := range []struct { pos int; prime N32 } {
+		{ pos:     0, prime:      2 },
+		{ pos:     1, prime:      3 },
+		{ pos:     2, prime:      5 },
+		{ pos:     3, prime:      7 },
+		{ pos:    10, prime:     31 },
+		{ pos:   100, prime:    547 },
+		{ pos: 1_000, prime:  7_927 },
+		{ pos: 6_541, prime: 65_521 },
+	} {
+		if got, exp := factory.primes[s.pos], s.prime; got != exp {
+			t.Fatalf("primes32 pos=%d got=%d exp=%d", s.pos, got, exp)
+		}
+	}
+
 	// roie
 	for _, s := range []struct{ o int64; is []int64; exp string } {
-		
+		// with zeroes
+		{   0, []int64{  1,  1,  1 }, "+0√()"       },
+		{   4, []int64{  0,  0,  0 }, "+0√()"       },
+		{   1, []int64{  0,  1,  2 }, "+1√(+0+1+2)" },
+		{   1, []int64{  0,  4,  4 }, "+2√(+0+1+1)" },
+		{   3, []int64{  0,  0,  9 }, "+9√(+0+0+1)" },
+		// negatives
 		{ +10, []int64{ -4, 12,-24 }, "+20√(-1+3-6)" },
 		{ -10, []int64{ +4,-12,+24 }, "-20√(+1-3+6)" },
 		{   5, []int64{  5,  7, 11 }, "+5√(+5+7+11)" },
-		{   1, []int64{ 64, 64, 64 }, "+8√(+1+1+1)" },
-
+		{   1, []int64{ 64, 64, 64 }, "+8√(+1+1+1)"  },
+		// big
+		{   1,      []int64{ 1,2,3,4,5,6,7,8,9,10,11,12 }, "+1√(+1+2+3+4+5+6+7+8+9+10+11+12)" },
+		{   1,      []int64{ AZ_MAX-1, AZ_MAX-1 },         "+3√(+238609294+238609294)"   },
+		{   1,      []int64{ AZ_MAX-2, AZ_MAX-2 },         "+1√(+2147483645+2147483645)" },
+		{   1,      []int64{ AZ_MAX-3, AZ_MAX-3 },         "+2√(+536870911+536870911)" },
+		{   1,      []int64{ AZ_MAX-4, AZ_MAX-4 },         "+1√(+2147483643+2147483643)" },
+		{   1,      []int64{ AZ_MAX-5, AZ_MAX-5 },         "+1√(+2147483642+2147483642)" },
+		{   1,      []int64{ AZ_MAX-7, AZ_MAX-7 },         "+2√(+536870910+536870910)" },
+		// overflows
+		{   1,      []int64{ AZ_MAX*AZ_MAX },   "∞" },
+		{   AZ_MAX, []int64{ AZ_MAX, -AZ_MAX }, "+2147483647√(+2147483647-2147483647)" }, // primes
+		{   AZ_MAX, []int64{ 4,4,4 },           "∞" },
 
 	} {
 		o, is, overflow := factory.roie(s.o, s.is)
@@ -76,7 +112,7 @@ func TestA32Red(t *testing.T) {
 		got := sb.String()
 		if overflow {
 			if s.exp != "∞" {
-				t.Fatalf("roie unexpected overflow for %s", got)
+				t.Fatalf("roie unexpected overflow for %d %v", s.o, s.is)
 			}
 		} else if got != s.exp {
 			t.Fatalf("roie got %s exp %s", got, s.exp)
@@ -84,7 +120,7 @@ func TestA32Red(t *testing.T) {
 	}
 
 	// F1 -> roi
-	for _, s := range []struct{ o, i int64; exp string } {
+	for _, s := range []struct{ c, d int64; exp string } {
 		{ 0, 10, "+0"    },
 		{ 0,  0, "+0"    },
 		{ 1,  0, "+0"    },
@@ -110,12 +146,54 @@ func TestA32Red(t *testing.T) {
 		{ +1, AZ_MAX*AZ_MAX/4,       "+98304√119304647" },
 		{ +1, (AZ_MAX-1)*(AZ_MAX-1), "+2147483646"      },
 	} {
-		if z, overflow := factory.F1(s.o, s.i); overflow {
+		if z, overflow := factory.F1(s.c, s.d); overflow {
 			if s.exp != "∞" {
-				t.Fatalf("F0 unexpected overflow for %d√%d", s.o, s.i)
+				t.Fatalf("F1 unexpected overflow for %d√%d", s.c, s.d)
 			}
 		} else if got := z.String(); got != s.exp {
-			t.Fatalf("F0 get %s exp %s", got, s.exp)
+			t.Fatalf("F1 get %s exp %s", got, s.exp)
+		}
+	}
+
+	// F2 -> roi -> roie
+	for _, s := range []struct{ e, f, g, h int64; exp string } {
+		{-1,-1,-1,-1, "-1√(-1-1i)" },
+		{ 1, 1, 1, 0, "+1"         }, // +1√(1+1√0) = +1√(1+0) = +1√1 = +1
+		{ 1, 1, 0, 1, "+1"         }, // +1√(1+0√1) = +1√(1+0) = +1√1 = +1
+		{ 1, 0, 1, 1, "+1"         }, // +1√(0+1√1) = +1√(0+1) = +1√1 = +1
+		{ 1, 0, 9, 0, "+0"         }, // +1√(0+9√0) = +1√(0+0) = +1√0 = +0
+		{ 1, 0, 0, 9, "+0"         }, // +1√(0+0√9) = +1√(0+0) = +1√0 = +0
+		{ 0, 3, 6, 9, "+0"         }, // +0√(3+6√9) = +0√(3+12) = +0√15 = +0
+		{ 1, 1,-1, 1, "+0"         }, // +1√(1-1√1) = +1√(1-1) = +1√0 = +0
+		{ 1, 1,-2, 1, "+1i"        }, // +1√(1-2√1) = +1√(1-2) = +1√-1 = +1i
+		{ 1, 1, 1, 1, "+1√2"       },
+		{ 1, 1, 1, 2, "+1√(1+1√2)" },
+		{ 1, 1, 1, 3, "+1√(1+1√3)" },
+		{ 1, 1, 1, 4, "+1√3"       },
+		{ 1, 1, 2, 4, "+1√5"       }, // +1√(1+2√4) = +1√(1+4) = +1√5
+		{ 1, 1, 3, 4, "+1√7"       }, // +1√(1+3√4) = +1√(1+6) = +1√7
+		{ 1, 3, 3, 4, "+3"         }, // +1√(3+3√4) = +1√(3+6) = +1√9 = +3
+		{ 3, 3, 3, 4, "+9"         }, // +3√(3+3√4) = +3√(3+6) = +3√9 = +9
+		{ 1, 1, 1, 9, "+2"         }, // +1√(1+1√9) = +1√(1+3) = +1√4 = +2
+		{ 1, 4, 2, 8, "+2√(1+1√2)" }, // +1√(4+2√8) = +1√(4+4√2) = +2√(1+1√2)
+		{ 1, 8, 8, 2, "+2√(2+2√2)" }, // +1√(8+8√2) = +2√(2+2√2)
+		{ 1, 8, 4, 8, "+2√(2+2√2)" }, // +1√(8+4√8) = +2√(8+8√2) = +2√(2+2√2)
+		{ 1,27, 6,27, "+3√(3+2√3)" }, // +1√(27+6√27) = +1√(27+18√3) = +3√(3+2√3)
+		{ 2, 2, 2, 2, "+2√(2+2√2)" },
+		{ 3, 3, 3, 3, "+3√(3+3√3)" },
+		{ 4, 4, 4, 4, "+8√3"       }, // +4√(4+4√4) = +4√(4+8) = +4√12 = + 8√3
+
+		{ 8, 8, 8, 8, "+16√(2+4√2)" }, // +8√(8+8√8) = +8√(8+16√2) = +16√(2+4√2)
+		{ 9, 9, 9, 9, "+54"         }, // +9√(9+9√9) = +9√(9+27) = +9√36 = +54
+		{12,12,12,12, "+24√(3+6√3)" }, // +12√(12+12√12) = +12√(12+24√3) = +24√(3+6√3)
+
+	} {
+		if z, overflow := factory.F2(s.e, s.f, s.g, s.h); overflow {
+			if s.exp != "∞" {
+				t.Fatalf("F2 unexpected overflow for %+d√(%d%+d√%d)", s.e, s.f, s.g, s.h)
+			}
+		} else if got := z.String(); got != s.exp {
+			t.Fatalf("F2 get %s exp %s", got, s.exp)
 		}
 	}
 }

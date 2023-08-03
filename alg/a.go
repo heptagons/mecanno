@@ -99,25 +99,61 @@ func (a *A32s) F1(c, d int64) (*AZ32, bool) {
 	}
 }
 
+func (a *A32s) F2(e, f, g, h int64) (*AZ32, bool) {
+	// reduce g,h -> g1,h1
+	g1h1, overflow := a.F1(g, h)
+	if overflow {
+		return nil, true // g1,h1 overflow
+	}
+	g1 := int64(g1h1.out())
+	h1 := g1h1.in()
+	if g1 == 0 || h1 == 1 {
+		// Degenerates into F1: c = e, d = f+g
+		return a.F1(e, f + g1)
+	}
+	// reduce e,f,g1 -> e1,f1,g2
+	e1, f1g2, overflow := a.roie(e, []int64{ f, g1 })
+	if overflow {
+		return nil, true // e1,f1,g2 overflow
+	}
+	f1 := f1g2[0]
+	g2 := f1g2[1]
+	return a.f2(e1, f1, g2, h1), false
+}
+
+
+func (a *AZ32) out() int32 {
+	if a == nil {
+		return 1
+	}
+	return a.o
+}
+
+func (a *AZ32) in() int32 {
+	if len(a.i) == 0 {
+		return +1
+	}
+	return a.i[0].out()
+}
+
 func (r *AZ32) String() string {
 	s := NewStr()
 	r.Str(s,true)
 	return s.String()
 }
 
-func (a *AZ32) Str(s *Str, positiveSign bool) {
-	if positiveSign && a.o >= 0 {
-		s.WriteString("+")
+func (a *AZ32) Str(s *Str, sign bool) {
+	if sign {
+		s.WriteString(fmt.Sprintf("%+d", a.o))
+	} else{
+		s.WriteString(fmt.Sprintf("%d", a.o))
 	}
-	s.WriteString(fmt.Sprintf("%d", a.o))
 	if a.o == 0 {
 		return
 	}
-	n := len(a.i)
-	if n == 0 {
+	if n := len(a.i); n == 0 {
 		return
-	}
-	if n == 1 {
+	} else if n == 1 {
 		if o := a.i[0].o; o < 0 {
 			s.WriteString("i")
 			if o != -1 {
@@ -175,13 +211,14 @@ func (a *A32s) roi(o, i int64) (o32, i32 int32, overflow bool) {
 }
 
 func (a *A32s) roie(o int64, is []int64) (o32 int32, i32s []int32, overflow bool) {
-	if o == 0 || len(is) == 0 {
-		return // nothing to change
-	}
+	allIsZero := true
 	for _, i := range is {
-		if i == 0 {
-			return // nothing change
+		if i != 0 {
+			allIsZero = false
 		}
+	}
+	if o == 0 || allIsZero {
+		return // zero
 	}
 	on := N(+o)
 	if o < 0 {
