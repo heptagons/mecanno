@@ -1,6 +1,8 @@
 package alg
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -53,6 +55,34 @@ func TestA32(t *testing.T) {
 func TestA32Red(t *testing.T) {
 
 	factory := NewA32s() // with primes for reductions
+
+	// roie
+	for _, s := range []struct{ o int64; is []int64; exp string } {
+		
+		{ +10, []int64{ -4, 12,-24 }, "+20√(-1+3-6)" },
+		{ -10, []int64{ +4,-12,+24 }, "-20√(+1-3+6)" },
+		{   5, []int64{  5,  7, 11 }, "+5√(+5+7+11)" },
+		{   1, []int64{ 64, 64, 64 }, "+8√(+1+1+1)" },
+
+
+	} {
+		o, is, overflow := factory.roie(s.o, s.is)
+		var sb strings.Builder
+		sb.WriteString(fmt.Sprintf("%+d√(", o))
+		for _, i := range is {
+			sb.WriteString(fmt.Sprintf("%+d", i))
+		}
+		sb.WriteString(")")
+		got := sb.String()
+		if overflow {
+			if s.exp != "∞" {
+				t.Fatalf("roie unexpected overflow for %s", got)
+			}
+		} else if got != s.exp {
+			t.Fatalf("roie got %s exp %s", got, s.exp)
+		}
+	}
+
 	// F1 -> roi
 	for _, s := range []struct{ o, i int64; exp string } {
 		{ 0, 10, "+0"    },

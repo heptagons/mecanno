@@ -153,17 +153,17 @@ func (a *A32s) roi(o, i int64) (o32, i32 int32, overflow bool) {
 	in := N(i); if i < 0 { in = N(-in) }
 	for _, prime := range a.primes {
 		p := N(prime)
-		if pp := p*p; in >= pp {
-			for {
-				if in % pp == 0 {
-					on *= p
-					in /= pp
-					continue
-				}
-				break
+		pp := p*p
+		if in < pp {
+			break // done: no more primes to check
+		}
+		for {
+			if in % pp == 0 { // reduce
+				on *= p
+				in /= pp
+				continue // check same prime again
 			}
-		} else {
-			break
+			break // check next prime
 		}
 	}
 	if on > AZ_MAX || in > AZ_MAX {
@@ -174,39 +174,70 @@ func (a *A32s) roi(o, i int64) (o32, i32 int32, overflow bool) {
 	return o32, i32, false
 }
 
-func (a *A32s) roie(o int64, i []int64) (o32 int32, i32 []int32, overflow bool) {
-	if o == nil || i == nil {
-		return 0, nil, false
+func (a *A32s) roie(o int64, is []int64) (o32 int32, i32s []int32, overflow bool) {
+	if o == 0 || len(is) == 0 {
+		return // nothing to change
 	}
-	for _, i := range i {
+	for _, i := range is {
 		if i == 0 {
-			return 0, nil, false
+			return // nothing change
 		}
 	}
-	on := N(o); if o < 0 { on = N(-on) }
-	in := make([]N, len(i))
-	for p, i := range i {
-		in[p] := N(i); if i < 0 { in[p] = N(-in) }
+	on := N(+o)
+	if o < 0 {
+		on = N(-on)
+	}
+	ins := make([]N, len(is))
+	// insMaxPos points to the greatest in to reduce primes use
+	insMaxPos, insMax := 0, N(0)
+	for p, i := range is {
+		if i > 0 {
+			ins[p] = N(+i)
+		} else {
+			ins[p] = N(-i)
+		}
+		if ins[p] > insMax { 
+			insMaxPos, insMax = p, ins[p]
+		}
 	}
 	for _, prime := range a.primes {
 		p := N(prime)
-		if pp := p*p; in >= pp {
-			for {
-				if in % pp == 0 {
-					on *= p
-					in /= pp
-					continue
+		pp := p*p
+		if ins[insMaxPos] < pp {
+			break // done: no more primes to check
+		}
+		for {
+			all := true
+			for _, i := range ins {
+				if i % pp != 0 {
+					all = false
+					break // at least one has no this pp factor
 				}
-				break
 			}
-		} else {
-			break
+			if all { // reduce
+				on *= p
+				for p := range ins { ins[p] /= pp }
+				continue // check same prime again
+			}
+			break // check next prime
 		}
 	}
-	if on > AZ_MAX || in > AZ_MAX {
-		return 0, 0, true // overflow
+	if on > AZ_MAX {
+		return 0, nil, true // overflow
+	} else if o > 0 { // origin sign
+		o32 = int32(+on)
+	} else {
+		o32 = int32(-on)
 	}
-	o32 = int32(on); if o < 0 { o32 = int32(-o32) }
-	i32 = int32(in); if i < 0 { i32 = int32(-i32) }
-	return o32, i32, false
+	i32s = make([]int32, len(ins))
+	for p := range is {
+		if i := ins[p]; i > AZ_MAX {
+			return 0, nil, true // overflow
+		} else if is[p] > 0 { // original sign
+			i32s[p] = int32(+i)
+		} else {
+			i32s[p] = int32(-i)
+		}
+	}
+	return o32, i32s, false
 }
