@@ -6,21 +6,21 @@ import (
 
 func TestA32(t *testing.T) {
 
-	factory := &A32s{}
+	factory := &A32s{} // without primes 
 
 	const cospi_15 = "(1+1√5+1√(30-6√5))/8"
-	d0 := factory.F0(1)
-	d1 := factory.F1(1, 5)
-	d2 := factory.F2(1, 30, -6, 5)
+	d0 := factory.f0(1)
+	d1 := factory.f1(1, 5)
+	d2 := factory.f2(1, 30, -6, 5)
 
 	const cospi_24  = "(1√(2+0+1√(2+1√3)))/2"
-	e3 := factory.F3(1,2,0,0,1,2,1,3)
+	e3 := factory.f3(1,2,0,0,1,2,1,3)
 
 	const cos2pi_17 = "(-1+1√17+1√(34-2√17)+2√(17+3√17-1√(170+38√17)))/16"
-	f0 := factory.F0(-1)
-	f1 := factory.F1(1,17)
-	f2 := factory.F2(1,34,-2,17)
-	f3 := factory.F3(2,17,3,17,-1,170,38,17)
+	f0 := factory.f0(-1)
+	f1 := factory.f1(1,17)
+	f2 := factory.f2(1,34,-2,17)
+	f3 := factory.f3(2,17,3,17,-1,170,38,17)
 	// AZ32
 	for _, s := range []struct{ az *AZ32; exp string } {
 		{ az: d0, exp:"+1" },
@@ -48,5 +48,44 @@ func TestA32(t *testing.T) {
 			t.Fatalf("AQ32 got=%s exp=%s", got, s.exp)
 		}
 	}
+}
 
+func TestA32Red(t *testing.T) {
+
+	factory := NewA32s() // with primes for reductions
+	// F1 -> roi
+	for _, s := range []struct{ o, i int64; exp string } {
+		{ 0, 10, "+0"    },
+		{ 0,  0, "+0"    },
+		{ 1,  0, "+0"    },
+		{ 1, -4, "+2i"   },
+		{ 1, -2, "+1i√2" },
+		{ 1, -1, "+1i"   },
+		{ 1,  1, "+1"    },
+		{ 1,  2, "+1√2"  },
+		{ 1,  3, "+1√3"  },
+		{ 1,  4, "+2"    },
+
+		{ 2,  3*3*3*7*7,  "+42√3"},
+
+		{ -AZ_MAX,   1, "-2147483647" }, // min int32
+		{ +AZ_MAX,   1, "+2147483647" }, // max int32
+		{ +AZ_MAX+1, 0, "+0"          }, // 0 has precedence over infinite
+		{ +AZ_MAX+1, 1, "∞"           },
+		{ +AZ_MAX,   4, "∞"           },
+
+		{  0, AZ_MAX*AZ_MAX,   "+0" },
+		{ +1, AZ_MAX*AZ_MAX/1, "∞"  },
+		{ +1, AZ_MAX*AZ_MAX/2,       "+98304√238609294" },
+		{ +1, AZ_MAX*AZ_MAX/4,       "+98304√119304647" },
+		{ +1, (AZ_MAX-1)*(AZ_MAX-1), "+2147483646"      },
+	} {
+		if z, overflow := factory.F1(s.o, s.i); overflow {
+			if s.exp != "∞" {
+				t.Fatalf("F0 unexpected overflow for %d√%d", s.o, s.i)
+			}
+		} else if got := z.String(); got != s.exp {
+			t.Fatalf("F0 get %s exp %s", got, s.exp)
+		}
+	}
 }

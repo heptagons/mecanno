@@ -2,11 +2,14 @@ package alg
 
 import (
 	"fmt"
+	"math"
 )
+
+const AZ_MAX = 0x7fffffff
 
 // A32s is factory to create AZ32 and AQ32
 type A32s struct {
-	
+	primes []N32
 }
 
 // AZ32 represent an algebraic integer number
@@ -21,38 +24,60 @@ type AQ32 struct {
 	den uint32
 }
 
-func (a *A32s) F0(b int32) *AZ32 {
+
+func NewA32s() *A32s {
+	value := 0xffff
+    f := make([]bool, value)
+    for i := 2; i <= int(math.Sqrt(float64(value))); i++ {
+        if f[i] == false {
+            for j := i * i; j < value; j += i {
+                f[j] = true
+            }
+        }
+    }
+    primes := make([]N32, 0)
+    for i := N32(2); i < N32(value); i++ {
+        if f[i] == false {
+            primes = append(primes, i)
+        }
+    }
+	return &A32s{
+		primes: primes,
+	}
+}
+
+func (a *A32s) f0(b int32) *AZ32 {
 	return &AZ32{
 		o: b,
 	}
 }
 
-func (a *A32s) F1(c, d int32) *AZ32 {
+func (a *A32s) f1(c, d int32) *AZ32 {
 	return &AZ32 {
 		o: c,
 		i: []*AZ32{
-			a.F0(d),
+			a.f0(d),
 		},
 	}
 }
 
-func (a *A32s) F2(e, f, g, h int32) *AZ32 {
+func (a *A32s) f2(e, f, g, h int32) *AZ32 {
 	return &AZ32 {
 		o: e,
 		i: []*AZ32{
-			a.F0(f),
-			a.F1(g, h),
+			a.f0(f),
+			a.f1(g, h),
 		},
 	}
 }
 
-func (a *A32s) F3(i, j, k, l, m, n, o, p int32) *AZ32 {
+func (a *A32s) f3(i, j, k, l, m, n, o, p int32) *AZ32 {
 	return &AZ32 {
 		o: i,
 		i: []*AZ32{
-			a.F0(j),
-			a.F1(k, l),
-			a.F2(m, n, o, p),
+			a.f0(j),
+			a.f1(k, l),
+			a.f2(m, n, o, p),
 		},
 	}
 }
@@ -61,6 +86,16 @@ func (a *A32s) Q(num []*AZ32, den uint32) *AQ32 {
 	return &AQ32 {
 		num: num,
 		den: den,
+	}
+}
+
+func (a *A32s) F1(c, d int64) (*AZ32, bool) {
+	if c, d, overflow := a.roi(c, d); overflow {
+		return nil, true
+	} else if d == 1 { // convert x√+1 into x
+		return a.f0(c), false
+	} else {
+		return a.f1(c, d), false
 	}
 }
 
@@ -82,11 +117,17 @@ func (a *AZ32) Str(s *Str, positiveSign bool) {
 	if n == 0 {
 		return
 	}
-	s.WriteString("√")
 	if n == 1 {
-		a.i[0].Str(s, false)
+		if o := a.i[0].o; o < 0 {
+			s.WriteString("i")
+			if o != -1 {
+				s.WriteString(fmt.Sprintf("√%d", -o))
+			}
+		} else if o > 1 {
+			s.WriteString(fmt.Sprintf("√%d", o))
+		}
 	} else {
-		s.WriteString("(")
+		s.WriteString("√(")
 		for p, i := range a.i {
 			i.Str(s, p != 0)
 		}
@@ -104,5 +145,68 @@ func (a *AQ32) String() string {
 	return s.String()
 }
 
+func (a *A32s) roi(o, i int64) (o32, i32 int32, overflow bool) {
+	if o == 0 || i == 0 {
+		return 0, 0, false
+	}
+	on := N(o); if o < 0 { on = N(-on) }
+	in := N(i); if i < 0 { in = N(-in) }
+	for _, prime := range a.primes {
+		p := N(prime)
+		if pp := p*p; in >= pp {
+			for {
+				if in % pp == 0 {
+					on *= p
+					in /= pp
+					continue
+				}
+				break
+			}
+		} else {
+			break
+		}
+	}
+	if on > AZ_MAX || in > AZ_MAX {
+		return 0, 0, true // overflow
+	}
+	o32 = int32(on); if o < 0 { o32 = int32(-o32) }
+	i32 = int32(in); if i < 0 { i32 = int32(-i32) }
+	return o32, i32, false
+}
 
-
+func (a *A32s) roie(o int64, i []int64) (o32 int32, i32 []int32, overflow bool) {
+	if o == nil || i == nil {
+		return 0, nil, false
+	}
+	for _, i := range i {
+		if i == 0 {
+			return 0, nil, false
+		}
+	}
+	on := N(o); if o < 0 { on = N(-on) }
+	in := make([]N, len(i))
+	for p, i := range i {
+		in[p] := N(i); if i < 0 { in[p] = N(-in) }
+	}
+	for _, prime := range a.primes {
+		p := N(prime)
+		if pp := p*p; in >= pp {
+			for {
+				if in % pp == 0 {
+					on *= p
+					in /= pp
+					continue
+				}
+				break
+			}
+		} else {
+			break
+		}
+	}
+	if on > AZ_MAX || in > AZ_MAX {
+		return 0, 0, true // overflow
+	}
+	o32 = int32(on); if o < 0 { o32 = int32(-o32) }
+	i32 = int32(in); if i < 0 { i32 = int32(-i32) }
+	return o32, i32, false
+}
