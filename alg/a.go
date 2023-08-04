@@ -46,38 +46,75 @@ func NewA32s() *A32s {
 	}
 }
 
+
+func (a *A32s) f(b int32, cd, efgh, ijklmnop []int32) *AZ32 {
+	o := b
+	i := make([]*AZ32, 0)
+	if n := len(cd); n != 0 {
+		if n != 2 {
+			return nil
+		}
+		i = append(i, a.f1(cd[0],cd[1]))
+	}
+	return &AZ32{ o:o, i:i }
+}
+
 func (a *A32s) f0(b int32) *AZ32 {
 	return &AZ32{
 		o: b,
 	}
 }
 
-func (a *A32s) f1(c, d int32) *AZ32 {
+func (a *A32s) f1(p ...int32) *AZ32 {
+	if len(p) != 2 {
+		return nil
+	}
 	return &AZ32 {
-		o: c,
+		o: p[0], // c
 		i: []*AZ32{
-			a.f0(d),
+			a.f0(p[1]), // d
 		},
 	}
 }
 
-func (a *A32s) f2(e, f, g, h int32) *AZ32 {
+func (a *A32s) f2(p ...int32) *AZ32 {
+	if len(p) != 4 {
+		return nil
+	}
 	return &AZ32 {
-		o: e,
+		o: p[0], // e
 		i: []*AZ32{
-			a.f0(f),
-			a.f1(g, h),
+			a.f0(p[1]), // f
+			a.f1(p[2], p[3]), // g,h
 		},
 	}
 }
 
-func (a *A32s) f3(i, j, k, l, m, n, o, p int32) *AZ32 {
+func (a *A32s) f3(p ...int32) *AZ32 {
+	if len(p) != 8 {
+		return nil
+	}
 	return &AZ32 {
-		o: i,
+		o: p[0], // i
 		i: []*AZ32{
-			a.f0(j),
-			a.f1(k, l),
-			a.f2(m, n, o, p),
+			a.f0(p[1]), // j
+			a.f1(p[2], p[3]), // k,l
+			a.f2(p[4], p[5], p[6], p[7]), // m,n,o,p
+		},
+	}
+}
+
+func (a *A32s) f4(p ...int32) *AZ32 {
+	if len(p) != 16 {
+		return nil
+	}
+	return &AZ32 {
+		o: p[0],
+		i: []*AZ32{
+			a.f0(p[1]),
+			a.f1(p[2], p[3]),
+			a.f2(p[4], p[5], p[6], p[7]),
+			a.f3(p[9], p[9], p[10], p[11], p[12], p[13], p[14], p[15]),
 		},
 	}
 }
@@ -99,32 +136,134 @@ func (a *A32s) F1(c, d int64) (*AZ32, bool) {
 	}
 }
 
-func (a *A32s) F2(e, f, g, h int64) (*AZ32, bool) {
-	// reduce g,h -> g1,h1
-	g1h1, overflow := a.F1(g, h)
-	if overflow {
-		return nil, true // g1,h1 overflow
+func (a *A32s) Reduce(p ...int64) (r ...int32, overflow bool) {
+
+	if n := len(p); n == 2 {
+		// reduce c√d
+		if c1, d1, overflow := a.roi(p[0], p[1]); overflow {
+			return nil, true
+		} else if d1 == 1 { // convert x√+1 into x
+			return []int32{ c1 }, false
+		} else {
+			return []int32{ c1, d1 }, false
+		}
+	} else if n == 4 {
+
+		// first reduce g1√h1
+		if g1, h1, overflow := a.roi(p[2], p[3]); overflow {
+			return nil, true // g√h overflow
+
+		} else if g1 == 0 {
+			// F2 degerates to F1(e, f)
+			return a.Reduce(p[0], p[1]) // Go to reduce e√h
+		
+		} else if h1 == +1 {
+			// F2 degerates into F1(e, f + g1)
+			return a.Reduce(e, f + int64(g1))
+
+		} else if e1, fg, overflow := a.roie(e, f, int64(g1)); overflow { // reduced 
+			// reduction e1√(f1+g2) = e√(f+g1) overflow
+			return nil, true
+		} else {
+			f1 := fg[0]
+			g2 := fg[1]
+			return []int32 { e1, f1, g2, h1 }, false
+		}
+	} else if n == 8 {
+		// ijklmnop
+		if mnop, overflow := a.Reduce(p[4], p[5], p[6], p[7]); overflow {
+			// m√(n+o√p) oveflow
+			return nil, true
+		} else if m1 := mnop[0]; m1 == 0 {
+			// Degenerates to i√(j+k√l)
+			return a.Reduce(p[0], p[1], p[2], p[3])
+		} else if n1 := mnop[1] == 0 { // means n1 = +1
+			// Degenerates to i√(j+m1+k√l)
+			return a.Reduce(p[0], p[1] + m1, p[2], p[3])
+
+		} if kl, overflow := a.Reduce(p[2], p[3]); overflow {
+			// k√l overflow
+			return nil, true
+
+		} else if i1, jkm, overflow := a.roie(p[0], p[1], kl[0], m1); overflow { // reduced 
+			// reduction i√(j+k+m1) overflow
+			return nil, true
+		} else {
+			return []int32 {
+				i1,
+				jkm[0],  // j1
+				jkm[1],  // k1
+				kl[1],   // l1
+				jkm[2],  // m2
+				mnop[1], // n1
+				mnop[2], // o1
+				mnop[3], // p1
+			}, false
+		}
 	}
-	g1 := int64(g1h1.out())
-	h1 := g1h1.in()
-	if g1 == 0 || h1 == 1 {
-		// Degenerates into F1: c = e, d = f+g
-		return a.F1(e, f + g1)
-	}
-	// reduce e,f,g1 -> e1,f1,g2
-	e1, f1g2, overflow := a.roie(e, []int64{ f, g1 })
-	if overflow {
-		return nil, true // e1,f1,g2 overflow
-	}
-	f1 := f1g2[0]
-	g2 := f1g2[1]
-	return a.f2(e1, f1, g2, h1), false
 }
+
+
+func (a *A32s) F2(e, f, g, h int64) (*AZ32, bool) {
+	if g1, h1, overflow := a.roi(g, h); overflow {
+		// reduction g1√h1 = g√h overflow
+		return nil, true
+	} else if g1 == 0 {
+		// F2 degerates into F1(e, f)
+		return a.F1(e, f)
+	} else if h1 == +1 {
+		// F2 degerates into F1(e, f + g1)
+		return a.F1(e, f + int64(g1))
+
+	} else if e1, fg, overflow := a.roie(e, f, int64(g1)); overflow { // reduced 
+		// reduction e1√(f1+g2) = e√(f+g1) overflow
+		return nil, true
+	} else {
+		f1 := fg[0]
+		g2 := fg[1]
+		return a.f2(e1, f1, g2, h1), false
+	}
+}
+
+
+
+/*
+func (a *A32s) F3(i, j, k, l, m, n, o, p int64) (*AZ32, bool) {
+	// get mnop
+	if mnop, overflow := a.F2(m, n, o, p); overflow {
+		// reduction m√(n+o√p) overflow
+		return nil, true
+	} else if m1 := int64(mnop.out()); m1 == 0 { // reduced m
+		// Degenerates to i√(j+k√l)
+		return a.F2(i, j, k, l)
+	} else if len(mnop.i) == 0 { // means n1 = +1
+		// Degenerates j2=j+m1 to i√(j2+k√l)
+		return a.F2(i, j + m1, k, l)
+
+	// get kl
+	} if kl, overflow := a.F1(k, l); overflow {
+		// reduction g1√h1 = g√h overflow
+		return nil, true
+	}
+
+	} else if i1, jkm, overflow := a.roie(i, j, k, m1); overflow { // reduced 
+		// reduction i√(j+k+m1) overflow
+		return nil, true
+	} else {
+		j1 := jkm[0]
+		k1 := jkm[1]
+		m2 := jkm[2]
+		n2 := mnop.in()
+		o2 := int32(0)
+		p2 := int32(0)
+		return a.f3(i1, j1, k1, m2, n2, o2, p2), false
+	}
+}*/
 
 
 func (a *AZ32) out() int32 {
 	if a == nil {
-		return 1
+		return 0 // was 1
 	}
 	return a.o
 }
@@ -210,7 +349,7 @@ func (a *A32s) roi(o, i int64) (o32, i32 int32, overflow bool) {
 	return o32, i32, false
 }
 
-func (a *A32s) roie(o int64, is []int64) (o32 int32, i32s []int32, overflow bool) {
+func (a *A32s) roie(o int64, is ...int64) (o32 int32, i32s []int32, overflow bool) {
 	allIsZero := true
 	for _, i := range is {
 		if i != 0 {

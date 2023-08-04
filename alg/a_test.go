@@ -102,7 +102,7 @@ func TestA32Red(t *testing.T) {
 		{   AZ_MAX, []int64{ 4,4,4 },           "∞" },
 
 	} {
-		o, is, overflow := factory.roie(s.o, s.is)
+		o, is, overflow := factory.roie(s.o, s.is...)
 		var sb strings.Builder
 		sb.WriteString(fmt.Sprintf("%+d√(", o))
 		for _, i := range is {
