@@ -23,7 +23,6 @@ func (s *Str) Over(n N32) {
 
 
 
-type N32 uint32 // range 0 - 0xffffffff
 
 type I32 struct {
 	s bool // sign: true means negative
@@ -49,7 +48,6 @@ type AI32 struct {
 
 
 
-const N32_MAX = N(0xffffffff)
 
 
 func (r *AI32) outVal() Z {
@@ -144,40 +142,6 @@ func (r *AI32) String() string {
 
 
 
-
-
-
-// gcd returns the greatest common divisor of 
-// this natural and the given
-func (a N32) gcd(b N32) N32 {
-	if b == 0 {
-		return a
-	}
-	return b.gcd(a % b)
-}
-
-// NatGCD returns the greatest common divisor of two naturals
-func NatGCD(a, b N32) N32 {
-	if b == 0 {
-		return a
-	}
-	return NatGCD(b, a % b)
-}
-
-func (a *N32) Reduce2(b *N32) {
-	if g := NatGCD(*a, *b); g > 1 {
-		*a /= g
-		*b /= g
-	}
-}
-
-func (a *N32) Reduce3(b, c *N32) {
-	if g := NatGCD(NatGCD(*a, *b), *c); g > 1 {
-		*a /= g
-		*b /= g
-		*c /= g
-	}
-}
 
 // newI32 returns a 32 bit integer
 // for z = 0 returns nil, false

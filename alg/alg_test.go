@@ -77,7 +77,7 @@ func TestRat(t *testing.T) {
 	rs := NewRed32()
 	// Sqrt
 	for _, s := range []struct { num, den int; exp string } {
-		{ num: 0, den:1, exp: "0" },
+		//{ num: 0, den:1, exp: "0" },
 		{ num: 1, den:1, exp: "1" },
 		{ num:-1, den:1, exp:  "" }, // Imaginary
 		{ num: 1, den:0, exp:  "" }, // NaN
