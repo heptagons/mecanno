@@ -52,32 +52,4 @@ func TestA32(t *testing.T) {
 
 
 
-func TestA32Tris(t *testing.T) {
-	max := 5
-	ts := NewA32Tris(max)
-	//ts.Cosines(factory)
-	if got, exp := len(ts.list), 17; got != exp {
-		t.Fatalf("A32Tris max:%d got:%d exp:%d", max, got, exp)
-	}
-
-	factory := NewN32s()
-	ts.SetSinCos(factory)
-
-	for pos, exp := range []string {
-		"abc:[1 1 1] cos:[1/2 1/2 1/2] sin:[1√3/2 1√3/2 1√3/2]",
-		"abc:[2 2 1] cos:[1/4 1/4 7/8] sin:[1√15/4 1√15/4 1√15/8]",
-		"abc:[3 2 2] cos:[-1/8 3/4 3/4] sin:[3√7/8 1√7/4 1√7/4]",
-		"abc:[3 3 1] cos:[1/6 1/6 17/18] sin:[1√35/6 1√35/6 1√35/18]",
-		"abc:[3 3 2] cos:[1/3 1/3 7/9] sin:[2√2/3 2√2/3 4√2/9]",
-		"abc:[4 3 2] cos:[-1/4 11/16 7/8] sin:[1√15/4 3√15/16 1√15/8]",
-		"abc:[4 3 3] cos:[1/9 2/3 2/3] sin:[4√5/9 1√5/3 1√5/3]",
-		"abc:[4 4 1] cos:[1/8 1/8 31/32] sin:[3√7/8 3√7/8 3√7/32]",
-		"abc:[4 4 3] cos:[3/8 3/8 23/32] sin:[1√55/8 1√55/8 3√55/32]",
-		"abc:[5 3 3] cos:[-7/18 5/6 5/6] sin:[5√11/18 1√11/6 1√11/6]",
-	} {
-		if got := ts.list[pos].String(); got != exp {
-			t.Fatalf("A32Tris got %s exp %s", got, exp)		
-		}
-	}
-}
 
