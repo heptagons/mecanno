@@ -6,13 +6,13 @@ import (
 
 func TestTris(t *testing.T) {
 	max := 5
-	ts := NewA32Tris(max)
+	factory := NewN32s()
+	ts := NewA32Tris(max, factory)
 	if got, exp := len(ts.list), 17; got != exp {
 		t.Fatalf("A32Tris max:%d got:%d exp:%d", max, got, exp)
 	}
 
-	factory := NewN32s()
-	ts.SetSinCos(factory)
+	ts.setSinCos()
 	for pos, exp := range []string {
 		"abc:[1 1 1] cos:[1/2 1/2 1/2] sin:[√3/2 √3/2 √3/2]",
 		"abc:[2 2 1] cos:[1/4 1/4 7/8] sin:[√15/4 √15/4 √15/8]",
@@ -36,5 +36,11 @@ func TestTris(t *testing.T) {
 			t.Fatalf("A32Tris got %s exp %s", got, exp)		
 		}
 	}
+
+
+	ts.sinsAdd([][]uint{
+		[]uint { 13, 2 }, // [5 5 1] C
+		[]uint { 14, 2 }, // [5 5 2] C
+	})
 }
 

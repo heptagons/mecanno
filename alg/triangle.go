@@ -1,22 +1,10 @@
 package alg
 
+/*
 import (
 	"fmt"
 )
 
-// Triangle is a valid triangle with positive sides:
-//	a >= b >= c > 0
-//  a > b+c
-//
-//           _ -C
-//     a _ -   /
-//   _ -      /
-// B_        / b
-//   -_     /
-//  c  -_  /  
-//       -A
-//
-// A,B, and C the angles to opposite sides a,b and c.
 type Triangle struct {
 	// sides are naturals > 0
 	a N32
@@ -110,6 +98,6 @@ func (t *Triangles) Add(a, b, c N32) *Triangle {
 	t.list = append(t.list, next)
 	return next
 }
-
+*/
 
 

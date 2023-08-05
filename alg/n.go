@@ -146,47 +146,6 @@ func NewN32s() *N32s {
 	}
 }
 
-// CosC returns the rational cosine of the angle C using the law of cosines:
-//	       a² + b² - c²
-//	cosC = ------------
-//	           2ab
-func (n *N32s) CosC(a, b, c N32) (num Z32, den N32, overflow bool) {
-	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
-	den64 := 2*N(a)*N(b)
-	if den32, nums32, overflow := n.reduceQ(den64, num64); overflow {
-		return 0, 0, true
-	} else {
-		return nums32[0], den32, false
-	}
-}
-
-// SinC return the algebraic sine of the angle C using the law of sines:
-//	       math.Sqrt(4a²b² - (a²+b²-c²)²)
-//	sinC = ------------------------------
-//	                  2ab 
-func (n *N32s) SinC(a, b, c N32) (out, in Z32, den N32, overflow bool) {
-	//	stable := N(a+(b+c)) * N(c-(a-b)) * N(c+(a-b)) * N(a+(b-c))
-	//	if out, in, ok := t.algs.roiN(1, stable); ok {
-	//		next.area = NewAlg(NewRat(int(out), 4), in)
-	//	}
-	ab := 2*N(a)*N(b)
-	aa := Z(a)*Z(a)
-	bb := Z(b)*Z(b)
-	cc := Z(c)*Z(c)
-	i2 := aa + bb - cc
-	out, in, overflow = n.reduceRoot(1, Z(ab)*Z(ab) - i2*i2)
-	if overflow {
-		return
-	}
-	var nums32 []Z32
-	den, nums32, overflow = n.reduceQ(ab, Z(out))
-	if overflow {
-		return
-	}
-	out = nums32[0]
-	return
-}
-
 // reduceQ reduces the quotient (± num0 ± num1 ± num2 ± ... ± numN) / den
 func (n *N32s) reduceQ(den N, nums ...Z) (den32 N32, n32s []Z32, overflow bool) {
 	if den == 0 {
