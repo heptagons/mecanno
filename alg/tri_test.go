@@ -9,7 +9,7 @@ func TestTris(t *testing.T) {
 	factory := NewN32s()
 	ts := NewA32Tris(max, factory)
 	if got, exp := len(ts.list), 17; got != exp {
-		t.Fatalf("A32Tris max:%d got:%d exp:%d", max, got, exp)
+		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
 	}
 
 	ts.setSinCos()
@@ -33,7 +33,7 @@ func TestTris(t *testing.T) {
 		"abc:[5 5 4] cos:[2/5 2/5 17/25] sin:[√21/5 √21/5 4√21/25]",
 	} {
 		if got := ts.list[pos].String(); got != exp {
-			t.Fatalf("A32Tris got %s exp %s", got, exp)		
+			t.Fatalf("Tris32 got %s exp %s", got, exp)		
 		}
 	}
 

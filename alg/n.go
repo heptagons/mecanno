@@ -146,8 +146,43 @@ func NewN32s() *N32s {
 	}
 }
 
+// reduceQ1 returns simplified denominator and numerator
+func (n *N32s) reduceQ1(den N, num Z) (den32 N32, n32 Z32, overflow bool) {
+	if den == 0 {
+		return 0, 0, true // infinite
+	} else if num == 0 {
+		return 0, 0, false // zero
+	}
+	dn := den
+	nn := N(num); if num < 0 { nn = N(-num) } // convert numerator to natural
+	min := dn; if nn < min { min = nn }       // min(den, N(num))
+	for _, prime := range n.primes {
+		p := N(prime)
+		if min < p {
+			break // done: no more primes to check
+		}
+		for {
+			if dn % p == 0 && nn % p == 0 { // reduce
+				dn /= p
+				nn /= p
+				continue // check same prime again
+			}
+			break // check next prime
+		}
+	}
+	if dn > AZ_MAX || nn > AZ_MAX {
+		return 0, 0, true // overflow
+	}
+	if num > 0 { // original sign
+		n32 = Z32(+nn)
+	} else {
+		n32 = Z32(-nn)
+	}
+	return N32(dn), n32, false
+}
+
 // reduceQ reduces the quotient (± num0 ± num1 ± num2 ± ... ± numN) / den
-func (n *N32s) reduceQ(den N, nums ...Z) (den32 N32, n32s []Z32, overflow bool) {
+func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, overflow bool) {
 	if den == 0 {
 		return 0, nil, true // infinite
 	}

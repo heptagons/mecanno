@@ -102,6 +102,7 @@ func (ts *Tris32) setSinCos() (overflow bool) {
 }
 
 func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
+	// sin(A+B) = sinAcosB + cosAsinB
 	if len(triAngs) < 2 {
 		return fmt.Errorf("Need at least two triangles")
 	}
@@ -109,16 +110,13 @@ func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
 		return err
 	} else if sinB, cosB, err := ts.triSinCos(triAngs[1]); err != nil {
 		return err
+	} else if sinAcosB, overflow := ts.reduceQMul(sinA, cosB); overflow {
+		return fmt.Errorf("sinAcosB overflow")
+	} else if sinBcosA, overflow := ts.reduceQMul(sinB, cosA); overflow {
+		return fmt.Errorf("sinBcosA overflow")
 	} else {
 		fmt.Println(sinA, cosA, sinB, cosB)
-		// sin(A+B) = sinAcosB + cosAsinB
-		if sinAcosB, overflow := ts.reduceQMul(sinA, cosB); overflow {
-			return fmt.Errorf("sinAcosB overflow")
-		} else if sinBcosA, overflow := ts.reduceQMul(sinB, cosA); overflow {
-			return fmt.Errorf("sinBcosA overflow")
-		} else {
-			fmt.Println(sinAcosB, sinBcosA)
-		}
+		fmt.Println(sinAcosB + " + " + sinBcosA)
 		return nil
 	}
 }
