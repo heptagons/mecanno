@@ -16,15 +16,15 @@ import (
 //  c  -_  /  
 //       -A
 //
-// A,B, and C the angles to opposite sides a,b and c.
+// A,B, and C the angles to opposite abc a,b and c.
 type Tri32 struct { // Triangle
-	sides []N32
-	cos   []*Q32
-	sin   []*Q32
+	abc []N32
+	cos []*Q32
+	sin []*Q32
 }
 
 func (t *Tri32) String() string {
-	return fmt.Sprintf("abc:%v cos:%v sin:%v", t.sides, t.cos, t.sin)
+	return fmt.Sprintf("abc:%v cos:%v sin:%v", t.abc, t.cos, t.sin)
 }
 
 
@@ -58,50 +58,43 @@ func (ts *Tris32) add(a, b, c N32) {
 	gcd := NatGCD(a, NatGCD(b, c))
 	ga, gb, gc := a / gcd, b / gcd, c / gcd
 	for _, t := range ts.list {
-		if t.sides[0] == ga && t.sides[1] == gb && t.sides[2] == gc {
+		if t.abc[0] == ga && t.abc[1] == gb && t.abc[2] == gc {
 			// scaled version already stored don't append
 			return
 		}
 	}
 	ts.list = append(ts.list, &Tri32{
-		sides: []N32{ a, b, c },
+		abc: []N32{ a, b, c },
 	})
 }
 
-func (ts *Tris32) setSinCos() (overflow bool) {
+func (ts *Tris32) setSinCos() error {
 	for _, t := range ts.list {
-		a, b, c := t.sides[0], t.sides[1], t.sides[2]
-		if nA, dA, overflow := ts.cosC(b, c, a); overflow {
-			return true
-		} else if nB, dB, overflow := ts.cosC(c, a, b); overflow {
-			return true
-		} else if nC, dC, overflow := ts.cosC(a, b, c); overflow {
-			return true
+		a, b, c := t.abc[0], t.abc[1], t.abc[2]
+		if cosA, err := ts.cosC(b, c, a); err != nil {
+			return err
+		} else if cosB, err := ts.cosC(c, a, b); err != nil {
+			return err
+		} else if cosC, err := ts.cosC(a, b, c); err != nil {
+			return err
 		} else {
-			t.cos = []*Q32 {
-				newQ32(nA, dA),
-				newQ32(nB, dB),
-	 			newQ32(nC, dC),
-	 		}
+			t.cos = []*Q32 { cosA, cosB, cosC }
 		}
-		if oA, iA, dA, overflow := ts.sinC(b, c, a); overflow {
-			return true
-		} else if oB, iB, dB, overflow := ts.sinC(c, a, b); overflow {
-			return true
-		} else if oC, iC, dC, overflow := ts.sinC(a, b, c); overflow {
-			return true
+		if sinA, err := ts.sinC(b, c, a); err != nil {
+			return err
+		} else if sinB, err := ts.sinC(c, a, b); err != nil {
+			return err
+		} else if sinC, err := ts.sinC(a, b, c); err != nil {
+			return err
 		} else {
-			t.sin = []*Q32 {
-				newQ32Root(oA, iA, dA),
-				newQ32Root(oB, iB, dB),
-	 			newQ32Root(oC, iC, dC),
-	 		}
+			t.sin = []*Q32 { sinA, sinB, sinC }
 		}
 	}
-	return false
+	return nil
 }
 
 func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
+	/*
 	// sin(A+B) = sinAcosB + cosAsinB
 	if len(triAngs) < 2 {
 		return fmt.Errorf("Need at least two triangles")
@@ -116,9 +109,10 @@ func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
 		return fmt.Errorf("sinBcosA overflow")
 	} else {
 		fmt.Println(sinA, cosA, sinB, cosB)
-		fmt.Println(sinAcosB + " + " + sinBcosA)
+		fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
 		return nil
-	}
+	}*/
+	return nil
 }
 
 
@@ -140,41 +134,24 @@ func (ts *Tris32) triSinCos(posAngle []uint) (*Q32, *Q32, error) {
 //	       a² + b² - c²
 //	cosC = ------------
 //	           2ab
-func (ts *Tris32) cosC(a, b, c N32) (num Z32, den N32, overflow bool) {
-	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
+func (ts *Tris32) cosC(a, b, c N32) (*Q32, error) {
 	den64 := 2*N(a)*N(b)
-	if den32, nums32, overflow := ts.reduceQ(den64, num64); overflow {
-		return 0, 0, true
-	} else {
-		return nums32[0], den32, false
-	}
+	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
+	return ts.newQ32(den64, num64)
 }
 
 // sinC return the algebraic sine of the angle C using the law of sines:
 //	       math.Sqrt(4a²b² - (a²+b²-c²)²)
 //	sinC = ------------------------------
 //	                  2ab 
-func (ts *Tris32) sinC(a, b, c N32) (out, in Z32, den N32, overflow bool) {
+func (ts *Tris32) sinC(a, b, c N32) (*Q32, error) {
 	//	stable := N(a+(b+c)) * N(c-(a-b)) * N(c+(a-b)) * N(a+(b-c))
 	//	if out, in, ok := t.algs.roiN(1, stable); ok {
 	//		next.area = NewAlg(NewRat(int(out), 4), in)
 	//	}
 	ab := 2*N(a)*N(b)
-	aa := Z(a)*Z(a)
-	bb := Z(b)*Z(b)
-	cc := Z(c)*Z(c)
-	i2 := aa + bb - cc
-	out, in, overflow = ts.reduceRoot(1, Z(ab)*Z(ab) - i2*i2)
-	if overflow {
-		return
-	}
-	var nums32 []Z32
-	den, nums32, overflow = ts.reduceQ(ab, Z(out))
-	if overflow {
-		return
-	}
-	out = nums32[0]
-	return
+	abc := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
+	return ts.newQ32(ab, 0, 1, Z(ab)*Z(ab) - abc*abc)
 }
 
 

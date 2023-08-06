@@ -43,7 +43,7 @@ func TestN32(t *testing.T) {
 
 		{ f(3*3*3*2, 3*3*2*2, 3*2*2*2), 3*3*3*2*2*2, "(+9+6+4)/36" },
 	} {
-		if den, nums, overflow := factory.reduceQ(s.den, s.nums...); overflow {
+		if den, nums, err := factory.reduceQn(s.den, s.nums...); err != nil {
 			if s.exp != "∞" {
 				t.Fatalf("reduceQ unexpected overflow for %d %v", s.den, s.nums)
 			}
@@ -87,7 +87,7 @@ func TestN32(t *testing.T) {
 		{ "∞",  AZ_MAX, f(4,4,4)         },
 
 	} {
-		o, is, overflow := factory.roie(s.o, s.is...)
+		o, is, err := factory.roie(s.o, s.is...)
 		var sb strings.Builder
 		sb.WriteString(fmt.Sprintf("%+d√(", o))
 		for _, i := range is {
@@ -95,7 +95,7 @@ func TestN32(t *testing.T) {
 		}
 		sb.WriteString(")")
 		got := sb.String()
-		if overflow {
+		if err != nil {
 			if s.exp != "∞" {
 				t.Fatalf("roie unexpected overflow for %d %v", s.o, s.is)
 			}
@@ -131,7 +131,7 @@ func TestN32(t *testing.T) {
 		{ +1, AZ_MAX*AZ_MAX/4,       "+98304√119304647" },
 		{ +1, (AZ_MAX-1)*(AZ_MAX-1), "+2147483646"      },
 	} {
-		if r, overflow := factory.Reduce(s.c, s.d); overflow {
+		if r, err := factory.Reduce(s.c, s.d); err != nil {
 			if s.exp != "∞" {
 				t.Fatalf("Reduce1 unexpected overflow for %d√%d", s.c, s.d)
 			}
@@ -173,7 +173,7 @@ func TestN32(t *testing.T) {
 		{12,12,12,12, "+24√(3+6√3)" }, // +12√(12+12√12) = +12√(12+24√3) = +24√(3+6√3)
 
 	} {
-		if r, overflow := factory.Reduce(s.e, s.f, s.g, s.h); overflow {
+		if r, err := factory.Reduce(s.e, s.f, s.g, s.h); err != nil {
 			if s.exp != "∞" {
 				t.Fatalf("Reduce2 unexpected overflow for %+d√(%d%+d√%d)", s.e, s.f, s.g, s.h)
 			}
