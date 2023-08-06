@@ -27,26 +27,12 @@ func (q *Q32) String() string {
 	} else if n == 3 {
 		// (b + c√d)/a
 		c, d := q.num[1], q.num[2]
-
-		if b != 0 {
-			if a > 1 {
-				s.WriteString("(")
-			}
-			s.WriteString(fmt.Sprintf("%d", b))
+		par := a > 1 && b*c != 0
+		if par {
+			s.WriteString("(")
 		}
-		if c == 1 {
-			// dont put 1
-		} else if c == -1 {
-			s.WriteString("-") // don't put -1
-		} else {
-			s.WriteString(fmt.Sprintf("%d", c))
-		}
-		if d != +1 {
-			s.WriteString(fmt.Sprintf("√%d", d))
-		} else if c == 1 || c == -1 {
-			s.WriteString("1") // yes, put 1
-		}
-		if b != 0 && a > 1 {
+		q.bcdStr(s, b, c, d)
+		if par {
 			s.WriteString(")")
 		}
 	}
@@ -54,6 +40,23 @@ func (q *Q32) String() string {
 		s.WriteString(fmt.Sprintf("/%d", a))
 	}
 	return s.String()
+}
+
+func (q *Q32) bcdStr(s *Str, b, c, d Z32) { // b + c√d
+//fmt.Println("bcdStr", b, c, d)
+	if b != 0 {
+		s.WriteString(fmt.Sprintf("%d", b))
+	}
+	if c == 1 {
+		if b != 0 {
+			s.WriteString("+")
+		}
+	} else if c == -1 {
+		s.WriteString("-") // don't put -1
+	} else {
+		s.WriteString(fmt.Sprintf("%d", c))
+	}
+	s.WriteString(fmt.Sprintf("√%d", d))
 }
 
 
@@ -84,17 +87,12 @@ func (qs *Q32s) newQ32(den N, num ...Z) (q *Q32, err error) {
 	} else if den > N32_MAX {
 		return nil, ErrOverflow
 	}
+	a := den
 	switch len(num) {
 	case 1:
-		return qs.ab(den, num[0])
+		return qs.ab(a, num[0])
 	case 3:
-		if num[1] == 0 || num[2] == 0 { // c == 0 || d == 0
-			return qs.ab(den, num[0]) // return b/a
-		} else if num[2] == 1 { // d == 1
-			return qs.ab(den, num[0] + num[1]) // return (b+c)/a
-		} else {
-			return qs.abcd(den, num[0], num[1], num[2]) // return (b+c√d)/a
-		}
+		return qs.abcd(a, num[0], num[1], num[2]) // (b+c√d)/a
 	default:
 		return nil, ErrInvalid
 	}
@@ -105,22 +103,26 @@ func (qs *Q32s) ab(a N, b Z) (*Q32, error) {
 		return nil, err
 	} else {
 		return &Q32{
-			den: a32,
-			num: []Z32{ n32 },
+			den: a32, // a
+			num: []Z32{ n32 }, // b
 		}, nil
 	}
 }
 
 func (qs *Q32s) abcd(a N, b, c, d Z) (*Q32, error) {
-	if c32, d32, err := qs.reduceRoot(c, d); err != nil { // c√d
+	if c == 0 || d == 0 {
+		return qs.ab(a, b) // b/a
+	} else if d == 1 {
+		return qs.ab(a, b + c) // (b+c)/a
+	} else if c32, d32, err := qs.reduceRoot(c, d); err != nil { // c√d
 		return nil, err
 	} else if d32 == 1 {
-		return qs.ab(a, b * Z(c32)) // d wasn't square free
+		return qs.ab(a, b + Z(c32)) // (b+c)/a
 	} else if a32, bc32, err := qs.reduceQn(a, b, Z(c32)); err != nil { // (b,c)/a
 		return nil, err
 	} else {
 		return &Q32{
-			den: a32,
+			den: a32, // a
 			num: []Z32{ bc32[0], bc32[1], d32 }, // b,c,d
 		}, nil
 	}

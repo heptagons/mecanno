@@ -191,6 +191,9 @@ func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	if den == 0 {
 		return 0, nil, ErrInfinite
 	}
+	if len(nums) == 0 {
+		return 0, nil, nil
+	}
 	allNum0 := true
 	for _, n := range nums {
 		if n != 0 {
@@ -201,21 +204,22 @@ func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 		return 1, make([]Z32, len(nums)), nil
 	}
 	// minPos points to the smallest num to reduce primes use
-	var minPos int
-	var min N
+	minPos := 0
+	min := Z(n.primes[len(n.primes)-1])
 	ns := make([]N, len(nums))
 	for p, n := range nums {
-		if n > 0 {
+		if n >= 0 {
 			ns[p] = N(+n)
 		} else {
 			ns[p] = N(-n) // correct sign
 		}
 		// update minimum always at start p==0
 		// or for n not zero and being smaller than prev smallest
-		if p == 0 || (n != 0 && ns[p] < min) {
-			minPos, min = p, ns[p] // new smallest
+		if n != 0 && n < min {
+			minPos, min = p, n // new smallest
 		}
 	}
+//fmt.Println("reduceQn1", den, ns, ns[minPos])
 	for _, prime := range n.primes {
 		p := N(prime)
 		if ns[minPos] < p {
@@ -224,7 +228,7 @@ func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 		for {
 			all := true
 			for _, n := range ns {
-				if n % p != 0 {
+				if (n != 0) && (n % p != 0) {
 					all = false
 					break // prime not common to all
 				}
@@ -252,6 +256,7 @@ func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 			n32s[p] = Z32(-n)
 		}
 	}
+//fmt.Println("reduceQn2", den, n32s)
 	return N32(den), n32s, nil
 }
 
