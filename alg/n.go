@@ -205,7 +205,7 @@ func (n *N32s) reduceQn(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	}
 	// minPos points to the smallest num to reduce primes use
 	minPos := 0
-	min := Z(n.primes[len(n.primes)-1])
+	min := Z(N32_MAX)
 	ns := make([]N, len(nums))
 	for p, n := range nums {
 		if n >= 0 {

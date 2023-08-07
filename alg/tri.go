@@ -117,23 +117,22 @@ func (ts *Tris32) sinC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(ab, 0, 1, Z(ab)*Z(ab) - abc*abc)
 }
 
-func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
+func (ts *Tris32) sinsAdd(triAngs [][]uint) (*Q32, error) {
 	// sin(A+B) = sinAcosB + cosAsinB
 	if len(triAngs) < 2 {
-		return fmt.Errorf("Need at least two triangles")
+		return nil, fmt.Errorf("Need at least two triangles")
 	}
 	if sinA, cosA, err := ts.sinCos(triAngs[0]); err != nil {
-		return err
+		return nil, err
 	} else if sinB, cosB, err := ts.sinCos(triAngs[1]); err != nil {
-		return err
+		return nil, err
 	} else if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
-		return err
+		return nil, err
 	} else if sinBcosA, err := ts.MulQ(sinB, cosA); err != nil {
-		return err
+		return nil, err
 	} else {
-		fmt.Println(sinA, cosA, sinB, cosB)
-		fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
-		return nil
+		//fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
+		return ts.AddQ(sinAcosB, sinBcosA)
 	}
 }
 

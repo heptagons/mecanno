@@ -42,6 +42,8 @@ func TestQ32(t *testing.T) {
 		{ f( 0,2,1), 2,  "1"       }, // (2√1)/2 = 1
 		{ f( 0,2,2), 2,  "√2"      }, // (2√2)/2 = √2
 		{ f( 0,4,5), 6,  "2√5/3"   }, // (0+4√5)/6 = 4√5/6 = 2√5/3
+
+		{ f(0,147,11),2500, "147√11/2500" },
 	} {
 		if q, err := qs.newQ32(s.den, s.nums...); err != nil {
 			if s.exp != "err" {
@@ -77,7 +79,9 @@ func TestQ32(t *testing.T) {
 		}
 	}
 
-	// mul
+
+
+	// add
 	for _, s := range []struct { a, b, exp string } {
 		{ "0",   "√2",  "√2"   },
 		{ "1",   "1",   "2"    },
@@ -90,13 +94,16 @@ func TestQ32(t *testing.T) {
 		{ "1+√5", "1+√5",     "2+2√5"     },
 		{ "1+√5", "(1+√5)/2", "(3+3√5)/2" },
 		{ "1+√5", "2√5/3",    "(3+5√5)/3" },
+
+		{ "147√11/2500", "147√11/2500", "147√11/1250" }, // incorrect 735000√11/6250000
+
 	} {
 		a := m[s.a]
 		b := m[s.b]
 		if r, err := qs.AddQ(a, b); err != nil {
-			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
+			t.Fatalf("qs.AddQ error for %s %s %v", s.a, s.b, err)
 		} else if got := r.String(); got != s.exp {
-			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
+			t.Fatalf("qs.AddQ got %s exp %s", got, s.exp)
 		}
 	}
 

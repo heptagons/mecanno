@@ -95,6 +95,7 @@ func (qs *Q32s) newQ32(den N, num ...Z) (q *Q32, err error) {
 	case 1:
 		return qs.ab(a, num[0])
 	case 3:
+		//fmt.Println("newQ32 case 3", a, num[0], num[1], num[2])
 		return qs.abcd(a, num[0], num[1], num[2]) // (b+c√d)/a
 	default:
 		return nil, ErrInvalid
@@ -240,6 +241,7 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 				// ----- + ----- = ----------------------- = ----------- = ------------------------------- = ----------
 				//   qa     ra                a                   a                      a                       a
 				// GCD =(qa,ra)
+				/*
 				a := NatGCD(qa, ra)
 				x := qcra / Z(a)
 				y := qarc / Z(a)
@@ -249,11 +251,8 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 				if g32, h32, err := qs.reduceRoot(g, h); err != nil { // g√h
 					return nil, err
 				}
-
-
+				*/
 			}
-
-
 		}
 	}
 	return nil, ErrInvalid
@@ -269,44 +268,6 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 
 
 
-
-func (qs *Q32s) reduceQAdd2(p ...*Q32) (q *Q32, overflow bool) {
-	if n := len(p); n == 0 {
-		return nil, false
-	} else if n == 1 {
-		return p[0], false
-	}
-	return nil, false
-	/*
-	o1, i1, d1 := p[0].oid()
-	o2, i2, d2 := p[1].oid()
-	//       __      __
-	//  / o1√i1   o2√i2  \2
-	// (  ----- + ------  )
-	//  \   d1      d2   /
-	//                  ____                     _                 _         _
-	//   o1o1i1   2oio2√i1i2    o2o2i2    a    c√i    f     m    c√i   x + y√i
-	// = ------ + ----------- + ------ = --- + --- + --- = --- + --- = -------
-	//    d1d1      d1d2         d2d2     b     d     g     n     d      z
-
-	if b, a, overflow := qs.reduceQ1(N(d1)*N(d2), Z(o1)*Z(o1)*Z(i1)); overflow {
-		return nil, true
-	} else if c, i, overflow := qs.reduceRoot(2*Z(o1)*Z(o2), Z(i1)*Z(i2)); overflow {
-		return nil, true
-	} else if d, c, overflow := qs.reduceQ1(N(d1)*N(d2), Z(c)); overflow {
-		return nil, true
-	} else if g, f, overflow := qs.reduceQ1(N(d2)*N(d2), Z(o2)*Z(o2)*Z(i2)); overflow {
-		return nil, true
-	
-	} else if m, n, overflow := qs.reduceQ1(N(b)*N(g), Z(a)*Z(g)+Z(f)*Z(b)); overflow {
-		return nil, true
-	
-	} else if x, xy := qs.reduceQn(N(n)*N(d), Z(m)*Z(d), Z(c)*Z(n)); overflow {
-
-		return nil
-		//return newQ32Root(out, in Z32, den N32) 
-	}*/
-}
 
 
 
