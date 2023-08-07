@@ -93,43 +93,6 @@ func (ts *Tris32) setSinCos() error {
 	return nil
 }
 
-func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
-	/*
-	// sin(A+B) = sinAcosB + cosAsinB
-	if len(triAngs) < 2 {
-		return fmt.Errorf("Need at least two triangles")
-	}
-	if sinA, cosA, err := ts.triSinCos(triAngs[0]); err != nil {
-		return err
-	} else if sinB, cosB, err := ts.triSinCos(triAngs[1]); err != nil {
-		return err
-	} else if sinAcosB, overflow := ts.reduceQMul(sinA, cosB); overflow {
-		return fmt.Errorf("sinAcosB overflow")
-	} else if sinBcosA, overflow := ts.reduceQMul(sinB, cosA); overflow {
-		return fmt.Errorf("sinBcosA overflow")
-	} else {
-		fmt.Println(sinA, cosA, sinB, cosB)
-		fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
-		return nil
-	}*/
-	return nil
-}
-
-
-func (ts *Tris32) triSinCos(posAngle []uint) (*Q32, *Q32, error) {
-	if len(posAngle) != 2 {
-		return nil, nil, fmt.Errorf("Format error: needs two uints for triangle pos and angle")
-	} else if pos := int(posAngle[0]); pos > len(ts.list) {
-		return nil, nil, fmt.Errorf("No triangle for pos:%d", pos)
-	} else if angle := int(posAngle[1]); angle > 2 {
-		return nil, nil, fmt.Errorf("Invalid angle:%d", angle)
-	} else {
-		t := ts.list[pos]
-		return t.sin[angle], t.cos[angle], nil
-	}
-}
-
-
 // cosC returns the rational cosine of the angle C using the law of cosines:
 //	       a² + b² - c²
 //	cosC = ------------
@@ -154,8 +117,35 @@ func (ts *Tris32) sinC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(ab, 0, 1, Z(ab)*Z(ab) - abc*abc)
 }
 
+func (ts *Tris32) sinsAdd(triAngs [][]uint) error {
+	// sin(A+B) = sinAcosB + cosAsinB
+	if len(triAngs) < 2 {
+		return fmt.Errorf("Need at least two triangles")
+	}
+	if sinA, cosA, err := ts.sinCos(triAngs[0]); err != nil {
+		return err
+	} else if sinB, cosB, err := ts.sinCos(triAngs[1]); err != nil {
+		return err
+	} else if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
+		return err
+	} else if sinBcosA, err := ts.MulQ(sinB, cosA); err != nil {
+		return err
+	} else {
+		fmt.Println(sinA, cosA, sinB, cosB)
+		fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
+		return nil
+	}
+}
 
-
-
-
-
+func (ts *Tris32) sinCos(posAngle []uint) (*Q32, *Q32, error) {
+	if len(posAngle) != 2 {
+		return nil, nil, fmt.Errorf("Format error: needs two uints for triangle pos and angle")
+	} else if pos := int(posAngle[0]); pos > len(ts.list) {
+		return nil, nil, fmt.Errorf("No triangle for pos:%d", pos)
+	} else if angle := int(posAngle[1]); angle > 2 {
+		return nil, nil, fmt.Errorf("Invalid angle:%d", angle)
+	} else {
+		t := ts.list[pos]
+		return t.sin[angle], t.cos[angle], nil
+	}
+}

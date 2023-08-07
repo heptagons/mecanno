@@ -43,7 +43,6 @@ func (q *Q32) String() string {
 }
 
 func (q *Q32) bcdStr(s *Str, b, c, d Z32) { // b + c√d
-//fmt.Println("bcdStr", b, c, d)
 	if b != 0 {
 		s.WriteString(fmt.Sprintf("%d", b))
 	}
@@ -54,7 +53,11 @@ func (q *Q32) bcdStr(s *Str, b, c, d Z32) { // b + c√d
 	} else if c == -1 {
 		s.WriteString("-") // don't put -1
 	} else {
-		s.WriteString(fmt.Sprintf("%d", c))
+		if b == 0 {
+			s.WriteString(fmt.Sprintf("%d", c))
+		} else {
+			s.WriteString(fmt.Sprintf("%+d", c))
+		}
 	}
 	s.WriteString(fmt.Sprintf("√%d", d))
 }
@@ -128,89 +131,141 @@ func (qs *Q32s) abcd(a N, b, c, d Z) (*Q32, error) {
 	}
 }
 
-
-
-
-
-/*
-func (qs *Q32s) reduceQMulN(p ...*Q32) (q *Q32, err error) {
-	if n := len(p); n >= 0 {
-		q = p[0]
-		for i=1; i < n; i++ {
-			q, err = qs.reduceQMul2(q, p[i])
-			if err != nil {
-				return
-			}
-		}
+func (qs *Q32s) AddQ(q ...*Q32) (s *Q32, err error) {
+	n := len(q)
+	if n == 1 {
+		return q[0], nil
 	}
-	return
-}*/
-
-/*
-func (qs *Q32s) reduceQMul2(q, r *Q32) (s *Q32, err error) {
-	if q != nil || r != nil {
-		n1, n2 := len(q.num), len(q.num)
-		if n2 > n1 {
-			q = s; q = r; r = s
+	max := q[0]
+	for i := 1; i < n; i++ {
+		min := q[i]
+		if max == nil || min == nil {
+			return nil, nil
 		}
-		if n1 == 0 {
+		if len(max.num) < len(min.num) {
+			s = max; max = min; min = s
+		}
+		if s, err = qs.addQ2(max, min); err != nil {
 			return
 		}
-		qa, qb := N(q.den), Z(q.num[0])
-		ra, rb := N(r.den), Z(r.num[0])
-		aa := qa * ra
-		bb := qb * rb
-		switch len(q) {
-		case 1: // len(r) should be 1
-			// qb   rb   qb * rb    bb    b32
-			// -- * -- = ------- = ---- = ---
-			// qa   ra   qa * qb    aa    a32
-			return qs.newQ32(aa, bb)
-		case 2:
-			qc, qd := Z(q.num[1]), Z(q.num[2])
-			switch len(r) {
-			case 1:
-				// qb + qc√qd   rb   qb*rb + qc*rb√qd    bb + qcrb√qd   b32 + c32√d32
-				// ---------- * -- = ----------------- = ------------ = -------------
-				//    qa        ra       qa * ra              aa             a32
-				qcrb := qc * rb
-				return qs.newQ32(aa, bb, qc*rb, qd) // a, b, c, d
-			case 2:
-				// qb + qc√qd   rb + rc√rd
-				// ---------- * ----------
-				//     qa           ra
-				// q.b*r.b + r.c*q.b√r.d + q.c*r.b√q.d + q.c*r.c√(q.d*r.d) / (q.a*r.a)
-				// (bb + o1i1 + o2i2 + o3i3) / aa
-				if o1, i1, err := qs.ReduceRoot(Z(r.num[1])*Z(q.num[1]))
+		max = s
+	}
+	return
+}
 
+func (qs *Q32s) MulQ(q ...*Q32) (s *Q32, err error) {
+	n := len(q)
+	if n == 1 {
+		return q[0], nil
+	}
+	max := q[0]
+	for i := 1; i < n; i++ {
+		min := q[i]
+		if max == nil || min == nil {
+			return nil, nil
+		}
+		if len(max.num) < len(min.num) {
+			s = max; max = min; min = s
+		}
+		if s, err = qs.mulQ2(max, min); err != nil {
+			return
+		}
+		max = s
+	}
+	return
+}
 
+func (qs *Q32s) mulQ2(q, r *Q32) (s *Q32, err error) {
+	qa, qb := N(q.den), Z(q.num[0])
+	ra, rb := N(r.den), Z(r.num[0])
+	aa := qa * ra
+	bb := qb * rb
+	switch len(q.num) {
+	case 1:
+		// qb/aq * rb/ra =  (qb*rb)/(qa*ra) = aa/bb
+		return qs.newQ32(aa, bb)
+
+	case 3:
+		qc, qd := Z(q.num[1]), Z(q.num[2])
+		switch len(r.num) {
+		case 1:
+			// qb + qc√qd   rb   qb*rb + qc*rb√qd    bb + qcrb√qd   b32 + c32√d32
+			// ---------- * -- = ----------------- = ------------ = -------------
+			//    qa        ra       qa * ra              aa             a32
+			return qs.newQ32(aa, bb, qc*rb, qd) // a, b, c, d
+		case 3:
+			rc, rd := Z(r.num[1]), Z(r.num[2])
+			if qd == rd { // simpler case
+				// qb + qc√qd   rb + rc√qd   (bb + qc*rc*qd) + (qb*rc + rb*qc)√qd
+				// ---------- * --------- = -----------------------------------
+				//     qa          ra                     aa
+				return qs.newQ32(aa, bb + qc*rc*qd, qb*rc + rb*qc, qd)
 			}
 		}
 	}
-	return return
+	return nil, ErrInvalid
 }
 
-	} else if n == 2 {
-		return p[0].mul(p[1])
+func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
+	qa, qb := N(q.den), Z(q.num[0])
+	ra, rb := N(r.den), Z(r.num[0])
+	aa := qa * ra
+	qbra := qb*Z(ra)
+	qarb := Z(qa)*rb
+	switch len(q.num) {
+	case 1:
+		// qb/aq + rb/ra =  (qb*ra + qa*rb)/(qa*ra) = (qb*ra + qa*rb)/aa
+		return qs.newQ32(aa, qbra + qarb)
+
+	case 3:
+		qc, qd := Z(q.num[1]), Z(q.num[2])
+		qcra := qc*Z(ra)
+		switch len(r.num) {
+		case 1:
+			// qb + qc√qd   rb   qb*ra + qa*rb + (qc*ra)√qd   b + c√qd
+			// ---------- + -- = -------------------------- = --------
+			//    qa        ra           aa                     aa
+			return qs.newQ32(aa, qbra + qarb, qcra, qd)
+		case 3:
+			rc, rd := Z(r.num[1]), Z(r.num[2])
+			qarc := Z(qa)*rc
+			if qd == rd { // simpler case
+				// qb + qc√qd   rb + rc√qd  qb*ra + qa*rb + (qc*ra + qa*rc)√qd
+				// ---------- + --------- = ----------------------------------
+				//     qa          ra                     aa
+				return qs.newQ32(aa, qbra + qarb, qcra + qarc, qd)
+			}
+			if qb == rb && qb == 0 {
+				// qc√qd   rc√rd   qc*ra√qd/a + rc*qa√rd/a   x√qd + y√rd   √(x*x*qd + y*y*rd +2*x*y√qd*rd)   e√f + g√h)
+				// ----- + ----- = ----------------------- = ----------- = ------------------------------- = ----------
+				//   qa     ra                a                   a                      a                       a
+				// GCD =(qa,ra)
+				a := NatGCD(qa, ra)
+				x := qcra / Z(a)
+				y := qarc / Z(a)
+				f := x*x*qd + y*y*rd
+				g := 2*x*y
+				h := qd*rd
+				if g32, h32, err := qs.reduceRoot(g, h); err != nil { // g√h
+					return nil, err
+				}
+
+
+			}
+
+
+		}
 	}
-	return nil, false
-	/*
-	o1, i1, d1 := p[0].oid()
-	o2, i2, d2 := p[1].oid()
-	//    __      __         ____
-	// o1√i1   o2√i2    o1o2√i1i2
-	// ----- x ------ = ---------
-	//  d1      d2       d1d2
-	den := N(d1) * N(d2)
-	if o32, i32, overflow := qs.reduceRoot(Z(o1)*Z(o2), Z(i1)*Z(i2)); overflow {
-		return nil, true
-	} else
-	if den32, n32s, overflow := qs.reduceQ(den, Z(o32)); overflow {
-		return nil, true
-	} else {
-		return newQ32Root(n32s[0], i32, den32), false
-	} *  /
-*/
+	return nil, ErrInvalid
+}
+
+
+
+
+
+
+
+
 
 
 

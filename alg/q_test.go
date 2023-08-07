@@ -12,6 +12,10 @@ func TestQ32(t *testing.T) {
 
 	qs := NewQ32s(factory)
 
+	m := map[string]*Q32 {
+
+	}
+
 	for _, s := range []struct { nums []Z ; den N; exp string; } {
 		{ f(),  1, "err" },
 		{ f(0), 0, "err" },
@@ -27,6 +31,7 @@ func TestQ32(t *testing.T) {
 		{ f( 1,1,3), 1, "1+√3" }, // 1+1√3
 		{ f( 1,1,4), 1, "3"    }, // 1+1√4 = 1+2 = 3
 		{ f( 1,1,5), 1, "1+√5" }, // 1+1√5
+		
 		{ f( 1,1,5), 2, "(1+√5)/2" }, // (1+1√5)/2
 		{ f( 1,1,6), 2, "(1+√6)/2" }, // (1+1√5)/2
 		{ f( 2,1,7), 2, "(2+√7)/2" }, // (1+1√5)/2
@@ -44,6 +49,55 @@ func TestQ32(t *testing.T) {
 			}
 		} else if got := q.String(); got != s.exp {
 			t.Fatalf("qs.new got %s exp %s", got, s.exp)
+		} else {
+			m[got] = q // feed map to be used in multiplications
 		}
 	}
+
+	// mul
+	for _, s := range []struct { a, b, exp string } {
+		{ "0",   "√2",  "0"   },
+		{ "1",   "1",   "1"   },
+		{ "1",   "2",   "2"   },
+		{ "3",   "3",   "9"   },
+		{ "5/2", "1/2", "5/4" },
+		{ "1",   "√2",  "√2"  },
+		{ "√2",  "√2",  "2"   },
+		
+		{ "1+√5", "1+√5",     "6+2√5"      },
+		{ "1+√5", "(1+√5)/2", "3+√5"       },
+		{ "1+√5", "2√5/3",    "(10+2√5)/3" },
+	} {
+		a := m[s.a]
+		b := m[s.b]
+		if r, err := qs.MulQ(a, b); err != nil {
+			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
+		} else if got := r.String(); got != s.exp {
+			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
+		}
+	}
+
+	// mul
+	for _, s := range []struct { a, b, exp string } {
+		{ "0",   "√2",  "√2"   },
+		{ "1",   "1",   "2"    },
+		{ "1",   "2",   "3"    },
+		{ "3",   "3",   "6"    },
+		{ "5/2", "1/2", "3"    },
+		{ "1",   "√2",  "1+√2" },
+		{ "√2",  "√2",  "2√2"  },
+		
+		{ "1+√5", "1+√5",     "2+2√5"     },
+		{ "1+√5", "(1+√5)/2", "(3+3√5)/2" },
+		{ "1+√5", "2√5/3",    "(3+5√5)/3" },
+	} {
+		a := m[s.a]
+		b := m[s.b]
+		if r, err := qs.AddQ(a, b); err != nil {
+			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
+		} else if got := r.String(); got != s.exp {
+			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
+		}
+	}
+
 }
