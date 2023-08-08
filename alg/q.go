@@ -40,9 +40,13 @@ func (q *Q32) String() string {
 	} else if n == 5 {
 		// (b + c√d + e√f)/a
 		c, d, e, f := q.num[1], q.num[2], q.num[3], q.num[4]
-		s.WriteString("(")
+		if a > 1 {
+			s.WriteString("(")
+		}
 		q.bcdefStr(s, b, c, d, e, f)
-		s.WriteString(")")
+		if a > 1 {
+			s.WriteString(")")
+		}
 	}
 	// denominator
 	if a > 1 {
@@ -197,10 +201,14 @@ func (qs *Q32s) abcdef(a N, b, c, d, e, f Z) (*Q32, error) {
 	} else if a32, bce32, err := qs.reduceQn(a, b, Z(c32), Z(e32)); err != nil { // (b,c,e)/a
 		return nil, err
 	} else {
-		return &Q32{
-			den: a32, // a
-			num: []Z32{ bce32[0], bce32[1], d32, bce32[2], f32 }, // b,c,d,e,f
-		}, nil
+		var num []Z32
+		c, d, e, f := bce32[1], d32, bce32[2], f32
+		if d < f {
+			num = []Z32{ bce32[0],c,d,e,f } 
+		} else {
+			num = []Z32{ bce32[0],e,f,c,d }
+		}
+		return &Q32{ den:a32, num:num }, nil
 	}
 }
 
@@ -311,22 +319,16 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 				//     qa          ra                     aa
 				return qs.newQ32(aa, qbra + qarb, qcra + qarc, qd)
 			}
-			if qb == rb && qb == 0 {
-				// qc√qd   rc√rd   qc*ra√qd/a + rc*qa√rd/a   x√qd + y√rd   √(x*x*qd + y*y*rd +2*x*y√qd*rd)   e√f + g√h)
-				// ----- + ----- = ----------------------- = ----------- = ------------------------------- = ----------
-				//   qa     ra                a                   a                      a                       a
+			if qb == rb && qb == 0 { // simpler case both b's=0
+				lcm := (qa / Ngcd(qa, ra)) * ra
+				// qc√qd   rc√rd   x√qd +  y√rd
+				// ----- + ----- = ------- ----
+				//   qa     ra         lcm
 				// GCD =(qa,ra)
-				/*
-				a := NatGCD(qa, ra)
-				x := qcra / Z(a)
-				y := qarc / Z(a)
-				f := x*x*qd + y*y*rd
-				g := 2*x*y
-				h := qd*rd
-				if g32, h32, err := qs.reduceRoot(g, h); err != nil { // g√h
-					return nil, err
-				}
-				*/
+				x := Z(lcm / qa) * qc
+				y := Z(lcm / ra) * rc
+//fmt.Printf("cases 3,3 q=%v r=%v lcm=%d x=%d qd=%d y=%d rd=%d\n", q, r, lcm, x, qd, y, rd)
+				return qs.newQ32(N(lcm), 0, x, qd, y, rd)
 			}
 		}
 	}

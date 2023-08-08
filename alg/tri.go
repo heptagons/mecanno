@@ -71,20 +71,30 @@ func (ts *Tris32) add(a, b, c N32) {
 func (ts *Tris32) setSinCos() error {
 	for _, t := range ts.list {
 		a, b, c := t.abc[0], t.abc[1], t.abc[2]
+
 		if cosA, err := ts.cosC(b, c, a); err != nil {
 			return err
-		} else if cosB, err := ts.cosC(c, a, b); err != nil {
+		} else
+		if cosB, err := ts.cosC(c, a, b); err != nil {
 			return err
-		} else if cosC, err := ts.cosC(a, b, c); err != nil {
+		} else
+		if cosC, err := ts.cosC(a, b, c); err != nil {
 			return err
 		} else {
 			t.cos = []*Q32 { cosA, cosB, cosC }
 		}
-		if sinA, err := ts.sinC(b, c, a); err != nil {
+		// https://en.wikipedia.org/wiki/Heron%27s_formula Numerical stability
+		area2_4 := Z(a+(b+c)) * Z(c-(a-b)) * Z(c+(a-b)) * Z(a+(b-c))
+		// area = √(area2_4)/4
+		// https://en.wikipedia.org/wiki/Law_of_sines
+		// Area = (absinC)/2 -> sinC = 2A/(a*b)
+		if sinA, err := ts.newQ32(2*N(b*c), 0, 1, area2_4); err != nil {
 			return err
-		} else if sinB, err := ts.sinC(c, a, b); err != nil {
+		} else 
+		if sinB, err := ts.newQ32(2*N(c*a), 0, 1, area2_4); err != nil {
 			return err
-		} else if sinC, err := ts.sinC(a, b, c); err != nil {
+		} else
+		if sinC, err := ts.newQ32(2*N(a*b), 0, 1, area2_4); err != nil {
 			return err
 		} else {
 			t.sin = []*Q32 { sinA, sinB, sinC }
@@ -103,48 +113,18 @@ func (ts *Tris32) cosC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(den64, num64)
 }
 
-// sinC return the algebraic sine of the angle C using the law of sines:
-//	       math.Sqrt(4a²b² - (a²+b²-c²)²)
-//	sinC = ------------------------------
-//	                  2ab 
-func (ts *Tris32) sinC(a, b, c N32) (*Q32, error) {
-	//	stable := N(a+(b+c)) * N(c-(a-b)) * N(c+(a-b)) * N(a+(b-c))
-	//	if out, in, ok := t.algs.roiN(1, stable); ok {
-	//		next.area = NewAlg(NewRat(int(out), 4), in)
-	//	}
-	ab := 2*N(a)*N(b)
-	abc := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
-	return ts.newQ32(ab, 0, 1, Z(ab)*Z(ab) - abc*abc)
-}
-
-func (ts *Tris32) sinsAdd(triAngs [][]uint) (*Q32, error) {
-	// sin(A+B) = sinAcosB + cosAsinB
-	if len(triAngs) < 2 {
-		return nil, fmt.Errorf("Need at least two triangles")
+// sin(A+B) = sinAcosB + cosAsinB
+func (ts *Tris32) SinAaddB(tA, tB *Tri32, pA, pB int) (*Q32, error) {
+	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
+		return nil, ErrInvalid
 	}
-	if sinA, cosA, err := ts.sinCos(triAngs[0]); err != nil {
-		return nil, err
-	} else if sinB, cosB, err := ts.sinCos(triAngs[1]); err != nil {
-		return nil, err
-	} else if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
+	sinA, cosA := tA.sin[pA], tA.cos[pA]
+	sinB, cosB := tB.sin[pB], tB.cos[pB]
+	if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
 		return nil, err
 	} else if sinBcosA, err := ts.MulQ(sinB, cosA); err != nil {
 		return nil, err
 	} else {
-		//fmt.Println(sinAcosB.String() + " + " + sinBcosA.String())
 		return ts.AddQ(sinAcosB, sinBcosA)
-	}
-}
-
-func (ts *Tris32) sinCos(posAngle []uint) (*Q32, *Q32, error) {
-	if len(posAngle) != 2 {
-		return nil, nil, fmt.Errorf("Format error: needs two uints for triangle pos and angle")
-	} else if pos := int(posAngle[0]); pos > len(ts.list) {
-		return nil, nil, fmt.Errorf("No triangle for pos:%d", pos)
-	} else if angle := int(posAngle[1]); angle > 2 {
-		return nil, nil, fmt.Errorf("Invalid angle:%d", angle)
-	} else {
-		t := ts.list[pos]
-		return t.sin[angle], t.cos[angle], nil
 	}
 }

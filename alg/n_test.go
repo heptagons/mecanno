@@ -8,6 +8,13 @@ import (
 
 func TestN32(t *testing.T) {
 
+
+	a := NatGCD(8,12)
+	if a != 4 {
+		t.Fatalf("a != 4")
+	}
+
+
 	factory := NewN32s() // with primes for reductions
 
 	// primes
