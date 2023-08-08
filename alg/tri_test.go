@@ -5,7 +5,7 @@ import (
 )
 
 func TestTris(t *testing.T) {
-	max := 6
+	max := 15
 	factory := NewN32s()
 	ts := NewA32Tris(max, factory)
 	//if got, exp := len(ts.list), 17; got != exp {
@@ -37,6 +37,19 @@ func TestTris(t *testing.T) {
 		}
 	}
 
+	i := 0
+
+                                              //                         n <= 15
+	comp180, _ := ts.newQ32(1, 0)             // sin(0)         = 180°     141 pairs
+	comp90,  _ := ts.newQ32(1, 1)             // sin(1)         =  90°       8
+	comp60,  _ := ts.newQ32(2, 0, 1, 3)       // sin((√3)/2)    =  60°      36
+	comp54,  _ := ts.newQ32(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
+	comp45,  _ := ts.newQ32(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
+	comp30,  _ := ts.newQ32(2, 1)             // sin(1/2)       =  30°       8
+	comp18,  _ := ts.newQ32(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
+	comp15,  _ := ts.newQ32(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
+
+	// add two triangle angles pairs sines to get new angle and print matching above sines'
 	n := len(ts.list)
 	for p1 := 0; p1 < n; p1++ {
 		t1 := ts.list[p1]
@@ -57,14 +70,24 @@ func TestTris(t *testing.T) {
 					if p1 == p2 && a1 < a2 {
 						continue
 					}
-					if sin2, err := ts.SinAaddB(t1, t2, a1, a2); err != nil {
+					if add, err := ts.SinAdd(t1, t2, a1, a2); err != nil {
 						t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
-					} else {
-						t.Logf("%v(%d) %v(%d) %s {%s + %s}", t1.abc, a1, t2.abc, a2, sin2, t1.sin[a1], t2.sin[a2])
+					} else if add.Equal(comp180) {
+						i++
+						t.Logf("% 3d %v(%d) %v(%d) %s {%s + %s}", i, t1.abc, a1, t2.abc, a2, add, t1.sin[a1], t2.sin[a2])
 					}
 				}
 			}
 		}
 	}
+	_ = comp180
+	_ = comp90
+	_ = comp60
+	_ = comp54
+	_ = comp45
+	_ = comp30
+	_ = comp18
+	_ = comp15
 }
+
 

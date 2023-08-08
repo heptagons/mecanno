@@ -9,6 +9,21 @@ type Q32 struct {
 	num []Z32 // b, c, d, e...
 }
 
+func (q *Q32) Equal(r *Q32) bool {
+	if q.den != r.den {
+		return false
+	}
+	if len(q.num) != len(r.num) {
+		return false
+	}
+	for p, qn := range q.num {
+		if qn != r.num[p] {
+			return false
+		}
+	}
+	return true
+}
+
 func (q *Q32) String() string {
 	if q == nil {
 		return "+0"
@@ -259,6 +274,7 @@ func (qs *Q32s) MulQ(q ...*Q32) (s *Q32, err error) {
 	return
 }
 
+// TODO use lcm always to prevent overflows
 func (qs *Q32s) mulQ2(q, r *Q32) (s *Q32, err error) {
 	qa, qb := N(q.den), Z(q.num[0])
 	ra, rb := N(r.den), Z(r.num[0])
@@ -290,9 +306,12 @@ func (qs *Q32s) mulQ2(q, r *Q32) (s *Q32, err error) {
 	return nil, ErrInvalid
 }
 
+// TODO use lcm always to prevent overflows
 func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 	qa, qb := N(q.den), Z(q.num[0])
 	ra, rb := N(r.den), Z(r.num[0])
+	lcm := (qa / Ngcd(qa, ra)) * ra
+
 	aa := qa * ra
 	qbra := qb*Z(ra)
 	qarb := Z(qa)*rb
@@ -320,7 +339,6 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 				return qs.newQ32(aa, qbra + qarb, qcra + qarc, qd)
 			}
 			if qb == rb && qb == 0 { // simpler case both b's=0
-				lcm := (qa / Ngcd(qa, ra)) * ra
 				// qc√qd   rc√rd   x√qd +  y√rd
 				// ----- + ----- = ------- ----
 				//   qa     ra         lcm

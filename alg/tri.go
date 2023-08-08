@@ -114,7 +114,7 @@ func (ts *Tris32) cosC(a, b, c N32) (*Q32, error) {
 }
 
 // sin(A+B) = sinAcosB + cosAsinB
-func (ts *Tris32) SinAaddB(tA, tB *Tri32, pA, pB int) (*Q32, error) {
+func (ts *Tris32) SinAdd(tA, tB *Tri32, pA, pB int) (*Q32, error) {
 	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
 		return nil, ErrInvalid
 	}
