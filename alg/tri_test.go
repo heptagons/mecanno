@@ -5,12 +5,12 @@ import (
 )
 
 func TestTris(t *testing.T) {
-	max := 15
+	max := 20
 	factory := NewN32s()
 	ts := NewA32Tris(max, factory)
-	//if got, exp := len(ts.list), 17; got != exp {
-	//	t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
-	//}
+	if got, exp := len(ts.list), 658; got != exp {
+		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
+	}
 
 	ts.setSinCos()
 	for pos, exp := range []string {
@@ -39,13 +39,13 @@ func TestTris(t *testing.T) {
 
 	i := 0
 
-                                              //                         n <= 15
-	comp180, _ := ts.newQ32(1, 0)             // sin(0)         = 180°     141 pairs
-	comp90,  _ := ts.newQ32(1, 1)             // sin(1)         =  90°       8
-	comp60,  _ := ts.newQ32(2, 0, 1, 3)       // sin((√3)/2)    =  60°      36
+                                              //                         n <= 20
+	comp180, _ := ts.newQ32(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
+	comp90,  _ := ts.newQ32(1, 1)             // sin(1)         =  90°      25
+	comp60,  _ := ts.newQ32(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
 	comp54,  _ := ts.newQ32(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
 	comp45,  _ := ts.newQ32(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
-	comp30,  _ := ts.newQ32(2, 1)             // sin(1/2)       =  30°       8
+	comp30,  _ := ts.newQ32(2, 1)             // sin(1/2)       =  30°      15
 	comp18,  _ := ts.newQ32(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
 	comp15,  _ := ts.newQ32(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
 
@@ -72,7 +72,7 @@ func TestTris(t *testing.T) {
 					}
 					if add, err := ts.SinAdd(t1, t2, a1, a2); err != nil {
 						t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
-					} else if add.Equal(comp180) {
+					} else if add.Equal(comp15) {
 						i++
 						t.Logf("% 3d %v(%d) %v(%d) %s {%s + %s}", i, t1.abc, a1, t2.abc, a2, add, t1.sin[a1], t2.sin[a2])
 					}

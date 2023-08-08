@@ -274,7 +274,6 @@ func (qs *Q32s) MulQ(q ...*Q32) (s *Q32, err error) {
 	return
 }
 
-// TODO use lcm always to prevent overflows
 func (qs *Q32s) mulQ2(q, r *Q32) (s *Q32, err error) {
 	qa, qb := N(q.den), Z(q.num[0])
 	ra, rb := N(r.den), Z(r.num[0])
@@ -306,51 +305,48 @@ func (qs *Q32s) mulQ2(q, r *Q32) (s *Q32, err error) {
 	return nil, ErrInvalid
 }
 
-// TODO use lcm always to prevent overflows
 func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 	qa, qb := N(q.den), Z(q.num[0])
 	ra, rb := N(r.den), Z(r.num[0])
-	lcm := (qa / Ngcd(qa, ra)) * ra
 
-	aa := qa * ra
-	qbra := qb*Z(ra)
-	qarb := Z(qa)*rb
+	// Use lcm always to prevent overflows
+	a := (qa / Ngcd(qa, ra)) * ra // lcm
+	aq := Z(a / qa)
+	ar := Z(a / ra) 
+
 	switch len(q.num) {
 	case 1:
-		// qb/aq + rb/ra =  (qb*ra + qa*rb)/(qa*ra) = (qb*ra + qa*rb)/aa
-		return qs.newQ32(aa, qbra + qarb)
+		//  qb     rb     qb*aq + rb*ar    b
+		// ---- + ---- = -------------- = ---
+		//  qa     qb           a          a
+		return qs.newQ32(a, qb*aq + rb*ar)
 
 	case 3:
 		qc, qd := Z(q.num[1]), Z(q.num[2])
-		qcra := qc*Z(ra)
 		switch len(r.num) {
 		case 1:
-			// qb + qc√qd   rb   qb*ra + qa*rb + (qc*ra)√qd   b + c√qd
+			// qb + qc√qd   rb   qb*aq + rb*ar + (qc*aq)√qd    b + c√qd
 			// ---------- + -- = -------------------------- = --------
-			//    qa        ra           aa                     aa
-			return qs.newQ32(aa, qbra + qarb, qcra, qd)
+			//    qa        ra              a                     aa
+			return qs.newQ32(a, qb*aq + rb*ar, qc*aq, qd)			
+
 		case 3:
 			rc, rd := Z(r.num[1]), Z(r.num[2])
-			qarc := Z(qa)*rc
 			if qd == rd { // simpler case
-				// qb + qc√qd   rb + rc√qd  qb*ra + qa*rb + (qc*ra + qa*rc)√qd
+				// qb + qc√qd   rb + rc√qd  qb*aq + rb*ar + (qc*aq + rc*ar)√qd
 				// ---------- + --------- = ----------------------------------
-				//     qa          ra                     aa
-				return qs.newQ32(aa, qbra + qarb, qcra + qarc, qd)
+				//     qa          ra                     a 
+				return qs.newQ32(a, qb*aq + rb*ar, qc*aq + rc*ar, qd)
 			}
 			if qb == rb && qb == 0 { // simpler case both b's=0
-				// qc√qd   rc√rd   x√qd +  y√rd
-				// ----- + ----- = ------- ----
-				//   qa     ra         lcm
-				// GCD =(qa,ra)
-				x := Z(lcm / qa) * qc
-				y := Z(lcm / ra) * rc
-//fmt.Printf("cases 3,3 q=%v r=%v lcm=%d x=%d qd=%d y=%d rd=%d\n", q, r, lcm, x, qd, y, rd)
-				return qs.newQ32(N(lcm), 0, x, qd, y, rd)
+				// qc√qd   rc√rd   qc*aq√qd + rc*ar√rd
+				// ----- + ----- = -------------------
+				//   qa     ra              a
+				return qs.newQ32(a, 0, qc*aq, qd, rc*ar, rd)
 			}
 		}
 	}
-	return nil, fmt.Errorf("Can't sum %s and %s", q.String(), r.String())
+	return nil, fmt.Errorf("Can't add %s and %s", q.String(), r.String())
 }
 
 
