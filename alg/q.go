@@ -369,6 +369,28 @@ func (qs *Q32s) addQ2(q, r *Q32) (s *Q32, err error) {
 	return nil, fmt.Errorf("Can't add %s and %s", q.String(), r.String())
 }
 
+func (qs *Q32s) sqrtQ(q *Q32) (s *Q32, err error) {
+	if q == nil {
+		return nil, nil
+	}
+	switch len(q.num) {
+	case 1:
+		a, b := q.den, q.num[0]
+		//  b      1√ab   0 + C√D
+		// --- -> ----- = -------
+		//  a       a       A 
+		return qs.newQ32(N(a), 0, 1, Z(a)*Z(b))
+
+	case 3:
+		// b + c√d     √(ab + ac√d)    0 + C√(D + E√F)
+		// ------- -> ------------- = ----------------
+		//    a             a               A
+		// TODO finish and return a Q of size 5 a,b,c,d,e
+
+	}
+	return nil, fmt.Errorf("Can't square root of %s", q.String())
+}
+
 
 
 

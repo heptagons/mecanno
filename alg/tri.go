@@ -24,16 +24,16 @@ type Tri32 struct { // Triangle
 }
 
 // otherSides return the two sides not pointed by pos
-func (t *Tri32) otherSides(pos int) (N32, N32) {
+func (t *Tri32) otherSides(pos int) []N32 {
 	switch pos {
 	case 0:
-		return t.abc[1], t.abc[2]
+		return []N32{ t.abc[1], t.abc[2] }
 	case 1:
-		return t.abc[0], t.abc[2]
+		return []N32{ t.abc[0], t.abc[2] }
 	case 2:
-		return t.abc[0], t.abc[1]
+		return []N32{ t.abc[0], t.abc[1] }
 	}
-	panic("Wrong pos not (0,1,2)")
+	return nil
 }
 
 func (t *Tri32) String() string {
@@ -45,14 +45,6 @@ type Tri32Q struct {
 	a N32  // first natural side
 	b N32  // second natural side
 	c *Q32 // third rational algebraic side
-}
-
-func newTri32Q(a, b N32) *Tri32Q {
-	if a > b {
-		return &Tri32Q{ a: a, b: b }
-	} else {
-		return &Tri32Q{ a: b, b: a }
-	}
 }
 
 func (t *Tri32Q) String() string {
@@ -152,8 +144,10 @@ func (ts *Tris32) cosLaw(a, b N32, cosC *Q32) (*Q32, error) {
 		return nil, err
 	} else if abCosC, err := ts.MulQ(ab, cosC); err != nil { // -2a*b*cosC
 		return nil, err
+	} else if cc, err := ts.AddQ(aa_bb, abCosC); err != nil { // a*a + b*b - 2*a*b*cosC
+		return nil, err
 	} else {
-		return ts.AddQ(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
+		return ts.sqrtQ(cc)
 	}
 }
 
@@ -183,25 +177,34 @@ func (ts *Tris32) addPair(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
 		return nil, err
 	} else {
 		pair.cos = cosAB
-		// build tris, triangles with two sides natural and one side Q (squared)
-		xA, yA := tA.otherSides(pA)
-		xB, yB := tB.otherSides(pB)
-		tris := []*Tri32Q{
-			newTri32Q(xA, xB), // 1st
-		}
-		if xA != yA {
-			tris = append(tris, newTri32Q(yA, xB)) // 2nd
-		}
-		if xB != yB {
-			tris = append(tris, newTri32Q(xA, yB)) // 2nd or 3rd
-			if xA != yA {
-				tris = append(tris, newTri32Q(xA, yB)) // 3rd or 4th
+		// build tris, triangles with two sides natural and one side Q
+		triqs := make([]*Tri32Q, 0)
+		for _, a := range tA.otherSides(pA) {
+			for _, b := range tB.otherSides(pB) {
+				max, min := a, b
+				if max < min {
+					max, min = b, a
+				}
+				repeated := false
+				for _, triq := range triqs {
+					if max == triq.a && min == triq.b {
+						repeated = true
+					}
+				}
+				if !repeated {
+					if c, err := ts.cosLaw(max, min, cosAB); err != nil {
+						return nil, err
+					} else {
+						triqs = append(triqs, &Tri32Q{
+							a: max,
+							b: min,
+							c: c,
+						})
+					}
+				}
 			}
 		}
-		for _, t := range tris {
-			t.c, _ = ts.cosLaw(t.a, t.b, cosAB)
-		}
-		pair.tris = tris
+		pair.triqs = triqs
 	}
 	return pair, nil
 }
@@ -238,7 +241,7 @@ type TriPair32 struct {
 	tA, tB   *Tri32
 	pA, pB   int
 	sin, cos *Q32
-	tris     []*Tri32Q
+	triqs    []*Tri32Q
 }
 
 func newTriPair32(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
@@ -255,5 +258,5 @@ func newTriPair32(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
 }
 
 func (t *TriPair32) String() string {
-	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s tris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.tris)
+	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s tris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.triqs)
 }

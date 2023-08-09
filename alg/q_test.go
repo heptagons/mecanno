@@ -12,9 +12,7 @@ func TestQ32(t *testing.T) {
 
 	qs := NewQ32s(factory)
 
-	m := map[string]*Q32 {
-
-	}
+	m := make(map[string]*Q32, 0)
 
 	for _, s := range []struct { nums []Z ; den N; exp string; } {
 		{ f(),  1, "err" },
@@ -149,4 +147,19 @@ func TestQ32(t *testing.T) {
 		}
 	}
 
+	// sqrt
+	for _, s := range []struct { q, exp string } {
+		{ "0",   "0"     },
+		{ "1",   "1"     },
+		{ "3",   "√3"    },
+		{ "5/2", "√10/2" },
+		{ "7/5", "√35/5" },
+	} {
+		q := m[s.q]
+		if r, err := qs.sqrtQ(q); err != nil {
+			t.Fatalf("qs.sqrt error for %s %v", s.q, err)
+		} else if got := r.String(); got != s.exp {
+			t.Fatalf("qs.sqrt got %s exp %s", got, s.exp)
+		}
+	}
 }

@@ -79,8 +79,7 @@ func TestTri5(t *testing.T) {
 	factory := NewN32s()
 	ts := NewA32Tris(max, factory)
 	ts.setSinCos()
-	pairs := 0
-	cosines := make(map[string][]*TriPair32)
+	pairs := make([]*TriPair32, 0)
 	comp180, _ := ts.newQ32(1, 0)
 	ts.AddPairs(func(pair *TriPair32, err error) {
 		if pair == nil {
@@ -93,23 +92,10 @@ func TestTri5(t *testing.T) {
 		} else if pair.sin.Equal(comp180) {
 			// Dont count natural (again) new sides
 		} else {
-			pairs++
-			cos := pair.cos.String()
-			if _, ok := cosines[cos]; !ok {
-				cosines[cos] = []*TriPair32{
-					pair,
-				}
-			} else {
-				cosines[cos] = append(cosines[cos], pair)
-			}
+			pairs = append(pairs, pair)
 		}
 	})
-	c := 1
-	for _, v := range cosines {
-		fmt.Printf("% 3d pairs=%v\n", c, v)
-		//fmt.Printf("\n%v\n", v.tris)
-		c++
+	for c, pair := range pairs {
+		fmt.Printf("% 3d %v\n", c+1, pair)
 	}
-	fmt.Printf("max=%d pairs=%d\n", max, pairs)
-
 }
