@@ -9,6 +9,13 @@ type Q32 struct {
 	num []Z32 // b, c, d, e...
 }
 
+func newQ32(den N32, num Z32) *Q32 {
+	return &Q32{
+		den: den,
+		num: []Z32{ num },
+	}
+}
+
 // Equal returns true it the given r is identical to this one.
 func (q *Q32) Equal(r *Q32) bool {
 	if q == nil || r == nil {
@@ -42,6 +49,22 @@ func (q *Q32) Neg() *Q32 {
 		q.num[3] = -q.num[3] // e = -e
 	}
 	return q
+}
+
+// GreatherThanN returns true iff this q is type 1 and greater than given n
+func (q *Q32) GreaterThanZ(num Z) (bool, error) {
+	if q == nil {
+		return false, nil
+	}
+	switch len(q.num) {
+	case 1:
+		// q.num[0]    n
+		// -------- > ---- ; q.num[0] > n * q.den
+		//   q.den     1
+		return Z(q.num[0]) > num*Z(q.den), nil
+	}
+	return false, fmt.Errorf("Can't compare %s and %d", q, num)
+
 }
 
 func (q *Q32) String() string {
@@ -246,9 +269,6 @@ func (qs *Q32s) abcdef(a N, b, c, d, e, f Z) (*Q32, error) {
 		return &Q32{ den:a32, num:num }, nil
 	}
 }
-
-
-
 
 func (qs *Q32s) AddQ(q ...*Q32) (s *Q32, err error) {
 	n := len(q)

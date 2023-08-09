@@ -41,14 +41,34 @@ func (t *Tri32) String() string {
 }
 
 type Tri32Q struct {
-	// Triangle
-	a N32  // first natural side
-	b N32  // second natural side
-	c *Q32 // third rational algebraic side
+	max N32    // max natural side
+	min N32    // min natural side
+	abc []*Q32 // at leat one side rational algebraic
+}
+
+func newTri32Q(max, min N32, cc *Q32, c *Q32) (t *Tri32Q, e error) {
+	t = &Tri32Q{
+		max: max,
+		min: min,
+	}
+	a := newQ32(1, Z32(max))
+	b := newQ32(1, Z32(min))
+	if cab, err := cc.GreaterThanZ(Z(max)*Z(max)); err != nil {
+		e = err
+	} else if acb, err := cc.GreaterThanZ(Z(min)*Z(min)); err != nil {
+		e = err
+	} else if cab {
+		t.abc = []*Q32{ c, a, b }
+	} else if acb {
+		t.abc = []*Q32{ a, c, b }
+	} else {
+		t.abc = []*Q32{ a, b, c }
+	}
+	return
 }
 
 func (t *Tri32Q) String() string {
-	return fmt.Sprintf("[%d %d %s]", t.a, t.b, t.c.String())
+	return fmt.Sprintf("%v", t.abc)
 }
 
 type Tris32 struct {
@@ -137,17 +157,15 @@ func (ts *Tris32) cosC(a, b, c N32) (*Q32, error) {
 
 // cosLaw return the third side (squared) cc. Squared to keep simple the Q32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
-func (ts *Tris32) cosLaw(a, b N32, cosC *Q32) (*Q32, error) {
+func (ts *Tris32) cosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
 	if aa_bb, err := ts.newQ32(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
 		return nil, err
 	} else if ab, err := ts.newQ32(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
 		return nil, err
 	} else if abCosC, err := ts.MulQ(ab, cosC); err != nil { // -2a*b*cosC
 		return nil, err
-	} else if cc, err := ts.AddQ(aa_bb, abCosC); err != nil { // a*a + b*b - 2*a*b*cosC
-		return nil, err
 	} else {
-		return ts.sqrtQ(cc)
+		return ts.AddQ(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
 	}
 }
 
@@ -187,19 +205,24 @@ func (ts *Tris32) addPair(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
 				}
 				repeated := false
 				for _, triq := range triqs {
-					if max == triq.a && min == triq.b {
+					if max == triq.max && min == triq.min {
 						repeated = true
 					}
 				}
 				if !repeated {
-					if c, err := ts.cosLaw(max, min, cosAB); err != nil {
+					if cc, err := ts.cosLaw2(max, min, cosAB); err != nil {
+						return nil, err
+					} else if c, err := ts.sqrtQ(cc); err != nil {
+						return nil, err
+					} else if len(c.num) <= 1 {
+						// prevent a triq with all naturals like below [4 3 2]
+  						// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
+						// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
+						continue
+					} else if triq, err := newTri32Q(max, min, cc, c); err != nil {
 						return nil, err
 					} else {
-						triqs = append(triqs, &Tri32Q{
-							a: max,
-							b: min,
-							c: c,
-						})
+						triqs = append(triqs, triq)
 					}
 				}
 			}
@@ -208,6 +231,8 @@ func (ts *Tris32) addPair(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
 	}
 	return pair, nil
 }
+
+
 
 func (ts *Tris32) AddPairs(results func(pair *TriPair32, err error)) {
 	n := len(ts.list)
@@ -258,5 +283,5 @@ func newTriPair32(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
 }
 
 func (t *TriPair32) String() string {
-	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s tris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.triqs)
+	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s\n\ttris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.triqs)
 }
