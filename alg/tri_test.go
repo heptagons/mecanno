@@ -8,7 +8,7 @@ import (
 func TestTri20(t *testing.T) {
 	max := 20
 	factory := NewN32s()
-	ts := NewA32Tris(max, factory)
+	ts := NewTris(max, factory)
 	if got, exp := len(ts.list), 658; got != exp {
 		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
 	}
@@ -58,7 +58,7 @@ func TestTri20(t *testing.T) {
 	_ = comp15
 
 	i := 0
-	ts.AddPairs(func(pair *TriPair32, err error) {
+	ts.AddPairs(func(pair *TriPair, err error) {
 		if pair == nil {
 			return
 		}
@@ -77,11 +77,11 @@ func TestTri20(t *testing.T) {
 func TestTri5(t *testing.T) {
 	max := 4
 	factory := NewN32s()
-	ts := NewA32Tris(max, factory)
+	ts := NewTris(max, factory)
 	ts.setSinCos()
-	pairs := make([]*TriPair32, 0)
+	pairs := make([]*TriPair, 0)
 	comp180, _ := ts.newQ32(1, 0)
-	ts.AddPairs(func(pair *TriPair32, err error) {
+	ts.AddPairs(func(pair *TriPair, err error) {
 		if pair == nil {
 			return
 		}
@@ -96,6 +96,7 @@ func TestTri5(t *testing.T) {
 		}
 	})
 	for c, pair := range pairs {
+		pair.setTriqs(ts)
 		fmt.Printf("% 3d %v\n", c+1, pair)
 	}
 }
