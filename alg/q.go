@@ -9,7 +9,11 @@ type Q32 struct {
 	num []Z32 // b, c, d, e...
 }
 
+// Equal returns true it the given r is identical to this one.
 func (q *Q32) Equal(r *Q32) bool {
+	if q == nil || r == nil {
+		return false
+	}
 	if q.den != r.den {
 		return false
 	}
@@ -22,6 +26,22 @@ func (q *Q32) Equal(r *Q32) bool {
 		}
 	}
 	return true
+}
+
+// Neg changes the signs of b, c and e.
+func (q *Q32) Neg() *Q32 {
+	switch len(q.num) {
+	case 1:
+		q.num[0] = -q.num[0] // b = -b
+	case 3:
+		q.num[0] = -q.num[0] // b = -b
+		q.num[1] = -q.num[1] // c = -c
+	case 5:
+		q.num[0] = -q.num[0] // b = -b
+		q.num[1] = -q.num[1] // c = -c
+		q.num[3] = -q.num[3] // e = -e
+	}
+	return q
 }
 
 func (q *Q32) String() string {

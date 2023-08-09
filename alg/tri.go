@@ -18,16 +18,46 @@ import (
 //
 // A,B, and C the angles to opposite abc a,b and c.
 type Tri32 struct { // Triangle
-	abc []N32
+	abc []N32   // Three natural sides
 	cos []*Q32
 	sin []*Q32
+}
+
+// otherSides return the two sides not pointed by pos
+func (t *Tri32) otherSides(pos int) (N32, N32) {
+	switch pos {
+	case 0:
+		return t.abc[1], t.abc[2]
+	case 1:
+		return t.abc[0], t.abc[2]
+	case 2:
+		return t.abc[0], t.abc[1]
+	}
+	panic("Wrong pos not (0,1,2)")
 }
 
 func (t *Tri32) String() string {
 	return fmt.Sprintf("abc:%v cos:%v sin:%v", t.abc, t.cos, t.sin)
 }
 
+type Tri32Q struct {
+	// Triangle
+	a N32  // first natural side
+	b N32  // second natural side
+	c *Q32 // third rational algebraic side
+}
 
+func newTri32Q(a, b N32) *Tri32Q {
+	if a > b {
+		return &Tri32Q{ a: a, b: b }
+	} else {
+		return &Tri32Q{ a: b, b: a }
+	}
+}
+
+func (t *Tri32Q) String() string {
+	return fmt.Sprintf("[%d %d %s]", t.a, t.b, t.c.String())
+}
 
 type Tris32 struct {
 	*Q32s
@@ -113,18 +143,117 @@ func (ts *Tris32) cosC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(den64, num64)
 }
 
-// sin(A+B) = sinAcosB + cosAsinB
-func (ts *Tris32) SinAdd(tA, tB *Tri32, pA, pB int) (*Q32, error) {
-	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
-		return nil, ErrInvalid
+// cosLaw return the third side (squared) cc. Squared to keep simple the Q32 returned.
+// Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
+func (ts *Tris32) cosLaw(a, b N32, cosC *Q32) (*Q32, error) {
+	if aa_bb, err := ts.newQ32(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
+		return nil, err
+	} else if ab, err := ts.newQ32(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
+		return nil, err
+	} else if abCosC, err := ts.MulQ(ab, cosC); err != nil { // -2a*b*cosC
+		return nil, err
+	} else {
+		return ts.AddQ(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
+	}
+}
+
+func (ts *Tris32) addPair(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
+	pair, err := newTriPair32(tA, tB, pA, pB)
+	if err != nil {
+		return nil, err
 	}
 	sinA, cosA := tA.sin[pA], tA.cos[pA]
 	sinB, cosB := tB.sin[pB], tB.cos[pB]
+	// sin(A+B) = sinAcosB + cosAsinB
 	if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
-		return nil, err
+		return nil, err 
 	} else if sinBcosA, err := ts.MulQ(sinB, cosA); err != nil {
 		return nil, err
+	} else if sinAB, err := ts.AddQ(sinAcosB, sinBcosA); err != nil {
+		return nil, err
 	} else {
-		return ts.AddQ(sinAcosB, sinBcosA)
+		pair.sin = sinAB
 	}
+	// cos(A+B) = cosAcosB - sinAsinB
+	if cosAcosB, err := ts.MulQ(cosA, cosB); err != nil {
+		return nil, err 
+	} else if sinAsinB, err := ts.MulQ(sinA, sinB); err != nil {
+		return nil, err
+	} else if cosAB, err := ts.AddQ(cosAcosB, sinAsinB.Neg()); err != nil {
+		return nil, err
+	} else {
+		pair.cos = cosAB
+		// build tris, triangles with two sides natural and one side Q (squared)
+		xA, yA := tA.otherSides(pA)
+		xB, yB := tB.otherSides(pB)
+		tris := []*Tri32Q{
+			newTri32Q(xA, xB), // 1st
+		}
+		if xA != yA {
+			tris = append(tris, newTri32Q(yA, xB)) // 2nd
+		}
+		if xB != yB {
+			tris = append(tris, newTri32Q(xA, yB)) // 2nd or 3rd
+			if xA != yA {
+				tris = append(tris, newTri32Q(xA, yB)) // 3rd or 4th
+			}
+		}
+		for _, t := range tris {
+			t.c, _ = ts.cosLaw(t.a, t.b, cosAB)
+		}
+		pair.tris = tris
+	}
+	return pair, nil
+}
+
+func (ts *Tris32) AddPairs(results func(pair *TriPair32, err error)) {
+	n := len(ts.list)
+	for p1 := 0; p1 < n; p1++ {
+		t1 := ts.list[p1]
+		a1s := make(map[N32]bool, 0)
+		for a1, s1 := range t1.abc {
+			if _, repeated := a1s[s1]; repeated {
+				continue
+			}
+			a1s[s1] = true
+			for p2 := p1; p2 < n; p2++ {
+				t2 := ts.list[p2]
+				a2s := make(map[N32]bool, 0)
+				for a2, s2 := range t2.abc {
+					if _, repeated := a2s[s2]; repeated {
+						continue
+					}
+					a2s[s2] = true
+					if p1 == p2 && a1 < a2 {
+						continue
+					}
+					results(ts.addPair(t1, t2, a1, a2))
+				}
+			}
+		}
+	}
+}
+
+type TriPair32 struct {
+	tA, tB   *Tri32
+	pA, pB   int
+	sin, cos *Q32
+	tris     []*Tri32Q
+}
+
+func newTriPair32(tA, tB *Tri32, pA, pB int) (*TriPair32, error) {
+	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
+		return nil, ErrInvalid
+	} else {
+		return &TriPair32{
+			tA: tA,
+			tB: tB,
+			pA: pA,
+			pB: pB,
+		}, nil
+	}
+}
+
+func (t *TriPair32) String() string {
+	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s tris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.tris)
 }

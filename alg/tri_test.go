@@ -2,17 +2,18 @@ package alg
 
 import (
 	"testing"
+	"fmt"
 )
 
-func TestTris(t *testing.T) {
+func TestTri20(t *testing.T) {
 	max := 20
 	factory := NewN32s()
 	ts := NewA32Tris(max, factory)
 	if got, exp := len(ts.list), 658; got != exp {
 		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
 	}
-
 	ts.setSinCos()
+
 	for pos, exp := range []string {
 		"abc:[1 1 1] cos:[1/2 1/2 1/2] sin:[√3/2 √3/2 √3/2]",                // √3
 		"abc:[2 2 1] cos:[1/4 1/4 7/8] sin:[√15/4 √15/4 √15/8]",             // √15
@@ -37,9 +38,6 @@ func TestTris(t *testing.T) {
 		}
 	}
 
-	i := 0
-
-                                              //                         n <= 20
 	comp180, _ := ts.newQ32(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
 	comp90,  _ := ts.newQ32(1, 1)             // sin(1)         =  90°      25
 	comp60,  _ := ts.newQ32(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
@@ -50,36 +48,6 @@ func TestTris(t *testing.T) {
 	comp15,  _ := ts.newQ32(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
 
 	// add two triangle angles pairs sines to get new angle and print matching above sines'
-	n := len(ts.list)
-	for p1 := 0; p1 < n; p1++ {
-		t1 := ts.list[p1]
-		a1s := make(map[N32]bool, 0)
-		for a1, s1 := range t1.abc {
-			if _, repeated := a1s[s1]; repeated {
-				continue
-			}
-			a1s[s1] = true
-			for p2 := p1; p2 < n; p2++ {
-				t2 := ts.list[p2]
-				a2s := make(map[N32]bool, 0)
-				for a2, s2 := range t2.abc {
-					if _, repeated := a2s[s2]; repeated {
-						continue
-					}
-					a2s[s2] = true
-					if p1 == p2 && a1 < a2 {
-						continue
-					}
-					if add, err := ts.SinAdd(t1, t2, a1, a2); err != nil {
-						t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
-					} else if add.Equal(comp15) {
-						i++
-						t.Logf("% 3d %v(%d) %v(%d) %s {%s + %s}", i, t1.abc, a1, t2.abc, a2, add, t1.sin[a1], t2.sin[a2])
-					}
-				}
-			}
-		}
-	}
 	_ = comp180
 	_ = comp90
 	_ = comp60
@@ -88,6 +56,60 @@ func TestTris(t *testing.T) {
 	_ = comp30
 	_ = comp18
 	_ = comp15
+
+	i := 0
+	ts.AddPairs(func(pair *TriPair32, err error) {
+		if pair == nil {
+			return
+		}
+		t1, t2 := pair.tA, pair.tB
+		a1, a2 := pair.pA, pair.pB
+		if err != nil {
+			t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
+		} else if pair.sin.Equal(comp30) {
+			i++
+			fmt.Printf("% 3d %v(%d) %v(%d) {%s + %s} sin=%s cos=%s\n", i, t1.abc, a1, t2.abc, a2, t1.sin[a1], t2.sin[a2], pair.sin, pair.cos)
+		}
+	})
 }
 
 
+func TestTri5(t *testing.T) {
+	max := 4
+	factory := NewN32s()
+	ts := NewA32Tris(max, factory)
+	ts.setSinCos()
+	pairs := 0
+	cosines := make(map[string][]*TriPair32)
+	comp180, _ := ts.newQ32(1, 0)
+	ts.AddPairs(func(pair *TriPair32, err error) {
+		if pair == nil {
+			return
+		}
+		t1, t2 := pair.tA, pair.tB
+		a1, a2 := pair.pA, pair.pB
+		if err != nil {
+			t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
+		} else if pair.sin.Equal(comp180) {
+			// Dont count natural (again) new sides
+		} else {
+			pairs++
+			cos := pair.cos.String()
+			if _, ok := cosines[cos]; !ok {
+				cosines[cos] = []*TriPair32{
+					pair,
+				}
+			} else {
+				cosines[cos] = append(cosines[cos], pair)
+			}
+		}
+	})
+	c := 1
+	for _, v := range cosines {
+		fmt.Printf("% 3d pairs=%v\n", c, v)
+		//fmt.Printf("\n%v\n", v.tris)
+		c++
+	}
+	fmt.Printf("max=%d pairs=%d\n", max, pairs)
+
+}
