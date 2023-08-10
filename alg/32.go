@@ -2,24 +2,9 @@ package alg
 
 import (
 	"fmt"
-	"strings"
+	//"strings"
 )
 
-type Str struct {
-	strings.Builder
-}
-
-func NewStr() *Str {
-	return &Str{}
-}
-
-func (s *Str) Zero() {
-	s.WriteString("+0")	
-}
-
-func (s *Str) Over(n N32) {
-	s.WriteString(fmt.Sprintf("/%d", n))
-}
 
 
 
@@ -77,7 +62,7 @@ func (a *AI32) isZero() bool {
 	return false
 }
 
-func (a *AI32) Str(s *Str) { 
+/*func (a *AI32) Str(s *Str) { 
 	if a.isZero() {
 		// For 0√x return +0
 		s.Zero()
@@ -117,7 +102,7 @@ func (a *AI32) Str(s *Str) {
 		a.e.Str(s) // recurse
 		s.WriteString(")")
 	}
-}
+}*/
 
 // WriteString appends to given buffer very SIMPLE format:
 // For nil, out or in zero appends "+0"
@@ -126,12 +111,12 @@ func (a *AI32) Str(s *Str) {
 //func (a *AI32) Str(s *Str) {
 //	s.AI32(a)
 //}
-
+/*
 func (r *AI32) String() string {
 	s := NewStr()
 	r.Str(s)
 	return s.String()
-}
+}*/
 
 
 

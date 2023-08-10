@@ -152,7 +152,7 @@ func NewN32s() *N32s {
 }
 
 // nFrac returns simplified denominator and numerator
-func (n *N32s) nFrac(den N, num Z) (den32 N32, n32 Z32, err error) {
+func (n *N32s) Frac(den N, num Z) (den32 N32, n32 Z32, err error) {
 	if den == 0 {
 		return 0, 0, ErrInfinite
 	} else if num == 0 {
@@ -187,7 +187,7 @@ func (n *N32s) nFrac(den N, num Z) (den32 N32, n32 Z32, err error) {
 }
 
 // nFracN reduces the quotient (± num0 ± num1 ± num2 ± ... ± numN) / den
-func (n *N32s) nFracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
+func (n *N32s) FracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	if den == 0 {
 		return 0, nil, ErrInfinite
 	}
@@ -260,8 +260,8 @@ func (n *N32s) nFracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	return N32(den), n32s, nil
 }
 
-// nSqrt reduce the number o√i 
-func (n *N32s) nSqrt(o, i Z) (o32, i32 Z32, err error) {
+// Sqrt reduce the number o√i 
+func (n *N32s) Sqrt(o, i Z) (o32, i32 Z32, err error) {
 	if o == 0 || i == 0 {
 		return 0, 0, nil
 	}
@@ -290,7 +290,8 @@ func (n *N32s) nSqrt(o, i Z) (o32, i32 Z32, err error) {
 	return o32, i32, nil
 }
 
-func (a *N32s) nSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
+// SqrtN reduces the external o and several internal i
+func (a *N32s) SqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	ins0 := true
 	for _, i := range is {
 		if i != 0 {

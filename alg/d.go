@@ -5,7 +5,7 @@ type D struct {
 	cd *AI32
 }
 
-func (d *D) Str(s *Str) {
+/*func (d *D) Str(s *Str) {
 	if d == nil || d.ab == nil || d.cd == nil {
 		s.Zero()
 		return
@@ -40,7 +40,7 @@ func (d *D) String() string {
 	s := NewStr()
 	d.Str(s)
 	return s.String()
-}
+}*/
 
 
 type Ds struct {

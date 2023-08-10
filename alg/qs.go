@@ -1,5 +1,9 @@
 package alg
 
+import (
+	"fmt"
+)
+
 type Q32s struct {
 	*N32s
 }
@@ -47,7 +51,7 @@ func (qs *Q32s) newQ32(den N, n ...Z) (q *Q32, err error) {
 }
 
 func (qs *Q32s) ab(a N, b Z) (*Q32, error) {
-	if A, B, err := qs.nFrac(a, b); err != nil {
+	if A, B, err := qs.Frac(a, b); err != nil {
 		return nil, err
 	} else {
 		return newQ32(A, B), nil
@@ -60,11 +64,11 @@ func (qs *Q32s) abcd(a N, b, c, d Z) (*Q32, error) {
 		return qs.ab(a, b)                                     // b/a
 	} else if d == 1 {
 		return qs.ab(a, b + c)                                 // (b+c)/a
-	} else if C, D, err := qs.nSqrt(c, d); err != nil {        // (b + C√D)/a
+	} else if C, D, err := qs.Sqrt(c, d); err != nil {         // (b + C√D)/a
 		return nil, err
 	} else if D == 1 {
 		return qs.ab(a, b + Z(C))                              // (b+c)/a
-	} else if A, BC, err := qs.nFrac(a, b, Z(C)); err != nil { // (B + C√D)/A
+	} else if A, BC, err := qs.FracN(a, b, Z(C)); err != nil { // (B + C√D)/A
 		return nil, err
 	} else {
 		B, C := BC[0], BC[1]
@@ -74,23 +78,23 @@ func (qs *Q32s) abcd(a N, b, c, d Z) (*Q32, error) {
 
 // abcdef simplifies and return (b + c√d + e√f)/a
 func (qs *Q32s) abcdef(a N, b, c, d, e, f Z) (*Q32, error) {
-	if e == 0 || f == 0 {                               // (b + c√d)/a
+	if e == 0 || f == 0 {                              // (b + c√d)/a
 		return qs.abcd(a, b, c, d)
-	} else if f == 1 {                                  // (b+e + c√d)/a
+	} else if f == 1 {                                 // (b+e + c√d)/a
 		return qs.abcd(a, b+e, c, d)
-	} else if d == f {                                  // (b + (c+e)√d)/a
+	} else if d == f {                                 // (b + (c+e)√d)/a
 		return qs.abcd(a, b, c+e, d)
-	} else if C, D, err := qs.nSqrt(c, d); err != nil { // (b + C√D + e√f)/a
+	} else if C, D, err := qs.Sqrt(c, d); err != nil { // (b + C√D + e√f)/a
 		return nil, err
-	} else if D == +1 {                                 // (b+C + e√f)/a
+	} else if D == +1 {                                // (b+C + e√f)/a
 		return qs.abcd(a, b+Z(C), e, f) 
-	} else if E, F, err := qs.nSqrt(e, f); err != nil { // (b + C√D + E√F)/a
+	} else if E, F, err := qs.Sqrt(e, f); err != nil { // (b + C√D + E√F)/a
 		return nil, err
-	} else if F == 1 {                                  // (b+E, C√D)/a
+	} else if F == 1 {                                 // (b+E, C√D)/a
 		return qs.abcd(a, b+Z(E), Z(C), Z(D))
-	} else if D == F {                                  // (b, (C+E)√D)/a)
+	} else if D == F {                                 // (b, (C+E)√D)/a)
 		return qs.abcd(a, b, Z(C) + Z(E), Z(D))
-	} else if A, BCE, err := qs.nFrac(a, b, Z(C), Z(E)); err != nil { // (B + C√E + D√F)/A
+	} else if A, BCE, err := qs.FracN(a, b, Z(C), Z(E)); err != nil { // (B + C√D + E√F)/A
 		return nil, err
 	} else {
 		B, C, E := BCE[0], BCE[1], BCE[2]
@@ -104,19 +108,28 @@ func (qs *Q32s) abcdef(a N, b, c, d, e, f Z) (*Q32, error) {
 
 // abcdefgh returns a form like (b+c√d+e√(f+g√h))/a
 func (qs *Q32s) abcdefgh(a N, b, c, d, e, f, g, h Z) (*Q32, error) {
-	if g == 0 {                                       // (b+c√d+e√f)/a
-		return abcdef(a, b, c, d, e, f)            
-	} else if h == +1 {                               // (b+c√d+e√f+g)/a
-		return abcdef(a, b, c, d, e, f+g)          
-	} else if e == 0 {                                // (b+c√d)/a
-		return abcd(a, b, c, d)               
-	} else G, H, err := qs.nSqrt(g, h) {              // (b+c√d+e√(f+G√H))/a
+	if g == 0 {                                         // (b+c√d+e√f)/a
+		return qs.abcdef(a, b, c, d, e, f)            
+	} else if h == +1 {                                 // (b+c√d+e√f+g)/a
+		return qs.abcdef(a, b, c, d, e, f+g)          
+	} else if e == 0 {                                  // (b+c√d)/a
+		return qs.abcd(a, b, c, d)               
+	} else if G, H, err := qs.Sqrt(g, h); err != nil {  // (b+c√d+e√(f+G√H))/a
 		return nil, err
-	} else h32 == + 1 {                               // (b+c√d+e√f+G)/a
-		return abcdef(a, b, c, d, e, f+Z(G))
-	} else if E, FG, err := qs.nSqrtN(e, f, G); err { // (b+c√d+E√(F+G√H))/a
+	} else if H == + 1 {                                // (b+c√d+e√f+G)/a
+		return qs.abcdef(a, b, c, d, e, f+Z(G))
+
+	} else if E, FG, err := qs.SqrtN(e, f, Z(G)); err != nil { // (b+c√d+E√(F+G√H))/a
 		return nil, err
-	} else if C, D, err := qs.nSqrt(c, d) {           // (b+C√D+E√(F+G√H))/a
+	} else if C, D, err := qs.Sqrt(c, d); err != nil {         // (b+C√D+E√(F+G√H))/a
+		return nil, err
+	} else if A, BCE, err := qs.FracN(a, b, Z(C), Z(E)); err != nil { // (B + C√E + D√(F+G√H))/A
+		return nil, err
+	} else {
+		B, C, E := BCE[0], BCE[1], BCE[2]
+		F, G := FG[0], FG[1]
+		return newQ32(A, B, C, D, E, F, H, G), nil
+	}
 }
 
 func (qs *Q32s) AddQ(q ...*Q32) (s *Q32, err error) {

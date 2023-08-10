@@ -151,7 +151,7 @@ func (x *B) MulB(y *B) *B {
 	}
 }
 
-func (x *B) Str(s *Str) {
+/*func (x *B) Str(s *Str) {
 	if x == nil || x.a == 0 {
 		// do nothing
 	} else if x.b == nil || x.b.n == 0 {
@@ -168,7 +168,7 @@ func (x *B) String() string {
 	s := NewStr()
 	x.Str(s)
 	return s.String()
-}
+}*/
 
 func (x *B) Reduce3(third *I32) {
 	if third == nil {

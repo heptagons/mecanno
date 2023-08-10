@@ -38,7 +38,7 @@ func TestN32(t *testing.T) {
 
 	f := func(p ...Z) []Z { return p }
 
-	// reduceQ
+	// FracN
 	for _, s := range []struct { nums []Z ; den N; exp string; } {
 		{ f( 0, 0, 0, 0), 1, "(+0+0+0+0)/1" },
 		{ f( 1, 2, 3, 4), 5, "(+1+2+3+4)/5" },
@@ -53,9 +53,9 @@ func TestN32(t *testing.T) {
 		{ f(0,2),       2, "(+0+1)/1"     },
 		{ f(0,4,0,2,0), 4, "(+0+2+0+1+0)/2" },
 	} {
-		if den, nums, err := factory.reduceQn(s.den, s.nums...); err != nil {
+		if den, nums, err := factory.FracN(s.den, s.nums...); err != nil {
 			if s.exp != "∞" {
-				t.Fatalf("reduceQ unexpected overflow for %d %v", s.den, s.nums)
+				t.Fatalf("FracN unexpected overflow for %d %v", s.den, s.nums)
 			}
 		} else {
 			var sb strings.Builder
@@ -65,7 +65,7 @@ func TestN32(t *testing.T) {
 			}
 			sb.WriteString(fmt.Sprintf(")/%d", den))
 			if got := sb.String(); got != s.exp {
-				t.Fatalf("reduceQ got %s exp %s", got, s.exp)
+				t.Fatalf("FracN got %s exp %s", got, s.exp)
 			}
 		}
 	}
@@ -114,7 +114,7 @@ func TestN32(t *testing.T) {
 		}
 	}
 
-	// Reduce 1: F1 -> roi
+	// Sqrt 1: F1 -> roi
 	for _, s := range []struct{ c, d Z; exp string } {
 		{ 0, 10, "+0"    },
 		{ 0,  0, "+0"    },
@@ -141,17 +141,17 @@ func TestN32(t *testing.T) {
 		{ +1, AZ_MAX*AZ_MAX/4,       "+98304√119304647" },
 		{ +1, (AZ_MAX-1)*(AZ_MAX-1), "+2147483646"      },
 	} {
-		if r, err := factory.Reduce(s.c, s.d); err != nil {
+		if o, i, err := factory.Sqrt(s.c, s.d); err != nil {
 			if s.exp != "∞" {
-				t.Fatalf("Reduce1 unexpected overflow for %d√%d", s.c, s.d)
+				t.Fatalf("Sqrt unexpected overflow for %d√%d", s.c, s.d)
 			}
-		} else if got := newAZ32(r...).String(); got != s.exp {
-			t.Fatalf("Reduce1 get %s exp %s", got, s.exp)
+		} else if got := newQ32(1, 0, o, i).String(); got != s.exp {
+			t.Fatalf("Sqrt get %s exp %s", got, s.exp)
 		}
 	}
 
-	// Reduce 2: F2 -> roi -> roie
-	for _, s := range []struct{ e, f, g, h Z; exp string } {
+	// SqrtN 2: F2 -> roi -> roie
+	/*for _, s := range []struct{ e, f, g, h Z; exp string } {
 		{-1,-1,-1,-1, "-1√(-1-1i)" },
 		{ 1, 1, 1, 0, "+1"         }, // +1√(1+1√0) = +1√(1+0) = +1√1 = +1
 		{ 1, 1, 0, 1, "+1"         }, // +1√(1+0√1) = +1√(1+0) = +1√1 = +1
@@ -183,14 +183,14 @@ func TestN32(t *testing.T) {
 		{12,12,12,12, "+24√(3+6√3)" }, // +12√(12+12√12) = +12√(12+24√3) = +24√(3+6√3)
 
 	} {
-		if r, err := factory.Reduce(s.e, s.f, s.g, s.h); err != nil {
+		if r, err := factory.SqrtN(s.e, s.f, s.g, s.h); err != nil {
 			if s.exp != "∞" {
 				t.Fatalf("Reduce2 unexpected overflow for %+d√(%d%+d√%d)", s.e, s.f, s.g, s.h)
 			}
 		} else if got := newAZ32(r...).String(); got != s.exp {
 			t.Fatalf("Reduce2 get %s exp %s", got, s.exp)
 		}
-	}
+	}*/
 
 	/*
 	// Reduce general

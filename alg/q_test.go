@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestQ32(t *testing.T) {
+func TestQ(t *testing.T) {
 
 	factory := NewN32s() // with primes for reductions
 

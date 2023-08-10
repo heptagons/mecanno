@@ -55,8 +55,8 @@ func (s *Hs) NewH(b, c, d, e, f, g, h Z, a N) *H {
 	}*/
 }
 
-func (x *H) String() string {
+/*func (x *H) String() string {
 	str := &Str{}
 	x.gh.Str(str)
 	return str.String()
-}
+}*/
