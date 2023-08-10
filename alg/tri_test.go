@@ -74,8 +74,8 @@ func TestTri20(t *testing.T) {
 }
 
 
-func TestTri5(t *testing.T) {
-	max := 4
+func TestTris(t *testing.T) {
+	max := 3
 	factory := NewN32s()
 	ts := NewTris(max, factory)
 	ts.setSinCos()
@@ -95,8 +95,12 @@ func TestTri5(t *testing.T) {
 			pairs = append(pairs, pair)
 		}
 	})
-	for c, pair := range pairs {
-		pair.setTriqs(ts)
-		fmt.Printf("% 3d %v\n", c+1, pair)
+	c := 0
+	for _, pair := range pairs {
+		ts.setTriqs(pair)
+		for _, triq := range pair.triqs {
+			c++
+			fmt.Printf("% 3d %v\n", c, triq)
+		}
 	}
 }

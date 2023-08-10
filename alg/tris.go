@@ -84,6 +84,13 @@ func (ts *Tris) cosC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(den64, num64)
 }
 
+func (ts *Tris) cosCQ(a *Q32, b, c N32) (*Q32, error) {
+	den64 :=
+}
+
+
+
+
 // cosLaw return the third side (squared) cc. Squared to keep simple the Q32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
 func (ts *Tris) cosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
@@ -128,8 +135,6 @@ func (ts *Tris) addPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
 	return pair, nil
 }
 
-
-
 func (ts *Tris) AddPairs(results func(pair *TriPair, err error)) {
 	n := len(ts.list)
 	for p1 := 0; p1 < n; p1++ {
@@ -157,3 +162,41 @@ func (ts *Tris) AddPairs(results func(pair *TriPair, err error)) {
 		}
 	}
 }
+
+func (ts *Tris) setTriqs(t *TriPair) error {
+	// build tris, triangles with two sides natural and one side Q
+	triqs := make([]*TriQ, 0)
+	for _, a := range t.tA.otherSides(t.pA) {
+		for _, b := range t.tB.otherSides(t.pB) {
+			max, min := a, b
+			if max < min {
+				max, min = b, a
+			}
+			repeated := false
+			for _, triq := range triqs {
+				if max == triq.max && min == triq.min {
+					repeated = true
+				}
+			}
+			if !repeated {
+				if cc, err := ts.cosLaw2(max, min, t.cos); err != nil {
+					return err
+				} else if c, err := ts.sqrtQ(cc); err != nil {
+					return err
+				} else if len(c.num) <= 1 && c.den == 1 {
+					// prevent a triq with all naturals like below [4 3 2]
+						// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
+					// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
+					continue
+				} else if triq, err := newTri32Q(max, min, cc, c); err != nil {
+					return err
+				} else {
+					triqs = append(triqs, triq)
+				}
+			}
+		}
+	}
+	t.triqs = triqs
+	return nil
+}
+

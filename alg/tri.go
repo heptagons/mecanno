@@ -92,42 +92,6 @@ func newTriPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
 	}
 }
 
-func (t *TriPair) setTriqs(ts *Tris) error {
-	// build tris, triangles with two sides natural and one side Q
-	triqs := make([]*TriQ, 0)
-	for _, a := range t.tA.otherSides(t.pA) {
-		for _, b := range t.tB.otherSides(t.pB) {
-			max, min := a, b
-			if max < min {
-				max, min = b, a
-			}
-			repeated := false
-			for _, triq := range triqs {
-				if max == triq.max && min == triq.min {
-					repeated = true
-				}
-			}
-			if !repeated {
-				if cc, err := ts.cosLaw2(max, min, t.cos); err != nil {
-					return err
-				} else if c, err := ts.sqrtQ(cc); err != nil {
-					return err
-				} else if len(c.num) <= 1 && c.den == 1 {
-					// prevent a triq with all naturals like below [4 3 2]
-						// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
-					// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
-					continue
-				} else if triq, err := newTri32Q(max, min, cc, c); err != nil {
-					return err
-				} else {
-					triqs = append(triqs, triq)
-				}
-			}
-		}
-	}
-	t.triqs = triqs
-	return nil
-}
 
 func (t *TriPair) String() string {
 	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s\n\ttris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.triqs)
