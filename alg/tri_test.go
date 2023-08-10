@@ -2,17 +2,20 @@ package alg
 
 import (
 	"testing"
-	"fmt"
 )
 
-func TestTri20(t *testing.T) {
+func TestTris20sin60(t *testing.T) {
 	max := 20
 	factory := NewN32s()
 	ts := NewTris(max, factory)
-	if got, exp := len(ts.list), 658; got != exp {
+	ts.SetSinCos()
+	got, exp := len(ts.tris), 658
+	if got != exp {
 		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
 	}
-	ts.setSinCos()
+	t.Logf("      Tris: %d", exp)
+	t.Logf(" First tri: %v", ts.tris[0])
+	t.Logf("  Last tri: %v", ts.tris[exp-1])
 
 	for pos, exp := range []string {
 		"abc:[1 1 1] cos:[1/2 1/2 1/2] sin:[√3/2 √3/2 √3/2]",                // √3
@@ -33,7 +36,7 @@ func TestTri20(t *testing.T) {
 		"abc:[5 5 3] cos:[3/10 3/10 41/50] sin:[√91/10 √91/10 3√91/50]",     // √91
 		"abc:[5 5 4] cos:[2/5 2/5 17/25] sin:[√21/5 √21/5 4√21/25]",         // √21
 	} {
-		if got := ts.list[pos].String(); got != exp {
+		if got := ts.tris[pos].String(); got != exp {
 			t.Fatalf("Tris32 got %s exp %s", got, exp)		
 		}
 	}
@@ -57,50 +60,44 @@ func TestTri20(t *testing.T) {
 	_ = comp18
 	_ = comp15
 
-	i := 0
-	ts.AddPairs(func(pair *TriPair, err error) {
-		if pair == nil {
-			return
-		}
-		t1, t2 := pair.tA, pair.tB
-		a1, a2 := pair.pA, pair.pB
-		if err != nil {
-			t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
-		} else if pair.sin.Equal(comp30) {
-			i++
-			fmt.Printf("% 3d %v(%d) %v(%d) {%s + %s} sin=%s cos=%s\n", i, t1.abc, a1, t2.abc, a2, t1.sin[a1], t2.sin[a2], pair.sin, pair.cos)
-		}
-	})
+	ps := NewTriPairs(ts)
+	sin := comp60
+	ps.Sin(sin)
+	t.Logf("     Pairs: %d filtered by sin=%v", len(ps.pairs), sin)
+	t.Logf("First pair: %v", ps.pairs[0])
+	t.Logf(" Last pair: %v", ps.pairs[len(ps.pairs) - 1])
+
+	qs := NewTriQs(ps)
+	qs.All()
+	t.Logf("     TriQs: %d all", len(qs.triqs))
+	t.Logf("First triq: %v", qs.triqs[0])
+	t.Logf(" Last triq: %v", qs.triqs[len(qs.triqs) - 1])
+
 }
 
+func TestTris10(t *testing.T) {
 
-func TestTris(t *testing.T) {
 	max := 3
 	factory := NewN32s()
 	ts := NewTris(max, factory)
-	ts.setSinCos()
-	pairs := make([]*TriPair, 0)
-	comp180, _ := ts.newQ32(1, 0)
-	ts.AddPairs(func(pair *TriPair, err error) {
-		if pair == nil {
-			return
-		}
-		t1, t2 := pair.tA, pair.tB
-		a1, a2 := pair.pA, pair.pB
-		if err != nil {
-			t.Fatalf("%v(%d) %v(%d) %v", t1.abc, a1, t2.abc, a2, err)
-		} else if pair.sin.Equal(comp180) {
-			// Dont count natural (again) new sides
-		} else {
-			pairs = append(pairs, pair)
-		}
-	})
-	c := 0
-	for _, pair := range pairs {
-		ts.setTriqs(pair)
-		for _, triq := range pair.triqs {
-			c++
-			fmt.Printf("% 3d %v\n", c, triq)
-		}
-	}
+	ts.SetSinCos()
+	n1 := len(ts.tris)
+	t.Logf("      Tris: %d", n1)
+	t.Logf(" First tri: %v", ts.tris[0])
+	t.Logf("  Last tri: %v", ts.tris[n1 - 1])
+
+	ps := NewTriPairs(ts)
+	ps.All()
+	n2 := len(ps.pairs)
+	t.Logf("     Pairs: %d all", n2)
+	t.Logf("First pair: %v", ps.pairs[0])
+	t.Logf(" Last pair: %v", ps.pairs[n2 - 1])
+
+	qs := NewTriQs(ps)
+	qs.All()
+	n3 := len(qs.triqs)
+	t.Logf("     TriQs: %d all", n3)
+	t.Logf("First triq: %v", qs.triqs[0])
+	t.Logf(" Last triq: %v", qs.triqs[n3 - 1])
 }
+

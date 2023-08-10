@@ -83,6 +83,7 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 // 7C  >0  !=0   !=0   !=1   !=0   0   !=1  !=0 |        (b+c√d+e√(g√h))/a
 // 7C  >0  !=0   !=0   !=1   !=0  !=0  !=1  !=0 |      (b+c√d+e√(f+g√h))/a
 //
+
 func (q *Q32) String() string {
 	s := NewStr()
 	a := q.den
@@ -97,23 +98,10 @@ func (q *Q32) String() string {
 	case 3: // a>0, c!=0, d!=+1
 		b, c, d := q.num[0], q.num[1], q.num[2]
 		if b == 0 {
-			if c == -1 {
-				s.neg()
-			} else if c != +1 {
-				s.z(c)
-			}
-			s.sqrt(d)              // c√d
+			s.root(c, d)
 		} else {
 			s.par(a > 1, func(s *Str) {    // (
-				s.z(b);                    // b
-				if c == -1 {
-					s.neg()
-				} else if c == +1 {
-					s.pos()
-				} else {
-					s.zS(c);
-				}
-				s.sqrt(d) // b+c√d
+				s.plus_root(b, c, d)       // b+c√d
 			})                             // )
 		}
 	
@@ -133,11 +121,10 @@ func (q *Q32) String() string {
 		fgh := func(s *Str) {
 			f, g, h := q.num[4], q.num[5], q.num[6]
 			if f == 0 {
-				s.z(g)           // g
+				s.root(g, h)         // g√h
 			} else {
-				s.z(f); s.zS(g); // f+g
+				s.plus_root(f, g, h) // f+g√h
 			}
-			s.sqrt(h) // √h
 		}
 		c, d, e := q.num[1], q.num[2], q.num[3]
 		if b := q.num[0]; b == 0 {
@@ -176,129 +163,4 @@ func (q *Q32) String() string {
 	return s.String()
 }
 
-/*
-func (q *Q32) String() string {
-	if q == nil {
-		return "+0"
-	} else if q.den == 0 {
-		return "∞"
-	}
-	n := len(q.num)
-	s := NewStr()
-	a, b := q.den, q.num[0]
-	switch len(q.num) {
-	case 0:
-		return ""
-	case 1: // b/a
-		s.WriteString(fmt.Sprintf("%d", b))
-	case 3: // (b + c√d)/a
-		c, d := q.num[1], q.num[2]
-		par := a > 1 && b*c != 0
-		if par {
-			s.WriteString("(")
-		}
-		q.bcd(s, b, c, d)
-		if par {
-			s.WriteString(")")
-		}
-	case 5: // (b + c√d + e√f)/a
-		if a > 1 {
-			s.WriteString("(")
-		}
-		q.bcdef(s, b, q.num[1], q.num[2], q.num[3], q.num[4])
-		if a > 1 {
-			s.WriteString(")")
-		}
-	case 7: // (b + c√d + e√(f+g√h))/a
-		if a > 1 {
-			s.WriteString("(")
-		}
-		q.bcdefgh(s, b, q.num[1], q.num[2], q.num[3], q.num[4], q.num[5], q.num[6])
-		if a > 1 {
-			s.WriteString(")")
-		}
-	}
-	// denominator
-	if a > 1 {
-		s.WriteString(fmt.Sprintf("/%d", a))
-	}
-	return s.String()
-}
-
-func (q *Q32) bcd(s *Str, b, c, d Z32) { // b + c√d
-	if b != 0 {
-		s.WriteString(fmt.Sprintf("%d", b))
-	}
-	if c == 1 {
-		if b != 0 {
-			s.WriteString("+")
-		}
-	} else if c == -1 {
-		s.WriteString("-") // don't put -1
-	} else {
-		if b == 0 {
-			s.WriteString(fmt.Sprintf("%d", c))
-		} else {
-			s.WriteString(fmt.Sprintf("%+d", c))
-		}
-	}
-	s.WriteString(fmt.Sprintf("√%d", d))
-}
-
-func (q *Q32) bcdef(s *Str, b, c, d, e, f Z32) { // b + c√d + e√f 
-	if b != 0 {
-		s.WriteString(fmt.Sprintf("%d", b))
-	}
-	if c == 1 {
-		if b != 0 {
-			s.WriteString("+")
-		}
-	} else if c == -1 {
-		s.WriteString("-") // don't put -1
-	} else {
-		if b == 0 {
-			s.WriteString(fmt.Sprintf("%d", c))
-		} else {
-			s.WriteString(fmt.Sprintf("%+d", c))
-		}
-	}
-	s.WriteString(fmt.Sprintf("√%d", d))
-	if e == 1 {
-		s.WriteString("+")
-	} else if e == -1 {
-		s.WriteString("-")
-	} else {
-		s.WriteString(fmt.Sprintf("%+d", e))
-	}
-	s.WriteString(fmt.Sprintf("√%d", f))
-}
-
-func (q *Q32) bcdefgh(s *Str, b, c, d, e, f, g, h Z32) { // b + c√d + e√(f+g√h)
-	if b != 0 {
-		s.WriteString(fmt.Sprintf("%d", b))
-	}
-	if c == 1 {
-		if b != 0 {
-			s.WriteString("+")
-		}
-	} else if c == -1 {
-		s.WriteString("-") // don't put -1
-	} else {
-		if b == 0 {
-			s.WriteString(fmt.Sprintf("%d", c))
-		} else {
-			s.WriteString(fmt.Sprintf("%+d", c))
-		}
-	}
-	s.WriteString(fmt.Sprintf("√%d", d))
-	if e == 1 {
-		s.WriteString("+")
-	} else if e == -1 {
-		s.WriteString("-")
-	} else {
-		s.WriteString(fmt.Sprintf("%+d", e))
-	}
-	s.WriteString(fmt.Sprintf("√%d", f))
-}
-*/
 
