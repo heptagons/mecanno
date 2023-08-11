@@ -60,13 +60,13 @@ func (qs *Q32s) ab(a N, b Z) (*Q32, error) {
 // abcd returns type (b + c√d)/a
 func (qs *Q32s) abcd(a N, b, c, d Z) (*Q32, error) {
 	if c == 0 || d == 0 {
-		return qs.ab(a, b)                                     // b/a
+		return qs.ab(a, b)                                      // b/a
 	} else if d == 1 {
-		return qs.ab(a, b + c)                                 // (b+c)/a
+		return qs.ab(a, b + c)                                  // (b+c)/a
 	} else if C, D, err := qs.zSqrt(c, d); err != nil {         // (b + C√D)/a
 		return nil, err
 	} else if D == 1 {
-		return qs.ab(a, b + Z(C))                              // (b+c)/a
+		return qs.ab(a, b + Z(C))                               // (b+c)/a
 	} else if A, BC, err := qs.zFracN(a, b, Z(C)); err != nil { // (B + C√D)/A
 		return nil, err
 	} else {

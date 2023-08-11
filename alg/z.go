@@ -4,6 +4,8 @@ type Z int64
 
 type Z32 int32
 
+const Z32_MAX = 0x7fffffff
+
 type Z32s struct {
 	*N32s
 }
@@ -42,7 +44,7 @@ func (z *Z32s) zFrac(den N, num Z) (den32 N32, n32 Z32, err error) {
 			break // check next prime
 		}
 	}
-	if dn > AZ_MAX || nn > AZ_MAX {
+	if dn > Z32_MAX || nn > Z32_MAX {
 		return 0, 0, ErrOverflow
 	}
 	if num > 0 { // original sign
@@ -114,12 +116,12 @@ func (z *N32s) zFracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 			break // check next prime
 		}
 	}
-	if den > AZ_MAX {
+	if den > Z32_MAX {
 		return 1, nil, ErrOverflow
 	}
 	n32s = make([]Z32, len(ns))
 	for p, num := range nums {
-		if n := ns[p]; n > AZ_MAX {
+		if n := ns[p]; n > Z32_MAX {
 			return 0, nil, ErrOverflow
 		} else if num > 0 { // original sign
 			n32s[p] = Z32(+n)
@@ -156,7 +158,7 @@ func (z *Z32s) zSqrt(o, i Z) (o32, i32 Z32, err error) {
 			break // check next prime
 		}
 	}
-	if on > AZ_MAX || in > AZ_MAX {
+	if on > Z32_MAX || in > Z32_MAX {
 		return 0, 0, ErrOverflow
 	}
 	o32 = Z32(on); if o < 0 { o32 = Z32(-o32) }
@@ -210,7 +212,7 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 			break // check next prime
 		}
 	}
-	if on > AZ_MAX {
+	if on > Z32_MAX {
 		return 0, nil, ErrOverflow
 	} else if o > 0 { // origin sign
 		o32 = Z32(+on)
@@ -219,7 +221,7 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	}
 	i32s = make([]Z32, len(ins))
 	for p := range is {
-		if i := ins[p]; i > AZ_MAX {
+		if i := ins[p]; i > Z32_MAX {
 			return 0, nil, ErrOverflow
 		} else if is[p] > 0 { // original sign
 			i32s[p] = Z32(+i)

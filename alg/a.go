@@ -4,8 +4,6 @@ import (
 	"fmt"
 )
 
-const AZ_MAX = 0x7fffffff
-
 // AZ32 represent an algebraic integer number
 type AZ32 struct {
 	o Z32
