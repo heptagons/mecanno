@@ -6,11 +6,9 @@ import (
 
 func TestQ(t *testing.T) {
 
-	factory := NewN32s() // with primes for reductions
-
 	f := func(p ...Z) []Z { return p }
 
-	qs := NewQ32s(factory)
+	qs := NewQ32s()
 
 	m := make(map[string]*Q32, 0)
 

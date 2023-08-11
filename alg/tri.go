@@ -51,11 +51,9 @@ type Tris struct {
 //	1 <= a <= max
 //	a >= b >= c
 //	b+c > a
-func NewTris(max int, factory *N32s) *Tris {
+func NewTris(max int) *Tris {
 	ts := &Tris {
-		Q32s: &Q32s{
-			N32s: factory,
-		},
+		Q32s: NewQ32s(),
 		tris: make([]*Tri, 0),
 	}
 	for a := N32(1); a <= N32(max); a++ {

@@ -83,7 +83,6 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 // 7C  >0  !=0   !=0   !=1   !=0   0   !=1  !=0 |        (b+c√d+e√(g√h))/a
 // 7C  >0  !=0   !=0   !=1   !=0  !=0  !=1  !=0 |      (b+c√d+e√(f+g√h))/a
 //
-
 func (q *Q32) String() string {
 	s := NewStr()
 	a := q.den

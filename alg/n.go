@@ -125,7 +125,8 @@ func (a *N32) Reduce3(b, c *N32) {
 }
 
 
-// N32s is factory
+// N32s is factory with a primes list to perform
+// some algebraic operators with two or more integers
 type N32s struct {
 	primes []N32
 }
@@ -151,207 +152,6 @@ func NewN32s() *N32s {
 	}
 }
 
-// nFrac returns simplified denominator and numerator
-func (n *N32s) Frac(den N, num Z) (den32 N32, n32 Z32, err error) {
-	if den == 0 {
-		return 0, 0, ErrInfinite
-	} else if num == 0 {
-		return 1, 0, nil // zero
-	}
-	dn := den
-	nn := N(num); if num < 0 { nn = N(-num) } // convert numerator to natural
-	min := dn; if nn < min { min = nn }       // min(den, N(num))
-	for _, prime := range n.primes {
-		p := N(prime)
-		if min < p {
-			break // done: no more primes to check
-		}
-		for {
-			if dn % p == 0 && nn % p == 0 { // reduce
-				dn /= p
-				nn /= p
-				continue // check same prime again
-			}
-			break // check next prime
-		}
-	}
-	if dn > AZ_MAX || nn > AZ_MAX {
-		return 0, 0, ErrOverflow
-	}
-	if num > 0 { // original sign
-		n32 = Z32(+nn)
-	} else {
-		n32 = Z32(-nn)
-	}
-	return N32(dn), n32, nil
-}
-
-// nFracN reduces the quotient (± num0 ± num1 ± num2 ± ... ± numN) / den
-func (n *N32s) FracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
-	if den == 0 {
-		return 0, nil, ErrInfinite
-	}
-	if len(nums) == 0 {
-		return 0, nil, nil
-	}
-	allNum0 := true
-	for _, n := range nums {
-		if n != 0 {
-			allNum0 = false
-		}
-	}
-	if allNum0 {
-		return 1, make([]Z32, len(nums)), nil
-	}
-	// minPos points to the smallest num to reduce primes use
-	minPos := 0
-	min := Z(N32_MAX)
-	ns := make([]N, len(nums))
-	for p, n := range nums {
-		if n >= 0 {
-			ns[p] = N(+n)
-		} else {
-			ns[p] = N(-n) // correct sign
-		}
-		// update minimum always at start p==0
-		// or for n not zero and being smaller than prev smallest
-		if n != 0 && n < min {
-			minPos, min = p, n // new smallest
-		}
-	}
-//fmt.Println("reduceQn1", den, ns, ns[minPos])
-	for _, prime := range n.primes {
-		p := N(prime)
-		if ns[minPos] < p {
-			break // done: no more primes to check
-		}
-		for {
-			all := true
-			for _, n := range ns {
-				if (n != 0) && (n % p != 0) {
-					all = false
-					break // prime not common to all
-				}
-			}
-			if all && (den % p == 0) { // reduce
-				den /= p
-				for pos := range ns {
-					ns[pos] /= p
-				}
-				continue // check same prime again
-			}
-			break // check next prime
-		}
-	}
-	if den > AZ_MAX {
-		return 1, nil, ErrOverflow
-	}
-	n32s = make([]Z32, len(ns))
-	for p, num := range nums {
-		if n := ns[p]; n > AZ_MAX {
-			return 0, nil, ErrOverflow
-		} else if num > 0 { // original sign
-			n32s[p] = Z32(+n)
-		} else {
-			n32s[p] = Z32(-n)
-		}
-	}
-//fmt.Println("reduceQn2", den, n32s)
-	return N32(den), n32s, nil
-}
-
-// Sqrt reduce the number o√i 
-func (n *N32s) Sqrt(o, i Z) (o32, i32 Z32, err error) {
-	if o == 0 || i == 0 {
-		return 0, 0, nil
-	}
-	on := N(o); if o < 0 { on = N(-o) }
-	in := N(i); if i < 0 { in = N(-i) }
-	for _, prime := range n.primes {
-		p := N(prime)
-		pp := p*p
-		if in < pp {
-			break // done: no more primes to check
-		}
-		for {
-			if in % pp == 0 { // reduce
-				on *= p
-				in /= pp
-				continue // check same prime again
-			}
-			break // check next prime
-		}
-	}
-	if on > AZ_MAX || in > AZ_MAX {
-		return 0, 0, ErrOverflow
-	}
-	o32 = Z32(on); if o < 0 { o32 = Z32(-o32) }
-	i32 = Z32(in); if i < 0 { i32 = Z32(-i32) }
-	return o32, i32, nil
-}
-
-// SqrtN reduces the external o and several internal i
-func (a *N32s) SqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
-	ins0 := true
-	for _, i := range is {
-		if i != 0 {
-			ins0 = false
-		}
-	}
-	if o == 0 || ins0 {
-		return // zero
-	}
-	on := N(+o); if o < 0 { on = N(-on) }
-	ins := make([]N, len(is))
-	// insMaxPos points to the greatest in to reduce primes use
-	insMaxPos, insMax := 0, N(0)
-	for p, i := range is {
-		if i > 0 { ins[p] = N(+i) } else { ins[p] = N(-i) } // correct sign
-		if ins[p] > insMax { insMaxPos, insMax = p, ins[p] } // new greatest
-	}
-	for _, prime := range a.primes {
-		p := N(prime)
-		pp := p*p
-		if ins[insMaxPos] < pp {
-			break // done: no more primes to check
-		}
-		for {
-			all := true
-			for _, i := range ins {
-				if i % pp != 0 {
-					all = false
-					break // at least one has no this pp factor
-				}
-			}
-			if all { // reduce
-				on *= p
-				for x := range ins { 
-					ins[x] /= pp
-				}
-				continue // check same prime again
-			}
-			break // check next prime
-		}
-	}
-	if on > AZ_MAX {
-		return 0, nil, ErrOverflow
-	} else if o > 0 { // origin sign
-		o32 = Z32(+on)
-	} else {
-		o32 = Z32(-on)
-	}
-	i32s = make([]Z32, len(ins))
-	for p := range is {
-		if i := ins[p]; i > AZ_MAX {
-			return 0, nil, ErrOverflow
-		} else if is[p] > 0 { // original sign
-			i32s[p] = Z32(+i)
-		} else {
-			i32s[p] = Z32(-i)
-		}
-	}
-	return o32, i32s, nil
-}
 
 
 
@@ -428,8 +228,7 @@ func (a *N32s) Reduce(p ...Z) (r []Z32, err error) {
 }
 */
 
-
-
+/*
 func (a *N32s) roie(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	ins0 := true
 	for _, i := range is {
@@ -491,7 +290,7 @@ func (a *N32s) roie(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	}
 	return o32, i32s, nil
 }
-
+*/
 
 
 

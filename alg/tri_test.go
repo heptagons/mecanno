@@ -7,8 +7,7 @@ import (
 
 func TestTris20sin60(t *testing.T) {
 	max := 20
-	factory := NewN32s()
-	ts := NewTris(max, factory)
+	ts := NewTris(max)
 	ts.SetSinCos()
 	got, exp := len(ts.tris), 658
 	if got != exp {
@@ -95,8 +94,7 @@ func TestTris20sin60(t *testing.T) {
 //  20   658  71780  39573 56000  ""
 func TestTriQs(t *testing.T) {
 	max := 20
-	factory := NewN32s()
-	ts := NewTris(max, factory)
+	ts := NewTris(max)
 	ts.SetSinCos()
 	n1 := len(ts.tris)
 	fmt.Printf("      Tris: %d\n", n1)
