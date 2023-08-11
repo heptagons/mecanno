@@ -134,23 +134,3 @@ func (ts *Tris) cosC(a, b, c N32) (*Q32, error) {
 	return ts.newQ32(den64, num64)
 }
 
-//func (ts *Tris) cosCQ(a *Q32, b, c N32) (*Q32, error) {
-//	den64 :=
-//}
-
-
-
-
-
-func (ts *Tris) setTriqSinCos(t *TriQ) {
-	
-}
-
-
-
-
-
-
-
-
-

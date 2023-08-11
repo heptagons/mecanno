@@ -1,6 +1,7 @@
 package alg
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -62,42 +63,61 @@ func TestTris20sin60(t *testing.T) {
 
 	ps := NewTriPairs(ts)
 	sin := comp60
-	ps.Sin(sin)
+	ps.NewPairsSin(sin)
 	t.Logf("     Pairs: %d filtered by sin=%v", len(ps.pairs), sin)
 	t.Logf("First pair: %v", ps.pairs[0])
 	t.Logf(" Last pair: %v", ps.pairs[len(ps.pairs) - 1])
 
 	qs := NewTriQs(ps)
-	qs.All()
+	qs.NewTriQs()
 	t.Logf("     TriQs: %d all", len(qs.triqs))
 	t.Logf("First triq: %v", qs.triqs[0])
 	t.Logf(" Last triq: %v", qs.triqs[len(qs.triqs) - 1])
 
 }
 
-func TestTris10(t *testing.T) {
+// max  Tris  Pairs  TriQs  errs
+// ---  ----  -----  -----------
+//   1     1      1      1     0
+//   2     2      4      7     0
+//   3     5     13     25     0
+//   4     9     36     77     0
+//   5    17    168    158    99 can't sqrt of b+c√d
+//   6    24    370    304   245  "" 
+//   7    39    672    592   425  ""
+//   8    53   1232    922   833  ""
+//   9    74   1875   1512  1211  ""
+//  10    94   2572   2377  1589  ""
+//  11   129   3783   3842  2219  ""
 
-	max := 3
+//  15   294  18772  12663 13600  ""
+
+//  20   658  71780  39573 56000  ""
+func TestTriQs(t *testing.T) {
+	max := 20
 	factory := NewN32s()
 	ts := NewTris(max, factory)
 	ts.SetSinCos()
 	n1 := len(ts.tris)
-	t.Logf("      Tris: %d", n1)
-	t.Logf(" First tri: %v", ts.tris[0])
-	t.Logf("  Last tri: %v", ts.tris[n1 - 1])
+	fmt.Printf("      Tris: %d\n", n1)
+	fmt.Printf(" First tri: %v\n", ts.tris[0])
+	fmt.Printf("  Last tri: %v\n", ts.tris[n1 - 1])
 
 	ps := NewTriPairs(ts)
-	ps.All()
+	sin0, _ := ts.newQ32(1, 0) // sin(0)= 180°
+	ps.NewPairsNoSin(sin0)
 	n2 := len(ps.pairs)
-	t.Logf("     Pairs: %d all", n2)
-	t.Logf("First pair: %v", ps.pairs[0])
-	t.Logf(" Last pair: %v", ps.pairs[n2 - 1])
+	fmt.Printf("     Pairs: %d no sin0\n", n2)
+	fmt.Printf("First pair: %v\n", ps.pairs[0])
+	fmt.Printf(" Last pair: %v\n", ps.pairs[n2 - 1])
 
 	qs := NewTriQs(ps)
-	qs.All()
+	qs.NewTriQs()
+	//for i, triq := range qs.triqs {
+	//	fmt.Printf("% 3d %v\n", i+1, triq)
+	//}
 	n3 := len(qs.triqs)
-	t.Logf("     TriQs: %d all", n3)
-	t.Logf("First triq: %v", qs.triqs[0])
-	t.Logf(" Last triq: %v", qs.triqs[n3 - 1])
+	fmt.Printf("     TriQs: %d all errs:%d\n", n3, len(qs.errs))
+	fmt.Printf("First triq: %v\n", qs.triqs[0])
+	fmt.Printf(" Last triq: %v\n", qs.triqs[n3 - 1])
 }
-

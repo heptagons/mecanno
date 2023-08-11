@@ -11,7 +11,6 @@ type TriPair struct {
 	tA, tB   *Tri
 	pA, pB   int
 	sin, cos *Q32
-	triqs    []*TriQ
 }
 
 func newTriPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
@@ -28,7 +27,7 @@ func newTriPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
 }
 
 func (t *TriPair) String() string {
-	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s tris=%v", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos, t.triqs)
+	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos)
 }
 
 
@@ -44,21 +43,29 @@ func NewTriPairs(tris *Tris) *TriPairs {
 	}
 }
 
-func (ts *TriPairs) All() error {
-	return ts.addPairs(func (pair *TriPair) {
+func (ts *TriPairs) NewPairs() error {
+	return ts.newPairs(func (pair *TriPair) {
 		ts.pairs = append(ts.pairs, pair)
 	})
 }
 
-func (ts *TriPairs) Sin(sin *Q32) error {
-	return ts.addPairs(func (pair *TriPair) {
+func (ts *TriPairs) NewPairsSin(sin *Q32) error {
+	return ts.newPairs(func (pair *TriPair) {
 		if pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
 		}
 	})
 }
 
-func (ts *TriPairs) addPairs(pairF func(*TriPair)) error {
+func (ts *TriPairs) NewPairsNoSin(sin *Q32) error {
+	return ts.newPairs(func (pair *TriPair) {
+		if !pair.sin.Equal(sin) {
+			ts.pairs = append(ts.pairs, pair)
+		}
+	})
+}
+
+func (ts *TriPairs) newPairs(pairF func(*TriPair)) error {
 	n := len(ts.tris)
 	for p1 := 0; p1 < n; p1++ {
 		t1 := ts.tris[p1]
@@ -79,7 +86,7 @@ func (ts *TriPairs) addPairs(pairF func(*TriPair)) error {
 					if p1 == p2 && a1 < a2 {
 						continue
 					}
-					if pair, err := ts.addPair(t1, t2, a1, a2); err != nil {
+					if pair, err := ts.newPair(t1, t2, a1, a2); err != nil {
 //fmt.Println("addPairs err", err)
 //						return err
 					} else if pair != nil {
@@ -92,7 +99,7 @@ func (ts *TriPairs) addPairs(pairF func(*TriPair)) error {
 	return nil
 }
 
-func (ts *TriPairs) addPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
+func (ts *TriPairs) newPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
 	pair, err := newTriPair(tA, tB, pA, pB)
 	if err != nil {
 		return nil, err
