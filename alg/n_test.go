@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestN32(t *testing.T) {
+func TestN32s(t *testing.T) {
 	a := NatGCD(8,12)
 	if a != 4 {
 		t.Fatalf("a != 4")

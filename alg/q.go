@@ -86,80 +86,147 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 func (q *Q32) String() string {
 	s := NewStr()
 	a := q.den
+	if a == 0 {
+		return "NaN"
+	}
 	switch len(q.num) {
 	default:
-		return "?"
-	
+		return ErrInvalid.Error()	
 	case 1:
 		b := q.num[0]
+		if b == 0 {
+			return "0"
+		}
 		s.z(b)                             // b
 	
-	case 3: // a>0, c!=0, d!=+1
+	case 3: // b + c√d
 		b, c, d := q.num[0], q.num[1], q.num[2]
 		if b == 0 {
-			s.root(c, d)
+			q.bcd(s, 0, c, d)
 		} else {
-			s.par(a > 1, func(s *Str) {    // (
-				s.plus_root(b, c, d)       // b+c√d
-			})                             // )
+			s.par(a > 1, func(s *Str) { // (
+				q.bcd(s, b, c, d)       // b+c√d
+			})                          // )
 		}
 	
-	case 5: // a>0, c!=0, e!=0, d!=+1 d!=f
-		s.par(a > 1, func(s *Str) {        // (
-			c := q.num[1]
-			if b := q.num[0]; b == 0 {
-				s.z(c)                     // c
-			} else {
-				s.z(b); s.zS(c)            // b+c
-			}
-			d, e, f := q.num[2], q.num[3], q.num[4]
-			s.sqrt(d); s.zS(e); s.sqrt(f)  // √d+e√f
-		})                                 // )
-	
-	case 7:
-		fgh := func(s *Str) {
-			f, g, h := q.num[4], q.num[5], q.num[6]
-			if f == 0 {
-				s.root(g, h)         // g√h
-			} else {
-				s.plus_root(f, g, h) // f+g√h
-			}
+	case 5: // b + c√d + e√f
+		b, c, d, e, f := q.num[0], q.num[1], q.num[2], q.num[3], q.num[4]
+		x := b!=0
+		y := c!=0 && d!=0
+		z := e!=0 && f!=0
+		var par bool
+		if x && y || y && z || z && x { par = true }
+		if !x && !y && !z {
+			return "0"
 		}
-		c, d, e := q.num[1], q.num[2], q.num[3]
-		if b := q.num[0]; b == 0 {
-			if c == 0 { // MAX e√(f+g√h)
-				s.z(e);                     // e
-				s.sqrtP(func(s *Str){       // √(
-					fgh(s) // MAX f+g√h
-				});                         // )
-			} else { // MAX (c√d+e√(f+g√h))
-				s.par(a > 1, func(s *Str) { // (
-					s.z(c); s.sqrt(d)       // c√d
-					s.zS(e);                // +e
-					s.sqrtP(func(s *Str){   // √(
-						fgh(s) // MAX f+g√h
-					});                     // )
-				})                          // )
+		s.par(a > 1 && par, func(s *Str) {     // (
+			if x {
+				s.z(b)                         // b
 			}
-		} else { // MAX (b+e√(f+g√h))
-			s.par(a > 1, func(s *Str) {     // (
-				s.z(b)                      // b
-				if c == 0 {
-					s.zS(e);                // +e
-				} else { // MAX (b+c√d+e√(f+g√h))
-					s.zS(c); s.sqrt(d)      // +c√d
-					s.zS(e);                // +e
+			if y {
+				if x && c > 0 { s.pos() }      // +
+				q.cd(s, c, d)                  // c√d | -c√d
+			}
+			if z {
+				if (x||y) && e > 0 { s.pos() } // +
+				q.cd(s, e, f)                  // e√f | -e√f
+			}
+		})                                     // )
+	
+	case 7: // b + c√d + e√(f+g√h)
+		b, c, d, e, f, g, h := q.num[0], q.num[1], q.num[2], q.num[3], q.num[4], q.num[5], q.num[6]
+		x := b!=0
+		y := c!=0 && d!=0
+		z := e!=0 && (f!=0 || (g!=0 && h!=0))
+		var par bool
+		if x && y || y && z || z && x { par = true }
+		if !x && !y && !z {
+			return "0"
+		}
+		s.par(a > 1 && par, func(s *Str) {     // (
+			if x {
+				s.z(b)                         // b
+			}
+			if y {
+				if x && c > 0 { s.pos() }      // +
+				q.cd(s, c, d)                  // c√d | -c√d
+			}
+			if z {
+				if (x||y) && e > 0 { s.pos() } // +
+				if e != 0 {
+					if e == -1 {
+						s.neg()
+					} else if -1 > e || e > 1 {
+						s.z(e)                 // e
+					}
+					s.sqrtP(func(s *Str){      // √(
+						q.bcd(s, f, g, h)      // MAX f+g√h
+					});                        // )
 				}
-				s.sqrtP(func(s *Str){       // √(
-					fgh(s) // MAX f+g√h   
-				});                         // )
-			})                              // )
-		}
+			}
+		})                                     // )
 	}
 	if a > 1 {
 		s.over(a) // /a
 	}
 	return s.String()
 }
+
+// bcd simplifies printing of x + y√z
+// preventing printing unnecessary plus signs, zeros and ones.
+func (q *Q32) bcd(s *Str, x, y, z Z32) {
+	if x == 0 {
+		if y == 0 || z == 0 {
+			s.z(0) // return "0"
+			return
+		}
+		if y > 0 {
+			q.cd(s, y, z) // add "y√z
+		} else {
+			q.cd(s, y, z) // add "y√z" or "-y√z"
+		}
+	} else {
+		s.z(x)           // add x or -x
+		if y == 0 || z == 0 {
+			return
+		}
+		if y > 0 {
+			s.pos()      // add "+"
+		}
+		q.cd(s, y, z)    // add "y√z" or "-y√z"
+	}
+}
+
+// cd simplifies printing y√z
+func (q *Q32) cd(s *Str, y, z Z32) {
+	if y == 0 || z == 0 {
+		s.z(0)             // add 0 and done.
+	} else if z == 1 {
+		s.z(y)
+	} else if z == -1 {
+		if y == -1 {
+			s.neg()
+		} else {
+			s.z(y)
+		}
+		s.WriteString("i")
+	} else if z >= 1 {
+		if -1 > y || y > 1 {
+			s.z(y)         // add y | -y and done.
+		}
+		if z != 1 {
+			s.sqrt(z)      // add √z
+		}
+	} else if z <= -1 {
+		if -1 > y || y > 1 {
+			s.z(y)         // add y | -y and done.
+		}
+		s.WriteString("i") // add yi | -yi and donde.
+		if z != -1 {
+			s.sqrt(-z)     // add √z
+		}
+	}
+}
+
 
 

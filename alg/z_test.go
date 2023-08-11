@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestZ32(t *testing.T) {
+func TestZ32s(t *testing.T) {
 
 	factory := NewZ32s()
 
