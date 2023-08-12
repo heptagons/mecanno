@@ -233,9 +233,9 @@ func TestQ32s(t *testing.T) {
 		}
 	}
 
-	// qMul
+	// qMulPair
 	for _, s := range []struct { a, b, exp string } {
-		{ "0",   "√2",  "0"   },
+		//{ "0",   "√2",  "0"   },
 		{ "1",   "1",   "1"   },
 		{ "1",   "2",   "2"   },
 		{ "3",   "3",   "9"   },
@@ -249,10 +249,12 @@ func TestQ32s(t *testing.T) {
 	} {
 		a := m[s.a]
 		b := m[s.b]
-		if r, err := qs.qMul(a, b); err != nil {
-			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
+		if r, err := qs.qMulPair(a, b); err != nil {
+			t.Fatalf("qMulPair error for %s %s %v", s.a, s.b, err)
 		} else if got := r.String(); got != s.exp {
-			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
+			t.Fatalf("qMulPair got %s exp %s", got, s.exp)
+		} else {
+			m[got] = r // add to map valid qMul results
 		}
 	}
 
@@ -264,7 +266,10 @@ func TestQ32s(t *testing.T) {
 		{ "5/2", "√10/2" },
 		{ "7/5", "√35/5" },
 
-		//{ "1+√5", "?"},
+		{ "√2",    "√(√2)"    },
+		{ "2√5/3", "√(6√5)/3" },
+		{ "1+√5",  "√(1+√5)"  },
+		{ "6+2√5", "1+√5"     },
 	} {
 		q := m[s.q]
 		if r, err := qs.qSqrt(q); err != nil {

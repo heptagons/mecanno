@@ -138,9 +138,6 @@ func (qs *Q32s) qAdd(q ...*Q32) (s *Q32, err error) {
 		if max == nil || min == nil {
 			return nil, nil
 		}
-		if len(max.num) < len(min.num) {
-			s = max; max = min; min = s
-		}
 		if s, err = qs.qAddPair(max, min); err != nil {
 			return
 		}
@@ -159,9 +156,6 @@ func (qs *Q32s) qMul(q ...*Q32) (s *Q32, err error) {
 		min := q[i]
 		if max == nil || min == nil {
 			return nil, nil
-		}
-		if len(max.num) < len(min.num) {
-			s = max; max = min; min = s
 		}
 		if s, err = qs.qMulPair(max, min); err != nil {
 			return
@@ -190,6 +184,7 @@ func (qs *Q32s) qSqrt(q *Q32) (s *Q32, err error) {
 
 	case 3:
 		a, b, c, d := q.abcd()
+fmt.Println("Q32s.qSqrt", a, b, c, d)
 		if b == 0 {
 			// c√d    √(c√d)   √a√(c√d)   √(ac√d)  B + C√D + E√(F+G√H)
 			// --- -> ------ = -------- = ------ = ------------------
@@ -205,20 +200,20 @@ func (qs *Q32s) qSqrt(q *Q32) (s *Q32, err error) {
 				d,      // H
 			)
 			return qqq, err
-fmt.Println("Q32s.qSqrt", a, b, c, d)
 		}
-		// b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   B + C√(D + E√F)
-		// ------- -> ---------- = ------------ = ------------ = ---------------
-		//    a           √a           √a√a             a              A
+		// b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   √(F + G√H))
+		// ------- -> ---------- = ------------ = ------------ = -----------
+		//    a           √a           √a√a             a             A
 		return qs.qNew(
 			a,      // A
 			0,      // B
-			1,      // C
-			Z(a)*b, // D
-			Z(a)*c, // E
-			d,      // F
+			0,      // C
+			1,      // D
+			1,      // E
+			Z(a)*b, // F
+			Z(a)*c, // G
+			d,      // H
 		)
-
 	}
 	return nil, fmt.Errorf("Can't square root of %s", q.String())
 }
@@ -342,46 +337,52 @@ func (qs *Q32s) qPow2(q *Q32) (s *Q32, err error) {
 }
 
 
-
-
 func (qs *Q32s) qAddPair(q, r *Q32) (s *Q32, err error) {
-	qa, qb := q.ab()
-	ra, rb := r.ab()
-
+	if q == nil || r == nil {
+		return nil, nil
+	}
+	max, min := q, r
+	if len(q.num) < len(r.num) {
+		max, min = r, q
+	}
+	A, B := max.ab()
+	a, b := min.ab()
 	// Use lcm always to prevent overflows
-	a := (qa / Ngcd(qa, ra)) * ra // lcm
-	aq := Z(a / qa)
-	ar := Z(a / ra) 
-
-	switch len(q.num) {
+	w := (A / Ngcd(A, a)) * a // lcm denominator
+	U := Z(w / A) // upper factor for max numerator terms
+	u := Z(w / a) // upper factor for min numerator terms
+	switch len(max.num) {
 	case 1:
-		//  qb     rb     qb*aq + rb*ar    b
-		// ---- + ---- = -------------- = ---
-		//  qa     qb           a          a
-		return qs.qNew(a, qb*aq + rb*ar)
+		//  B     b     BU + bu    x
+		// --- + --- = -------- = ---
+		//  A     a        w       w
+		return qs.qNew(w,
+			B*U + b*u) // x
 
 	case 3:
-		qc, qd := Z(q.num[1]), Z(q.num[2])
-		switch len(r.num) {
+		C, D := max.cd()
+		switch len(min.num) {
 		case 1:
-			// qb + qc√qd   rb   qb*aq + rb*ar + (qc*aq)√qd    b + c√qd
-			// ---------- + -- = -------------------------- = --------
-			//    qa        ra              a                     aa
-			return qs.qNew(a, qb*aq + rb*ar, qc*aq, qd)			
+			// B + C√D    b    BU + bu + CU√D    x + y√z
+			// ------- + --- = -------------- = --------
+			//    A       a          w             w
+			return qs.qNew(w,
+				B*U + b*u, // x
+				C*U, D)    // y√z
 
 		case 3:
-			rc, rd := Z(r.num[1]), Z(r.num[2])
-			if qd == rd { // simpler case
-				// qb + qc√qd   rb + rc√qd  qb*aq + rb*ar + (qc*aq + rc*ar)√qd
+			rc, rd := Z(min.num[1]), Z(min.num[2])
+			if D == rd { // simpler case
+				// B + C√D   b + rc√D  B*U + b*u + (C*U + rc*u)√D
 				// ---------- + --------- = ----------------------------------
-				//     qa          ra                     a 
-				return qs.qNew(a, qb*aq + rb*ar, qc*aq + rc*ar, qd)
+				//     A          a                     w
+				return qs.qNew(w, B*U + b*u, C*U + rc*u, D)
 			}
-			if qb == rb && qb == 0 { // simpler case both b's=0
-				// qc√qd   rc√rd   qc*aq√qd + rc*ar√rd
+			if B == b && B == 0 { // simpler case both b's=0
+				// C√D   rc√rd   C*U√D + rc*u√rd
 				// ----- + ----- = -------------------
-				//   qa     ra              a
-				return qs.qNew(a, 0, qc*aq, qd, rc*ar, rd)
+				//   A     a              w
+				return qs.qNew(w, 0, C*U, D, rc*u, rd)
 			}
 		}
 	}
@@ -389,31 +390,88 @@ func (qs *Q32s) qAddPair(q, r *Q32) (s *Q32, err error) {
 }
 
 func (qs *Q32s) qMulPair(q, r *Q32) (s *Q32, err error) {
-	qa, qb := N(q.den), Z(q.num[0])
-	ra, rb := N(r.den), Z(r.num[0])
-	aa := qa * ra
-	bb := qb * rb
-	switch len(q.num) {
+	if q == nil || r == nil {
+		return nil, nil
+	}
+	max, min := q, r
+	if len(q.num) < len(r.num) {
+		max, min = r, q
+	}
+	switch len(max.num) {
 	case 1:
-		// qb/aq * rb/ra =  (qb*rb)/(qa*ra) = aa/bb
-		return qs.qNew(aa, bb)
+		A, B := max.ab()
+		a, b := min.ab()
+		//  B * b = Bb 
+		return qs.qNew(A*a,
+			B*b) // x
 
 	case 3:
-		qc, qd := Z(q.num[1]), Z(q.num[2])
-		switch len(r.num) {
+		A, B, C, D := max.abcd()
+		switch len(min.num) {
 		case 1:
-			// qb + qc√qd   rb   qb*rb + qc*rb√qd    bb + qcrb√qd   b32 + c32√d32
-			// ---------- * -- = ----------------- = ------------ = -------------
-			//    qa        ra       qa * ra              aa             a32
-			return qs.qNew(aa, bb, qc*rb, qd) // a, b, c, d
+			a, b := min.ab()
+			// = (B + C√D) * b
+			// = Bb + Cb√D
+			// =  x +  y√z
+			x,y := qs.qNew(A*a,
+				B*b,    // x
+				C*b, D, // y√z
+			)
+			return x, y
+
 		case 3:
-			rc, rd := Z(r.num[1]), Z(r.num[2])
-			if qd == rd { // simpler case
-				// qb + qc√qd   rb + rc√qd   (bb + qc*rc*qd) + (qb*rc + rb*qc)√qd
-				// ---------- * --------- = -----------------------------------
-				//     qa          ra                     aa
-				return qs.qNew(aa, bb + qc*rc*qd, qb*rc + rb*qc, qd)
+			a, b, c, d := min.abcd()
+			if D < d {
+				A, B, C, D = min.abcd()
+				a, b, c, d = max.abcd()
 			}
+			if B == 0 {
+				if b == 0 {
+					// C√D * c√d = Cc√Dd = y√z
+					return qs.qNew(A*a,
+						0,        // x
+						C*c, D*d) // y/z
+				}
+				// = C√D * (b + c√d)
+				// = Cc√Dd + bC√D
+				// =  y√z  +  e√f
+				return qs.qNew(A*a,
+					0,        // x
+					C*c, D*d, // y√z
+					b*C, D)   // e√f
+			}
+			if b == 0 {
+				// = (B + C√D) * c√d
+				// = Bc√d + Cc√Dd
+				// =  y√z +  e√f
+				return qs.qNew(A*a,
+					0,          // x
+					B*c, d,     // y√z
+					C*c,   D*d) // e√f
+			}
+			if D == d {
+				// = (B + C√D) * (b * c√D)
+				// = Bb + CcD + Bc√D + bC√D
+				// = Bb + CcD + (Bc+bC)√D
+				// =    x     +    y   √z
+				return qs.qNew(A*a,
+					B*b + C*c*D,  // x
+					B*c + b*C, D) // y√z
+			}//  ;fmt.Println("5")
+			// = (B + C√D) * (b * c√d) 
+			// = Bb + Bc√d + bC√D + Cc√Dd
+			// = Bb + Bc√d + (C√D)*(b+c√d)
+			// = Bb + Bc√d + (C√D)*√((b+c√d)(b+c√d))
+			// = Bb + Bc√d + (C√D)*√(b²+2bc√d+c²d)
+			// = Bb + Bc√d + (C√D)*√(b²+c²d + 2bc√d)
+			// = Bb + Bc√d + C√(bD²+c²Dd + 2bcD√d)
+			// =  x +  y√z + e√(    f    +   g √h)
+			return qs.qNew(A*a,
+				B*b,             // x
+				B*c, d,          // y√z
+				C,               // e
+				b*D*D + c*c*D*d, // f
+				2*b*c*D, d)      // g√h
 		}
 	}
 	return nil, fmt.Errorf("Can't mul pair %s and %s", q, r)

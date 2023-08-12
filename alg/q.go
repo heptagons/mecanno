@@ -69,6 +69,10 @@ func (q *Q32) abcd() (N, Z, Z, Z) {
 		Z(q.num[1]), Z(q.num[2])
 }
 
+func (q *Q32) cd() (Z, Z) {
+	return Z(q.num[1]), Z(q.num[2])
+}
+
 func (q *Q32) abcdef() (N, Z, Z, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]), 
 		Z(q.num[1]), Z(q.num[2]), 
@@ -115,6 +119,9 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 // 7C  >0  !=0   !=0   !=1   !=0  !=0  !=1  !=0 |      (b+c√d+e√(f+g√h))/a
 //
 func (q *Q32) String() string {
+	if q == nil {
+		return ""
+	}
 	s := NewStr()
 	if q.den == 0 {
 		return "NaN"
@@ -155,11 +162,11 @@ func (q *Q32) String() string {
 			}
 			if y {
 				if x && c > 0 { s.pos() }      // +
-				q.cd(s, c, d)                  // c√d | -c√d
+				q.scd(s, c, d)                 // c√d | -c√d
 			}
 			if z {
 				if (x||y) && e > 0 { s.pos() } // +
-				q.cd(s, e, f)                  // e√f | -e√f
+				q.scd(s, e, f)                 // e√f | -e√f
 			}
 		})                                     // )
 	
@@ -179,7 +186,7 @@ func (q *Q32) String() string {
 			}
 			if y {
 				if x && c > 0 { s.pos() }      // +
-				q.cd(s, c, d)                  // c√d | -c√d
+				q.scd(s, c, d)                 // c√d | -c√d
 			}
 			if z {
 				if (x||y) && e > 0 { s.pos() } // +
@@ -211,9 +218,9 @@ func (q *Q32) bcd(s *Str, x, y, z Z) {
 			return
 		}
 		if y > 0 {
-			q.cd(s, y, z) // add "y√z
+			q.scd(s, y, z) // add "y√z
 		} else {
-			q.cd(s, y, z) // add "y√z" or "-y√z"
+			q.scd(s, y, z) // add "y√z" or "-y√z"
 		}
 	} else {
 		s.z(x)           // add x or -x
@@ -223,12 +230,12 @@ func (q *Q32) bcd(s *Str, x, y, z Z) {
 		if y > 0 {
 			s.pos()      // add "+"
 		}
-		q.cd(s, y, z)    // add "y√z" or "-y√z"
+		q.scd(s, y, z)    // add "y√z" or "-y√z"
 	}
 }
 
-// cd simplifies printing y√z
-func (q *Q32) cd(s *Str, y, z Z) {
+// scd simplifies printing y√z
+func (q *Q32) scd(s *Str, y, z Z) {
 	if y == 0 || z == 0 {
 		s.z(0)             // add 0 and done.
 	} else if z == 1 {
