@@ -29,16 +29,16 @@ func (s *Str) pos() {
 }
 
 // zS prints a integer without forced positive sign
-func (s *Str) z(z Z32) {
+func (s *Str) z(z Z) {
 	s.WriteString(fmt.Sprintf("%d", z))
 }
 
 // zS prints a integer with forced positive sign
-func (s *Str) zS(z Z32) {
+func (s *Str) zS(z Z) {
 	s.WriteString(fmt.Sprintf("%+d", z))             
 }
 
-func (s *Str) sqrt(z Z32) {
+func (s *Str) sqrt(z Z) {
 	s.WriteString(fmt.Sprintf("√%d", z))
 }
 
@@ -48,6 +48,6 @@ func (s *Str) sqrtP(f func(s *Str)) {
 	s.WriteString(")")
 }
 
-func (s *Str) over(n N32) {
+func (s *Str) over(n N) {
 	s.WriteString(fmt.Sprintf("/%d", n))
 }

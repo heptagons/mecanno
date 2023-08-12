@@ -122,7 +122,7 @@ func (qs *Q32s) qNew7(a N, b, c, d, e, f, g, h Z) (*Q32, error) {
 	} else {
 		B, C, E := BCE[0], BCE[1], BCE[2]
 		F, G := FG[0], FG[1]
-		return newQ32(A, B, C, D, E, F, H, G), nil
+		return newQ32(A, B, C, D, E, F, G, H), nil
 	}
 }
 
@@ -182,24 +182,41 @@ func (qs *Q32s) qSqrt(q *Q32) (s *Q32, err error) {
 		//  a       a       A 
 		a, b := q.ab()
 		return qs.qNew(
-			a,    // A
-			0,    // B
-			1,    // C
-			a*b,  // D
+			a,      // A
+			0,      // B
+			1,      // C
+			Z(a)*b, // D
 		)
 
 	case 3:
+		a, b, c, d := q.abcd()
+		if b == 0 {
+			// c√d    √(c√d)   √a√(c√d)   √(ac√d)  B + C√D + E√(F+G√H)
+			// --- -> ------ = -------- = ------ = ------------------
+			//  a       √a       √a√a        a             A
+			qqq, err := qs.qNew(
+				a,      // A
+				0,      // B
+				0,      // C
+				1,      // D
+				1,      // E
+				0,      // F
+				Z(a)*c, // G
+				d,      // H
+			)
+			return qqq, err
+fmt.Println("Q32s.qSqrt", a, b, c, d)
+		}
 		// b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   B + C√(D + E√F)
 		// ------- -> ---------- = ------------ = ------------ = ---------------
 		//    a           √a           √a√a             a              A
-		a, b, c, d := q.abcd()
 		return qs.qNew(
-			a,    // A
-			0,    // B
-			1,    // C
-			a*b,  // D
-			a*c,  // E
-			d,    // F
+			a,      // A
+			0,      // B
+			1,      // C
+			Z(a)*b, // D
+			Z(a)*c, // E
+			d,      // F
 		)
 
 	}

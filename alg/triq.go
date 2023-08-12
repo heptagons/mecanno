@@ -8,7 +8,7 @@ type TriQ struct {
 	pair int
 	max  N32      // max natural side
 	min  N32      // min natural side
-	cc   *Q32     // cc rational algebraic side
+	cc   *Q32     // c rational algebraic side
 	abc  []*Q32   // at leat one side rational algebraic
 }
 
@@ -46,7 +46,7 @@ func (t *TriQ) Equal(u *TriQ) bool {
 	if t.min != u.min {
 		return false
 	}
-	return t.c.Equal(u.c)
+	return t.cc.Equal(u.cc)
 }
 
 func (t *TriQ) String() string {

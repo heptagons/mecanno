@@ -60,34 +60,26 @@ func (q *Q32) Neg() *Q32 {
 	return q
 }
 
-func (a *Q32) ab() (N, Z) {
+func (q *Q32) ab() (N, Z) {
 	return N(q.den), Z(q.num[0])
 }
 
-func (a *Q32) abcd() (N, Z, Z, Z) {
+func (q *Q32) abcd() (N, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]), 
 		Z(q.num[1]), Z(q.num[2])
 }
 
-func (a *Q32) abcdef() (N, Z, Z, Z, Z, Z) {
+func (q *Q32) abcdef() (N, Z, Z, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]), 
 		Z(q.num[1]), Z(q.num[2]), 
 		Z(q.num[3]), Z(q.num[4])
 }
 
-func (a *Q32) abcdef() (N, Z, Z, Z, Z, Z, Z, Z) {
+func (q *Q32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]),
 		Z(q.num[1]), Z(q.num[2]),
 		Z(q.num[3]), Z(q.num[4]),
 		Z(q.num[5]), Z(q.num[6])
-}
-
-func (a *Q32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z, Z, Z) {
-	return N(q.den), Z(q.num[0]),
-		Z(q.num[1]), Z(q.num[2]),
-		Z(q.num[3]), Z(q.num[4]),
-		Z(q.num[5]), Z(q.num[6]),
-		Z(q.num[7]), Z(q.num[8])
 }
 
 // GreatherThanN returns true iff this q is type 1 and greater than given n
@@ -124,22 +116,21 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 //
 func (q *Q32) String() string {
 	s := NewStr()
-	a := q.den
-	if a == 0 {
+	if q.den == 0 {
 		return "NaN"
 	}
 	switch len(q.num) {
 	default:
 		return ErrInvalid.Error()	
 	case 1:
-		b := q.num[0]
+		b := Z(q.num[0])
 		if b == 0 {
 			return "0"
 		}
 		s.z(b)                             // b
 	
 	case 3: // b + c√d
-		b, c, d := q.num[0], q.num[1], q.num[2]
+		a, b, c, d := q.abcd()
 		if b == 0 {
 			q.bcd(s, 0, c, d)
 		} else {
@@ -149,7 +140,7 @@ func (q *Q32) String() string {
 		}
 	
 	case 5: // b + c√d + e√f
-		b, c, d, e, f := q.num[0], q.num[1], q.num[2], q.num[3], q.num[4]
+		a, b, c, d, e, f := q.abcdef()
 		x := b!=0
 		y := c!=0 && d!=0
 		z := e!=0 && f!=0
@@ -173,7 +164,7 @@ func (q *Q32) String() string {
 		})                                     // )
 	
 	case 7: // b + c√d + e√(f+g√h)
-		b, c, d, e, f, g, h := q.num[0], q.num[1], q.num[2], q.num[3], q.num[4], q.num[5], q.num[6]
+		a, b, c, d, e, f, g, h := q.abcdefgh()
 		x := b!=0
 		y := c!=0 && d!=0
 		z := e!=0 && (f!=0 || (g!=0 && h!=0))
@@ -205,7 +196,7 @@ func (q *Q32) String() string {
 			}
 		})                                     // )
 	}
-	if a > 1 {
+	if a := N(q.den); a > 1 {
 		s.over(a) // /a
 	}
 	return s.String()
@@ -213,7 +204,7 @@ func (q *Q32) String() string {
 
 // bcd simplifies printing of x + y√z
 // preventing printing unnecessary plus signs, zeros and ones.
-func (q *Q32) bcd(s *Str, x, y, z Z32) {
+func (q *Q32) bcd(s *Str, x, y, z Z) {
 	if x == 0 {
 		if y == 0 || z == 0 {
 			s.z(0) // return "0"
@@ -237,7 +228,7 @@ func (q *Q32) bcd(s *Str, x, y, z Z32) {
 }
 
 // cd simplifies printing y√z
-func (q *Q32) cd(s *Str, y, z Z32) {
+func (q *Q32) cd(s *Str, y, z Z) {
 	if y == 0 || z == 0 {
 		s.z(0)             // add 0 and done.
 	} else if z == 1 {
