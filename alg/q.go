@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+
 // 0   1   2   3   4   5   6   7
 //                                  ________________________
 //                 __________      /               _________
@@ -57,6 +58,36 @@ func (q *Q32) Neg() *Q32 {
 		q.num[3] = -q.num[3] // e = -e
 	}
 	return q
+}
+
+func (a *Q32) ab() (N, Z) {
+	return N(q.den), Z(q.num[0])
+}
+
+func (a *Q32) abcd() (N, Z, Z, Z) {
+	return N(q.den), Z(q.num[0]), 
+		Z(q.num[1]), Z(q.num[2])
+}
+
+func (a *Q32) abcdef() (N, Z, Z, Z, Z, Z) {
+	return N(q.den), Z(q.num[0]), 
+		Z(q.num[1]), Z(q.num[2]), 
+		Z(q.num[3]), Z(q.num[4])
+}
+
+func (a *Q32) abcdef() (N, Z, Z, Z, Z, Z, Z, Z) {
+	return N(q.den), Z(q.num[0]),
+		Z(q.num[1]), Z(q.num[2]),
+		Z(q.num[3]), Z(q.num[4]),
+		Z(q.num[5]), Z(q.num[6])
+}
+
+func (a *Q32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z, Z, Z) {
+	return N(q.den), Z(q.num[0]),
+		Z(q.num[1]), Z(q.num[2]),
+		Z(q.num[3]), Z(q.num[4]),
+		Z(q.num[5]), Z(q.num[6]),
+		Z(q.num[7]), Z(q.num[8])
 }
 
 // GreatherThanN returns true iff this q is type 1 and greater than given n

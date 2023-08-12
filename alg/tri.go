@@ -132,19 +132,6 @@ func (t *Tris) triCosC(a, b, c N32) (*Q32, error) {
 	return t.qNew(den64, num64)
 }
 
-// triCosLaw2 return the third side (squared) cc. Squared to keep simple the Q32 returned.
-// Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
-func (t *Tris) triCosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
-	if aa_bb, err := t.qNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
-		return nil, err
-	} else if ab, err := t.qNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
-		return nil, err
-	} else if abCosC, err := t.qMul(ab, cosC); err != nil { // -2a*b*cosC
-		return nil, err
-	} else {
-		return t.qAdd(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
-	}
-}
 
 
 

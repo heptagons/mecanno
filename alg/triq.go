@@ -8,7 +8,7 @@ type TriQ struct {
 	pair int
 	max  N32      // max natural side
 	min  N32      // min natural side
-	c    *Q32     // c rational algebraic side
+	cc   *Q32     // cc rational algebraic side
 	abc  []*Q32   // at leat one side rational algebraic
 }
 
@@ -17,19 +17,20 @@ func newTriQ(pair int, max, min N32, cc *Q32, c *Q32) (t *TriQ, e error) {
 		pair: pair,
 		max:  max,
 		min:  min,
-		c:    c,
+		cc:   cc,
 	}
 	a := newQ32(1, Z32(max))
 	b := newQ32(1, Z32(min))
 	if cab, err := cc.GreaterThanZ(Z(max)*Z(max)); err != nil {
 		e = err
+	} else if cab { // c >= a >= b
+		t.abc = []*Q32{ c, a, b }
+		return
 	} else if acb, err := cc.GreaterThanZ(Z(min)*Z(min)); err != nil {
 		e = err
-	} else if cab {
-		t.abc = []*Q32{ c, a, b }
-	} else if acb {
+	} else if acb { // a >= c >= c
 		t.abc = []*Q32{ a, c, b }
-	} else {
+	} else { // a >= b >= c
 		t.abc = []*Q32{ a, b, c }
 	}
 	return
@@ -104,26 +105,45 @@ func (t *TriQs) triqsNew(pair int) ([]*TriQ, error) {
 					repeated = true
 				}
 			}
-			if !repeated {
-				if cc, err := t.triCosLaw2(max, min, p.cos); err != nil {
-					return nil, err
-				} else if c, err := t.qSqrt(cc); err != nil {
-					return nil, err
-				} else if len(c.num) <= 1 && c.den == 1 {
-					// prevent a triq with all naturals like below [4 3 2]
-						// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
-					// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
-					continue
-				} else if triq, err := newTriQ(pair, max, min, cc, c); err != nil {
-					//return nil, err
-				} else {
-					triqs = append(triqs, triq)
-				}
+			if repeated {
+				continue
+			}
+			if cc, err := t.triqsCosLaw2(max, min, p.cos); err != nil {
+				return nil, err
+			} else if c, err := t.qSqrt(cc); err != nil {
+				return nil, err
+			} else if len(c.num) <= 1 && c.den == 1 {
+				// reject triq with three sides natural (c.num=1, c.den=1)
+				// since already is a regular triangle tri
+				// prevent a triq with all naturals like below [4 3 2]
+					// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
+				// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
+				continue
+			} else if triq, err := newTriQ(pair, max, min, cc, c); err != nil {
+				//return nil, err
+			} else {
+				triqs = append(triqs, triq)
 			}
 		}
 	}
 	return triqs, nil
 }
+
+// triCosLaw2 return the third side (squared) cc. Squared to keep simple the Q32 returned.
+// Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
+func (t *TriQs) triqsCosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
+	if aa_bb, err := t.qNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
+		return nil, err
+	} else if ab, err := t.qNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
+		return nil, err
+	} else if abCosC, err := t.qMul(ab, cosC); err != nil { // -2a*b*cosC
+		return nil, err
+	} else {
+		return t.qAdd(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
+	}
+}
+
+
 
 
 
