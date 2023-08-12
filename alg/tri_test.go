@@ -5,10 +5,11 @@ import (
 	"testing"
 )
 
-func TestTris20sin60(t *testing.T) {
+
+func TestTri1s(t *testing.T) {
 	max := 20
 	ts := NewTris(max)
-	ts.SetSinCos()
+	ts.triSinCos()
 	got, exp := len(ts.tris), 658
 	if got != exp {
 		t.Fatalf("Tris32 max:%d got:%d exp:%d", max, got, exp)
@@ -40,39 +41,66 @@ func TestTris20sin60(t *testing.T) {
 			t.Fatalf("Tris32 got %s exp %s", got, exp)		
 		}
 	}
+}
 
-	comp180, _ := ts.newQ32(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
-	comp90,  _ := ts.newQ32(1, 1)             // sin(1)         =  90°      25
-	comp60,  _ := ts.newQ32(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
-	comp54,  _ := ts.newQ32(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
-	comp45,  _ := ts.newQ32(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
-	comp30,  _ := ts.newQ32(2, 1)             // sin(1/2)       =  30°      15
-	comp18,  _ := ts.newQ32(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
-	comp15,  _ := ts.newQ32(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
+func TestTri2s(t *testing.T) {
+	max := 12
+	ts := NewTris(max)
+	ts.triSinCos()
+	exp := len(ts.tris)
+	fmt.Printf("  Tris: %d\n", exp)
+	fmt.Printf(" First: %v\n", ts.tris[0])
+	fmt.Printf("  Last: %v\n", ts.tris[exp-1])
+
+	comp180, _ := ts.qNew(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
+	comp90,  _ := ts.qNew(1, 1)             // sin(1)         =  90°      25
+	comp60,  _ := ts.qNew(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
+	comp54,  _ := ts.qNew(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
+	comp45,  _ := ts.qNew(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
+	comp30,  _ := ts.qNew(2, 1)             // sin(1/2)       =  30°      15
+	comp18,  _ := ts.qNew(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
+	comp15,  _ := ts.qNew(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
 
 	// add two triangle angles pairs sines to get new angle and print matching above sines'
-	_ = comp180
-	_ = comp90
-	_ = comp60
-	_ = comp54
-	_ = comp45
-	_ = comp30
-	_ = comp18
-	_ = comp15
+	for _, s := range []struct { sin *Q32; angle string } {
+		{ comp180, "180" },
+		{ comp90,   "90" },
+		{ comp60,   "60" },
+		{ comp54,   "54" },
+		{ comp45,   "45" },
+		{ comp30,   "30" },
+		{ comp18,   "18" },
+		{ comp15,   "15" },
+	} {
+		ps := NewTri2s(ts)
+		ps.tri2NewEqualSin(s.sin)
+		fmt.Printf("-----\n")
+		fmt.Printf("Pairs: %d filtered by sin=%v (%s°)\n", len(ps.pairs), s.sin, s.angle)
+		if len(ps.pairs) == 0 {
+			continue
+		}
+		fmt.Printf("First: %v\n", ps.pairs[0])
+		fmt.Printf(" Last: %v\n", ps.pairs[len(ps.pairs) - 1])
+	}
+}
 
-	ps := NewTriPairs(ts)
-	sin := comp60
-	ps.NewPairsSin(sin)
-	t.Logf("     Pairs: %d filtered by sin=%v", len(ps.pairs), sin)
-	t.Logf("First pair: %v", ps.pairs[0])
-	t.Logf(" Last pair: %v", ps.pairs[len(ps.pairs) - 1])
-
-	qs := NewTriQs(ps)
-	qs.NewTriQs()
-	t.Logf("     TriQs: %d all", len(qs.triqs))
-	t.Logf("First triq: %v", qs.triqs[0])
-	t.Logf(" Last triq: %v", qs.triqs[len(qs.triqs) - 1])
-
+func TestTri123(t *testing.T) {
+	max := 4
+	t1s := NewTris(max)
+	t1s.triSinCos()
+	for i, tri := range t1s.tris {
+		fmt.Printf("Tri % 3d %v\n", i, tri)
+	}
+	t2s := NewTri2s(t1s)
+	t2s.tri2NewAll()
+	for i, pair := range t2s.pairs {
+		fmt.Printf("Pair % 3d %v\n", i, pair)
+	}
+	t3s := NewTriQs(t2s)
+	t3s.triqsAll()
+	for i, triq := range t3s.triqs {
+		fmt.Printf("Triq % 3d %v\n", i, triq)
+	}
 }
 
 // max  Tris  Pairs  TriQs  errs
@@ -92,30 +120,30 @@ func TestTris20sin60(t *testing.T) {
 //  15   294  18772  12663 13600  ""
 
 //  20   658  71780  39573 56000  ""
-func TestTriQs(t *testing.T) {
-	max := 20
-	ts := NewTris(max)
-	ts.SetSinCos()
-	n1 := len(ts.tris)
+func TestTri3s(t *testing.T) {
+	max := 3
+	t1s := NewTris(max)
+	t1s.triSinCos()
+	n1 := len(t1s.tris)
 	fmt.Printf("      Tris: %d\n", n1)
-	fmt.Printf(" First tri: %v\n", ts.tris[0])
-	fmt.Printf("  Last tri: %v\n", ts.tris[n1 - 1])
+	fmt.Printf(" First tri: %v\n", t1s.tris[0])
+	fmt.Printf("  Last tri: %v\n", t1s.tris[n1 - 1])
 
-	ps := NewTriPairs(ts)
-	sin0, _ := ts.newQ32(1, 0) // sin(0)= 180°
-	ps.NewPairsNoSin(sin0)
-	n2 := len(ps.pairs)
+	t2s := NewTri2s(t1s)
+	sin0, _ := t1s.qNew(1, 0) // sin(0)= 180°
+	t2s.tri2NewNotEqualSin(sin0)
+	n2 := len(t2s.pairs)
 	fmt.Printf("     Pairs: %d no sin0\n", n2)
-	fmt.Printf("First pair: %v\n", ps.pairs[0])
-	fmt.Printf(" Last pair: %v\n", ps.pairs[n2 - 1])
+	fmt.Printf("First pair: %v\n", t2s.pairs[0])
+	fmt.Printf(" Last pair: %v\n", t2s.pairs[n2 - 1])
 
-	qs := NewTriQs(ps)
-	qs.NewTriQs()
+	t3s := NewTriQs(t2s)
+	t3s.triqsAll()
 	//for i, triq := range qs.triqs {
 	//	fmt.Printf("% 3d %v\n", i+1, triq)
 	//}
-	n3 := len(qs.triqs)
-	fmt.Printf("     TriQs: %d all errs:%d\n", n3, len(qs.errs))
-	fmt.Printf("First triq: %v\n", qs.triqs[0])
-	fmt.Printf(" Last triq: %v\n", qs.triqs[n3 - 1])
+	n3 := len(t3s.triqs)
+	fmt.Printf("     TriQs: %d all errs:%d\n", n3, len(t3s.errs))
+	fmt.Printf("First triq: %v\n", t3s.triqs[0])
+	fmt.Printf(" Last triq: %v\n", t3s.triqs[n3 - 1])
 }

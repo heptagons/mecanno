@@ -4,20 +4,20 @@ import (
 	"fmt"
 )
 
-// TriPair is a group of two Tri sharing a side and a node.
+// Tri2 is a group of two Tri sharing a side and a node.
 // The two nodes angles are summed to create another one
 // Up to four new triangles type TriQ can be genterated from each pair.
-type TriPair struct {
+type Tri2 struct {
 	tA, tB   *Tri
 	pA, pB   int
 	sin, cos *Q32
 }
 
-func newTriPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
+func newTri2(tA, tB *Tri, pA, pB int) (*Tri2, error) {
 	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
 		return nil, ErrInvalid
 	} else {
-		return &TriPair{
+		return &Tri2{
 			tA: tA,
 			tB: tB,
 			pA: pA,
@@ -26,46 +26,46 @@ func newTriPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
 	}
 }
 
-func (t *TriPair) String() string {
+func (t *Tri2) String() string {
 	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos)
 }
 
 
-type TriPairs struct {
+type Tri2s struct {
 	*Tris
-	pairs []*TriPair
+	pairs []*Tri2
 }
 
-func NewTriPairs(tris *Tris) *TriPairs {
-	return &TriPairs{
+func NewTri2s(tris *Tris) *Tri2s {
+	return &Tri2s{
 		Tris:  tris,
-		pairs: make([]*TriPair, 0),
+		pairs: make([]*Tri2, 0),
 	}
 }
 
-func (ts *TriPairs) NewPairs() error {
-	return ts.newPairs(func (pair *TriPair) {
+func (ts *Tri2s) tri2NewAll() error {
+	return ts.tri2Filter(func (pair *Tri2) {
 		ts.pairs = append(ts.pairs, pair)
 	})
 }
 
-func (ts *TriPairs) NewPairsSin(sin *Q32) error {
-	return ts.newPairs(func (pair *TriPair) {
+func (ts *Tri2s) tri2NewEqualSin(sin *Q32) error {
+	return ts.tri2Filter(func (pair *Tri2) {
 		if pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
 		}
 	})
 }
 
-func (ts *TriPairs) NewPairsNoSin(sin *Q32) error {
-	return ts.newPairs(func (pair *TriPair) {
+func (ts *Tri2s) tri2NewNotEqualSin(sin *Q32) error {
+	return ts.tri2Filter(func (pair *Tri2) {
 		if !pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
 		}
 	})
 }
 
-func (ts *TriPairs) newPairs(pairF func(*TriPair)) error {
+func (ts *Tri2s) tri2Filter(pairF func(*Tri2)) error {
 	n := len(ts.tris)
 	for p1 := 0; p1 < n; p1++ {
 		t1 := ts.tris[p1]
@@ -86,9 +86,8 @@ func (ts *TriPairs) newPairs(pairF func(*TriPair)) error {
 					if p1 == p2 && a1 < a2 {
 						continue
 					}
-					if pair, err := ts.newPair(t1, t2, a1, a2); err != nil {
-//fmt.Println("addPairs err", err)
-//						return err
+					if pair, err := ts.tri2New(t1, t2, a1, a2); err != nil {
+						//return err
 					} else if pair != nil {
 						pairF(pair)
 					}
@@ -99,29 +98,29 @@ func (ts *TriPairs) newPairs(pairF func(*TriPair)) error {
 	return nil
 }
 
-func (ts *TriPairs) newPair(tA, tB *Tri, pA, pB int) (*TriPair, error) {
-	pair, err := newTriPair(tA, tB, pA, pB)
+func (ts *Tri2s) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
+	pair, err := newTri2(tA, tB, pA, pB)
 	if err != nil {
 		return nil, err
 	}
 	sinA, cosA := tA.sin[pA], tA.cos[pA]
 	sinB, cosB := tB.sin[pB], tB.cos[pB]
 	// sin(A+B) = sinAcosB + cosAsinB
-	if sinAcosB, err := ts.MulQ(sinA, cosB); err != nil {
+	if sinAcosB, err := ts.qMul(sinA, cosB); err != nil {
 		return nil, err 
-	} else if sinBcosA, err := ts.MulQ(sinB, cosA); err != nil {
+	} else if sinBcosA, err := ts.qMul(sinB, cosA); err != nil {
 		return nil, err
-	} else if sinAB, err := ts.AddQ(sinAcosB, sinBcosA); err != nil {
+	} else if sinAB, err := ts.qAdd(sinAcosB, sinBcosA); err != nil {
 		return nil, err
 	} else {
 		pair.sin = sinAB
 	}
 	// cos(A+B) = cosAcosB - sinAsinB
-	if cosAcosB, err := ts.MulQ(cosA, cosB); err != nil {
+	if cosAcosB, err := ts.qMul(cosA, cosB); err != nil {
 		return nil, err 
-	} else if sinAsinB, err := ts.MulQ(sinA, sinB); err != nil {
+	} else if sinAsinB, err := ts.qMul(sinA, sinB); err != nil {
 		return nil, err
-	} else if cosAB, err := ts.AddQ(cosAcosB, sinAsinB.Neg()); err != nil {
+	} else if cosAB, err := ts.qAdd(cosAcosB, sinAsinB.Neg()); err != nil {
 		return nil, err
 	} else {
 		pair.cos = cosAB

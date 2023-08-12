@@ -109,6 +109,7 @@ func TestQ32s(t *testing.T) {
 
 	m := make(map[string]*Q32, 0)
 
+	// qNew
 	for _, s := range []struct { nums []Z ; den N; exp string; } {
 		{ f(),  1, "err" },
 		{ f(0), 0, "err" },
@@ -174,7 +175,7 @@ func TestQ32s(t *testing.T) {
 		{ f(9,8,7,6,5), 4, "(9+6√5+8√7)/4"  }, // (9+8√7+6√5)/4
 
 	} {
-		if q, err := qs.newQ32(s.den, s.nums...); err != nil {
+		if q, err := qs.qNew(s.den, s.nums...); err != nil {
 			if s.exp != "err" {
 				t.Fatalf("reduceQ unexpected overflow for %d %v", s.den, s.nums)
 			}
@@ -185,30 +186,7 @@ func TestQ32s(t *testing.T) {
 		}
 	}
 
-	// mul
-	for _, s := range []struct { a, b, exp string } {
-		{ "0",   "√2",  "0"   },
-		{ "1",   "1",   "1"   },
-		{ "1",   "2",   "2"   },
-		{ "3",   "3",   "9"   },
-		{ "5/2", "1/2", "5/4" },
-		{ "1",   "√2",  "√2"  },
-		{ "√2",  "√2",  "2"   },
-		
-		{ "1+√5", "1+√5",     "6+2√5"      },
-		{ "1+√5", "(1+√5)/2", "3+√5"       },
-		{ "1+√5", "2√5/3",    "(10+2√5)/3" },
-	} {
-		a := m[s.a]
-		b := m[s.b]
-		if r, err := qs.MulQ(a, b); err != nil {
-			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
-		} else if got := r.String(); got != s.exp {
-			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
-		}
-	}
-
-	// add
+	// qAdd
 	for _, s := range []struct { a, b, exp string } {
 		{ "0",   "√2",  "√2"   },
 		{ "1",   "1",   "2"    },
@@ -233,16 +211,41 @@ func TestQ32s(t *testing.T) {
 		{ "√2",    "2√33/33",     "(33√2+2√33)/33"        },
 
 	} {
-		a := m[s.a]
-		b := m[s.b]
-		if r, err := qs.AddQ(a, b); err != nil {
+		if a, ok := m[s.a]; !ok {
+			t.Fatalf("qs.AddQ error map has no %s", s.a)
+		} else if b, ok := m[s.b]; !ok {
+			t.Fatalf("qs.AddQ error map has no %s", s.b)
+		} else if r, err := qs.qAdd(a, b); err != nil {
 			t.Fatalf("qs.AddQ error for %s %s %v", s.a, s.b, err)
 		} else if got := r.String(); got != s.exp {
 			t.Fatalf("qs.AddQ got %s exp %s", got, s.exp)
 		}
 	}
 
-	// sqrt
+	// qMul
+	for _, s := range []struct { a, b, exp string } {
+		{ "0",   "√2",  "0"   },
+		{ "1",   "1",   "1"   },
+		{ "1",   "2",   "2"   },
+		{ "3",   "3",   "9"   },
+		{ "5/2", "1/2", "5/4" },
+		{ "1",   "√2",  "√2"  },
+		{ "√2",  "√2",  "2"   },
+		
+		{ "1+√5", "1+√5",     "6+2√5"      },
+		{ "1+√5", "(1+√5)/2", "3+√5"       },
+		{ "1+√5", "2√5/3",    "(10+2√5)/3" },
+	} {
+		a := m[s.a]
+		b := m[s.b]
+		if r, err := qs.qMul(a, b); err != nil {
+			t.Fatalf("qs.MulQ error for %s %s %v", s.a, s.b, err)
+		} else if got := r.String(); got != s.exp {
+			t.Fatalf("qs.MulQ got %s exp %s", got, s.exp)
+		}
+	}
+
+	// qSqrt
 	for _, s := range []struct { q, exp string } {
 		{ "0",   "0"     },
 		{ "1",   "1"     },
@@ -251,7 +254,7 @@ func TestQ32s(t *testing.T) {
 		{ "7/5", "√35/5" },
 	} {
 		q := m[s.q]
-		if r, err := qs.sqrtQ(q); err != nil {
+		if r, err := qs.qSqrt(q); err != nil {
 			t.Fatalf("qs.sqrt error for %s %v", s.q, err)
 		} else if got := r.String(); got != s.exp {
 			t.Fatalf("qs.sqrt got %s exp %s", got, s.exp)

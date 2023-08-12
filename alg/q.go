@@ -4,9 +4,17 @@ import (
 	"fmt"
 )
 
+// 0   1   2   3   4   5   6   7
+//                                  ________________________
+//                 __________      /               _________
+//        ___     /       ___     /       ___     /       __
+// b + c √ d + e √ f + g √ h + i √ j + k √ l + m √ n + o √ p 
+// =-----------=---------------=-----------------------------
+//                           a
+// Q32 stores integers to form a rational algebraic number
 type Q32 struct {
 	den N32   // a
-	num []Z32 // b, c, d, e...
+	num []Z32 // b,c,d,e,f,g,h
 }
 
 func newQ32(den N32, num ...Z32) *Q32 {
@@ -43,7 +51,7 @@ func (q *Q32) Neg() *Q32 {
 	case 3:
 		q.num[0] = -q.num[0] // b = -b
 		q.num[1] = -q.num[1] // c = -c
-	case 5:
+	case 5, 7:
 		q.num[0] = -q.num[0] // b = -b
 		q.num[1] = -q.num[1] // c = -c
 		q.num[3] = -q.num[3] // e = -e

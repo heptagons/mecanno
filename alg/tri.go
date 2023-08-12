@@ -52,7 +52,7 @@ type Tris struct {
 //	a >= b >= c
 //	b+c > a
 func NewTris(max int) *Tris {
-	ts := &Tris {
+	t := &Tris {
 		Q32s: NewQ32s(),
 		tris: make([]*Tri, 0),
 	}
@@ -60,75 +60,91 @@ func NewTris(max int) *Tris {
 		for b := N32(1); b <= a; b++ {
 			for c := N32(1); c <= b; c++ {
 				if b+c > a {
-					ts.addTri(a, b, c)
+					t.triNew(a, b, c)
 				}
 			}
 		}
 	}
-	return ts
+	return t
 }
 
-// addTri appends a new Tri to the list rejecting
+// triNew appends a new Tri to the list rejecting
 // repeated Tri sides by scaling, for instance Tri a=6, b=4, c=2
 // rejected if already exists a=3, b=2, c=1
-func (ts *Tris) addTri(a, b, c N32) {
+func (t *Tris) triNew(a, b, c N32) {
 	gcd := NatGCD(a, NatGCD(b, c))
 	ga, gb, gc := a / gcd, b / gcd, c / gcd
-	for _, t := range ts.tris {
-		if t.abc[0] == ga && t.abc[1] == gb && t.abc[2] == gc {
+	for _, tri := range t.tris {
+		if tri.abc[0] == ga && tri.abc[1] == gb && tri.abc[2] == gc {
 			// scaled version already stored don't append
 			return
 		}
 	}
-	ts.tris = append(ts.tris, &Tri{
+	t.tris = append(t.tris, &Tri{
 		abc: []N32{ a, b, c },
 	})
 }
 
-// SetSinCos calculate for every Tri in the set its sines and cosines
+// triSinCos calculate for every Tri in the set its sines and cosines
 // for each of the three angles.
-func (ts *Tris) SetSinCos() error {
-	for _, t := range ts.tris {
-		a, b, c := t.abc[0], t.abc[1], t.abc[2]
+func (t *Tris) triSinCos() error {
+	for _, tri := range t.tris {
+		a, b, c := tri.abc[0], tri.abc[1], tri.abc[2]
 
-		if cosA, err := ts.cosC(b, c, a); err != nil {
+		if cosA, err := t.triCosC(b, c, a); err != nil {
 			return err
 		} else
-		if cosB, err := ts.cosC(c, a, b); err != nil {
+		if cosB, err := t.triCosC(c, a, b); err != nil {
 			return err
 		} else
-		if cosC, err := ts.cosC(a, b, c); err != nil {
+		if cosC, err := t.triCosC(a, b, c); err != nil {
 			return err
 		} else {
-			t.cos = []*Q32 { cosA, cosB, cosC }
+			tri.cos = []*Q32 { cosA, cosB, cosC }
 		}
 		// https://en.wikipedia.org/wiki/Heron%27s_formula Numerical stability
 		area2_4 := Z(a+(b+c)) * Z(c-(a-b)) * Z(c+(a-b)) * Z(a+(b-c))
 		// area = √(area2_4)/4
 		// https://en.wikipedia.org/wiki/Law_of_sines
 		// Area = (absinC)/2 -> sinC = 2A/(a*b)
-		if sinA, err := ts.newQ32(2*N(b*c), 0, 1, area2_4); err != nil {
+		if sinA, err := t.qNew(2*N(b*c), 0, 1, area2_4); err != nil {
 			return err
 		} else 
-		if sinB, err := ts.newQ32(2*N(c*a), 0, 1, area2_4); err != nil {
+		if sinB, err := t.qNew(2*N(c*a), 0, 1, area2_4); err != nil {
 			return err
 		} else
-		if sinC, err := ts.newQ32(2*N(a*b), 0, 1, area2_4); err != nil {
+		if sinC, err := t.qNew(2*N(a*b), 0, 1, area2_4); err != nil {
 			return err
 		} else {
-			t.sin = []*Q32 { sinA, sinB, sinC }
+			tri.sin = []*Q32 { sinA, sinB, sinC }
 		}
 	}
 	return nil
 }
 
-// cosC returns the rational cosine of the angle C using the law of cosines:
+// triCosC returns the rational cosine of the angle C using the law of cosines:
 //	       a² + b² - c²
 //	cosC = ------------
 //	           2ab
-func (ts *Tris) cosC(a, b, c N32) (*Q32, error) {
+func (t *Tris) triCosC(a, b, c N32) (*Q32, error) {
 	den64 := 2*N(a)*N(b)
 	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
-	return ts.newQ32(den64, num64)
+	return t.qNew(den64, num64)
 }
+
+// triCosLaw2 return the third side (squared) cc. Squared to keep simple the Q32 returned.
+// Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
+func (t *Tris) triCosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
+	if aa_bb, err := t.qNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
+		return nil, err
+	} else if ab, err := t.qNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
+		return nil, err
+	} else if abCosC, err := t.qMul(ab, cosC); err != nil { // -2a*b*cosC
+		return nil, err
+	} else {
+		return t.qAdd(aa_bb, abCosC) // a*a + b*b - 2*a*b*cosC
+	}
+}
+
+
 
