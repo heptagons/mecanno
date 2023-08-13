@@ -1,4 +1,4 @@
-package alg
+package nest
 
 import (
 	"fmt"
@@ -19,8 +19,8 @@ import (
 // A,B, and C the angles to opposite abc a,b and c.
 type Tri struct { // Triangle
 	abc []N32   // Three natural sides
-	cos []*Q32
-	sin []*Q32
+	cos []*A32
+	sin []*A32
 }
 
 // otherSides return the two sides not pointed by pos (0,1,2)
@@ -43,7 +43,7 @@ func (t *Tri) String() string {
 
 // Tris holds a set of Tri with no sides repeated
 type Tris struct {
-	*Q32s
+	*A32s
 	tris  []*Tri
 }
 
@@ -53,7 +53,7 @@ type Tris struct {
 //	b+c > a
 func NewTris(max int) *Tris {
 	t := &Tris {
-		Q32s: NewQ32s(),
+		A32s: NewA32s(),
 		tris: make([]*Tri, 0),
 	}
 	for a := N32(1); a <= N32(max); a++ {
@@ -100,7 +100,7 @@ func (t *Tris) triSinCos() error {
 		if cosC, err := t.triCosC(a, b, c); err != nil {
 			return err
 		} else {
-			tri.cos = []*Q32 { cosA, cosB, cosC }
+			tri.cos = []*A32 { cosA, cosB, cosC }
 		}
 		// https://en.wikipedia.org/wiki/Heron%27s_formula Numerical stability
 		area2_4 := Z(a+(b+c)) * Z(c-(a-b)) * Z(c+(a-b)) * Z(a+(b-c))
@@ -116,7 +116,7 @@ func (t *Tris) triSinCos() error {
 		if sinC, err := t.qNew(2*N(a*b), 0, 1, area2_4); err != nil {
 			return err
 		} else {
-			tri.sin = []*Q32 { sinA, sinB, sinC }
+			tri.sin = []*A32 { sinA, sinB, sinC }
 		}
 	}
 	return nil
@@ -126,15 +126,15 @@ func (t *Tris) triSinCos() error {
 //	       a² + b² - c²
 //	cosC = ------------
 //	           2ab
-func (t *Tris) triCosC(a, b, c N32) (*Q32, error) {
+func (t *Tris) triCosC(a, b, c N32) (*A32, error) {
 	den64 := 2*N(a)*N(b)
 	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
 	return t.qNew(den64, num64)
 }
 
-// triCosLaw2 return the third side (squared) cc. Squared to keep simple the Q32 returned.
+// triCosLaw2 return the third side (squared) cc. Squared to keep simple the A32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
-func (t *Tris) triCosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
+func (t *Tris) triCosLaw2(a, b N32, cosC *A32) (*A32, error) {
 	if aa_bb, err := t.qNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
 		return nil, err
 	} else if ab, err := t.qNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b

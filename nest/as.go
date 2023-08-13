@@ -1,15 +1,15 @@
-package alg
+package nest
 
 import (
 	"fmt"
 )
 
-type Q32s struct {
+type A32s struct {
 	*Z32s
 }
 
-func NewQ32s() *Q32s {
-	return &Q32s{
+func NewA32s() *A32s {
+	return &A32s{
 		Z32s: NewZ32s(),
 	}
 }
@@ -24,7 +24,7 @@ func NewQ32s() *Q32s {
 // =-----------=---------------=-------------------------------=---------------------------------------------------------------=------
 //                                                             a
 // qNew returns reduced rational number
-func (qs *Q32s) qNew(d N, n ...Z) (q *Q32, err error) {
+func (qs *A32s) qNew(d N, n ...Z) (q *A32, err error) {
 	switch len(n) {
 	case 1:
 		// b/a
@@ -44,16 +44,16 @@ func (qs *Q32s) qNew(d N, n ...Z) (q *Q32, err error) {
 }
 
 // qNew1 simplifies given number b/a
-func (qs *Q32s) qNew1(a N, b Z) (*Q32, error) {
+func (qs *A32s) qNew1(a N, b Z) (*A32, error) {
 	if A, B, err := qs.zFrac(a, b); err != nil {
 		return nil, err
 	} else {
-		return newQ32(A, B), nil
+		return newA32(A, B), nil
 	}
 }
 
 // qNew3 simplifies given number (b + c√d)/a
-func (qs *Q32s) qNew3(a N, b, c, d Z) (*Q32, error) {
+func (qs *A32s) qNew3(a N, b, c, d Z) (*A32, error) {
 	if c == 0 || d == 0 {
 		return qs.qNew1(a, b)                                   // b/a
 	} else if d == 1 {
@@ -66,12 +66,12 @@ func (qs *Q32s) qNew3(a N, b, c, d Z) (*Q32, error) {
 		return nil, err
 	} else {
 		B, C := BC[0], BC[1]
-		return newQ32(A, B, C, D), nil
+		return newA32(A, B, C, D), nil
 	}
 }
 
 // qNew5 simplifies given number (b + c√d + e√f)/a
-func (qs *Q32s) qNew5(a N, b, c, d, e, f Z) (*Q32, error) {
+func (qs *A32s) qNew5(a N, b, c, d, e, f Z) (*A32, error) {
 	if e == 0 || f == 0 {                              // (b + c√d)/a
 		return qs.qNew3(a, b, c, d)
 	} else if f == 1 {                                 // (b+e + c√d)/a
@@ -93,15 +93,15 @@ func (qs *Q32s) qNew5(a N, b, c, d, e, f Z) (*Q32, error) {
 	} else {
 		B, C, E := BCE[0], BCE[1], BCE[2]
 		if D < F {
-			return newQ32(A, B, C, D, E, F), nil
+			return newA32(A, B, C, D, E, F), nil
 		} else {
-			return newQ32(A, B, E, F, C, D), nil
+			return newA32(A, B, E, F, C, D), nil
 		}
 	}
 }
 
 // qNew7 returns a form like (b+c√d+e√(f+g√h))/a
-func (qs *Q32s) qNew7(a N, b, c, d, e, f, g, h Z) (*Q32, error) {
+func (qs *A32s) qNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 	if g == 0 {                                         // (b+c√d+e√f)/a
 		return qs.qNew5(a, b, c, d, e, f)            
 	} else if h == +1 {                                 // (b+c√d+e√f+g)/a
@@ -122,12 +122,12 @@ func (qs *Q32s) qNew7(a N, b, c, d, e, f, g, h Z) (*Q32, error) {
 	} else {
 		B, C, E := BCE[0], BCE[1], BCE[2]
 		F, G := FG[0], FG[1]
-		return newQ32(A, B, C, D, E, F, G, H), nil
+		return newA32(A, B, C, D, E, F, G, H), nil
 	}
 }
 
-// qAdd adds the given numbers and returns the result
-func (qs *Q32s) qAdd(q ...*Q32) (s *Q32, err error) {
+// qAdd adds the given numbers and returns a new result number
+func (qs *A32s) qAdd(q ...*A32) (s *A32, err error) {
 	n := len(q)
 	if n == 1 {
 		return q[0], nil
@@ -146,7 +146,8 @@ func (qs *Q32s) qAdd(q ...*Q32) (s *Q32, err error) {
 	return
 }
 
-func (qs *Q32s) qMul(q ...*Q32) (s *Q32, err error) {
+// qMul multiplies the given numbers and return a new result number
+func (qs *A32s) qMul(q ...*A32) (s *A32, err error) {
 	n := len(q)
 	if n == 1 {
 		return q[0], nil
@@ -165,179 +166,9 @@ func (qs *Q32s) qMul(q ...*Q32) (s *Q32, err error) {
 	return
 }
 
-func (qs *Q32s) qSqrt(q *Q32) (s *Q32, err error) {
-	if q == nil {
-		return nil, nil
-	}
-	switch len(q.num) {
-	case 1:
-		//  b      1√ab   0 + C√D
-		// --- -> ----- = -------
-		//  a       a       A 
-		a, b := q.ab()
-		return qs.qNew(
-			a,      // A
-			0,      // B
-			1,      // C
-			Z(a)*b, // D
-		)
-
-	case 3:
-		a, b, c, d := q.abcd()
-fmt.Println("Q32s.qSqrt", a, b, c, d)
-		if b == 0 {
-			// c√d    √(c√d)   √a√(c√d)   √(ac√d)  B + C√D + E√(F+G√H)
-			// --- -> ------ = -------- = ------ = ------------------
-			//  a       √a       √a√a        a             A
-			qqq, err := qs.qNew(
-				a,      // A
-				0,      // B
-				0,      // C
-				1,      // D
-				1,      // E
-				0,      // F
-				Z(a)*c, // G
-				d,      // H
-			)
-			return qqq, err
-		}
-		// b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   √(F + G√H))
-		// ------- -> ---------- = ------------ = ------------ = -----------
-		//    a           √a           √a√a             a             A
-		return qs.qNew(
-			a,      // A
-			0,      // B
-			0,      // C
-			1,      // D
-			1,      // E
-			Z(a)*b, // F
-			Z(a)*c, // G
-			d,      // H
-		)
-	}
-	return nil, fmt.Errorf("Can't square root of %s", q.String())
-}
 
 
-func (qs *Q32s) qPow2(q *Q32) (s *Q32, err error) {
-	if q == nil {
-		return nil, nil
-	}
-	switch len(q.num) {
-	case 1:
-		// = b*b = b²
-		// = B
-		a, b := q.ab()
-		return qs.qNew(
-			a*a, // A
-			b*b, // B
-		)
-	
-	case 3:
-		a, b, c, d := q.abcd()
-		if b == 0 {
-			// = (c√d)(c√d) = c²d
-			// = B
-			return qs.qNew(
-				a*a,   // A
-				c*c*d, // B
-			)
-		}
-		// x² = (b + c√d)(b + c√d) 
-		//    = b² + 2bc√d + c²d
-		//    = b² + c²d + 2bc√d
-		//    = B + C√D
-		return qs.qNew(
-			a*a,         // A
-			b*b + c*c*d, // B 
-			2*b*c,       // C
-			d,           // D
-		)
-
-	case 5: 
-		a, b, c, d, e, f := q.abcdef()
-		if b == 0 {
-			// = (c√d + e√f)(c√d + e√f)
-			// = c²d + e²f + 2ce√(df)
-			// = B + C√D
-			return qs.qNew(
-				a*a,           // A
-				c*c*d + e*e*f, // B
-				2*c*e,         // C
-				d*f,           // D
-			)	
-		}
-		// = (b + c√d + e√f)(b + c√d + e√f)
-		// = (x + e√f)(x + e√f)
-		// = x² + 2xe√f + e²f
-		// = x² + e²f + 2√(b + c√d)*e√f
-		// = x² + e²f + 2e√(bf + cf√d)
-		// = b² + c²d + e²f + 2bc√d + 2e√(bf + cf√d)
-		return qs.qNew(
-			a*a,                 // A
-			b*b + c*c*d + e*e*f, // B 
-			2*b*c,               // C
-			d,                   // D
-			2*e,                 // E
-			b*f,                 // F
-			c*f,                 // G
-			d,                   // H
-		)
-
-	case 7:
-		a, b, c, d, e, f, g, h := q.abcdefgh()
-		if b == 0 {
-			if c == 0 {
-				// = e√(f+g√h) * e√(f+g√h)
-				// = e²(f + g√h)
-				// = e²f + e²g√h
-				// = B + C√D
-				return qs.qNew(
-					a*a,   // A
-					e*e*f, // B
-					e*e*g, // C
-					h,     // D
-				)
-			} else {
-				// = (c√d + e√(f+g√h)) * (c√d + e√(f+g√h))
-				// = c²d + 2ce√(df + dg√h) + e²(f + g√h)
-				// = c²d + e²f + e²g√h + 2ce√(df + dg√h)
-				// = B + C√D + E√(F + G√H)
-				return qs.qNew(
-					a*a,           // A
-					c*c*d + e*e*f, // B
-					e*e*g,         // C
-					h,             // D
-					2*c*e,         // E
-					d*f,           // F
-					d*g,           // G
-					h,             // H
-				)
-			}
-		} else {
-			if c == 0 { // b != 0 and c == 0 is like b = 0 and c=b d=1
-				// = (b + e√(f+g√h)) * (b + e√(f+g√h))
-				// = b² + 2be√(f+g√h) + e²(f+g√h)
-				// = b² + e²f + e²g√h + 2be√(f+g√h)
-				// = B + C√D + E√(F + G√H)
-				return qs.qNew(
-					a*a,         // A
-					b*b + e*e*f, // B
-					e*e*g,       // C
-					h,           // D
-					2*b*e,       // E
-					f,           // F
-					g,           // G
-					h,           // H
-				)
-			}
-		}
-	}
-	return nil, fmt.Errorf("Can't pow2 of %s", q.String())
-}
-
-
-func (qs *Q32s) qAddPair(q, r *Q32) (s *Q32, err error) {
+func (qs *A32s) qAddPair(q, r *A32) (s *A32, err error) {
 	if q == nil || r == nil {
 		return nil, nil
 	}
@@ -389,7 +220,7 @@ func (qs *Q32s) qAddPair(q, r *Q32) (s *Q32, err error) {
 	return nil, fmt.Errorf("Can't add pair %s and %s", q, r)
 }
 
-func (qs *Q32s) qMulPair(q, r *Q32) (s *Q32, err error) {
+func (qs *A32s) qMulPair(q, r *A32) (s *A32, err error) {
 	if q == nil || r == nil {
 		return nil, nil
 	}
@@ -413,11 +244,9 @@ func (qs *Q32s) qMulPair(q, r *Q32) (s *Q32, err error) {
 			// = (B + C√D) * b
 			// = Bb + Cb√D
 			// =  x +  y√z
-			x,y := qs.qNew(A*a,
+			return qs.qNew(A*a,
 				B*b,    // x
-				C*b, D, // y√z
-			)
-			return x, y
+				C*b, D) // y√z
 
 		case 3:
 			a, b, c, d := min.abcd()
@@ -476,6 +305,180 @@ func (qs *Q32s) qMulPair(q, r *Q32) (s *Q32, err error) {
 	}
 	return nil, fmt.Errorf("Can't mul pair %s and %s", q, r)
 }
+
+
+func (qs *A32s) qPow2(q *A32) (s *A32, err error) {
+	if q == nil {
+		return nil, nil
+	}
+	switch len(q.num) {
+	case 1:
+		// = b*b = b²
+		// = B
+		a, b := q.ab()
+		return qs.qNew(a*a, // A
+			b*b)            // B
+	
+	case 3:
+		a, b, c, d := q.abcd()
+		if b == 0 {
+			// = (c√d)(c√d) = c²d
+			// = B
+			return qs.qNew(a*a, // A
+				c*c*d)          // B
+		}
+		// x² = (b + c√d)(b + c√d) 
+		//    = b² + 2bc√d + c²d
+		//    = b² + c²d + 2bc√d
+		//    = B + C√D
+		return qs.qNew(a*a, // A
+			b*b + c*c*d,    // B 
+			2*b*c, d)       // C√D
+
+	case 5: 
+		a, b, c, d, e, f := q.abcdef()
+		if b == 0 {
+			// = (c√d + e√f)(c√d + e√f)
+			// = c²d + e²f + 2ce√(df)
+			// = B + C√D
+			return qs.qNew(a*a, // A
+				c*c*d + e*e*f,  // B
+				2*c*e, d*f)     // C√D
+		}
+		// = (b + c√d + e√f)(b + c√d + e√f)
+		// = (x + e√f)(x + e√f)
+		// = x² + 2xe√f + e²f
+		// = x² + e²f + 2√(b + c√d)*e√f
+		// = x² + e²f + 2e√(bf + cf√d)
+		// = b² + c²d + e²f + 2bc√d + 2e√(bf + cf√d)
+		return qs.qNew(a*a,      // A
+			b*b + c*c*d + e*e*f, // B 
+			2*b*c, d,            // C√D
+			2*e,                 // E
+			b*f,                 // F
+			c*f, d)              // G√H
+
+	case 7:
+		a, b, c, d, e, f, g, h := q.abcdefgh()
+		if b == 0 {
+			if c == 0 {
+				// = e√(f+g√h) * e√(f+g√h)
+				// = e²(f + g√h)
+				// = e²f + e²g√h
+				// = B + C√D
+				return qs.qNew(a*a, // A
+					e*e*f,          // B
+					e*e*g, h)       // C√D
+			} else {
+				// = (c√d + e√(f+g√h)) * (c√d + e√(f+g√h))
+				// = c²d + 2ce√(df + dg√h) + e²(f + g√h)
+				// = c²d + e²f + e²g√h + 2ce√(df + dg√h)
+				// = B + C√D + E√(F + G√H)
+				return qs.qNew(a*a, // A
+					c*c*d + e*e*f,  // B
+					e*e*g, h,       // C√D
+					2*c*e,          // E
+					d*f,            // F
+					d*g, h)         // G√H
+			}
+		} else {
+			if c == 0 { // b != 0 and c == 0 is like b = 0 and c=b d=1
+				// = (b + e√(f+g√h)) * (b + e√(f+g√h))
+				// = b² + 2be√(f+g√h) + e²(f+g√h)
+				// = b² + e²f + e²g√h + 2be√(f+g√h)
+				// = B + C√D + E√(F + G√H)
+				return qs.qNew(a*a, // A
+					b*b + e*e*f,    // B
+					e*e*g, h,       // C√D
+					2*b*e,          // E
+					f,              // F
+					g, h)           // G√H
+			}
+		}
+	}
+	return nil, fmt.Errorf("Can't pow2 of %s", q.String())
+}
+
+
+
+// qSqrt returns for given numbers sizes the square root number
+//	Input: size=1,        Output: size <= 3 (b=0)
+//	Input: size=3 (b==0), Output: size <= 7 (b=0,c=0,f=0)
+//	Input: size=3 (b!=0), Output: size <= 7 (b=0,c=0,)
+func (qs *A32s) qSqrt(q *A32) (s *A32, err error) {
+	if q == nil {
+		return nil, nil
+	}
+	switch len(q.num) {
+	case 1:
+		//   / b     √b     √ab    √ab    B + C√D
+		//  / --- = ----- = ---- = ---- = -------
+		// √   a     √a     √aa     a       A
+		a, b := q.ab()
+		return qs.qNew(a, // A
+			0,            // B
+			1, Z(a)*b)    // C√D
+
+	case 3:
+		a, b, c, d := q.abcd()
+		if b == 0 {
+			//   / c√d    √(c√d)   √a√(c√d)   √(ac√d)  B + C√D + E√(F+G√H)
+			//  / ----- = ------ = -------- = ------ = ------------------
+			// √    a       √a       √a√a        a             A
+			return qs.qNew(a, // A
+				0,         // B = 0
+				0, 1,      // C√D = 0
+				1,         // E
+				0,         // F
+				Z(a)*c, d) // G√H
+		}
+		// First from √(b + c√d) look if b² - c²d = x²
+		// In other words, look a x such that 1√(b²-c²d) = x√1
+		// Case example: √(6+2√5) = 1+√5
+		if x, r, _ := qs.zSqrt(1, b*b - c*c*d); r == 1 {
+			a := N(2)
+			// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
+			// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
+			o1, i1, _ := qs.zSqrt(1, 2*(b + Z(x))) // o1√i1 = √(b+x)
+			o2, i2, _ := qs.zSqrt(1, 2*(b - Z(x))) // o2√i2 = √(b-x)
+			if i1 == +1 && i2 != +1 { // √(b+x) is integer, √(b-x) is not.
+				return qs.qNew(a, // C
+					Z(o1),        // B
+					Z(o2), Z(i2)) // C√D
+			}
+			if i1 != +1 && i2 == +1 { // √(b+x) is not integer, √(b-x) is.
+				return qs.qNew(a, // C
+					Z(o2),        // B
+					Z(o1), Z(i1)) // C√D
+			}
+			if i1 >= i2 {
+				return qs.qNew(a, // C
+					0,            // B
+					Z(o1), Z(i1), // C√D
+					Z(o2), Z(i2)) // E√F
+			}
+			return qs.qNew(a, // C
+				0,            // B
+				Z(o2), Z(i2), // C√D
+				Z(o1), Z(i1)) // E√F
+		}
+		//   / b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   √(F + G√H))
+		//  / --------- = ---------- = ------------ = ------------ = -----------
+		// √      a           √a           √a√a             a             A
+		return qs.qNew(a, // A
+			0,      // B = 0
+			0, 1,   // C√D = 0
+			1,      // E
+			Z(a)*b, // F
+			Z(a)*c, // G
+			d,      // H
+		)
+	}
+	return nil, fmt.Errorf("Can't square root of %s", q.String())
+}
+
+
+
 
 
 

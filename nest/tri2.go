@@ -1,4 +1,4 @@
-package alg
+package nest
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 type Tri2 struct {
 	tA, tB   *Tri
 	pA, pB   int
-	sin, cos *Q32
+	sin, cos *A32
 }
 
 func newTri2(tA, tB *Tri, pA, pB int) (*Tri2, error) {
@@ -49,7 +49,7 @@ func (ts *Tri2s) tri2NewAll() error {
 	})
 }
 
-func (ts *Tri2s) tri2NewEqualSin(sin *Q32) error {
+func (ts *Tri2s) tri2NewEqualSin(sin *A32) error {
 	return ts.tri2Filter(func (pair *Tri2) {
 		if pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
@@ -57,7 +57,7 @@ func (ts *Tri2s) tri2NewEqualSin(sin *Q32) error {
 	})
 }
 
-func (ts *Tri2s) tri2NewNotEqualSin(sin *Q32) error {
+func (ts *Tri2s) tri2NewNotEqualSin(sin *A32) error {
 	return ts.tri2Filter(func (pair *Tri2) {
 		if !pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)

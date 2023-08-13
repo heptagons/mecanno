@@ -1,4 +1,4 @@
-package alg
+package nest
 
 import (
 	"fmt"
@@ -62,7 +62,7 @@ func TestTri2s(t *testing.T) {
 	comp15,  _ := ts.qNew(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
 
 	// add two triangle angles pairs sines to get new angle and print matching above sines'
-	for _, s := range []struct { sin *Q32; angle string } {
+	for _, s := range []struct { sin *A32; angle string } {
 		{ comp180, "180" },
 		{ comp90,   "90" },
 		{ comp60,   "60" },

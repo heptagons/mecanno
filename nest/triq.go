@@ -1,4 +1,4 @@
-package alg
+package nest
 
 import (
 	"fmt"
@@ -8,30 +8,30 @@ type TriQ struct {
 	pair int
 	max  N32      // max natural side
 	min  N32      // min natural side
-	cc   *Q32     // c rational algebraic side
-	abc  []*Q32   // at leat one side rational algebraic
+	cc   *A32     // c rational algebraic side
+	abc  []*A32   // at leat one side rational algebraic
 }
 
-func newTriQ(pair int, max, min N32, cc *Q32, c *Q32) (t *TriQ, e error) {
+func newTriQ(pair int, max, min N32, cc *A32, c *A32) (t *TriQ, e error) {
 	t = &TriQ{
 		pair: pair,
 		max:  max,
 		min:  min,
 		cc:   cc,
 	}
-	a := newQ32(1, Z32(max))
-	b := newQ32(1, Z32(min))
+	a := newA32(1, Z32(max))
+	b := newA32(1, Z32(min))
 	if cab, err := cc.GreaterThanZ(Z(max)*Z(max)); err != nil {
 		e = err
 	} else if cab { // c >= a >= b
-		t.abc = []*Q32{ c, a, b }
+		t.abc = []*A32{ c, a, b }
 		return
 	} else if acb, err := cc.GreaterThanZ(Z(min)*Z(min)); err != nil {
 		e = err
 	} else if acb { // a >= c >= c
-		t.abc = []*Q32{ a, c, b }
+		t.abc = []*A32{ a, c, b }
 	} else { // a >= b >= c
-		t.abc = []*Q32{ a, b, c }
+		t.abc = []*A32{ a, b, c }
 	}
 	return
 }
@@ -129,9 +129,9 @@ func (t *TriQs) triqsNew(pair int) ([]*TriQ, error) {
 	return triqs, nil
 }
 
-// triCosLaw2 return the third side (squared) cc. Squared to keep simple the Q32 returned.
+// triCosLaw2 return the third side (squared) cc. Squared to keep simple the A32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
-func (t *TriQs) triqsCosLaw2(a, b N32, cosC *Q32) (*Q32, error) {
+func (t *TriQs) triqsCosLaw2(a, b N32, cosC *A32) (*A32, error) {
 	if aa_bb, err := t.qNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
 		return nil, err
 	} else if ab, err := t.qNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b

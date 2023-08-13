@@ -1,32 +1,42 @@
-package alg
+package nest
 
 import (
 	"fmt"
 )
 
 
-// 0   1   2   3   4   5   6   7
+// 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14 ...
 //                                  ________________________
 //                 __________      /               _________
 //        ___     /       ___     /       ___     /       __
-// b + c √ d + e √ f + g √ h + i √ j + k √ l + m √ n + o √ p 
+// b + c √ d + e √ f + g √ h + i √ j + k √ l + m √ n + o √ p ...
 // =-----------=---------------=-----------------------------
 //                           a
-// Q32 stores integers to form a rational algebraic number
-type Q32 struct {
-	den N32   // a
-	num []Z32 // b,c,d,e,f,g,h
+// A32 is a sum of nested algebraic numbers in the numerator
+// of increasing complexity and a natural number in the denominator.
+// There are A32 sizes according the number of integers in the numerator:
+//	 1: b
+//	 3: b + c √ d 
+//	 5: b + c √ d + e √ f
+//	 7: b + c √ d + e √(f + g √ h)
+//	 9: b + c √ d + e √(f + g √ h)+ i √ j
+//	11: b + c √ d + e √(f + g √ h)+ i √(j + k √ l)
+//	13: b + c √ d + e √(f + g √ h)+ i √(j + k √ l + m √ n)
+//	15: b + c √ d + e √ f + g √ h + i √(j + k √ l + m √(n + o √ p))
+type A32 struct {
+	den N32   // denominator a
+	num []Z32 // numerator parts b,c,d,e,f,g,h
 }
 
-func newQ32(den N32, num ...Z32) *Q32 {
-	return &Q32{
+func newA32(den N32, num ...Z32) *A32 {
+	return &A32{
 		den: den,
 		num: num,
 	}
 }
 
-// Equal returns true it the given r is identical to this one.
-func (q *Q32) Equal(r *Q32) bool {
+// Equal returns true it the given number is identical to this one.
+func (q *A32) Equal(r *A32) bool {
 	if q == nil || r == nil {
 		return false
 	}
@@ -44,50 +54,48 @@ func (q *Q32) Equal(r *Q32) bool {
 	return true
 }
 
-// Neg changes the signs of b, c and e.
-func (q *Q32) Neg() *Q32 {
-	switch len(q.num) {
-	case 1:
-		q.num[0] = -q.num[0] // b = -b
-	case 3:
-		q.num[0] = -q.num[0] // b = -b
-		q.num[1] = -q.num[1] // c = -c
-	case 5, 7:
-		q.num[0] = -q.num[0] // b = -b
-		q.num[1] = -q.num[1] // c = -c
-		q.num[3] = -q.num[3] // e = -e
-	}
+// Neg changes the signs of numerator parts b, c, e and i.
+func (q *A32) Neg() *A32 {
+	if len(q.num) > 7 { q.num[7] = -q.num[7] } // i = -i
+	if len(q.num) > 3 { q.num[3] = -q.num[3] } // e = -e
+	if len(q.num) > 1 { q.num[1] = -q.num[1] } // c = -c
+	if len(q.num) > 0 { q.num[0] = -q.num[0] } // b = -b
 	return q
 }
 
-func (q *Q32) ab() (N, Z) {
+// ab returns the natural denominator and the integer part b. Panic for smaller sizes.
+func (q *A32) ab() (N, Z) {
 	return N(q.den), Z(q.num[0])
 }
 
-func (q *Q32) abcd() (N, Z, Z, Z) {
+// cd returns the pair of integers c√d of this number. Panic for smaller sizes.
+func (q *A32) cd() (Z, Z) {
+	return Z(q.num[1]), Z(q.num[2])
+}
+
+// abcd returns the natural denominator and the integer parts b,c,d. Panic for smaller sizes.
+func (q *A32) abcd() (N, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]), 
 		Z(q.num[1]), Z(q.num[2])
 }
 
-func (q *Q32) cd() (Z, Z) {
-	return Z(q.num[1]), Z(q.num[2])
-}
-
-func (q *Q32) abcdef() (N, Z, Z, Z, Z, Z) {
+// abcdef returns the natural denominator and the integer parts b,c,d,e,f. Panic for smaller sizes.
+func (q *A32) abcdef() (N, Z, Z, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]), 
 		Z(q.num[1]), Z(q.num[2]), 
 		Z(q.num[3]), Z(q.num[4])
 }
 
-func (q *Q32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z) {
+// abcdefgh returns the natural denominator and the integer parts b,c,d,e,f,g,h. Panic for smaller sizes.
+func (q *A32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z) {
 	return N(q.den), Z(q.num[0]),
 		Z(q.num[1]), Z(q.num[2]),
 		Z(q.num[3]), Z(q.num[4]),
 		Z(q.num[5]), Z(q.num[6])
 }
 
-// GreatherThanN returns true iff this q is type 1 and greater than given n
-func (q *Q32) GreaterThanZ(num Z) (bool, error) {
+// GreatherThanN returns true iff this number is size 1 and greater than given n
+func (q *A32) GreaterThanZ(num Z) (bool, error) {
 	if q == nil {
 		return false, nil
 	}
@@ -102,23 +110,23 @@ func (q *Q32) GreaterThanZ(num Z) (bool, error) {
 
 }
 
-//     a    b     c     d     e    f    g    h    i
-//    ---  ===   ---   ---   ===  ---  ---  ---  ===
-// 1A  >0  !=0 |___________                                            b/a
-// 3A  >0   0    !=0   !=1 |                                         c√d/a
-// 3B  >0  !=0   !=0   !=1 |__________                           (b+c√d)/a
-// 5A  >0   0    !=0   !=1   !=0  !=1 |                        (c√d+e√f)/a 
-// 5B  >0  !=0   !=0   !=1   !=0  !=1 |_________             (b+c√d+e√f)/a
-// 7A  >0   0     0     x    !=0   0   !=1  !=0 |              (e√(g√h))/a
-// 7B  >0   0     0     x    !=0  !=0  !=1  !=0 |            (e√(f+g√h))/a
-// 7C  >0   0    !=0   !=1   !=0   0   !=1  !=0 |          (c√d+e√(g√h))/a
-// 7C  >0   0    !=0   !=1   !=0  !=0  !=1  !=0 |        (c√d+e√(f+g√h))/a
-// 7A  >0  !=0    0     x    !=0   0   !=1  !=0 |            (b+e√(g√h))/a
-// 7B  >0  !=0    0     x    !=0  !=0  !=1  !=0 |          (b+e√(f+g√h))/a
-// 7C  >0  !=0   !=0   !=1   !=0   0   !=1  !=0 |        (b+c√d+e√(g√h))/a
-// 7C  >0  !=0   !=0   !=1   !=0  !=0  !=1  !=0 |      (b+c√d+e√(f+g√h))/a
+// size   a    b     c     d     e    f    g    h    i
+// ----  ---  ===   ---   ---   ===  ---  ---  ---  ===
+//   1A   >0  !=0 |___________                                            b/a
+//   3A   >0   0    !=0   !=1 |                                         c√d/a
+//   3B   >0  !=0   !=0   !=1 |__________                           (b+c√d)/a
+//   5A   >0   0    !=0   !=1   !=0  !=1 |                        (c√d+e√f)/a 
+//   5B   >0  !=0   !=0   !=1   !=0  !=1 |_________             (b+c√d+e√f)/a
+//   7A   >0   0     0     x    !=0   0   !=1  !=0 |              (e√(g√h))/a
+//   7B   >0   0     0     x    !=0  !=0  !=1  !=0 |            (e√(f+g√h))/a
+//   7C   >0   0    !=0   !=1   !=0   0   !=1  !=0 |          (c√d+e√(g√h))/a
+//   7C   >0   0    !=0   !=1   !=0  !=0  !=1  !=0 |        (c√d+e√(f+g√h))/a
+//   7A   >0  !=0    0     x    !=0   0   !=1  !=0 |            (b+e√(g√h))/a
+//   7B   >0  !=0    0     x    !=0  !=0  !=1  !=0 |          (b+e√(f+g√h))/a
+//   7C   >0  !=0   !=0   !=1   !=0   0   !=1  !=0 |        (b+c√d+e√(g√h))/a
+//   7C   >0  !=0   !=0   !=1   !=0  !=0  !=1  !=0 |      (b+c√d+e√(f+g√h))/a
 //
-func (q *Q32) String() string {
+func (q *A32) String() string {
 	if q == nil {
 		return ""
 	}
@@ -134,15 +142,15 @@ func (q *Q32) String() string {
 		if b == 0 {
 			return "0"
 		}
-		s.z(b)                             // b
+		s.z(b) // b
 	
 	case 3: // b + c√d
 		a, b, c, d := q.abcd()
 		if b == 0 {
-			q.bcd(s, 0, c, d)
+			q.sbcd(s, 0, c, d)
 		} else {
 			s.par(a > 1, func(s *Str) { // (
-				q.bcd(s, b, c, d)       // b+c√d
+				q.sbcd(s, b, c, d)       // b+c√d
 			})                          // )
 		}
 	
@@ -197,7 +205,7 @@ func (q *Q32) String() string {
 						s.z(e)                 // e
 					}
 					s.sqrtP(func(s *Str){      // √(
-						q.bcd(s, f, g, h)      // MAX f+g√h
+						q.sbcd(s, f, g, h)     // MAX f+g√h
 					});                        // )
 				}
 			}
@@ -209,9 +217,9 @@ func (q *Q32) String() string {
 	return s.String()
 }
 
-// bcd simplifies printing of x + y√z
+// sbcd simplifies printing of x + y√z
 // preventing printing unnecessary plus signs, zeros and ones.
-func (q *Q32) bcd(s *Str, x, y, z Z) {
+func (q *A32) sbcd(s *Str, x, y, z Z) {
 	if x == 0 {
 		if y == 0 || z == 0 {
 			s.z(0) // return "0"
@@ -223,19 +231,19 @@ func (q *Q32) bcd(s *Str, x, y, z Z) {
 			q.scd(s, y, z) // add "y√z" or "-y√z"
 		}
 	} else {
-		s.z(x)           // add x or -x
+		s.z(x)             // add x or -x
 		if y == 0 || z == 0 {
 			return
 		}
 		if y > 0 {
-			s.pos()      // add "+"
+			s.pos()        // add "+"
 		}
-		q.scd(s, y, z)    // add "y√z" or "-y√z"
+		q.scd(s, y, z)     // add "y√z" or "-y√z"
 	}
 }
 
 // scd simplifies printing y√z
-func (q *Q32) scd(s *Str, y, z Z) {
+func (q *A32) scd(s *Str, y, z Z) {
 	if y == 0 || z == 0 {
 		s.z(0)             // add 0 and done.
 	} else if z == 1 {
