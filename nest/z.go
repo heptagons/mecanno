@@ -6,10 +6,13 @@ type Z32 int32
 
 const Z32_MAX = 0x7fffffff
 
+// Z32s is a factory to operates integers
+// Uses factory N32s
 type Z32s struct {
 	*N32s
 }
 
+// NewZ32s creates a new Z32s factory
 func NewZ32s() *Z32s {
 	return &Z32s{
 		N32s: NewN32s(),

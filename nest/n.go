@@ -125,8 +125,8 @@ func (a *N32) Reduce3(b, c *N32) {
 }
 
 
-// N32s is factory with a primes list to perform
-// some algebraic operators with two or more integers
+// N32s is factory with a primes list to speed up
+// some 32-bit nested algebraic rational numbers
 type N32s struct {
 	primes []N32
 }

@@ -52,14 +52,14 @@ func TestTri2s(t *testing.T) {
 	fmt.Printf(" First: %v\n", ts.tris[0])
 	fmt.Printf("  Last: %v\n", ts.tris[exp-1])
 
-	comp180, _ := ts.qNew(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
-	comp90,  _ := ts.qNew(1, 1)             // sin(1)         =  90°      25
-	comp60,  _ := ts.qNew(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
-	comp54,  _ := ts.qNew(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
-	comp45,  _ := ts.qNew(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
-	comp30,  _ := ts.qNew(2, 1)             // sin(1/2)       =  30°      15
-	comp18,  _ := ts.qNew(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
-	comp15,  _ := ts.qNew(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
+	comp180, _ := ts.aNew(1, 0)             // sin(0)         = 180°     430 pairs (6 sec aprox)
+	comp90,  _ := ts.aNew(1, 1)             // sin(1)         =  90°      25
+	comp60,  _ := ts.aNew(2, 0, 1, 3)       // sin((√3)/2)    =  60°      74
+	comp54,  _ := ts.aNew(4, 1, 1, 5)       // sin((1+√5)/4)  =  54°       0
+	comp45,  _ := ts.aNew(2, 0, 1, 2)       // sin(√2/2)      =  45°       0
+	comp30,  _ := ts.aNew(2, 1)             // sin(1/2)       =  30°      15
+	comp18,  _ := ts.aNew(4,-1, 1, 5)       // sin((-1+√5)/4) =  18°       0
+	comp15,  _ := ts.aNew(4, 0,-1, 2, 1, 6) // sin((-√2+√6)4) =  15°       0
 
 	// add two triangle angles pairs sines to get new angle and print matching above sines'
 	for _, s := range []struct { sin *A32; angle string } {
@@ -130,7 +130,7 @@ func TestTri3s(t *testing.T) {
 	fmt.Printf("  Last tri: %v\n", t1s.tris[n1 - 1])
 
 	t2s := NewTri2s(t1s)
-	sin0, _ := t1s.qNew(1, 0) // sin(0)= 180°
+	sin0, _ := t1s.aNew(1, 0) // sin(0)= 180°
 	t2s.tri2NewNotEqualSin(sin0)
 	n2 := len(t2s.pairs)
 	fmt.Printf("     Pairs: %d no sin0\n", n2)

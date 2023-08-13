@@ -4,9 +4,21 @@ import (
 	"fmt"
 )
 
-// Tri2 is a group of two Tri sharing a side and a node.
-// The two nodes angles are summed to create another one
+// Tri2 contains references to two trianges Tri which are joined.
+// Next example joins two trianges sides 'a' and 'y' and vertices 'C' and 'Z' renamed 'V':
+//         B                                     B
+//        /\                                    /\
+//       /  \ a         X'-_                   /  X'-_
+//    c /    \    +      \  '-_ z    =        /    \  '-_
+//     /      \         y \    '-_           /      \    '-_
+//    /    __--C           Z------Y         /    __--V------Y
+//   / __--                    x           / __--
+//  A--    b                              A-- 
+//
+// The joined vertices angles are added to create a new angle
+
 // Up to four new triangles type TriQ can be genterated from each pair.
+//
 type Tri2 struct {
 	tA, tB   *Tri
 	pA, pB   int
@@ -31,25 +43,25 @@ func (t *Tri2) String() string {
 }
 
 
-type Tri2s struct {
+type Tri2F struct {
 	*Tris
 	pairs []*Tri2
 }
 
-func NewTri2s(tris *Tris) *Tri2s {
-	return &Tri2s{
+func NewTri2F(tris *Tris) *Tri2F {
+	return &Tri2F{
 		Tris:  tris,
 		pairs: make([]*Tri2, 0),
 	}
 }
 
-func (ts *Tri2s) tri2NewAll() error {
+func (ts *Tri2F) tri2NewAll() error {
 	return ts.tri2Filter(func (pair *Tri2) {
 		ts.pairs = append(ts.pairs, pair)
 	})
 }
 
-func (ts *Tri2s) tri2NewEqualSin(sin *A32) error {
+func (ts *Tri2F) tri2NewEqualSin(sin *A32) error {
 	return ts.tri2Filter(func (pair *Tri2) {
 		if pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
@@ -57,7 +69,7 @@ func (ts *Tri2s) tri2NewEqualSin(sin *A32) error {
 	})
 }
 
-func (ts *Tri2s) tri2NewNotEqualSin(sin *A32) error {
+func (ts *Tri2F) tri2NewNotEqualSin(sin *A32) error {
 	return ts.tri2Filter(func (pair *Tri2) {
 		if !pair.sin.Equal(sin) {
 			ts.pairs = append(ts.pairs, pair)
@@ -65,7 +77,7 @@ func (ts *Tri2s) tri2NewNotEqualSin(sin *A32) error {
 	})
 }
 
-func (ts *Tri2s) tri2Filter(pairF func(*Tri2)) error {
+func (ts *Tri2F) tri2Filter(pairF func(*Tri2)) error {
 	n := len(ts.tris)
 	for p1 := 0; p1 < n; p1++ {
 		t1 := ts.tris[p1]
@@ -98,7 +110,7 @@ func (ts *Tri2s) tri2Filter(pairF func(*Tri2)) error {
 	return nil
 }
 
-func (ts *Tri2s) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
+func (ts *Tri2F) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
 	pair, err := newTri2(tA, tB, pA, pB)
 	if err != nil {
 		return nil, err
@@ -106,21 +118,21 @@ func (ts *Tri2s) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
 	sinA, cosA := tA.sin[pA], tA.cos[pA]
 	sinB, cosB := tB.sin[pB], tB.cos[pB]
 	// sin(A+B) = sinAcosB + cosAsinB
-	if sinAcosB, err := ts.qMul(sinA, cosB); err != nil {
+	if sinAcosB, err := ts.aMul(sinA, cosB); err != nil {
 		return nil, err 
-	} else if sinBcosA, err := ts.qMul(sinB, cosA); err != nil {
+	} else if sinBcosA, err := ts.aMul(sinB, cosA); err != nil {
 		return nil, err
-	} else if sinAB, err := ts.qAdd(sinAcosB, sinBcosA); err != nil {
+	} else if sinAB, err := ts.aAdd(sinAcosB, sinBcosA); err != nil {
 		return nil, err
 	} else {
 		pair.sin = sinAB
 	}
 	// cos(A+B) = cosAcosB - sinAsinB
-	if cosAcosB, err := ts.qMul(cosA, cosB); err != nil {
+	if cosAcosB, err := ts.aMul(cosA, cosB); err != nil {
 		return nil, err 
-	} else if sinAsinB, err := ts.qMul(sinA, sinB); err != nil {
+	} else if sinAsinB, err := ts.aMul(sinA, sinB); err != nil {
 		return nil, err
-	} else if cosAB, err := ts.qAdd(cosAcosB, sinAsinB.Neg()); err != nil {
+	} else if cosAB, err := ts.aAdd(cosAcosB, sinAsinB.Neg()); err != nil {
 		return nil, err
 	} else {
 		pair.cos = cosAB

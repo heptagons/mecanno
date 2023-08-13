@@ -4,10 +4,11 @@ import (
 	"testing"
 )
 
+// Test without simplifications done with a factory
 func TestA32_(t *testing.T) {
 
 	q := newA32(0, 0)
-	// bcd
+	// sbcd
 	for _, r := range []struct { x, y, z Z; exp string } {
 		{ 0, 0, 0, "0"       },
 		{ 0, 0, 1, "0"       },
@@ -27,11 +28,10 @@ func TestA32_(t *testing.T) {
 		s := &Str{}
 		q.sbcd(s, r.x, r.y, r.z)
 		if got := s.String(); got != r.exp {
-			t.Fatalf("bcd got %s exp %s", got, r.exp)
+			t.Fatalf("sbcd got %s exp %s", got, r.exp)
 		}
 	}
 
-	// Test without simplifications done with a factory
 	for _, s := range []struct { q *A32; exp string } {
 		{ newA32(0),             "NaN"     },
 		{ newA32(1),             "Invalid" },
@@ -101,6 +101,9 @@ func TestA32_(t *testing.T) {
 	}
 }
 
+// TestA32s tests simplifications done with a factory
+// for operations like aNew, aAdd, 
+
 func TestA32s(t *testing.T) {
 
 	f := func(p ...Z) []Z { return p }
@@ -109,13 +112,14 @@ func TestA32s(t *testing.T) {
 
 	m := make(map[string]*A32, 0)
 
-	// qNew
+	// aNew
 	for _, s := range []struct { nums []Z ; den N; exp string; } {
 		{ f(),  1, "err" },
 		{ f(0), 0, "err" },
 		{ f(0), 1, "0"   },
 		{ f(4), 2, "2"   },
 		{ f(1), 2, "1/2" },
+		{ f(1), 4, "1/4" },
 
 		{ f( 1,2),   2, "err"  },
 
@@ -186,18 +190,18 @@ func TestA32s(t *testing.T) {
 		{ f(0,0,1,1,0,0,1), 2, "0" },
 
 	} {
-		if q, err := qs.qNew(s.den, s.nums...); err != nil {
+		if q, err := qs.aNew(s.den, s.nums...); err != nil {
 			if s.exp != "err" {
 				t.Fatalf("reduceQ unexpected overflow for %d %v", s.den, s.nums)
 			}
 		} else if got := q.String(); got != s.exp {
 			t.Fatalf("qs.new got %s exp %s", got, s.exp)
 		} else {
-			m[got] = q // feed map to be used in multiplications
+			m[got] = q // feed map to be used in add,mul,sqrt,pow2
 		}
 	}
 
-	// qAdd
+	// aAdd
 	for _, s := range []struct { a, b, exp string } {
 		{ "0",   "√2",  "√2"   },
 		{ "1",   "1",   "2"    },
@@ -220,20 +224,21 @@ func TestA32s(t *testing.T) {
 		{ "2√5/3", "147√11/2500", "(5000√5+441√11)/7500"  },
 		{ "2√5/3", "2√33/33",     "(22√5+2√33)/33"        },
 		{ "√2",    "2√33/33",     "(33√2+2√33)/33"        },
-
 	} {
 		if a, ok := m[s.a]; !ok {
 			t.Fatalf("qs.AddQ error map has no %s", s.a)
 		} else if b, ok := m[s.b]; !ok {
 			t.Fatalf("qs.AddQ error map has no %s", s.b)
-		} else if r, err := qs.qAdd(a, b); err != nil {
+		} else if r, err := qs.aAdd(a, b); err != nil {
 			t.Fatalf("qs.AddQ error for %s %s %v", s.a, s.b, err)
 		} else if got := r.String(); got != s.exp {
 			t.Fatalf("qs.AddQ got %s exp %s", got, s.exp)
+		} else {
+			m[got] = r // feed map to be used in multiplications	
 		}
 	}
 
-	// qMulPair
+	// aMul
 	for _, s := range []struct { a, b, exp string } {
 		//{ "0",   "√2",  "0"   },
 		{ "1",   "1",   "1"   },
@@ -249,33 +254,61 @@ func TestA32s(t *testing.T) {
 	} {
 		a := m[s.a]
 		b := m[s.b]
-		if r, err := qs.qMulPair(a, b); err != nil {
-			t.Fatalf("qMulPair error for %s %s %v", s.a, s.b, err)
+		if r, err := qs.aMul(a, b); err != nil {
+			t.Fatalf("aMulPair error for %s %s %v", s.a, s.b, err)
 		} else if got := r.String(); got != s.exp {
-			t.Fatalf("qMulPair got %s exp %s", got, s.exp)
+			t.Fatalf("aMulPair got %s exp %s", got, s.exp)
 		} else {
-			m[got] = r // add to map valid qMul results
+			m[got] = r // add to map valid aMul results
 		}
 	}
 
-	// qSqrt
+	// aSqrt
 	for _, s := range []struct { q, exp string } {
 		{ "0",   "0"     },
 		{ "1",   "1"     },
 		{ "3",   "√3"    },
 		{ "5/2", "√10/2" },
 		{ "7/5", "√35/5" },
+		{ "1/4", "1/2"   },
 
-		{ "√2",    "√(√2)"    },
-		{ "2√5/3", "√(6√5)/3" },
-		{ "1+√5",  "√(1+√5)"  },
-		{ "6+2√5", "1+√5"     },
+		{ "√2",    "√(√2)"      },
+		{ "2√5/3", "√(6√5)/3"   },
+		{ "1+√5",  "√(1+√5)"    },
+		{ "6+2√5", "1+√5"       },
+		{ "3+√5",  "(√2+√10)/2" },
 	} {
 		q := m[s.q]
-		if r, err := qs.qSqrt(q); err != nil {
-			t.Fatalf("qs.sqrt error for %s %v", s.q, err)
+		if r, err := qs.aSqrt(q); err != nil {
+			t.Fatalf("aSqrt error for %s %v", s.q, err)
 		} else if got := r.String(); got != s.exp {
-			t.Fatalf("qs.sqrt got %s exp %s", got, s.exp)
+			t.Fatalf("aSqrt got %s exp %s", got, s.exp)
+		} else {
+			m[got] = r 
+		}
+	}
+
+	// aPow2
+	for _, s := range []struct { q, exp string } {
+		{ "0",     "0" },
+		{ "1",     "1" },
+		{ "1/2",   "1/4" },
+
+		{ "√3",         "3"     },
+		{ "√10/2",      "5/2"   },
+		{ "√35/5",      "7/5"   },
+		{ "1+√5",       "6+2√5" },
+		{ "(√2+√10)/2", "3+√5"  },
+
+		{ "√(√2)",    "√2"    },
+		{ "√(6√5)/3", "2√5/3" },
+
+	} {
+		q := m[s.q]
+		if r, err := qs.aPow2(q); err != nil {
+			t.Fatalf("aPow2 error for %s %v", s.q, err)
+		} else if got := r.String(); got != s.exp {
+			t.Fatalf("aPow2 got %s exp %s", got, s.exp)
 		}
 	}
 }
@@ -283,44 +316,3 @@ func TestA32s(t *testing.T) {
 
 
 
-	/*// roie
-	/*
-	// Reduce general
-	for _, s := range []struct{ exp string; is []int64 } {
-		{ "", f(1) }, // 1 is invalid
-		{ "", f(1,1,1) }, // 3 is invalid
-		{ "", f(1,1,1,1,1) }, // 5 is invalid
-		{ "", f(1,1,1,1,1,1) }, // 6 is invalid
-		{ "", f(1,1,1,1,1,1,1) }, // 7 is invalid
-
-
-		{ "+1√(1+1+1√(2+0))",     f(1,1,1,1,1,1,1,1) }, // TODO
-		{ "+2√(2+2√2+2√(2+2√2))", f(2,2,2,2,2,2,2,2) },
-		{ "+3√(3+3√3+3√(3+3√3))", f(3,3,3,3,3,3,3,3) },
-		{ "+8√(1+2+2√(3+0))",     f(4,4,4,4,4,4,4,4) }, // TODO
-
-		// +1√(1+1√1+1√(1+1√1))
-		// +1√(1+1√1+1√(1+1))
-		// +1√(1+1√1+1√2)
-		// +1√(1+1+1√2)
-		// +1√(2+1√2)
-
-		// +4√(4+4√4+4√(4+4√4))
-		// +4√(4+4√4+4√(4+8))
-		// +4√(4+4√4+4√12)
-		// +4√(4+4√4+8√3)
-		// +4√(4+8+8√3)
-		// +8√(1+2+2√3)
-		// +8√(3+2√3)
-
-	} {
-		if r, overflow := factory.Reduce(s.is...); overflow {
-			if s.exp != "∞" {
-				t.Fatalf("Reduce unexpected overflow for %+v", s.is)
-			}
-		} else if got := newAZ32(r...).String(); got != s.exp {
-			t.Fatalf("Reduce get %s exp %s", got, s.exp)
-		}
-	}
-	*/
-	//t.Logf("22222222 %v", newAZ32(2,2,2,2,2,2,2,2))
