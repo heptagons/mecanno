@@ -4,17 +4,17 @@ import (
 	"fmt"
 )
 
-type TriQ struct {
-	pair int
-	max  N32      // max natural side
-	min  N32      // min natural side
-	cc   *A32     // c rational algebraic side
-	abc  []*A32   // at leat one side rational algebraic
+type Tri3 struct {
+	tri2 int
+	max  N32    // max natural side
+	min  N32    // min natural side
+	cc   *A32   // c rational algebraic side
+	abc  []*A32 // at leat one side rational algebraic
 }
 
-func newTriQ(pair int, max, min N32, cc *A32, c *A32) (t *TriQ, e error) {
-	t = &TriQ{
-		pair: pair,
+func newTri3(tri2 int, max, min N32, cc *A32, c *A32) (t *Tri3, e error) {
+	t = &Tri3{
+		tri2: tri2,
 		max:  max,
 		min:  min,
 		cc:   cc,
@@ -36,7 +36,7 @@ func newTriQ(pair int, max, min N32, cc *A32, c *A32) (t *TriQ, e error) {
 	return
 }
 
-func (t *TriQ) Equal(u *TriQ) bool {
+func (t *Tri3) Equal(u *Tri3) bool {
 	if t == nil || u == nil {
 		return true
 	}
@@ -49,58 +49,58 @@ func (t *TriQ) Equal(u *TriQ) bool {
 	return t.cc.Equal(u.cc)
 }
 
-func (t *TriQ) String() string {
-	return fmt.Sprintf("pair=%d %v", t.pair, t.abc)
+func (t *Tri3) String() string {
+	return fmt.Sprintf("tri2=%d %v", t.tri2, t.abc)
 }
 
 
-type TriQs struct {
-	*Tri2s
-	triqs []*TriQ
+type Tri3F struct {
+	*Tri2F
+	tri3s []*Tri3
 	errs  []error
 }
 
-func NewTriQs(tri2s *Tri2s) *TriQs {
-	return &TriQs{
-		Tri2s: tri2s,
-		triqs: make([]*TriQ, 0),
+func NewTri3F(tri2F *Tri2F) *Tri3F {
+	return &Tri3F{
+		Tri2F: tri2F,
+		tri3s: make([]*Tri3, 0),
 		errs:  make([]error, 0),
 	}
 }
 
-func (t *TriQs) triqsAll() {
-	for pair := range t.pairs {
-		if triqs, err := t.triqsNew(pair); err != nil {
+func (t *Tri3F) tri3All() {
+	for tri2 := range t.tri2s {
+		if tri3s, err := t.tri3New(tri2); err != nil {
 			t.errs = append(t.errs, err)
 		} else {
-			for _, triq := range triqs {
+			for _, triq := range tri3s {
 				t.appendUnique(triq)
 			}
 		}
 	}
 }
 
-func (t *TriQs) appendUnique(s *TriQ) {
-	for _, triq := range t.triqs {
+func (t *Tri3F) appendUnique(s *Tri3) {
+	for _, triq := range t.tri3s {
 		if triq.Equal(s) {
 			return
 		}
 	}
-	t.triqs = append(t.triqs, s)
+	t.tri3s = append(t.tri3s, s)
 }
 
-func (t *TriQs) triqsNew(pair int) ([]*TriQ, error) {
-	triqs := make([]*TriQ, 0)
+func (t *Tri3F) tri3New(tri2 int) ([]*Tri3, error) {
+	tri3s := make([]*Tri3, 0)
 	// build tris, triangles with two sides natural and one side Q
-	p := t.pairs[pair]
-	for _, a := range p.tA.otherSides(p.pA) {
-		for _, b := range p.tB.otherSides(p.pB) {
+	p := t.tri2s[tri2]
+	for _, a := range p.tA.otherSides(p.vA) {
+		for _, b := range p.tB.otherSides(p.vB) {
 			max, min := a, b
 			if max < min {
 				max, min = b, a
 			}
 			repeated := false
-			for _, triq := range triqs {
+			for _, triq := range tri3s {
 				if max == triq.max && min == triq.min {
 					repeated = true
 				}
@@ -108,7 +108,7 @@ func (t *TriQs) triqsNew(pair int) ([]*TriQ, error) {
 			if repeated {
 				continue
 			}
-			if cc, err := t.triqsCosLaw2(max, min, p.cos); err != nil {
+			if cc, err := t.tri3CosLaw2(max, min, p.cos); err != nil {
 				return nil, err
 			} else if c, err := t.aSqrt(cc); err != nil {
 				return nil, err
@@ -119,19 +119,19 @@ func (t *TriQs) triqsNew(pair int) ([]*TriQ, error) {
 					// 4 [2 2 1]'0 [4 3 2]'2 sin=√15/4 cos=-1/4
 				// tris=[[2√6 4 2] [4 3 2] [√19 4 1] [√46/2 3 1]]
 				continue
-			} else if triq, err := newTriQ(pair, max, min, cc, c); err != nil {
+			} else if triq, err := newTri3(tri2, max, min, cc, c); err != nil {
 				//return nil, err
 			} else {
-				triqs = append(triqs, triq)
+				tri3s = append(tri3s, triq)
 			}
 		}
 	}
-	return triqs, nil
+	return tri3s, nil
 }
 
 // triCosLaw2 return the third side (squared) cc. Squared to keep simple the A32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
-func (t *TriQs) triqsCosLaw2(a, b N32, cosC *A32) (*A32, error) {
+func (t *Tri3F) tri3CosLaw2(a, b N32, cosC *A32) (*A32, error) {
 	if aa_bb, err := t.aNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
 		return nil, err
 	} else if ab, err := t.aNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b

@@ -4,93 +4,99 @@ import (
 	"fmt"
 )
 
-// Tri2 contains references to two trianges Tri which are joined.
-// Next example joins two trianges sides 'a' and 'y' and vertices 'C' and 'Z' renamed 'V':
-//         B                                     B
-//        /\                                    /\
-//       /  \ a         X'-_                   /  X'-_
-//    c /    \    +      \  '-_ z    =        /    \  '-_
-//     /      \         y \    '-_           /      \    '-_
-//    /    __--C           Z------Y         /    __--V------Y
-//   / __--                    x           / __--
-//  A--    b                              A-- 
-//
-// The joined vertices angles are added to create a new angle
-
-// Up to four new triangles type TriQ can be genterated from each pair.
-//
 type Tri2 struct {
-	tA, tB   *Tri
-	pA, pB   int
-	sin, cos *A32
+	tA  *Tri
+	tB  *Tri
+	vA  int
+	vB  int
+	sin *A32
+	cos *A32
 }
 
-func newTri2(tA, tB *Tri, pA, pB int) (*Tri2, error) {
-	if tA == nil || tB == nil || pA < 0 || pA > 2 || pB < 0 || pB > 2 {
+func newTri2(tA, tB *Tri, vA, vB int) (*Tri2, error) {
+	if tA == nil || tB == nil || vA < 0 || vA > 2 || vB < 0 || vB > 2 {
 		return nil, ErrInvalid
 	} else {
 		return &Tri2{
 			tA: tA,
 			tB: tB,
-			pA: pA,
-			pB: pB,
+			vA: vA,
+			vB: vB,
 		}, nil
 	}
 }
 
 func (t *Tri2) String() string {
-	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s", t.tA.abc, t.pA, t.tB.abc, t.pB, t.sin, t.cos)
+	return fmt.Sprintf("%v'%d %v'%d sin=%s cos=%s", t.tA.abc, t.vA, t.tB.abc, t.vB, t.sin, t.cos)
 }
 
 
 type Tri2F struct {
-	*Tris
-	pairs []*Tri2
+	*TriF
+	tri2s []*Tri2
 }
 
-func NewTri2F(tris *Tris) *Tri2F {
+func NewTri2F(triF *TriF) *Tri2F {
 	return &Tri2F{
-		Tris:  tris,
-		pairs: make([]*Tri2, 0),
+		TriF:  triF,
+		tri2s: make([]*Tri2, 0),
 	}
 }
 
-func (ts *Tri2F) tri2NewAll() error {
-	return ts.tri2Filter(func (pair *Tri2) {
-		ts.pairs = append(ts.pairs, pair)
+func (t *Tri2F) tri2NewAll() error {
+	return t.tri2Unique(func (pair *Tri2) {
+		t.tri2s = append(t.tri2s, pair)
 	})
 }
 
-func (ts *Tri2F) tri2NewEqualSin(sin *A32) error {
-	return ts.tri2Filter(func (pair *Tri2) {
+func (t *Tri2F) tri2NewEqualSin(sin *A32) error {
+	return t.tri2Unique(func (pair *Tri2) {
 		if pair.sin.Equal(sin) {
-			ts.pairs = append(ts.pairs, pair)
+			t.tri2s = append(t.tri2s, pair)
 		}
 	})
 }
 
-func (ts *Tri2F) tri2NewNotEqualSin(sin *A32) error {
-	return ts.tri2Filter(func (pair *Tri2) {
+func (t *Tri2F) tri2NewNotEqualSin(sin *A32) error {
+	return t.tri2Unique(func (pair *Tri2) {
 		if !pair.sin.Equal(sin) {
-			ts.pairs = append(ts.pairs, pair)
+			t.tri2s = append(t.tri2s, pair)
 		}
 	})
 }
 
-func (ts *Tri2F) tri2Filter(pairF func(*Tri2)) error {
-	n := len(ts.tris)
+// tri2Unique scan all Tri triangles stored, compare any three vertice with the
+// rest Tri triangles three vertices
+// to calculate allcreate unique pairs Tri2
+// Tri2 contains references to two trianges Tri which are joined.
+// Next example joins two trianges sides 'a' and 'y' and vertices 'C' and 'Z' renamed 'V':
+//
+//         V                                       V
+//        /\                                      /\
+//       /  \ u           X'-_                   /  X'-_
+//    w /    \      +      \  '-_ z     =       /    \  '-_
+//     /      \           y \    '-_           /      \    '-_
+//    /     _.-W             Z------Y         /     _.-M------Y
+//   /  _.-'                      x          /  _.-'
+//  U.-'   v                                U.-' 
+//
+// The joined vertices angles are added to create a new angle C + Z.
+
+// Up to four new triangles type TriQ can be genterated from each pair.
+func (t *Tri2F) tri2Unique(pairF func(*Tri2)) error {
+	n := len(t.t1s)
 	for p1 := 0; p1 < n; p1++ {
-		t1 := ts.tris[p1]
+		tA := t.t1s[p1]
 		a1s := make(map[N32]bool, 0)
-		for a1, s1 := range t1.abc {
+		for a1, s1 := range tA.abc {
 			if _, repeated := a1s[s1]; repeated {
 				continue
 			}
 			a1s[s1] = true
 			for p2 := p1; p2 < n; p2++ {
-				t2 := ts.tris[p2]
+				tB := t.t1s[p2]
 				a2s := make(map[N32]bool, 0)
-				for a2, s2 := range t2.abc {
+				for a2, s2 := range tB.abc {
 					if _, repeated := a2s[s2]; repeated {
 						continue
 					}
@@ -98,8 +104,8 @@ func (ts *Tri2F) tri2Filter(pairF func(*Tri2)) error {
 					if p1 == p2 && a1 < a2 {
 						continue
 					}
-					if pair, err := ts.tri2New(t1, t2, a1, a2); err != nil {
-						//return err
+					if pair, err := t.tri2New(tA, tB, a1, a2); err != nil {
+						return err
 					} else if pair != nil {
 						pairF(pair)
 					}
@@ -110,34 +116,34 @@ func (ts *Tri2F) tri2Filter(pairF func(*Tri2)) error {
 	return nil
 }
 
-func (ts *Tri2F) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
-	pair, err := newTri2(tA, tB, pA, pB)
+func (t *Tri2F) tri2New(tA, tB *Tri, pA, pB int) (*Tri2, error) {
+	tri2, err := newTri2(tA, tB, pA, pB)
 	if err != nil {
 		return nil, err
 	}
 	sinA, cosA := tA.sin[pA], tA.cos[pA]
 	sinB, cosB := tB.sin[pB], tB.cos[pB]
 	// sin(A+B) = sinAcosB + cosAsinB
-	if sinAcosB, err := ts.aMul(sinA, cosB); err != nil {
+	if sinAcosB, err := t.aMul(sinA, cosB); err != nil {
 		return nil, err 
-	} else if sinBcosA, err := ts.aMul(sinB, cosA); err != nil {
+	} else if sinBcosA, err := t.aMul(sinB, cosA); err != nil {
 		return nil, err
-	} else if sinAB, err := ts.aAdd(sinAcosB, sinBcosA); err != nil {
+	} else if sinAB, err := t.aAdd(sinAcosB, sinBcosA); err != nil {
 		return nil, err
 	} else {
-		pair.sin = sinAB
+		tri2.sin = sinAB
 	}
 	// cos(A+B) = cosAcosB - sinAsinB
-	if cosAcosB, err := ts.aMul(cosA, cosB); err != nil {
+	if cosAcosB, err := t.aMul(cosA, cosB); err != nil {
 		return nil, err 
-	} else if sinAsinB, err := ts.aMul(sinA, sinB); err != nil {
+	} else if sinAsinB, err := t.aMul(sinA, sinB); err != nil {
 		return nil, err
-	} else if cosAB, err := ts.aAdd(cosAcosB, sinAsinB.Neg()); err != nil {
+	} else if cosAB, err := t.aAdd(cosAcosB, sinAsinB.Neg()); err != nil {
 		return nil, err
 	} else {
-		pair.cos = cosAB
+		tri2.cos = cosAB
 	}
-	return pair, nil
+	return tri2, nil
 }
 
 

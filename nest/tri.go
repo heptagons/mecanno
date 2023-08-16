@@ -4,11 +4,15 @@ import (
 	"fmt"
 )
 
-// Tri represents a triangle with sides as natural numbers a, b, c.
-// To reduce the lists we use the condition: a >= b >= c > 0.
-// and the condition a > b+c to avoid "open" trianges with (complex numbers) angles.
-// Contains also the three sines and three cosines of the angles, but they are
-// calculated by a factory to simplify and reduce only valid algebraic numbers values.
+// Tri represents a triangle with sides as natural numbers a, b, c (meccano triangle).
+// To reduce the counting we use the first condition: a >= b >= c > 0. We'll have cases:
+//
+//	1: equilateral:  a = b = c = 1,  A = B = C = 60°
+//	2: isoceles:     a = b > c    ,  A = B > C
+//	3: isoceles:     a > b = c    ,  A > B = C
+//	4: scalene:      a > b > c    ,  A > B > C
+// A second condition a > b+c reject "open" trianges
+// with (complex numbers) angles or zero or negative area.
 //
 //           _ -C
 //     a _ -   /
@@ -18,11 +22,14 @@ import (
 //  c  -_  /  
 //       -A
 //
-// A,B, and C the angles to opposite abc a,b and c.
+// A, B, and C the angles to opposite sides a,b and c.
+//
+
 type Tri struct { // Triangle
 	abc []N32   // Three natural sides
 	cos []*A32
 	sin []*A32
+	pri *Tri // prime reference
 }
 
 // otherSides return the two sides not pointed by pos (0,1,2)
@@ -41,7 +48,10 @@ func (t *Tri) otherSides(pos int) []N32 {
 // String represent returns a string representation
 // including the three sides a,b,c and cosines and sines.
 func (t *Tri) String() string {
-	return fmt.Sprintf("abc:%v cos:%v sin:%v", t.abc, t.cos, t.sin)
+	if t.pri != nil {
+		return fmt.Sprintf("%v pri:%v", t.abc, t.pri.abc)	
+	}
+	return fmt.Sprintf("%v cos:%v sin:%v", t.abc, t.cos, t.sin)
 }
 
 
@@ -49,7 +59,7 @@ func (t *Tri) String() string {
 // Uses the A32s factory to calculate angles for each triangle.
 type TriF struct {
 	*A32s
-	tris  []*Tri
+	t1s []*Tri
 }
 
 // NewTriF build a TriF set with ordered Tri's with sides a,b,c, where:
@@ -59,7 +69,7 @@ type TriF struct {
 func NewTriF(max int) *TriF {
 	t := &TriF {
 		A32s: NewA32s(),
-		tris: make([]*Tri, 0),
+		t1s: make([]*Tri, 0),
 	}
 	for a := N32(1); a <= N32(max); a++ {
 		for b := N32(1); b <= a; b++ {
@@ -73,28 +83,35 @@ func NewTriF(max int) *TriF {
 	return t
 }
 
-// triNew appends a new triangle Tri to the list preventing repetitions
-// by scaling, for instance triangle a=6, b=4, c=2 is rejected if already
-// exists triangle a=3, b=2, c=1.
+// triNew appends a new triangle Tri to the list checking similar repetitions
+// by scaling, for instance triangle a=6, b=4, c=2 hast as prime already
+// existing triangle a=3, b=2, c=1.
 func (t *TriF) triNew(a, b, c N32) {
 	gcd := NatGCD(a, NatGCD(b, c))
 	ga, gb, gc := a / gcd, b / gcd, c / gcd
-	for _, tri := range t.tris {
-		if tri.abc[0] == ga && tri.abc[1] == gb && tri.abc[2] == gc {
-			// scaled version already stored don't append
+	for _, t1 := range t.t1s {
+		if t1.abc[0] == ga && t1.abc[1] == gb && t1.abc[2] == gc {
+			t.t1s = append(t.t1s, &Tri{
+				abc:   []N32{ a, b, c },
+				pri: t1,
+			})
 			return
 		}
 	}
-	t.tris = append(t.tris, &Tri{
+	t.t1s = append(t.t1s, &Tri{
 		abc: []N32{ a, b, c },
+		// pri nil
 	})
 }
 
 // triSinCos calculate for every triangle Trie already int he list,
 // the triangles three angles sines and cosines stored in each triangle.
 func (t *TriF) triSinCos() error {
-	for _, tri := range t.tris {
-		a, b, c := tri.abc[0], tri.abc[1], tri.abc[2]
+	for _, t1 := range t.t1s {
+		if t1.pri != nil {
+			continue
+		}
+		a, b, c := t1.abc[0], t1.abc[1], t1.abc[2]
 
 		if cosA, err := t.triCosC(b, c, a); err != nil {
 			return err
@@ -105,7 +122,7 @@ func (t *TriF) triSinCos() error {
 		if cosC, err := t.triCosC(a, b, c); err != nil {
 			return err
 		} else {
-			tri.cos = []*A32 { cosA, cosB, cosC }
+			t1.cos = []*A32 { cosA, cosB, cosC }
 		}
 		// https://en.wikipedia.org/wiki/Heron%27s_formula Numerical stability
 		area2_4 := Z(a+(b+c)) * Z(c-(a-b)) * Z(c+(a-b)) * Z(a+(b-c))
@@ -121,7 +138,7 @@ func (t *TriF) triSinCos() error {
 		if sinC, err := t.aNew(2*N(a*b), 0, 1, area2_4); err != nil {
 			return err
 		} else {
-			tri.sin = []*A32 { sinA, sinB, sinC }
+			t1.sin = []*A32 { sinA, sinB, sinC }
 		}
 	}
 	return nil
@@ -140,11 +157,11 @@ func (t *TriF) triCosC(a, b, c N32) (*A32, error) {
 // triCosLaw2 return the third side (squared) cc to help later comparisons.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
 func (t *TriF) triCosLaw2(a, b N32, cosC *A32) (*A32, error) {
-	A := 1
+	A := N(1)
 	B := Z(a)*Z(a) + Z(b)*Z(b)
-	if aa_bb, err := t.aNew(1, B); err != nil { // a*a + b*b
+	if aa_bb, err := t.aNew(A, B); err != nil { // a*a + b*b
 		return nil, err
-	} else if ab, err := t.aNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
+	} else if ab, err := t.aNew(A, -2*Z(a)*Z(b)); err != nil { // -2a*b
 		return nil, err
 	} else if abCosC, err := t.aMul(ab, cosC); err != nil { // -2a*b*cosC
 		return nil, err
