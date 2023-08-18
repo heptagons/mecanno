@@ -46,7 +46,10 @@ func (qs *A32s) aNew(d N, n ...Z) (q *A32, err error) {
 	}
 }
 
-// aNew1 produces a most a number of size 1, that is number like b/a.
+// aNew1 produces a most a number of size 1, that is number of the form:
+//	
+//	b / a
+//
 func (qs *A32s) aNew1(a N, b Z) (*A32, error) {
 	if A, B, err := qs.zFrac(a, b); err != nil {
 		return nil, err
@@ -55,8 +58,12 @@ func (qs *A32s) aNew1(a N, b Z) (*A32, error) {
 	}
 }
 
-// aNew3 produces at most a number of size 3, that is a number like (b + c√d)/a.
-// If c=0 or d=0 or d=1 produces a number of size 1.
+// aNew3 produces at most a number of size 3, that is a number of the form
+//	
+//	(b + c√d) / a
+//	
+// Where c != 0 and d != 1.
+// Otherwise returns aNew1 versions.
 func (qs *A32s) aNew3(a N, b, c, d Z) (*A32, error) {
 	if c == 0 || d == 0 {
 		return qs.aNew1(a, b)                                   // b/a
@@ -74,8 +81,12 @@ func (qs *A32s) aNew3(a N, b, c, d Z) (*A32, error) {
 	}
 }
 
-// aNew5 produces at most a number of size 5, that is a number like (b + c√d + e√f)/a.
-// If e=0 or f=0 or d=f, produces a number of size 3.
+// aNew5 produces at most a number of size 5, that is a number of the form:
+//
+//	(b + c√d + e√f) / a
+//
+// Where c != 0, d != 1, e != 0, f != 1 and d > f.
+// Otherwise returns aNew3 versions.
 func (qs *A32s) aNew5(a N, b, c, d, e, f Z) (*A32, error) {
 	if e == 0 || f == 0 {                              // (b + c√d)/a
 		return qs.aNew3(a, b, c, d)
@@ -105,8 +116,12 @@ func (qs *A32s) aNew5(a N, b, c, d, e, f Z) (*A32, error) {
 	}
 }
 
-// aNew7 produces at most a number of size 7, that is a number like (b+c√d+e√(f+g√h))/a.
-// If g=0 or h=+1, produces a number of size 5. If e=0 produces a number of size 3.
+// aNew7 produces at most a number of size 7, that is a number of the form:
+//
+//	(b + c√d + e√(f+g√h)) / a
+//
+// Where e != 0, f != 0, g != 0, h != 1.
+// Otherwise returns aNew5 or aNew3 versions.
 func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 	if g == 0 {                                         // (b+c√d+e√f)/a
 		return qs.aNew5(a, b, c, d, e, f)            
@@ -126,8 +141,58 @@ func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 	} else if A, BCE, err := qs.zFracN(a, b, Z(C), Z(E)); err != nil { // (B + C√E + D√(F+G√H))/A
 		return nil, err
 	} else {
-		B, C, E := BCE[0], BCE[1], BCE[2]
+
+
+
 		F, G := FG[0], FG[1]
+		// try to denest √(F+G√H)
+		if nest, err := qs.zSqrtDenest3(Z(F), Z(G), Z(H)); err != nil {
+			return nil, err
+		} else {
+			a := N(A)
+			b, c, e := Z(BCE[0]), Z(BCE[1]), Z(BCE[2])
+			d := Z(D)
+			switch len(nest) {
+			default: // and case 0
+				// cannot denest
+				break
+			case 1:
+				// Denested √(F+G√H) = s
+				s := Z(nest[0])
+				return qs.aNew3(a, b + e*s, c, d)
+			case 3:
+				// Denested √(F+G√H) = s + t√u
+				s    := Z(nest[0])
+				t, u := Z(nest[1]), Z(nest[2])
+				if d == u {
+					// b + c√d + e(s + t√d)) = b + es + (c+et)√d
+					return qs.aNew3(a, b + e*s, c + e*t, d)
+				} else {
+					// b = c√d + e(s + t√u) = b + es + c√d + et√u
+					return qs.aNew5(a, b + e*s, c, d, e*t, u)
+				}
+			case 5:
+				// Denested √(F+G√H) = s + t√u + v√w
+				s    := Z(nest[0])
+				t, u := Z(nest[1]), Z(nest[2])
+				v, w := Z(nest[3]), Z(nest[4])
+//fmt.Println("aNew7 3 stu", s, t, u)				
+				if d == u {
+					// b + c√d + e(s + t√d + v√w) = b + es + (c + et)√d + ev√w
+					return qs.aNew5(a, b + e*s, c + e*t, d, e*v, w)
+				} else if d == w {
+					// b + c√d + e(s + t√u + v√d) = b + es + (c + ev)√d + et√u
+					return qs.aNew5(a, b + e*s, c + e*v, d, e*t, u)
+				} else { // u != e && w != e
+					// forget denest we dont want to have a sum
+					// like B + x√e + y√u + z√w with three radicals √
+					// which forces us to go to a more complicated aNew9
+					break
+				}
+			}
+		}
+		B, C, E := BCE[0], BCE[1], BCE[2]
+		// √(F+G√H) cannot be denested
 		return newA32(A, B, C, D, E, F, G, H), nil
 	}
 }
