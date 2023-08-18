@@ -326,7 +326,6 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 	return nil, fmt.Errorf("Can't mul pair %s and %s", q, r)
 }
 
-
 // aSqrt returns the square root of the given number.
 // Limitations:
 //	Square root of numbers of size 1 are returned ok.

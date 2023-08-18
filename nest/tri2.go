@@ -83,6 +83,51 @@ func (t *Tri2F) tri2NewNotEqualSin(sin *A32) error {
 // The joined vertices angles are added to create a new angle C + Z.
 
 // Up to four new triangles type TriQ can be genterated from each pair.
+
+
+
+//          |            X  z  Y  x  Z  y
+//     z _,(Y)--_        ==================
+//   _,-'   |    --_     A  a  B  a  C  a    a = b = c   Equilateral 
+//  X_      | x     W       a     a     c    a = b > c   Isoceles
+//    '-_   |               a     c     a
+//     y '-_Z
+//          |
+
+
+// Equilateral: a = b = c
+//          |
+//     c _,(B)
+//   _,-'   |
+//  A_      | a
+//    '-_   |
+//     b '-_C
+//          |
+
+// Isoceles 1: a = b > c
+//
+//          |                 |                   |
+//     c _,(B)               (C)            b __-(A)
+//   _,-'   |               ,/|           __--    |
+//  A,      |           b ,/  |         C-        | c  
+//    \,    | a         ,/    | a        '--__    |
+//      \,  |          /      |               '-- B
+//     b  \ |         A-,_    |             a    '|
+//         'C             '-,_B                   | 
+//          |            c    |                   |
+
+
+// Scalene: a > b > c
+
+//     c  |           b     |
+//  B----(A)    C----------(A)
+//   \    |      '-,        |
+//    \   | b       '-,     | c
+//   a \  |          a '-,  |
+//      \ |               '-B
+//       'C                 |
+//        |                 |
+
 func (t *Tri2F) tri2Unique(pairF func(*Tri2)) error {
 	n := len(t.t1s)
 	for p1 := 0; p1 < n; p1++ {

@@ -234,3 +234,63 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	}
 	return o32, i32s, nil
 }
+
+// zIsSqrtDenest returns and array of denested given number if exists
+// Pretends to reduce √(b + c√d) into r[0]√r[1] + r[2]√r[3] where r is not nil 
+func (z *Z32s) zSqrtDenest(b, c, d Z) (r [] Z32, e error) {
+	// First from √(b + c√d) look if b² - c²d = x²
+	// In other words, look a x such that 1√(b²-c²d) = x√1
+	// Case example: √(6+2√5) = 1+√5
+
+	// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
+	// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
+	// o1√i1 = √(b+x)
+	// o2√i2 = √(b-x)
+
+	if x, rad, err := z.zSqrt(1, b*b - c*c*d); err != nil {
+		e = err
+	
+	} else if rad != 1 {
+		// cannot denest
+
+	} else if t1 := b + Z(x); t1 % 2 != 0 {
+		// cannot denest
+
+	} else if t2 := b - Z(x); t2 % 2 != 0 {
+		// cannot denest
+	
+	} else if o1, i1, err := z.zSqrt(1, t1/2); err != nil {
+		e = err
+	
+	} else if o2, i2, err := z.zSqrt(1, t2/2); err != nil {
+		e = err
+	
+	} else {
+		if c < 0 {
+			o2 = -o2
+		}
+		if i1 == +1 && i2 != +1 {
+			// √(b+x) is integer, √(b-x) is not.
+			r = []Z32{
+				o1, 1, o2, i2, // o1 + o2√i2
+			}
+		} else if i1 != +1 && i2 == +1 {
+			// √(b+x) is not integer, √(b-x) is.
+			r = []Z32 {
+				o2, 1, o1, i1,
+			}
+		} else if i1 < i2 {
+			r = []Z32 {
+				o1, i1, o2, i2,
+			}
+		} else {
+			r = []Z32 {
+				o2, i2, o1, i1,
+			}
+		}
+	}
+	return
+}
+
+
+

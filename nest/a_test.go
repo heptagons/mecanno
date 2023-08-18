@@ -311,8 +311,28 @@ func TestA32s(t *testing.T) {
 			t.Fatalf("aPow2 got %s exp %s", got, s.exp)
 		}
 	}
+
 }
 
+func TestA32Pow(t *testing.T) {
+
+	qs := NewA32s()
+
+	// pow-sqrt
+
+	p12345, _ := qs.aNew(1,1,2,3,4,5) // 1 + 2√3 + 4√5
+	t.Log(p12345)
+	a, _ := qs.aPow2(p12345) // 93+4√3+8√(5+10√3)
+	t.Log(a)
+
+	p567, _ := qs.aNew(1,5,1,6,1,7) // 5 + √6 + √7
+	t.Log(p567)
+
+	b, _ := qs.aPow2(p567) // 38+10√6+2√(35+7√6)
+	t.Log(b)
+
+
+}
 
 
 

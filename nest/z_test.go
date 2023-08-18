@@ -177,4 +177,22 @@ func TestZ32s(t *testing.T) {
 			t.Fatalf("zSqrtN got %s exp %s", got, s.exp)
 		}
 	}
+
+	// zSqrtDenest
+	for _, s := range []struct { b, c, d Z; root string } {
+		{ 157, 24, 35, "+3√5+4√7" }, // √(157+24√35) = 3√5+4√7
+		{ 157,-24, 35, "-3√5+4√7" },
+		{-157, 24, 35, "+4√-7+3√-5" },
+		{-157,-24, 35, "-4√-7+3√-5" },
+	} {
+		r, err := factory.zSqrtDenest(s.b, s.c, s.d)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := fmt.Sprintf("%+d√%d%+d√%d", r[0], r[1], r[2], r[3]); got != s.root {
+			t.Fatalf("zSqrtDenest got %s exp %s", got, s.root)	
+		} else {
+			t.Log(got)
+		}
+	}
 }
