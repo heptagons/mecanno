@@ -63,6 +63,35 @@ func (q *A32) Neg() *A32 {
 	return q
 }
 
+// Deeper return the numbers for deeper order. q and r should be valid.
+// Deep depends in which number has a more complicated numerator, more nested terms.
+//	- maxThis true if q is deeper than r.
+//	- max is q if q is deeper than r.
+//	- min is r if q is deeper than r.
+func (q *A32) Deeper(r *A32) (maxThis bool, max, min *A32) {
+	maxThis = true
+	max, min = q, r
+	if len(q.num) < len(r.num) {
+		maxThis = false
+		max, min = r, q
+	}
+	return
+}
+
+//	- w is the LCD denominator
+//	- U is the numerator of deeper number.
+//	- u is the numerator of not deeper number.
+func (max *A32) LCM(min *A32) (w N, U, u, B, b Z) {
+	A, a := N(max.den), N(min.den)
+	// Use lcm always to prevent overflows
+	w = (A / Ngcd(A, a)) * a // lcm denominator
+	U = Z(w / A) // upper factor for max numerator terms
+	u = Z(w / a) // upper factor for min numerator terms
+	B = Z(max.num[0])
+	b = Z(min.num[0])
+	return
+}
+
 // ab returns the natural denominator and the numerator part b. Panic for smaller sizes.
 func (q *A32) ab() (N, Z) {
 	return N(q.den), Z(q.num[0])
@@ -101,6 +130,8 @@ func (q *A32) GreaterThanZ(num Z) (bool, error) {
 	return false, fmt.Errorf("Can't compare %s and %d", q, num)
 
 }
+
+
 
 // size   a    b     c     d     e    f    g    h    i
 // ----  ---  ===   ---   ---   ===  ---  ---  ---  ===

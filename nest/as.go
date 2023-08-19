@@ -17,6 +17,13 @@ func NewA32s() *A32s {
 	}
 }
 
+
+// j i h g f e d c b
+// -----------------
+// j 0 h g h 0 d 0 b = b
+// x 0 x x x 0 1 c b = c+b
+// x 0 x x x 0 d c b = c+b√d
+
 // 1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
 //                                                                                                                                    ,-
 //                                                                   ,-------------------------------------------------------        /
@@ -179,9 +186,6 @@ func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 				s    := Z(num[0])
 				t, u := Z(num[1]), Z(num[2])
 				v, w := Z(num[3]), Z(num[4])
-//fmt.Println("aNew7 den,num", den, num)		
-//fmt.Println("aNew7 abcde", a, b, c, d, e)	
-//fmt.Println("aNew7 stuvw", s, t, u, v, w)	
 				if d == u {
 					// b + c√d + e(s + t√d + v√w)
 					// b + es + (c + et)√d + ev√w
@@ -248,28 +252,102 @@ func (qs *A32s) aMulN(q ...*A32) (s *A32, err error) {
 	return
 }
 
+// aCmp return three valid options:
+//	 0  if q numeric value equals r numeric value
+//  +1  if q > r
+//	-1  if q < r
+func (qs *A32s) aCmp(q, r *A32) (int, error) {
+	if q == nil || r == nil {
+		return 0, nil // two nils are equal 0 = 0 ???
+	}
+	qMax, max, min := q.Deeper(r)
+
+	cmp := func(mx, mn Z) int {
+		if mx == mn {
+			return 0
+		} else if mx > mn {
+			if qMax { return +1 }; return -1
+		} else {
+			if qMax { return -1 }; return +1
+		}
+	}
+
+	w, U, u, B, b := max.LCM(min)
+	_ = w // simplified denominator is not used since we compare only numerators
+	switch len(max.num) {
+	case 1:
+		// both number have deep level = 1
+		//  B     b     BU     bu    
+		// --- > --- : ---- > ----- : BU > bu
+		//  A     a      w      w
+		return cmp(B*U, b*u), nil
+
+	case 3:
+		C, D := max.cd()
+		switch len(min.num) {
+		case 1: // min = b/a
+			if B == 0 {
+				// simpler case
+				// C√D    b    CU√D    bu
+				// --- > --- : ---- > ---- : CU√D > bu : C²U²D > b²u²
+				//  A     a      w      w
+				return cmp(C*C*U*U*D, b*b*u*u), nil
+			}
+			// B + C√D    b    BU + CU√D    bu
+			// ------- > --- : --------- > ---- : BU + CU√D > bu
+			//    A       a        w         w
+			// BU + CU√D > bu
+			// BU - bu > CU√D
+			// (BU - bu)² > C²U²D 
+			r, l := B*U - b*u, C*U
+			return cmp(r*r, l*l*D), nil
+
+		case 3: // min = (b+c√d)/a
+			c, d := min.cd()
+			// B + C√D    b + c√d   BU + CU√D    bu + cu√d
+			// ------- > -------- : --------- > ---------- : BU + CU√D > bu + cu√d
+			//    A         a           w           w
+			// BU + CU√D > bu + cu√d
+			// BU - bu > -CU√D + cu√d
+			BU_bu := B*U - b*u
+			CU := C*U
+			cu := c*u
+			rA := BU_bu * BU_bu
+			if d == D {
+				// simpler case
+				// BU - bu > (-CU + cu)√D
+				// (BU - bu)² > (-CU + cu)²D
+				l1 := -CU + cu
+				return cmp(rA, l1*l1*D), nil
+			}
+			// d != D
+			// BU - bu > -CU√D + cu√d
+			// (BU - bu)² > C²U²D + c²u²d -2CUcu√(Dd)
+			// -(BU - bu)² + C²U²D + c²u²d > 2CUcu√(Dd)
+			// (-(BU - bu)² + C²U²D + c²u²d)² > (2CUcu)²Dd
+			rB := -rA + CU*CU*D + cu*cu*d
+			l2 := 2*CU*cu
+			return cmp(rB*rB, l2*l2*D*d), nil
+		}
+
+	}
+	return 0, fmt.Errorf("Can't comp pair %s and %s", q, r)
+}
+
 // aAdd return the addition of the two given numbers.
 func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 	if q == nil || r == nil {
 		return nil, nil
 	}
-	max, min := q, r
-	if len(q.num) < len(r.num) {
-		max, min = r, q
-	}
-	A, B := max.ab()
-	a, b := min.ab()
-	// Use lcm always to prevent overflows
-	w := (A / Ngcd(A, a)) * a // lcm denominator
-	U := Z(w / A) // upper factor for max numerator terms
-	u := Z(w / a) // upper factor for min numerator terms
+	_, max, min := q.Deeper(r)
+	w, U, u, B, b := max.LCM(min)
+	x := B*U + b*u // 
 	switch len(max.num) {
 	case 1:
 		//  B     b     BU + bu    x
 		// --- + --- = -------- = ---
 		//  A     a        w       w
-		return qs.aNew1(w,
-			B*U + b*u) // x
+		return qs.aNew1(w, x)
 
 	case 3:
 		C, D := max.cd()
@@ -278,9 +356,8 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 			// B + C√D    b    BU + bu + CU√D    x + y√z
 			// ------- + --- = -------------- = --------
 			//    A       a          w             w
-			return qs.aNew3(w,
-				B*U + b*u, // x
-				C*U, D)    // y√z
+			return qs.aNew3(w, x,
+				C*U, D) // y√z
 
 		case 3:
 			c, d := Z(min.num[1]), Z(min.num[2])
@@ -289,17 +366,15 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 				// B + C√D   b + c√D    BU + bu + (CU + cu)√D     x + y√z
 				// ------- + --------- = ---------------------- = -------
 				//    A         a               w                   w
-				return qs.aNew3(w,
-					B*U + b*u,    // x
+				return qs.aNew3(w, x,
 					C*U + c*u, D) // y√z
 			}
 			//  B + C√D   b + c√d   BU + bu + CU√D + cu√d   x + y√z + o√i
 			// -------- + ------- = --------------------- = -------------
 			//      A        a                 w                  w
-			return qs.aNew5(w, 
-				B*U + b*u, // x
-				C*U, D,    // y√z
-				c*u, d)    // o√i
+			return qs.aNew5(w, x,
+				C*U, D, // y√z
+				c*u, d) // o√i
 		}
 
 	case 5:
@@ -309,10 +384,9 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 			// B + C√D + E√F    b    BU + bu + CU√D + EU√F    x + y√z + o√i
 			// ------------- + --- = ---------------------- = -------------
 			//        A         a               w                   w
-			return qs.aNew5(w, 
-				B*U + b*u, // x
-				C*U, D,    // y√z
-				E*U, F)    // o√i
+			return qs.aNew5(w, x,
+				C*U, D, // y√z
+				E*U, F) // o√i
 
 		case 3:
 			c, d := Z(min.num[1]), Z(min.num[2])
@@ -320,8 +394,7 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 				// B + C√D + E√F    b + c√D    BU + bu + (CU+cu)√D + EU√F    x + y√z + o√i
 				// ------------- + -------- = --------------------------- = --------------
 				//        A            a                   w                      w
-				return qs.aNew5(w, 
-					B*U + b*u,    // x
+				return qs.aNew5(w, x,
 					C*U + c*u, D, // y√z
 					E*U, F)       // o√i
 			}
@@ -329,8 +402,7 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 				// B + C√D + E√F    b + c√F    BU + bu + CU√D + (EU+cu)√F    x + y√z + o√i
 				// ------------- + -------- = --------------------------- = --------------
 				//        A            a                   w                      w
-				return qs.aNew5(w, 
-					B*U + b*u,    // x
+				return qs.aNew5(w, x,
 					C*U, D,       // y√z
 					E*U + c*u, F) // o√i
 			}
@@ -338,6 +410,7 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 	}
 	return nil, fmt.Errorf("Can't add pair %s and %s", q, r)
 }
+
 
 // aMul return the multiplication of the two given numbers.
 // Limitations:
