@@ -63,33 +63,25 @@ func (q *A32) Neg() *A32 {
 	return q
 }
 
-// ab returns the natural denominator and the integer part b. Panic for smaller sizes.
+// ab returns the natural denominator and the numerator part b. Panic for smaller sizes.
 func (q *A32) ab() (N, Z) {
 	return N(q.den), Z(q.num[0])
 }
 
-// cd returns the pair of integers c√d of this number. Panic for smaller sizes.
+// cd returns the numerator part c√d of this number. Panic for smaller sizes.
 func (q *A32) cd() (Z, Z) {
 	return Z(q.num[1]), Z(q.num[2])
 }
 
-// abcd returns the natural denominator and the integer parts b,c,d. Panic for smaller sizes.
-func (q *A32) abcd() (N, Z, Z, Z) {
-	return N(q.den), Z(q.num[0]), 
-		Z(q.num[1]), Z(q.num[2])
-}
-
-// abcdef returns the natural denominator and the integer parts b,c,d,e,f. Panic for smaller sizes.
-func (q *A32) abcdef() (N, Z, Z, Z, Z, Z) {
-	return N(q.den), Z(q.num[0]), 
-		Z(q.num[1]), Z(q.num[2]), 
+// cdef returns the numerator part c√d + e√f. Panic for smaller sizes.
+func (q *A32) cdef() (Z, Z, Z, Z) {
+	return Z(q.num[1]), Z(q.num[2]), 
 		Z(q.num[3]), Z(q.num[4])
 }
 
-// abcdefgh returns the natural denominator and the integer parts b,c,d,e,f,g,h. Panic for smaller sizes.
-func (q *A32) abcdefgh() (N, Z, Z, Z, Z, Z, Z, Z) {
-	return N(q.den), Z(q.num[0]),
-		Z(q.num[1]), Z(q.num[2]),
+// cdefgh returns the numerator part c√d + e√(f+g√h). Panic for smaller sizes.
+func (q *A32) cdefgh() (Z, Z, Z, Z, Z, Z) {
+	return Z(q.num[1]), Z(q.num[2]),
 		Z(q.num[3]), Z(q.num[4]),
 		Z(q.num[5]), Z(q.num[6])
 }
@@ -145,17 +137,19 @@ func (q *A32) String() string {
 		s.z(b) // b
 	
 	case 3: // b + c√d
-		a, b, c, d := q.abcd()
+		a, b := q.ab()
+		c, d := q.cd()
 		if b == 0 {
 			q.sbcd(s, 0, c, d)
 		} else {
 			s.par(a > 1, func(s *Str) { // (
-				q.sbcd(s, b, c, d)       // b+c√d
+				q.sbcd(s, b, c, d)      // b+c√d
 			})                          // )
 		}
 	
 	case 5: // b + c√d + e√f
-		a, b, c, d, e, f := q.abcdef()
+		a, b := q.ab()
+		c, d, e, f := q.cdef()
 		x := b!=0
 		y := c!=0 && d!=0
 		z := e!=0 && f!=0
@@ -179,7 +173,8 @@ func (q *A32) String() string {
 		})                                     // )
 	
 	case 7: // b + c√d + e√(f+g√h)
-		a, b, c, d, e, f, g, h := q.abcdefgh()
+		a, b := q.ab()
+		c, d, e, f, g, h := q.cdefgh()
 		x := b!=0
 		y := c!=0 && d!=0
 		z := e!=0 && (f!=0 || (g!=0 && h!=0))

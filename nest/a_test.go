@@ -311,23 +311,21 @@ func TestA32s(t *testing.T) {
 			t.Fatalf("aPow2 got %s exp %s", got, s.exp)
 		}
 	}
-
 }
 
-
 func TestA32new7(t *testing.T) {
-	// Test (b+c√d+e√(f+g√h))/a.
-	// to check denested √(f+g√h)
+	// Test (b+c√d+e√(f+g√h))/a including denesting √(f+g√h)
 	qs := NewA32s()
 	a := N(1)
-	b := Z(2)
-	c, d := Z(7), Z(5) // 7√5
-	e := Z(11)         // 11(denested)
+	b := Z(2)          // +2
+	c, d := Z(7), Z(5) // +7√5
+	e := Z(11)         // +11 multiplied by (denested)
 	for _, s := range []struct { f, g, h Z; exp string } {
 		// cannot denest
 		{   0,  1,  2, "2+7√5+11√(√2)"    },
 		{   2,  2,  2, "2+7√5+11√(2+2√2)" },
-		//                                 denested : sun
+		{   3,  4,  5, "2+7√5+11√(3+4√5)" },
+		//                                 denested : sum
 		{   1,  1,  1, "2+11√2+7√5"  }, // √2       : 2+7√5+11(√2)      = 2+11√2+7√5
 		{   1,  2,  1, "2+11√3+7√5"  }, // √3       : 2+7√5+11(√3)      = 2+11√3+7√5
 		{   2,  2,  1, "24+7√5"      }, // 2        : 2+7√5+11(2)       = 24+7√5
@@ -342,22 +340,22 @@ func TestA32new7(t *testing.T) {
 	}
 }
 
-
 func TestA32Pow(t *testing.T) {
 	qs := NewA32s()
 
 	// pow-sqrt
-
 	p12345, _ := qs.aNew(1,1,2,3,4,5) // 1 + 2√3 + 4√5
-	t.Log(p12345)
+	//t.Log(p12345)
 	a, _ := qs.aPow2(p12345) // 93+4√3+8√(5+10√3)
-	t.Log(a)
+	//t.Log(a)
+	_ = a
 
 	p567, _ := qs.aNew(1,5,1,6,1,7) // 5 + √6 + √7
-	t.Log(p567)
+	//t.Log(p567)
 
 	b, _ := qs.aPow2(p567) // 38+10√6+2√(35+7√6)
-	t.Log(b)
+	//t.Log(b)
+	_ = b
 }
 
 

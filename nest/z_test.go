@@ -180,52 +180,55 @@ func TestZ32s(t *testing.T) {
 
 	// zSqrtDenest3
 	for _, s := range []struct { b, c, d Z; root string } {
-		{   0,  1,  0, "0"          }, // b=0 d=0
-		{   0,  0,  1, "0"          }, // b=0 c=0
-		{   0,  1,  2, "√(0+1√2)"   }, // b=0 no denesting
-		{   0,  1,  9, "0+1√3"      }, // b=0 √(0+1√9) = √(0+3) = 0 + 1√3
-		{   0,  9,  1, "3"          }, // b=0 √(0+9√1) = √(0+9) = √9 = 3
-		{   2,  0,  4, "0+1√2"      }, // c=0 √(2+0x) = √2
-		{   3,  0,  4, "0+1√3"      }, // c=0 √(3+0x) = √3
-		{   8,  0,  4, "0+2√2"      }, // c=0 √(8+0x) = 2√2
-		{   4,  0,  4, "2"          }, // c=0 √(4+0x) = √4 = 2
-		{   1,  1,  1, "0+1√2"      }, // d=1 √(1+1√1) = √2
-		{   1,  2,  1, "0+1√3"      }, // d=1 √(1+2√1) = √3
-		{   2,  2,  1, "2"          }, // d=1 √(2+2√1) = √4 = 2
-		{   1,  3,  1, "2"          }, // d=1 √(1+3√1) = √4 = 2
-		{   6,  2,  5, "1+1√5"      }, // 6+2√5 = (1+1√5)²
-		{   6, -2,  5, "-1+1√5"     },
-		{ 157, 24, 35, "3√5+4√7"    }, // 157+24√35 = (3√5+4√7)²
-		{ 157,-24, 35, "-3√5+4√7"   },
-		{-157, 24, 35, "4√-7+3√-5"  },
-		{-157,-24, 35, "-4√-7+3√-5" },
+		{   0,  1,  0, "0/1"            }, // b=0 d=0
+		{   0,  0,  1, "0/1"            }, // b=0 c=0
+		{   0,  1,  2, "(√(0+1√2))/1"   }, // b=0 no denesting
+		{   0,  1,  9, "(0+1√3)/1"      }, // b=0 √(0+1√9) = √(0+3) = 0 + 1√3
+		{   0,  9,  1, "3/1"            }, // b=0 √(0+9√1) = √(0+9) = √9 = 3
+		{   2,  0,  4, "(0+1√2)/1"      }, // c=0 √(2+0x) = √2
+		{   3,  0,  4, "(0+1√3)/1"      }, // c=0 √(3+0x) = √3
+		{   8,  0,  4, "(0+2√2)/1"      }, // c=0 √(8+0x) = 2√2
+		{   4,  0,  4, "2/1"            }, // c=0 √(4+0x) = √4 = 2
+		{   1,  1,  1, "(0+1√2)/1"      }, // d=1 √(1+1√1) = √2
+		{   1,  2,  1, "(0+1√3)/1"      }, // d=1 √(1+2√1) = √3
+		{   2,  2,  1, "2/1"            }, // d=1 √(2+2√1) = √4 = 2
+		{   1,  3,  1, "2/1"            }, // d=1 √(1+3√1) = √4 = 2
+		
+		{   3,  1,  5, "(1√2+1√10)/2"   },
+		
+		{   6,  2,  5, "(1+1√5)/1"      }, // 6+2√5 = (1+1√5)²
+		{   6, -2,  5, "(-1+1√5)/1"     },
+		{ 157, 24, 35, "(3√5+4√7)/1"    }, // 157+24√35 = (3√5+4√7)²
+		{ 157,-24, 35, "(-3√5+4√7)/1"   },
+		{-157, 24, 35, "(4√-7+3√-5)/1"  },
+		{-157,-24, 35, "(-4√-7+3√-5)/1" },
 	} {
-		r, err := factory.zSqrtDenest3(s.b, s.c, s.d)
+		den, n, err := factory.zSqrtDenest3(s.b, s.c, s.d)
 		if err != nil {
 			t.Fatal(err)
 		}
-		switch len(r) {
+		switch len(n) {
 		case 0:
-			if got := fmt.Sprintf("√(%d%+d√%d)", s.b, s.c, s.d); got != s.root {
+			if got := fmt.Sprintf("(√(%d%+d√%d))/%d", s.b, s.c, s.d, den); got != s.root {
 				t.Fatalf("zSqrtDenest3-0 got %s exp %s", got, s.root)
 			}
 		case 1:
-			if got := fmt.Sprintf("%d", r[0]); got != s.root {
+			if got := fmt.Sprintf("%d/%d", n[0], den); got != s.root {
 				t.Fatalf("zSqrtDenest3-1 got %s exp %s", got, s.root)
 			}
 		case 3:
-			if got := fmt.Sprintf("%d%+d√%d", r[0], r[1], r[2]); got != s.root {
+			if got := fmt.Sprintf("(%d%+d√%d)/%d", n[0], n[1], n[2], den); got != s.root {
 				t.Fatalf("zSqrtDenest3-3 got %s exp %s", got, s.root)
 			}
 		case 5:
-			if r[0]	!= 0 {
-				t.Fatalf("zSqrtDenest3-5 got %d exp %d", r[0], 0)
+			if n[0]	!= 0 {
+				t.Fatalf("zSqrtDenest3-5 got %d exp %d", n[0], 0)
 			} 
-			if got := fmt.Sprintf("%d√%d%+d√%d", r[1], r[2], r[3], r[4]); got != s.root {
+			if got := fmt.Sprintf("(%d√%d%+d√%d)/%d", n[1], n[2], n[3], n[4], den); got != s.root {
 				t.Fatalf("zSqrtDenest3-5 got %s exp %s", got, s.root)
 			}
 		default:
-			t.Fatalf("zSqrtDenest3 Invalid len(r) got %d exp [0|1|3|5]", len(r))
+			t.Fatalf("zSqrtDenest3 Invalid len(n) got %d exp [0|1|3|5]", len(n))
 		}
 	}
 }

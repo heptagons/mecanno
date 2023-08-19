@@ -235,18 +235,30 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	return o32, i32s, nil
 }
 
-// zIsSqrtDenest3 returns and array of denested numbers if denesting
-// of √(b + c√d) is possible. There are four possibilites:
-//	len(r) == 0 :              -> no denesting               
-//	len(r) == 1 : r[b]         -> denest => b
-//	len(r) == 3 : r[b,c,d]     -> denest => b + c√d       ; c!=0
-//	len(r) == 5 : r[b,c,d,e,f] -> denest => b + c√d + e√f ; b=0, c!=0, e!=0, 0 != d < f != 1
-func (z *Z32s) zSqrtDenest3(b, c, d Z) (r [] Z32, e error) {
+// zIsSqrtDenest3 returns a denominator and array of denested numerators
+// if √(b + c√d) can be denested. There are four possibilites:
+//	- len(n) == 0:
+//		Cannot denest
+//	- len(n) == 1:
+//		  ,-------    n[0]
+//		 / b + c√d = ------
+//		√             den
+//	- len(n) == 3:                _____
+//		  ,-------    n[0] + n[1]√ n[2]
+//		 / b + c√d = -------------------
+//		√                    den
+//	- len(n) == 5:                _____        _____
+//		  ,-------    n[0] + n[1]√ n[2] + n[3]√ n[4]
+//		 / b + c√d = --------------------------------
+//		√                         den
+//
+func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
+	den = 1
 	if b == 0 {
 		// simpler case √(c√d)
 		if c == 0 || d == 0 {
 			// √(0) = 0
-			r = []Z32 { 0 }
+			n = []Z32 { 0 }
 		} else if o, i, err := z.zSqrt(c, d); err != nil {
 			e = err
 		} else if i == 1 {
@@ -255,10 +267,10 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (r [] Z32, e error) {
 				e = err
 			} else if i2 == 1 {
 				// √(c√d) = √o = o2
-				r = []Z32 { o2 }
+				n = []Z32 { o2 }
 			} else {
 				// √(c√d) = 0 + √o
-				r = []Z32 { 0, 1, o }
+				n = []Z32 { 0, 1, o }
 			}
 		} else {
 			// cannot denest
@@ -271,10 +283,10 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (r [] Z32, e error) {
 			e = err
 		} else if i == 1 {
 			// √b = o√1
-			r = []Z32 { o }
+			n = []Z32 { o }
 		} else {
 			// √b = 0 + o√i
-			r = []Z32 { 0, o, i }
+			n = []Z32 { 0, o, i }
 		}
 		return
 	}
@@ -284,67 +296,57 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (r [] Z32, e error) {
 			e = err
 		} else if i == 1 {
 			// √(b+c) = o√1 = o
-			r = []Z32 { o }
+			n = []Z32 { o }
 		} else {
 			// √(b+c) = 0 + o√i
-			r = []Z32 { 0, o, i }
+			n = []Z32 { 0, o, i }
 		}
 		return
 	}
-
 	// For √(b + c√d) look if b² - c²d = x²
 	// In other words, look a x such that 1√(b²-c²d) = x√1
 	// Case example: √(6+2√5) = 1+√5
-	x, rad, err := z.zSqrt(1, b*b - c*c*d)
-	if err != nil {
+	if x, r, err := z.zSqrt(1, b*b - c*c*d); err != nil{
 		e = err
-		return
-	} else if rad != 1 {
-		return // cannot denest
-	}
-
-	// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
-	// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
-	t1 := b + Z(x)
-	if t1 % 2 != 0 {
-		return // cannot denest
-	}
-	t2 := b - Z(x)
-	if t2 % 2 != 0 {
-		return // cannot denest
-	}
-
-	// o1√i1 = √(b+x)
-	// o2√i2 = √(b-x)
-	o1, i1, err := z.zSqrt(1, t1/2)
-	if err != nil {
-		return nil, err
-	}
-	o2, i2, err := z.zSqrt(1, t2/2)
-	if err != nil {
-		return nil, err
-	}
-
-	if c < 0 {
-		o2 = -o2
-	}
-	if i1 == +1 && i2 != +1 {
-		// √(b+x) is integer, √(b-x) is not
-		// denest as []{ o1, o2, i2 }
-		r = []Z32{ o1, o2, i2 }
-	} else if i1 != +1 && i2 == +1 {
-		// √(b+x) is not integer, √(b-x) is.
-		// denest as o1 + o2√i1
-		r = []Z32 { o2, o1, i1 }
-	} else if i1 < i2 {
-		// denest as o1√i1 + o2√i2
-		r = []Z32 {
-			0, o1, i1, o2, i2,
-		}
+	} else if r != 1 {
+		// cannot denest
 	} else {
-		// denest as o2√i2 + o1√i1
-		r = []Z32 {
-			0, o2, i2, o1, i1,
+		// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
+		// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
+		if o1, i1, err := z.zSqrt(1, 2*(b + Z(x))); err != nil { // o1√i1 = √(b+x)
+			e = err
+		} else
+		if o2, i2, err := z.zSqrt(1, 2*(b - Z(x))); err != nil { // o2√i2 = √(b-x)
+			e = err
+		} else {
+			if o1 % 2 == 0 && o2 % 2 == 0 {
+				o1 /= 2
+				o2 /= 2
+			} else {
+				den = 2
+			}
+			if c < 0 {
+				o2 = -o2
+			}
+			if i1 == +1 && i2 != +1 {
+				// √(b+x) is integer, √(b-x) is not
+				// denest as []{ o1, o2, i2 }
+				n = []Z32{ o1, o2, i2 }
+			} else if i1 != +1 && i2 == +1 { // √(b+x) is not integer, √(b-x) is.
+				// √(b+x) is not integer, √(b-x) is.
+				// denest as o1 + o2√i1
+				n = []Z32 { o2, o1, i1 }
+			} else if i1 < i2 {
+				// denest as o1√i1 + o2√i2
+				n = []Z32 {
+					0, o1, i1, o2, i2,
+				}
+			} else {
+				// denest as o2√i2 + o1√i1
+				n = []Z32 {
+					0, o2, i2, o1, i1,
+				}
+			}
 		}
 	}
 	return

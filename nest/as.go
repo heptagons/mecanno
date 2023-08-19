@@ -141,52 +141,54 @@ func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 	} else if A, BCE, err := qs.zFracN(a, b, Z(C), Z(E)); err != nil { // (B + C√E + D√(F+G√H))/A
 		return nil, err
 	} else {
-
-
-
 		F, G := FG[0], FG[1]
 		// try to denest √(F+G√H)
-		if nest, err := qs.zSqrtDenest3(Z(F), Z(G), Z(H)); err != nil {
+		if den, num, err := qs.zSqrtDenest3(Z(F), Z(G), Z(H)); err != nil {
 			return nil, err
 		} else {
-			a := N(A)
-			b, c, e := Z(BCE[0]), Z(BCE[1]), Z(BCE[2])
+			a := N(A)*N(den)
+			b, c, e := Z(BCE[0])*Z(den), Z(BCE[1])*Z(den), Z(BCE[2])*Z(den)
 			d := Z(D)
-			switch len(nest) {
+			switch len(num) {
 			default: // and case 0
 				// cannot denest
 				break
 			case 1:
 				// Denested √(F+G√H) = s
-				s := Z(nest[0])
+				s := Z(num[0])
+				// b + c√d + e(s)
+				// b + e + c√d
 				return qs.aNew3(a, b + e*s, c, d)
 			case 3:
 				// Denested √(F+G√H) = s + t√u
-				s    := Z(nest[0])
-				t, u := Z(nest[1]), Z(nest[2])
+				s    := Z(num[0])
+				t, u := Z(num[1]), Z(num[2])
 				if d == u {
-					// b + c√d + e(s + t√d)) = b + es + (c+et)√d
+					// b + c√d + e(s + t√d))
+					// b + es + (c+et)√d
 					return qs.aNew3(a, b + e*s, c + e*t, d)
 				} else {
-					// b = c√d + e(s + t√u) = b + es + c√d + et√u
+					// b = c√d + e(s + t√u)
+					// b + es + c√d + et√u
 					return qs.aNew5(a, b + e*s, c, d, e*t, u)
 				}
 			case 5:
 				// Denested √(F+G√H) = s + t√u + v√w
-				s    := Z(nest[0])
-				t, u := Z(nest[1]), Z(nest[2])
-				v, w := Z(nest[3]), Z(nest[4])
-//fmt.Println("aNew7 3 stu", s, t, u)				
+				s    := Z(num[0])
+				t, u := Z(num[1]), Z(num[2])
+				v, w := Z(num[3]), Z(num[4])
 				if d == u {
-					// b + c√d + e(s + t√d + v√w) = b + es + (c + et)√d + ev√w
+					// b + c√d + e(s + t√d + v√w)
+					// b + es + (c + et)√d + ev√w
 					return qs.aNew5(a, b + e*s, c + e*t, d, e*v, w)
 				} else if d == w {
-					// b + c√d + e(s + t√u + v√d) = b + es + (c + ev)√d + et√u
+					// b + c√d + e(s + t√u + v√d)
+					// b + es + (c + ev)√d + et√u
 					return qs.aNew5(a, b + e*s, c + e*v, d, e*t, u)
 				} else { // u != e && w != e
 					// forget denest we dont want to have a sum
 					// like B + x√e + y√u + z√w with three radicals √
-					// which forces us to go to a more complicated aNew9
+					// which forces us to go with a more complicated aNew9
 					break
 				}
 			}
@@ -242,11 +244,6 @@ func (qs *A32s) aMulN(q ...*A32) (s *A32, err error) {
 }
 
 // aAdd return the addition of the two given numbers.
-// Limitations:
-//	- Both numbers sizes=1 are added ok.
-//	- One number size=3 and the other size=1 are added ok.
-//	- Both numbers sizes=3 are added ok.
-//	- For other sizes combination "Can't add pair" error is returned.
 func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 	if q == nil || r == nil {
 		return nil, nil
@@ -266,7 +263,7 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 		//  B     b     BU + bu    x
 		// --- + --- = -------- = ---
 		//  A     a        w       w
-		return qs.aNew(w,
+		return qs.aNew1(w,
 			B*U + b*u) // x
 
 	case 3:
@@ -276,23 +273,61 @@ func (qs *A32s) aAdd(q, r *A32) (s *A32, err error) {
 			// B + C√D    b    BU + bu + CU√D    x + y√z
 			// ------- + --- = -------------- = --------
 			//    A       a          w             w
-			return qs.aNew(w,
+			return qs.aNew3(w,
 				B*U + b*u, // x
 				C*U, D)    // y√z
 
 		case 3:
-			rc, rd := Z(min.num[1]), Z(min.num[2])
-			if D == rd { // simpler case
-				// B + C√D   b + rc√D  B*U + b*u + (C*U + rc*u)√D
-				// ---------- + --------- = ----------------------------------
-				//     A          a                     w
-				return qs.aNew(w, B*U + b*u, C*U + rc*u, D)
+			c, d := Z(min.num[1]), Z(min.num[2])
+			if D == d {
+				// simpler case
+				// B + C√D   b + c√D    BU + bu + (CU + cu)√D     x + y√z
+				// ------- + --------- = ---------------------- = -------
+				//    A         a               w                   w
+				return qs.aNew3(w,
+					B*U + b*u,    // x
+					C*U + c*u, D) // y√z
 			}
-			if B == b && B == 0 { // simpler case both b's=0
-				// C√D   rc√rd   C*U√D + rc*u√rd
-				// ----- + ----- = -------------------
-				//   A     a              w
-				return qs.aNew(w, 0, C*U, D, rc*u, rd)
+			//  B + C√D   b + c√d   BU + bu + CU√D + cu√d   x + y√z + o√i
+			// -------- + ------- = --------------------- = -------------
+			//      A        a                 w                  w
+			return qs.aNew5(w, 
+				B*U + b*u, // x
+				C*U, D,    // y√z
+				c*u, d)    // o√i
+		}
+
+	case 5:
+		C, D, E, F := max.cdef()
+		switch len(min.num) {
+		case 1:
+			// B + C√D + E√F    b    BU + bu + CU√D + EU√F    x + y√z + o√i
+			// ------------- + --- = ---------------------- = -------------
+			//        A         a               w                   w
+			return qs.aNew5(w, 
+				B*U + b*u, // x
+				C*U, D,    // y√z
+				E*U, F)    // o√i
+
+		case 3:
+			c, d := Z(min.num[1]), Z(min.num[2])
+			if D == d {
+				// B + C√D + E√F    b + c√D    BU + bu + (CU+cu)√D + EU√F    x + y√z + o√i
+				// ------------- + -------- = --------------------------- = --------------
+				//        A            a                   w                      w
+				return qs.aNew5(w, 
+					B*U + b*u,    // x
+					C*U + c*u, D, // y√z
+					E*U, F)       // o√i
+			}
+			if F == d {
+				// B + C√D + E√F    b + c√F    BU + bu + CU√D + (EU+cu)√F    x + y√z + o√i
+				// ------------- + -------- = --------------------------- = --------------
+				//        A            a                   w                      w
+				return qs.aNew5(w, 
+					B*U + b*u,    // x
+					C*U, D,       // y√z
+					E*U + c*u, F) // o√i
 			}
 		}
 	}
@@ -322,34 +357,36 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 			B*b) // x
 
 	case 3:
-		A, B, C, D := max.abcd()
+		A, B := max.ab()
+		C, D := max.cd()
 		switch len(min.num) {
 		case 1:
 			a, b := min.ab()
 			// = (B + C√D) * b
 			// = Bb + Cb√D
 			// =  x +  y√z
-			return qs.aNew(A*a,
+			return qs.aNew3(A*a,
 				B*b,    // x
 				C*b, D) // y√z
 
 		case 3:
-			a, b, c, d := min.abcd()
+			a, b := min.ab()
+			c, d := min.cd()
 			if D < d {
-				A, B, C, D = min.abcd()
-				a, b, c, d = max.abcd()
+				A, B = min.ab(); C, D = min.cd()
+				a, b = max.ab(); c, d = max.cd()
 			}
 			if B == 0 {
 				if b == 0 {
 					// C√D * c√d = Cc√Dd = y√z
-					return qs.aNew(A*a,
+					return qs.aNew3(A*a,
 						0,        // x
 						C*c, D*d) // y/z
 				}
 				// = C√D * (b + c√d)
 				// = Cc√Dd + bC√D
 				// =  y√z  +  e√f
-				return qs.aNew(A*a,
+				return qs.aNew5(A*a,
 					0,        // x
 					C*c, D*d, // y√z
 					b*C, D)   // e√f
@@ -358,7 +395,7 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 				// = (B + C√D) * c√d
 				// = Bc√d + Cc√Dd
 				// =  y√z +  e√f
-				return qs.aNew(A*a,
+				return qs.aNew5(A*a,
 					0,          // x
 					B*c, d,     // y√z
 					C*c,   D*d) // e√f
@@ -368,7 +405,7 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 				// = Bb + CcD + Bc√D + bC√D
 				// = Bb + CcD + (Bc+bC)√D
 				// =    x     +    y   √z
-				return qs.aNew(A*a,
+				return qs.aNew3(A*a,
 					B*b + C*c*D,  // x
 					B*c + b*C, D) // y√z
 			}//  ;fmt.Println("5")
@@ -380,7 +417,7 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 			// = Bb + Bc√d + (C√D)*√(b²+c²d + 2bc√d)
 			// = Bb + Bc√d + C√(bD²+c²Dd + 2bcD√d)
 			// =  x +  y√z + e√(    f    +   g √h)
-			return qs.aNew(A*a,
+			return qs.aNew7(A*a,
 				B*b,             // x
 				B*c, d,          // y√z
 				C,               // e
@@ -406,57 +443,58 @@ func (qs *A32s) aSqrt(q *A32) (s *A32, err error) {
 		//  / --- = ----- = ---- = ---- = -------
 		// √   a     √a     √aa     a       A
 		a, b := q.ab()
-		return qs.aNew(a, // A
-			0,            // B
-			1, Z(a)*b)    // C√D
+		return qs.aNew3(a,
+			0,         // B
+			1, Z(a)*b) // C√D
 
 	case 3:
-		a, b, c, d := q.abcd()
+		a, b := q.ab()
+		c, d := q.cd()
 		if b == 0 {
 			//   / c√d    √(c√d)   √a√(c√d)   √(ac√d)  B + C√D + E√(F+G√H)
 			//  / ----- = ------ = -------- = ------ = ------------------
 			// √    a       √a       √a√a        a             A
-			return qs.aNew(a, // A
+			return qs.aNew7(a, // A
 				0,         // B = 0
 				0, 1,      // C√D = 0
 				1,         // E
 				0,         // F
 				Z(a)*c, d) // G√H
 		}
-		// First from √(b + c√d) look if b² - c²d = x²
-		// In other words, look a x such that 1√(b²-c²d) = x√1
-		// Case example: √(6+2√5) = 1+√5
-		if x, r, _ := qs.zSqrt(1, b*b - c*c*d); r == 1 {
-			a := N(2)
-			// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
-			// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
-			o1, i1, _ := qs.zSqrt(1, 2*(b + Z(x))) // o1√i1 = √(b+x)
-			o2, i2, _ := qs.zSqrt(1, 2*(b - Z(x))) // o2√i2 = √(b-x)
-			if i1 == +1 && i2 != +1 { // √(b+x) is integer, √(b-x) is not.
-				return qs.aNew(a, // C
-					Z(o1),        // B
-					Z(o2), Z(i2)) // C√D
-			}
-			if i1 != +1 && i2 == +1 { // √(b+x) is not integer, √(b-x) is.
-				return qs.aNew(a, // C
-					Z(o2),        // B
-					Z(o1), Z(i1)) // C√D
-			}
-			if i1 >= i2 {
-				return qs.aNew(a, // C
-					0,            // B
-					Z(o1), Z(i1), // C√D
-					Z(o2), Z(i2)) // E√F
-			}
-			return qs.aNew(a, // C
-				0,            // B
-				Z(o2), Z(i2), // C√D
-				Z(o1), Z(i1)) // E√F
+		
+		den, num, err := qs.zSqrtDenest3(b, c, d)
+		if err != nil {
+			return nil, err
 		}
+		a *= N(den)
+		switch len(num) {
+		case 1:
+			// Denested √(b+c√d) = s
+			s := Z(num[0])
+			return qs.aNew1(a,
+				s) // b
+		case 3:
+			// Denested √(b+c√d) = s + t√u
+			s, t, u := Z(num[0]), Z(num[1]), Z(num[2])
+			return qs.aNew3(a,
+				s,    // s
+				t, u) // t√u
+		case 5:
+			// Denested √(b+c√d) = s + t√u + v√w
+			s, t, u, v, w := Z(num[0]), Z(num[1]), Z(num[2]), Z(num[3]), Z(num[4])
+			return qs.aNew5(a,
+				s,    // s
+				t, u, // t√u
+				v, w) // v√w
+		default:
+			break
+		}
+		
+
 		//   / b + c√d    √(b + c√d)   √a√(b + c√d)   √(ab + ac√d)   √(F + G√H))
 		//  / --------- = ---------- = ------------ = ------------ = -----------
 		// √      a           √a           √a√a             a             A
-		return qs.aNew(a, // A
+		return qs.aNew7(a, // A
 			0,      // B = 0
 			0, 1,   // C√D = 0
 			1,      // E
@@ -485,7 +523,8 @@ func (qs *A32s) aPow2(q *A32) (s *A32, err error) {
 			b*b)            // B
 	
 	case 3:
-		a, b, c, d := q.abcd()
+		a, b := q.ab()
+		c, d := q.cd()
 		if b == 0 {
 			// = (c√d)(c√d) = c²d
 			// = B
@@ -501,7 +540,8 @@ func (qs *A32s) aPow2(q *A32) (s *A32, err error) {
 			2*b*c, d)       // C√D
 
 	case 5: 
-		a, b, c, d, e, f := q.abcdef()
+		a, b := q.ab()
+		c, d, e, f := q.cdef()
 		if b == 0 {
 			// = (c√d + e√f)(c√d + e√f)
 			// = c²d + e²f + 2ce√(df)
@@ -524,7 +564,8 @@ func (qs *A32s) aPow2(q *A32) (s *A32, err error) {
 			c*f, d)              // G√H
 
 	case 7:
-		a, b, c, d, e, f, g, h := q.abcdefgh()
+		a, b := q.ab()
+		c, d, e, f, g, h := q.cdefgh()
 		if b == 0 {
 			if c == 0 {
 				// = e√(f+g√h) * e√(f+g√h)
