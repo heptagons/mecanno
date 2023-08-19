@@ -147,8 +147,10 @@ func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 			return nil, err
 		} else {
 			a := N(A)*N(den)
-			b, c, e := Z(BCE[0])*Z(den), Z(BCE[1])*Z(den), Z(BCE[2])*Z(den)
+			b := Z(BCE[0])*Z(den)
+			c := Z(BCE[1])*Z(den)
 			d := Z(D)
+			e := Z(BCE[2])*Z(den)
 			switch len(num) {
 			default: // and case 0
 				// cannot denest
@@ -177,6 +179,9 @@ func (qs *A32s) aNew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 				s    := Z(num[0])
 				t, u := Z(num[1]), Z(num[2])
 				v, w := Z(num[3]), Z(num[4])
+//fmt.Println("aNew7 den,num", den, num)		
+//fmt.Println("aNew7 abcde", a, b, c, d, e)	
+//fmt.Println("aNew7 stuvw", s, t, u, v, w)	
 				if d == u {
 					// b + c√d + e(s + t√d + v√w)
 					// b + es + (c + et)√d + ev√w

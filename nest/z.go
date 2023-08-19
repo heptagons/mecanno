@@ -238,19 +238,23 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 // zIsSqrtDenest3 returns a denominator and array of denested numerators
 // if √(b + c√d) can be denested. There are four possibilites:
 //	- len(n) == 0:
-//		Cannot denest
+//		Cannot denest.
+//
 //	- len(n) == 1:
 //		  ,-------    n[0]
 //		 / b + c√d = ------
 //		√             den
+//	                where den > 0.
 //	- len(n) == 3:                _____
 //		  ,-------    n[0] + n[1]√ n[2]
 //		 / b + c√d = -------------------
 //		√                    den
+//	                 where den > 0, n[1] != 0, n[2] != 1.
 //	- len(n) == 5:                _____        _____
 //		  ,-------    n[0] + n[1]√ n[2] + n[3]√ n[4]
 //		 / b + c√d = --------------------------------
 //		√                         den
+//	                 where den > 0, n[1] != 0, n[3] != 0, n[2] != n[4] != 1.
 //
 func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	den = 1
@@ -313,36 +317,43 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	} else {
 		// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
 		// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
-		if o1, i1, err := z.zSqrt(1, 2*(b + Z(x))); err != nil { // o1√i1 = √(b+x)
+		if o1, i1, err := z.zSqrt(1, 2*(b + Z(x))); err != nil {
 			e = err
 		} else
-		if o2, i2, err := z.zSqrt(1, 2*(b - Z(x))); err != nil { // o2√i2 = √(b-x)
+		if o2, i2, err := z.zSqrt(1, 2*(b - Z(x))); err != nil {
 			e = err
 		} else {
+			// o1√i1 = √(b+x)
+			// o2√i2 = √(b-x)
 			if o1 % 2 == 0 && o2 % 2 == 0 {
+				// numerators are all even. divide them by 2, left denominator as 1.
 				o1 /= 2
 				o2 /= 2
 			} else {
+				// numerators have some odd number, set denominator as 2.
 				den = 2
 			}
 			if c < 0 {
+				// correct second numerator
 				o2 = -o2
 			}
 			if i1 == +1 && i2 != +1 {
 				// √(b+x) is integer, √(b-x) is not
-				// denest as []{ o1, o2, i2 }
+				// return (o1 + o2√i2) / den
 				n = []Z32{ o1, o2, i2 }
-			} else if i1 != +1 && i2 == +1 { // √(b+x) is not integer, √(b-x) is.
+			} else
+			if i1 != +1 && i2 == +1 {
 				// √(b+x) is not integer, √(b-x) is.
-				// denest as o1 + o2√i1
+				// return ( o2 + o1√i1) / den
 				n = []Z32 { o2, o1, i1 }
-			} else if i1 < i2 {
-				// denest as o1√i1 + o2√i2
+			} else
+			if i1 < i2 {
+				// return ( 0 + o1√i1 + o2√i2 ) / den
 				n = []Z32 {
 					0, o1, i1, o2, i2,
 				}
 			} else {
-				// denest as o2√i2 + o1√i1
+				// return ( 0 + o2√i2 + o1√i1 ) / den
 				n = []Z32 {
 					0, o2, i2, o1, i1,
 				}
