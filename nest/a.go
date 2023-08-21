@@ -35,6 +35,46 @@ func newA32(den N32, num ...Z32) *A32 {
 	}
 }
 
+func newA32Int(z Z32) *A32 {
+	return &A32{
+		den: 1, // a
+		num: []Z32{
+			z, // b
+		},
+	}
+}
+
+func newA32Rat(num Z32, den N32) *A32 {
+	return &A32{
+		den: den, // a
+		num: []Z32{
+			num, // b
+		},
+	}
+}
+
+func newA32Surd(z Z32) *A32 {
+	return &A32{
+		den: 1, // a
+		num: []Z32{
+			0, // b
+			1, // c
+			z, // d
+		},
+	}
+}
+
+func (a *A32) addInt(z Z32) *A32 {
+	if a == nil {
+		return nil
+	}
+	if len(a.num) == 0 {
+		return nil
+	}
+	a.num[0] += z*Z32(a.den)
+	return a
+}
+
 // Equal returns true it the given number is identical to this one.
 func (q *A32) Equal(r *A32) bool {
 	if q == nil || r == nil {

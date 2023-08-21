@@ -127,6 +127,8 @@ func TestA32s(t *testing.T) {
 		{ f( 0,1,1), 1, "1"    }, // (0+1√1)/1 = (1)/1 = 1
 		{ f( 1,1,1), 1, "2"    }, // (1+1√1)/1 = (1+1)/1 = 2
 		{ f( 0,1,2), 1, "√2"   }, // (0+1√2)/1 = (√2)/1 = √2
+		{ f( 0,1,3), 1, "√3"   }, // (0+1√3)/1 = (√3)/1 = √3
+		{ f( 0,1,5), 1, "√5"   }, // (0+1√5)/1 = (√5)/1 = √5
 		{ f( 1,1,2), 1, "1+√2" }, // 1+1√2
 		{ f( 1,1,3), 1, "1+√3" }, // 1+1√3
 		{ f( 1,1,4), 1, "3"    }, // 1+1√4 = 1+2 = 3
@@ -317,6 +319,86 @@ func TestA32s(t *testing.T) {
 	}
 }
 
+func TestA32cmp(t *testing.T) {
+	m := make(map[string]*A32, 0)
+	as := NewA32s()
+	m["0"]    = newA32Int(0)
+	m["1"]    = newA32Int(1)
+	m["2"]    = newA32Int(2)
+	m["3"]    = newA32Int(3)
+	m["4"]    = newA32Int(4)
+	m["7/5"]  = newA32Rat(7, 5)
+	m["5/2"]  = newA32Rat(5, 2)
+	m["√2"]   = newA32Surd(2)
+	m["√3"]   = newA32Surd(3)
+	m["√5"]   = newA32Surd(5)
+	m["1+√2"] = newA32Surd(2).addInt(1)
+	m["1+√5"] = newA32Surd(5).addInt(1)
+
+	m["5+√7"] = newA32Surd(7).addInt(5)
+	m["7+√5"] = newA32Surd(5).addInt(7)
+
+	m["5+2√7"], _ = as.aNew3(1, 5, 2, 7)
+	m["6+2√7"], _ = as.aNew3(1, 6, 2, 7)
+
+	// aCmp
+	for _, s := range []struct { q, r string; got int; err bool } {
+		{ "0", "0",  0, false }, // 0 = 0
+		{ "1", "0",  1, false }, // 0 = 0
+		{ "0", "1", -1, false }, // 0 = 0
+
+		{ "7/5", "5/2", -1, false }, // 7/5 < 5/2
+		{ "5/2", "5/2",  0, false },
+		{ "5/2", "7/5",  1, false },
+
+		{ "√3", "0",   1, false }, // 1.732... > 0
+		{ "√3", "1",   1, false }, 
+		{ "√3", "√2",  1, false }, // √3 > √2
+		{ "√3", "√3",  0, false }, // √3 = √3
+		{ "√3", "2",  -1, false }, // √3 < 2 
+		{ "√3", "√5", -1, false }, // √3 < √5
+		
+		{ "1+√2", "0",     1, false }, // 2.414... > 0
+		{ "1+√2", "1",     1, false }, // 2.414... > 1
+		{ "1+√2", "2",     1, false }, // 2.414... > 2
+		{ "1+√2", "1+√2",  0, false }, // 2.414... = 2.414...
+		{ "1+√2", "3",    -1, false }, // 2.414... < 3
+		//{ "1+√2", "1+√5", -1, false }, // 2.414... < 3.236...
+
+		{ "1+√5", "0",     1, false }, // 3.236...
+		{ "1+√5", "1",     1, false },
+		{ "1+√5", "2",     1, false },
+		{ "1+√5", "1+√2",  1, false },
+		{ "1+√5", "1+√5",  0, false }, 
+		{ "1+√5", "4",    -1, false },
+
+		{ "5+√7", "5+√7",     0, false },
+		{ "5+√7", "7+√5",    -1, false }, // 7.645 < 9.236
+		//{ "7+√5", "5+√7",    +1, false },
+		{ "7+√5", "7+√5",     0, false },
+
+
+		{ "5+2√7", "5+2√7",  0, false },
+		{ "6+2√7", "5+2√7",  1, false },
+		{ "6+2√7", "6+2√7",  0, false },
+		{ "5+2√7", "6+2√7", -1, false },
+
+
+	} {
+		if q, ok := m[s.q]; !ok {
+			t.Fatalf("aCmp %s not in map", s.q)
+		} else if r, ok := m[s.r]; !ok {
+			t.Fatalf("aCmp %s not in map", s.r)
+		} else if got, err := as.aCmp(q, r); err != nil {
+			if !s.err {
+				t.Fatalf("aCmp %s %s unexpected error %v", s.q, s.r, err)
+			}
+		} else if got != s.got {
+			t.Fatalf("aCmp %s %s got %d exp %d", s.q, s.r, got, s.got)
+		}
+	}
+}
+
 func TestA32new7(t *testing.T) {
 	// Test (b+c√d+e√(f+g√h))/a internal denesting √(f+g√h)
 	qs := NewA32s()
@@ -369,7 +451,7 @@ func TestA32new7(t *testing.T) {
 	}
 }
 
-func TestA32Pow(t *testing.T) {
+func TestA32pow(t *testing.T) {
 	qs := NewA32s()
 
 	// pow-sqrt
@@ -386,6 +468,7 @@ func TestA32Pow(t *testing.T) {
 	//t.Log(b)
 	_ = b
 }
+
 
 
 

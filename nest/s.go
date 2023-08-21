@@ -2,61 +2,78 @@ package nest
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
-// Str extends strings.Builder with method useful
-// for nested algebraic numbers
-type Str struct {
-	strings.Builder
+// S32 represents 32 bit surd
+// from minimum 0√0 to maximum 0xffffffff√0xffffffff
+type S32 struct {
+	out Z32
+	in  N32
 }
 
-func NewStr() *Str {
-	return &Str{}
+// S32s is a factory to operates over sum of surds
+// Uses factory Z32s
+type S32s struct {
+	*Z32s
+	surds map[N32]Z32 // map[in]out
 }
 
-func (s *Str) par(par bool, f func(*Str)) {
-	if par { s.WriteString("(") }
-	f(s)
-	if par { s.WriteString(")") }
-	
+// NewS32s creates a new S32s factory
+func NewS32s() *S32s {
+	return &S32s{
+		Z32s:  NewZ32s(),
+		surds: make(map[N32]Z32, 0),
+	}
 }
 
-// neg append negative sign "-"
-func (s *Str) neg() {
-	s.WriteString("-")
+func (s *S32s) addN(in N) error {
+	// reduce 1√in -> o32√in32
+	o32, i32, err := s.zSqrt(1, Z(in))
+	if err != nil {
+		return err
+	}
+	key := N32(i32)
+	if out, ok := s.surds[key]; !ok {
+		s.surds[key] = o32
+	} else {
+		s.surds[key] = out + o32
+	}
+	return nil
 }
 
-// pos append positive sign "+"
-func (s *Str) pos() {
-	s.WriteString("+")	
-}
-
-// zS append an integer without forced positive sign
-func (s *Str) z(z Z) {
-	s.WriteString(fmt.Sprintf("%d", z))
-}
-
-// zS append an integer with forced positive sign
-func (s *Str) zS(z Z) {
-	s.WriteString(fmt.Sprintf("%+d", z))             
-}
-
-// sqrt append a integer preceded by root symbol "√".
-func (s *Str) sqrt(z Z) {
-	s.WriteString(fmt.Sprintf("√%d", z))
-}
-
-// sqrtP append a root symbol "√" and then append
-// parentesis "(" the calls given function f to
-// end appending parentesis ")".
-func (s *Str) sqrtP(f func(s *Str)) {
-	s.WriteString("√(")     
-	f(s)
-	s.WriteString(")")
-}
-
-// over append a number preceded by bar symbol "/".
-func (s *Str) over(n N) {
-	s.WriteString(fmt.Sprintf("/%d", n))
+func (s *S32s) String() string {
+	keys := make([]int, len(s.surds))
+	i := 0
+	for k := range s.surds {
+		keys[i] = int(k)
+		i++
+	}
+	sort.Ints(keys[:])
+	var sb strings.Builder
+	for pos, key := range keys {
+		out := s.surds[N32(key)]
+		if pos == 0 {
+			if out == 1 {
+				sb.WriteString(fmt.Sprintf("√%d", key))
+			} else if out == -1 {
+				sb.WriteString(fmt.Sprintf("-√%d", key))
+			} else if out != 0 {
+				sb.WriteString(fmt.Sprintf("%d√%d", out, key))
+			}
+		} else {
+			if out == 1 {
+				sb.WriteString(fmt.Sprintf("+√%d", key))
+			} else if out == -1 {
+				sb.WriteString(fmt.Sprintf("-√%d", key))
+			} else {
+				sb.WriteString(fmt.Sprintf("%+d√%d", out, key))
+			}
+		}
+	}
+	if s := sb.String(); s != "" {
+		return s
+	}
+	return "0"
 }
