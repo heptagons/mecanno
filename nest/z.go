@@ -58,6 +58,22 @@ func (z *Z32s) zFrac(den N, num Z) (den32 N32, n32 Z32, err error) {
 	return N32(dn), n32, nil
 }
 
+// zMul returns the multiplication of the given arguments
+// protected to be under 32 bits
+func (z *N32s) zMul(nums ...Z) (Z32, error) {
+	mul := Z(0)
+	if len(nums) > 0 {
+		mul = 1
+	}
+	for _, n := range nums {
+		mul *= n
+		if mul > Z32_MAX || mul < -Z32_MAX {
+			return 0, ErrOverflow
+		}
+	}
+	return Z32(mul), nil
+}
+
 // zFracN reduces the rationals (± num0 ± num1 ± num2 ± ... ± numN) / den
 // Example: zFracN(8, 4, 2) return 4,[2,1],nil:
 //   4x + 2y   2x + y
@@ -158,7 +174,7 @@ func (z *Z32s) zSqrt(o, i Z) (o32, i32 Z32, err error) {
 				in /= pp
 				continue // check same prime again
 			}
-			break // check next prime
+			break // check next bigger prime
 		}
 	}
 	if on > Z32_MAX || in > Z32_MAX {
@@ -235,26 +251,28 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	return o32, i32s, nil
 }
 
-// zIsSqrtDenest3 returns a denominator and array of denested numerators
-// if √(b + c√d) can be denested. There are four possibilites:
+// zSqrtDenest3 returns a denominator and array of denested numerators
+// if √(b + c√d) can be denested. There are four results types:
 //	- len(n) == 0:
-//		Cannot denest.
+//		arguments cannot be denest.
 //
 //	- len(n) == 1:
 //		  ,-------    n[0]
 //		 / b + c√d = ------
 //		√             den
 //	                where den > 0.
+//
 //	- len(n) == 3:                _____
 //		  ,-------    n[0] + n[1]√ n[2]
 //		 / b + c√d = -------------------
 //		√                    den
 //	                 where den > 0, n[1] != 0, n[2] != 1.
+//
 //	- len(n) == 5:                _____        _____
 //		  ,-------    n[0] + n[1]√ n[2] + n[3]√ n[4]
 //		 / b + c√d = --------------------------------
 //		√                         den
-//	                 where den > 0, n[1] != 0, n[3] != 0, n[2] != n[4] != 1.
+//	                 where den > 0, n[0] = 0, n[1] != 0, n[3] != 0, n[2] != n[4] != 1.
 //
 func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	den = 1
@@ -335,7 +353,7 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 			}
 			if c < 0 {
 				// correct second numerator
-				o2 = -o2
+				o2 = -o2 // ??? or o1?
 			}
 			if i1 == +1 && i2 != +1 {
 				// √(b+x) is integer, √(b-x) is not

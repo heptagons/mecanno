@@ -40,6 +40,7 @@ func TestS32s(t *testing.T) {
 		t.Fatalf("got %s exp %s", got, exp)
 	}
 
+	/*
 	s3 := NewS32s(factory)
 	s3.sAdd(1)
 	s3.sSub(5)
@@ -53,5 +54,34 @@ func TestS32s(t *testing.T) {
 		t.Fatalf("err %v", err)
 	} else if got, exp := s.String(), "1-√5"; got != exp {
 		t.Fatalf("got %s exp %s", got, exp)
+	}*/
+
+
+	// test only basic squareables: base -> pow2 -> sqrt -> base
+	for _, r := range []struct { base, pow2 string; surds []Z } {
+		{ "1-√5",       "6-2√5", []Z{ 1, -5      } },
+		{ "4+7√11", "555+56√11", []Z{ 16, 7*7*11 } },
+	} {
+		s := NewS32s(factory)
+		for _, surd := range r.surds {
+			if surd > 0 {
+				s.sAdd(N(surd))
+			} else {
+				s.sSub(N(-surd))
+			}
+		}
+		if got, exp := s.String(), r.base; got != exp {
+			t.Fatalf("got %s exp %s", got, exp)
+		} else if s1, err := s.sNewPow2(); err != nil {
+			t.Fatalf("err %v", err)		
+		} else if got, exp := s1.String(), r.pow2; got != exp {
+			t.Fatalf("got %s exp %s", got, exp)
+		} else if s2, err := s1.sNewSqrt(); err != nil {
+			t.Fatalf("err %v", err)
+		} else if got, exp := s2.String(), r.base; got != exp {
+			t.Fatalf("got %s exp %s", got, exp)
+		}
 	}
+
+
 }

@@ -44,7 +44,7 @@ func (s *S32s) sAdd(in N) error {
 			s.surds[k] = out + o32
 		}
 	}
-	fmt.Println("sAdd", in, s.surds)
+	//fmt.Println("sAdd", in, s.surds)
 	return nil
 }
 
@@ -65,31 +65,37 @@ func (s *S32s) sSub(in N) error {
 }
 
 
-// sNewPow2 returns a new S32s with the sum equals to this sum elevated to 2nd power
+// sNewPow2 returns a new S32s with the sum equals to this sum elevated to 
+// to the second power
 func (s *S32s) sNewPow2() (*S32s, error) {
 	surds := make(map[int]Z32, 0)
 	keys := s.Keys()
 	for _, k1 := range keys {
 		for _, k2 := range keys {
 			if k1 == k2 {
-				k := int(1)
-				// √a * √a = a√1 
-				if out, ok := surds[k]; !ok {
-					surds[k] = Z32(k1)
+				// x√a * x√a = xxa√1 = o√i
+				if o, err := s.zMul(Z(s.surds[k1]), Z(s.surds[k2]), Z(k1)); err != nil {
+					return nil, err
 				} else {
-					surds[k] = out + Z32(k1)
+					i := int(1)
+					if out, ok := surds[i]; !ok {
+						surds[i] = o
+					} else {
+						surds[i] = out + o
+					}
 				}
-			} else if o32, i32, err := s.zSqrt(1, Z(k1)*Z(k2)); err != nil {
-				return nil, nil
 			} else {
-				// x√a * y√b = xy√(a*b) = o32√i32
-				o32 *= s.surds[k1] 
-				o32 *= s.surds[k2]
-				k := int(i32)
-				if out, ok := surds[k]; !ok {
-					surds[k] = o32
+				// x√a * y√b = xy√(ab) = o√i
+				x, y := Z(s.surds[k1]), Z(s.surds[k2])
+				if o32, i32, err := s.zSqrt(x*y, Z(k1)*Z(k2)); err != nil {
+					return nil, err
 				} else {
-					surds[k] = out + o32
+					i := int(i32)
+					if out, ok := surds[i]; !ok {
+						surds[i] = o32
+					} else {
+						surds[i] = out + o32
+					}
 				}
 			}
 		}
@@ -106,7 +112,7 @@ func (s *S32s) sNewSqrt() (*S32s, error) {
 	keys := s.Keys()
 	if len(keys) != 2 || keys[0] != 1 {
 		// suspend for sum other than format b√1 + c√d
-		return nil, nil
+		return nil, fmt.Errorf("Cant sqrt of keys %v", keys)
 	}
 	b := Z(s.surds[keys[0]])
 	c := Z(s.surds[keys[1]])
@@ -118,7 +124,7 @@ func (s *S32s) sNewSqrt() (*S32s, error) {
 		return nil, err
 	} else if r != 1 {
 		// cannot denest
-		return nil, err
+		return nil, fmt.Errorf("Can sqrt b*b - c*c*d x=%d r=%d", x, r)
 	} else {
 		// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
 		// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2

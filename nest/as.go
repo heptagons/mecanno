@@ -65,11 +65,12 @@ func (qs *A32s) aNew1(a N, b Z) (*A32, error) {
 	}
 }
 
-// aNew3 produces at most a number of size 3, that is a number of the form
+// aNew3 produces at most a number of deep 3, that is a number of the form
 //	
 //	(b + c√d) / a
 //	
-// Where c != 0 and d != 1.
+// Also kwnow as quadratic irrational number.
+// Where c != 0 and d != 1 square-free.
 // Otherwise returns aNew1 versions.
 func (qs *A32s) aNew3(a N, b, c, d Z) (*A32, error) {
 	if c == 0 || d == 0 {
