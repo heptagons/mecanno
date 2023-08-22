@@ -23,6 +23,7 @@ type S32s struct {
 
 
 // NewS32s creates a new S32s factory
+// with an initial sum equals to zero
 func NewS32s(factory *Z32s) *S32s {
 	return &S32s{
 		Z32s:  factory,
@@ -30,22 +31,42 @@ func NewS32s(factory *Z32s) *S32s {
 	}
 }
 
-func (s *S32s) addSurd(in N) error {
+// sAdd add the given value √in to the current sum
+func (s *S32s) sAdd(in N) error {
 	// reduce 1√in -> o32√in32
 	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
 		return err
 	} else {
-		key := int(i32)
-		if out, ok := s.surds[key]; !ok {
-			s.surds[key] = o32
+		k := int(i32)
+		if out, ok := s.surds[k]; !ok {
+			s.surds[k] = o32
 		} else {
-			s.surds[key] = out + o32
+			s.surds[k] = out + o32
+		}
+	}
+	fmt.Println("sAdd", in, s.surds)
+	return nil
+}
+
+// sSub substract the given value √in to the current sum
+func (s *S32s) sSub(in N) error {
+	// reduce 1√in -> o32√in32
+	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
+		return err
+	} else {
+		k := int(i32)
+		if out, ok := s.surds[k]; !ok {
+			s.surds[k] = -o32
+		} else {
+			s.surds[k] = out - o32
 		}
 	}
 	return nil
 }
 
-func (s *S32s) newPow2() (*S32s, error) {
+
+// sNewPow2 returns a new S32s with the sum equals to this sum elevated to 2nd power
+func (s *S32s) sNewPow2() (*S32s, error) {
 	surds := make(map[int]Z32, 0)
 	keys := s.Keys()
 	for _, k1 := range keys {
@@ -61,8 +82,10 @@ func (s *S32s) newPow2() (*S32s, error) {
 			} else if o32, i32, err := s.zSqrt(1, Z(k1)*Z(k2)); err != nil {
 				return nil, nil
 			} else {
+				// x√a * y√b = xy√(a*b) = o32√i32
+				o32 *= s.surds[k1] 
+				o32 *= s.surds[k2]
 				k := int(i32)
-				// √a * √b = 1√(a*b) = o32√i32
 				if out, ok := surds[k]; !ok {
 					surds[k] = o32
 				} else {
@@ -77,12 +100,12 @@ func (s *S32s) newPow2() (*S32s, error) {
 	}, nil
 }
 
-func (s *S32s) newSqrtRoot() (*S32s, error) {
+// sNewSqrt tries to return a new S32s with value equals to the square root of
+// this sum of surds. Returns nil or error when can't perform the operation.
+func (s *S32s) sNewSqrt() (*S32s, error) {
 	keys := s.Keys()
-	if len(keys) != 2 {
-		return nil, nil
-	}
-	if keys[0] != 1 {
+	if len(keys) != 2 || keys[0] != 1 {
+		// suspend for sum other than format b√1 + c√d
 		return nil, nil
 	}
 	b := Z(s.surds[keys[0]])
@@ -112,27 +135,30 @@ func (s *S32s) newSqrtRoot() (*S32s, error) {
 				o1 /= 2
 				o2 /= 2
 			} else {
-				// numerators have some odd number, set denominator as 2.
-				return nil, nil
 				//den = 2
+				// numerators have some odd number, set denominator as 2.
+				// Here we cannot return a denominator, we abort.
+				return nil, nil
 			}
 			if c < 0 {
 				// correct second numerator
-				o2 = -o2
+				//o2 = -o2
+				o1 = -o1
 			}
 			surds := make(map[int]Z32, 0)
 			if i1 == +1 && i2 != +1 {
 				// √(b+x) is integer, √(b-x) is not
-				// return (o1 + o2√i2) / den
+				// return (o1 + o2√i2)
 				surds[int(1)] = o1
 				surds[int(i2)] = o2
 			} else
 			if i1 != +1 && i2 == +1 {
 				// √(b+x) is not integer, √(b-x) is.
-				// return ( o2 + o1√i1) / den
-				surds[1] = o2
+				// return ( o2 + o1√i1)
+				surds[int(1)] = o2
 				surds[int(i1)] = o1
 			} else {
+				// return (o1√i1 + o2√i2)
 				surds[int(i1)] = o1
 				surds[int(i2)] = o2
 			}
@@ -143,8 +169,6 @@ func (s *S32s) newSqrtRoot() (*S32s, error) {
 		}
 	}
 }
-
-
 
 func (s *S32s) Keys() []int {
 	keys := make([]int, len(s.surds))
@@ -181,6 +205,8 @@ func (s *S32s) String() string {
 		}
 		if key != 1 {
 			sb.WriteString(fmt.Sprintf("√%d", key))
+		} else if out == 1 || out == -1 {
+			sb.WriteString("1")
 		}
 	}
 	if s := sb.String(); s != "" {
