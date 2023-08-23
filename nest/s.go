@@ -31,7 +31,7 @@ func NewS32s(factory *Z32s) *S32s {
 	}
 }
 
-// sAdd add the given value √in to the current sum
+// sAdd add the given surd √in to the current sum of surds
 func (s *S32s) sAdd(in N) error {
 	// reduce 1√in -> o32√in32
 	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
@@ -48,7 +48,7 @@ func (s *S32s) sAdd(in N) error {
 	return nil
 }
 
-// sSub substract the given value √in to the current sum
+// sSub substract the given surd √in from the current sum of surds
 func (s *S32s) sSub(in N) error {
 	// reduce 1√in -> o32√in32
 	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
@@ -64,9 +64,8 @@ func (s *S32s) sSub(in N) error {
 	return nil
 }
 
-
-// sNewPow2 returns a new S32s with the sum equals to this sum elevated to 
-// to the second power
+// sNewPow2 returns a new S32s with its surd sum equals to 
+// this surds sum elevated to the second power
 func (s *S32s) sNewPow2() (*S32s, error) {
 	surds := make(map[int]Z32, 0)
 	keys := s.Keys()
@@ -74,28 +73,28 @@ func (s *S32s) sNewPow2() (*S32s, error) {
 		for _, k2 := range keys {
 			if k1 == k2 {
 				// x√a * x√a = xxa√1 = o√i
-				if o, err := s.zMul(Z(s.surds[k1]), Z(s.surds[k2]), Z(k1)); err != nil {
+				o, err := s.zMul(Z(s.surds[k1]), Z(s.surds[k2]), Z(k1))
+				if err != nil {
 					return nil, err
+				}
+				i := int(1)
+				if out, ok := surds[i]; !ok {
+					surds[i] = o
 				} else {
-					i := int(1)
-					if out, ok := surds[i]; !ok {
-						surds[i] = o
-					} else {
-						surds[i] = out + o
-					}
+					surds[i] = out + o
 				}
 			} else {
 				// x√a * y√b = xy√(ab) = o√i
 				x, y := Z(s.surds[k1]), Z(s.surds[k2])
-				if o32, i32, err := s.zSqrt(x*y, Z(k1)*Z(k2)); err != nil {
+				o32, i32, err := s.zSqrt(x*y, Z(k1)*Z(k2))
+				if err != nil {
 					return nil, err
+				}
+				i := int(i32)
+				if out, ok := surds[i]; !ok {
+					surds[i] = o32
 				} else {
-					i := int(i32)
-					if out, ok := surds[i]; !ok {
-						surds[i] = o32
-					} else {
-						surds[i] = out + o32
-					}
+					surds[i] = out + o32
 				}
 			}
 		}
@@ -221,8 +220,9 @@ func (s *S32s) String() string {
 	return "0"
 }
 
-/*func (s *S32s) GreaterOrEqualZ(z Z32) (ok bool, err error) {
-	// first sort these surds and compare with integer argument
-	// x√a + y√b + z√c >= z*z + 0 + 0
-	if 
-}*/
+func (s *S32s) sCmp(t *S32s) (greater, equal bool) {
+	return false, false 
+	// a√b + c√d > √N
+}
+
+

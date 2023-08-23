@@ -129,6 +129,7 @@ func (a *N32) Reduce3(b, c *N32) {
 // some 32-bit nested algebraic rational numbers
 type N32s struct {
 	primes []N32
+	pow2s  [][]N
 }
 
 func NewN32s() *N32s {
@@ -147,7 +148,109 @@ func NewN32s() *N32s {
             primes = append(primes, i)
         }
     }
+
+    pow2s := make([][]N, 0)
+    last := 0   // first pow2
+    count := 16 // first table size
+    for t := 0; t < 2; t++ { // two tables, 16 and 32 squares
+		table := make([]N, count)
+		for i := 0; i < count; i++ {
+			table[i] = N(last+i) * N(last+i)
+		}
+		pow2s = append(pow2s, table)
+		last += count
+		count *= 2
+	}
 	return &N32s{
 		primes: primes,
+		pow2s:  pow2s,
 	}
 }
+
+// nSqrtFloorCeil returns for the given number the "floor" and "ceiling" square roots
+// Example for given n=133 return floor=144 (12²) and ceil=169 (13²).
+func (n *N32s) nSqrtFloorCeil(num N) (floor, ceil N, err error) {
+	floor = N(0)
+	for _, pow2 := range n.pow2s {
+		ceil = pow2[len(pow2) - 1]
+		if num == ceil {
+			// num is a square, return ASAP floor=ceil=n
+			floor = ceil
+			return
+		} else if num < ceil {
+			floor, ceil = nSqrtFloorCeil(floor, num, pow2)
+			return
+		}
+		// look in next table
+		// next floor is this ceil
+		floor = ceil // pass next table this as the min
+	}
+	err = ErrOverflow
+	return
+}
+
+func nSqrtFloorCeil(floorPrev, num N, table []N) (floor, ceil N) {
+	c := len(table) // 16
+	d := c/2        // 8 -> 4 -> 2 -> 1
+	curPos := c-1-d // start with 7
+	floor = floorPrev // start with pos -1
+	ceil = table[c-1] // start with pos 15
+	for {
+		if d == 0 {
+			return
+		}
+		cur := table[curPos]
+		if num == cur {
+			// num is a square, return ASAP floor=ceil=n
+			return num, num
+		}
+		d /= 2
+		if num > cur {
+			floor = cur
+			curPos += d
+		} else {
+			ceil = cur
+			curPos -= d
+		}
+	}
+	return
+}
+
+
+/*
+
+Sqrts_floor_ceil
+
+Table[0] first 16 squares:
+
+0          1/8         2/4         3/8         1/2         5/8           3/4           7/8            1
+|           |           |           |           |           |             |             |             |
+| a[0] a[1] | a[2] a[3] | a[4] a[5] | a[6] a[7] | a[8] a[9] | a[10] a[11] | a[12] a[13] | a[14] a[15] |
++-----------+-----------+-----------+-----------+-----------+-------------+-------------+-------------+
+|   0    1      4    9     16   25     36   49     64   81     100   121     144   169     196   225 
+
+                                         (-8)|<--------------------------------------------------max
+                                             ?                                                           step 2 (c=4)
+                                            min ---------------------->|(+4)
+                                                                       ?                                 step 3 (c=2)
+                                                                      min ---------->|(+2)
+                                                                                     ?                   step 4 (c=1)
+                                                                           (-1)|<---max
+                                                                               ?                         step 5 (c=0)
+                                                                              min 
+
+
+Example request sqrts_floor_ceil of 133:
+First we test 133 < table[0].max = 225 on success we jump to table "0":
+
+step 1) Is 133 > a[14]=196 no  c=8 test a[15-c] (a[7])
+step 2) Is 133 >  a[7]= 49 yes c=4 test a[7+c] (a[11])
+step 3) Is 133 < a[11]=121 yes c=2 goto a[11+c] (a[13])
+step 4) Is 133 > a[13]=169 no  c=1 goto a[13-c] (a[12])
+step 5) Is 133 < a[12]=144 no  c=0 return min=a[11]=121, max=a[12]=144
+
+
+
+
+*/
+

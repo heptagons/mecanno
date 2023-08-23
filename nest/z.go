@@ -15,7 +15,7 @@ type Z32s struct {
 // NewZ32s creates a new Z32s factory
 func NewZ32s() *Z32s {
 	return &Z32s{
-		N32s: NewN32s(),
+		N32s:  NewN32s(),
 	}
 }
 
@@ -58,8 +58,7 @@ func (z *Z32s) zFrac(den N, num Z) (den32 N32, n32 Z32, err error) {
 	return N32(dn), n32, nil
 }
 
-// zMul returns the multiplication of the given arguments
-// protected to be under 32 bits
+// zMul returns the result of multiplying of the given arguments.
 func (z *N32s) zMul(nums ...Z) (Z32, error) {
 	mul := Z(0)
 	if len(nums) > 0 {
