@@ -152,7 +152,7 @@ func NewN32s() *N32s {
     pow2s := make([][]N, 0)
     last := 0   // first pow2
     count := 16 // first table size
-    for t := 0; t < 2; t++ { // two tables, 16 and 32 squares
+    for t := 0; t < 8; t++ { // 16+32+64+128+256+512+1024+2048 squares
 		table := make([]N, count)
 		for i := 0; i < count; i++ {
 			table[i] = N(last+i) * N(last+i)
@@ -167,32 +167,38 @@ func NewN32s() *N32s {
 	}
 }
 
-// nSqrtFloorCeil returns for the given number the "floor" and "ceiling" square roots
+// nPow2FloorCeil returns for the given number the squred "floor" and "ceiling" of num*num
 // Example for given n=133 return floor=144 (12²) and ceil=169 (13²).
-func (n *N32s) nSqrtFloorCeil(num N) (floor, ceil N, err error) {
+func (n *N32s) nPow2FloorCeil(num N) (sqrt, floor, ceil N, err error) {
 	floor = N(0)
+	sqrt = 0
 	for _, pow2 := range n.pow2s {
-		ceil = pow2[len(pow2) - 1]
+		size := len(pow2)
+		ceil = pow2[size-1]
 		if num == ceil {
 			// num is a square, return ASAP floor=ceil=n
+			sqrt += N(size-1)
 			floor = ceil
 			return
 		} else if num < ceil {
-			floor, ceil = nSqrtFloorCeil(floor, num, pow2)
+			sqrt, floor, ceil = nPow2FloorCeil(sqrt, floor, num, pow2)
+			fmt.Printf("num=%d sqrt=%d floor=%d ceil=%d\n", num, sqrt, floor, ceil)
 			return
 		}
 		// look in next table
 		// next floor is this ceil
+		sqrt += N(size) // accumulate indices which are sqrt-floors
 		floor = ceil // pass next table this as the min
 	}
 	err = ErrOverflow
 	return
 }
 
-func nSqrtFloorCeil(floorPrev, num N, table []N) (floor, ceil N) {
+func nPow2FloorCeil(sqrtPrev, floorPrev, num N, table []N) (sqrt, floor, ceil N) {
 	c := len(table) // 16
-	d := c/2        // 8 -> 4 -> 2 -> 1
+	d := c / 2      // 8 -> 4 -> 2 -> 1
 	curPos := c-1-d // start with 7
+	sqrt = sqrtPrev
 	floor = floorPrev // start with pos -1
 	ceil = table[c-1] // start with pos 15
 	for {
@@ -201,26 +207,26 @@ func nSqrtFloorCeil(floorPrev, num N, table []N) (floor, ceil N) {
 		}
 		cur := table[curPos]
 		if num == cur {
-			// num is a square, return ASAP floor=ceil=n
-			return num, num
+			// num is a square already in cells
+			sqrt = sqrtPrev + N(curPos)
+			floor, ceil = num, num
+			return
 		}
-		d /= 2
+		d >>= 1 // d /= 2
 		if num > cur {
-			floor = cur
-			curPos += d
+			sqrt = sqrtPrev + N(curPos)
+			floor = cur // set new floor
+			curPos += d // next look above
 		} else {
-			ceil = cur
-			curPos -= d
+			ceil = cur  // set new ceil
+			curPos -= d // next look below
 		}
 	}
 	return
 }
 
-
 /*
-
 Sqrts_floor_ceil
-
 Table[0] first 16 squares:
 
 0          1/8         2/4         3/8         1/2         5/8           3/4           7/8            1
@@ -238,7 +244,6 @@ Table[0] first 16 squares:
                                                                            (-1)|<---max
                                                                                ?                         step 5 (c=0)
                                                                               min 
-
 
 Example request sqrts_floor_ceil of 133:
 First we test 133 < table[0].max = 225 on success we jump to table "0":

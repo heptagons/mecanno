@@ -30,18 +30,16 @@ func TestN32s(t *testing.T) {
 		}
 	}
 
-	//t.Logf("pows2 %v", factory.pow2s)
-
-	pow2s := [][]N { // first squares
+	pow2s := [][]N { // first pow2s                         // floor-sqrs
 		[]N { 
-			0, 1, 4, 9, 16, 25, 36, 49, 
-			64, 81, 100, 121, 144, 169, 196, 225,
+			0, 1, 4, 9, 16, 25, 36, 49,                     //  0, 1, 2, 3, 4, 5, 6, 7
+			64, 81, 100, 121, 144, 169, 196, 225,           //  8, 9,10,11,12,13,14,15
 		},
 		[]N {
-			256, 289, 324, 361, 400, 441, 484, 529,
-			576, 625, 676, 729, 784, 841, 900, 961,
-			1024, 1089, 1156, 1225, 1296, 1369, 1444, 1521,
-			1600, 1681, 1764, 1849, 1936, 2025, 2116, 2209,
+			256, 289, 324, 361, 400, 441, 484, 529,         // 16,17,18,19,20,21,22,23
+			576, 625, 676, 729, 784, 841, 900, 961,         // 24,25,26,27,28,29,30,31
+			1024, 1089, 1156, 1225, 1296, 1369, 1444, 1521, // 32,33,34,35,36,37,38,39
+			1600, 1681, 1764, 1849, 1936, 2025, 2116, 2209, // 40,41,42,43,44,45,46,47
 		},
 	}
 	for i, pow2 := range pow2s {
@@ -53,32 +51,36 @@ func TestN32s(t *testing.T) {
 	}
 
 	for _, r := range []struct { n N; exp string } {
-		{ 1_000_000, "Overflow" },
-
-		{ 225,  "[225,225]"   }, // first table max, ASAP-1 response
-		{ 2209, "[2209,2209]" }, // second table max, ASAP-1 response
+		{ 225,  "[15,225,225]"   }, // first table max, ASAP response
 		
 		// first table
-		{ 49, "[49,49]" }, // first midle square (1/2)
+		{ 49,  "[7,49,49]"    }, // first midle square (1/2)
+		{ 9,   "[3,9,9]"      }, // second midle square down (1/4)
+		{ 121, "[11,121,121]" }, // second midle square up (3/4)
+		{ 1,   "[1,1,1]"      },
+		{ 0,   "[0,0,0]"      },
+		{ 133, "[11,121,144]" }, // non-square
+		{ 145, "[12,144,169]" }, // non-square
+		{ 197, "[14,196,225]" }, // non-square
 
-		{ 9,   "[9,9]"     }, // second midle square down (1/4)
-		{ 121, "[121,121]" }, // second midle square up (3/4)
+		// second table
+		{ 2209, "[47,2209,2209]" }, // second table max, ASAP response
+		{ 226,  "[15,225,256]"   }, // floor from table-1, ceil from table-2
+		{ 255,  "[15,225,256]"   }, // floor from table-1, ceil from table-2
+		{ 289,  "[17,289,289]"   }, // square
+		{ 300,  "[17,289,324]"   }, // non-square
 
-		{ 133, "[121,144]" }, // non-square
-
-
-		//{ 197, "[196,225]" }, // higher cell range 197...224
-		//{ 224, "[196,225]" }, // higher cell range 197...224
-
-		//{ 144,       "[144,144]"   }, // first table square, ASAP-2 response
-
-		//{ 0,         "[0,0]"       },
+		{      10_000, "[10000,10000]"      },
+		{     100_000, "[99856,100489]"     },
+		{   1_000_000, "[1000000,1000000]"  },
+		{  10_000_000, "[9998244,10004569]" },
+		{ 100_000_000, "Overflow" },
 	} {
-		if floor, ceil, err := factory.nSqrtFloorCeil(r.n); err != nil {
+		if sqrt, floor, ceil, err := factory.nPow2FloorCeil(r.n); err != nil {
 			if got := r.exp; got != err.Error() {
 				t.Fatalf("got %s exp %s", got, err.Error())
 			}
-		} else if got := fmt.Sprintf("[%d,%d]", floor, ceil); got != r.exp {
+		} else if got := fmt.Sprintf("[%d,%d,%d]", sqrt, floor, ceil); got != r.exp {
 			t.Fatalf("got %s exp %s", got, r.exp)
 		}
 	}

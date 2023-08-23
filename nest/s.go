@@ -225,4 +225,11 @@ func (s *S32s) sCmp(t *S32s) (greater, equal bool) {
 	// a√b + c√d > √N
 }
 
+func (s *S32s) sPow2FloorCeil() (floor, ceil N) {
+	// floors = sFloor(d,e,f)
+	// bf,bc := nP
+	// a√b + c√d + e√d + ... = a*floorSqrt()
+	return 0, 0
+}
+
 
