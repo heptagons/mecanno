@@ -170,24 +170,26 @@ func NewN32s() *N32s {
 // nPow2FloorCeil returns for the given number the squred "floor" and "ceiling" of num*num
 // Example for given n=133 return floor=144 (12²) and ceil=169 (13²).
 func (n *N32s) nPow2FloorCeil(num N) (sqrt, floor, ceil N, err error) {
-	floor = N(0)
 	sqrt = 0
+	floor = N(0)
 	for _, pow2 := range n.pow2s {
 		size := len(pow2)
 		ceil = pow2[size-1]
-		if num == ceil {
-			// num is a square, return ASAP floor=ceil=n
-			sqrt += N(size-1)
-			floor = ceil
-			return
-		} else if num < ceil {
+		//if num == ceil {
+		//	// num is a square, return ASAP floor=ceil=n
+		//	sqrt += N(size-1)
+		//	floor = ceil
+		//	return
+		//} else 
+		if num <= ceil {
+			fmt.Printf("1 num=%d sqrt=%d\n", num, sqrt)
 			sqrt, floor, ceil = nPow2FloorCeil(sqrt, floor, num, pow2)
-			fmt.Printf("num=%d sqrt=%d floor=%d ceil=%d\n", num, sqrt, floor, ceil)
+			fmt.Printf("2 num=%d sqrt=%d floor=%d ceil=%d\n", num, sqrt, floor, ceil)
 			return
 		}
 		// look in next table
 		// next floor is this ceil
-		sqrt += N(size) // accumulate indices which are sqrt-floors
+		sqrt += N(size+1) // accumulate indices which are sqrt-floors
 		floor = ceil // pass next table this as the min
 	}
 	err = ErrOverflow

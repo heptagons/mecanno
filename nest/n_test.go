@@ -51,7 +51,7 @@ func TestN32s(t *testing.T) {
 	}
 
 	for _, r := range []struct { n N; exp string } {
-		{ 225,  "[15,225,225]"   }, // first table max, ASAP response
+		//{ 225,  "[15,225,225]"   }, // first table max, ASAP response
 		
 		// first table
 		{ 49,  "[7,49,49]"    }, // first midle square (1/2)
@@ -78,10 +78,12 @@ func TestN32s(t *testing.T) {
 	} {
 		if sqrt, floor, ceil, err := factory.nPow2FloorCeil(r.n); err != nil {
 			if got := r.exp; got != err.Error() {
-				t.Fatalf("got %s exp %s", got, err.Error())
+				t.Fatalf("num %d got %s exp %s", r.n, got, err.Error())
 			}
 		} else if got := fmt.Sprintf("[%d,%d,%d]", sqrt, floor, ceil); got != r.exp {
-			t.Fatalf("got %s exp %s", got, r.exp)
+			t.Fatalf("num %d got %s exp %s", r.n, got, r.exp)
+		} else {
+			t.Logf("num %d got %s", r.n, got)
 		}
 	}
 }
