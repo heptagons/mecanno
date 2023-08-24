@@ -51,37 +51,38 @@ func TestN32s(t *testing.T) {
 	}
 
 	for _, r := range []struct { n N; exp string } {
-		//{ 225,  "[15,225,225]"   }, // first table max, ASAP response
-		
 		// first table
-		{ 49,  "[7,49,49]"    }, // first midle square (1/2)
-		{ 9,   "[3,9,9]"      }, // second midle square down (1/4)
-		{ 121, "[11,121,121]" }, // second midle square up (3/4)
-		{ 1,   "[1,1,1]"      },
 		{ 0,   "[0,0,0]"      },
+		{ 1,   "[1,1,1]"      },
+		{ 9,   "[3,9,9]"      }, // second midle square down (1/4)
+		{ 49,  "[7,49,49]"    }, // first midle square (1/2)
+		{ 121, "[11,121,121]" }, // second midle square up (3/4)
 		{ 133, "[11,121,144]" }, // non-square
+		{ 134, "[11,121,144]" }, // non-square
 		{ 145, "[12,144,169]" }, // non-square
 		{ 197, "[14,196,225]" }, // non-square
+		{ 224, "[14,196,225]" }, // non-square
+		{ 225, "[15,225,225]" }, // non-square max
 
 		// second table
-		{ 2209, "[47,2209,2209]" }, // second table max, ASAP response
 		{ 226,  "[15,225,256]"   }, // floor from table-1, ceil from table-2
 		{ 255,  "[15,225,256]"   }, // floor from table-1, ceil from table-2
 		{ 289,  "[17,289,289]"   }, // square
 		{ 300,  "[17,289,324]"   }, // non-square
+		{ 2209, "[47,2209,2209]" }, // second table max, ASAP response
 
-		{      10_000, "[10000,10000]"      },
-		{     100_000, "[99856,100489]"     },
-		{   1_000_000, "[1000000,1000000]"  },
-		{  10_000_000, "[9998244,10004569]" },
+		{      10_000, "[100,10000,10000]"       },
+		{     100_000, "[316,99856,100489]"      },
+		{   1_000_000, "[1000,1000000,1000000]"  },
+		{  10_000_000, "[3162,9998244,10004569]" },
 		{ 100_000_000, "Overflow" },
 	} {
-		if sqrt, floor, ceil, err := factory.nPow2FloorCeil(r.n); err != nil {
+		if sqrt, floor, ceil, err := factory.nSqrtFloor(r.n); err != nil {
 			if got := r.exp; got != err.Error() {
-				t.Fatalf("num %d got %s exp %s", r.n, got, err.Error())
+				t.Fatalf("nSqrtFloor num %d got %s exp %s", r.n, got, err.Error())
 			}
 		} else if got := fmt.Sprintf("[%d,%d,%d]", sqrt, floor, ceil); got != r.exp {
-			t.Fatalf("num %d got %s exp %s", r.n, got, r.exp)
+			t.Fatalf("nSqrtFloor num %d got %s exp %s", r.n, got, r.exp)
 		} else {
 			t.Logf("num %d got %s", r.n, got)
 		}

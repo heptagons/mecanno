@@ -167,61 +167,58 @@ func NewN32s() *N32s {
 	}
 }
 
-// nPow2FloorCeil returns for the given number the squred "floor" and "ceiling" of num*num
+// nSqrtFloor returns for the given number the squred "floor" and "ceiling" of num*num
 // Example for given n=133 return floor=144 (12²) and ceil=169 (13²).
-func (n *N32s) nPow2FloorCeil(num N) (sqrt, floor, ceil N, err error) {
-	sqrt = 0
+func (n *N32s) nSqrtFloor(num N) (sqrt, floor, ceil N, err error) {
+	if num == 0 {
+		return
+	}
+	pos := 0
+	sqrt = N(0)
 	floor = N(0)
 	for _, pow2 := range n.pow2s {
 		size := len(pow2)
 		ceil = pow2[size-1]
-		//if num == ceil {
-		//	// num is a square, return ASAP floor=ceil=n
-		//	sqrt += N(size-1)
-		//	floor = ceil
-		//	return
-		//} else 
 		if num <= ceil {
-			fmt.Printf("1 num=%d sqrt=%d\n", num, sqrt)
-			sqrt, floor, ceil = nPow2FloorCeil(sqrt, floor, num, pow2)
-			fmt.Printf("2 num=%d sqrt=%d floor=%d ceil=%d\n", num, sqrt, floor, ceil)
+			pos, floor, ceil = nSqrtFloor(floor, num, pow2)
+			sqrt += N(pos)
 			return
 		}
 		// look in next table
 		// next floor is this ceil
-		sqrt += N(size+1) // accumulate indices which are sqrt-floors
+		sqrt += N(size) // accumulate indices which are sqrt-floors
 		floor = ceil // pass next table this as the min
 	}
 	err = ErrOverflow
 	return
 }
 
-func nPow2FloorCeil(sqrtPrev, floorPrev, num N, table []N) (sqrt, floor, ceil N) {
+func nSqrtFloor(floorPrev, num N, table []N) (pos int, floor, ceil N) {
 	c := len(table) // 16
 	d := c / 2      // 8 -> 4 -> 2 -> 1
-	curPos := c-1-d // start with 7
-	sqrt = sqrtPrev
-	floor = floorPrev // start with pos -1
-	ceil = table[c-1] // start with pos 15
+	pos = d-1       // start with 7
+	if num == table[c-1] {
+		return c-1, table[c-1], table[c-1]
+	}
 	for {
-		if d == 0 {
-			return
-		}
-		cur := table[curPos]
-		if num == cur {
-			// num is a square already in cells
-			sqrt = sqrtPrev + N(curPos)
-			floor, ceil = num, num
-			return
-		}
+//fmt.Println("pos", pos)		
 		d >>= 1 // d /= 2
-		if num > cur {
-			sqrt = sqrtPrev + N(curPos)
-			floor = cur // set new floor
-			curPos += d // next look above
+		if cur := table[pos]; num == cur {
+			// num is a square already in cells
+			return pos, cur, cur
+		} else if num > cur {
+			if d == 0 {
+				return pos, cur, table[pos+1]
+			}
+			pos += d // next look above
 		} else {
-			ceil = cur  // set new ceil
-			curPos -= d // next look below
+			if d == 0 {
+				if pos == 0 {
+					return pos-1, floorPrev, cur
+				}
+				return pos-1, table[pos-1], cur
+			}
+			pos -= d // next look below
 		}
 	}
 	return
@@ -236,28 +233,37 @@ Table[0] first 16 squares:
 | a[0] a[1] | a[2] a[3] | a[4] a[5] | a[6] a[7] | a[8] a[9] | a[10] a[11] | a[12] a[13] | a[14] a[15] |
 +-----------+-----------+-----------+-----------+-----------+-------------+-------------+-------------+
 |   0    1      4    9     16   25     36   49     64   81     100   121     144   169     196   225 
+                                             *
+                                             |------------------------>|
+                                                                       |------------>|
 
-                                         (-8)|<--------------------------------------------------max
-                                             ?                                                           step 2 (c=4)
-                                            min ---------------------->|(+4)
-                                                                       ?                                 step 3 (c=2)
-                                                                      min ---------->|(+2)
-                                                                                     ?                   step 4 (c=1)
-                                                                           (-1)|<---max
-                                                                               ?                         step 5 (c=0)
-                                                                              min 
+example: 133
+ d=8
+ pos=7
 
-Example request sqrts_floor_ceil of 133:
-First we test 133 < table[0].max = 225 on success we jump to table "0":
+ d=4
+ if 133 == table[7]=49 no
+ if 133 > 49 yes:
+   pos += 4 => 11
+ 
+ d=2
+ if 133 = table[11]=121 no
+ if 133 > 121 yes:
+   pos += 2 => 13
 
-step 1) Is 133 > a[14]=196 no  c=8 test a[15-c] (a[7])
-step 2) Is 133 >  a[7]= 49 yes c=4 test a[7+c] (a[11])
-step 3) Is 133 < a[11]=121 yes c=2 goto a[11+c] (a[13])
-step 4) Is 133 > a[13]=169 no  c=1 goto a[13-c] (a[12])
-step 5) Is 133 < a[12]=144 no  c=0 return min=a[11]=121, max=a[12]=144
+ d=1
+ if 133 == table[13]=169 no
+ if 133 > 169 no
+ if 133 < 169 yes
+   pos -= 1 => 12
 
-
-
+ d=0
+ if 133 == table[12]=144 no
+ if 133 > 144 no
+ if 133 < 144 yes
+   if d==0 {
+	 return 11, table[11], table[12]
+   }
 
 */
 
