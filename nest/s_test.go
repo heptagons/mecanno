@@ -47,14 +47,9 @@ func TestS32s(t *testing.T) {
 		{ "4-7√11", "555-56√11", []Z{ 16, -7*7*11 } }, // -4+7√11
 	} {
 		s := NewS32s(factory)
-		for _, surd := range r.surds {
-			if surd > 0 {
-				s.sAdd(N(surd))
-			} else {
-				s.sSub(N(-surd))
-			}
-		}
-		if got, exp := s.String(), r.base; got != exp {
+		if err := s.sAddZ(r.surds); err != nil {
+			t.Fatalf("error %v", err)
+		} else if got, exp := s.String(), r.base; got != exp {
 			t.Fatalf("got %s exp %s", got, exp)
 		} else if s1, err := s.sNewPow2(); err != nil {
 			t.Fatalf("err %v", err)		
@@ -84,6 +79,23 @@ func TestS32s(t *testing.T) {
 		}
 	}
 
+	// test sFloorCeil1
+	for _, r := range []struct { surds []Z; floor, ceil Z32 } {
+		{ []Z{ 2, 3 }, 2, 4 }, // √2 + √3 = 3.146... floor=2,ceil=4
+	} {
+		s := NewS32s(factory)
+		if err := s.sAddZ(r.surds); err != nil {
+			t.Fatalf("error %v", err)
+		} else if floor, ceil, err := s.sFloorCeil(); err != nil {
+			t.Fatalf("error %v", err)
+		} else if floor != r.floor {
+			t.Fatalf("floor got %d exp %d", floor, r.floor)
+		} else if ceil != r.ceil {
+			t.Fatalf("ceil got %d exp %d", ceil, r.ceil)
+		} else {
+			t.Logf("%s = %2.3f... floor=%d ceil=%d", s.String(), s.sFloat(), floor, ceil)
+		}
+	}
 }
 
 

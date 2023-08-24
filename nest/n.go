@@ -167,6 +167,16 @@ func NewN32s() *N32s {
 	}
 }
 
+func (n *N32s) nSqrtFloorCeil(num N) (floor, ceil N, err error) {
+	if floor, floor2, ceil2, err := n.nSqrtFloor(num); err != nil {
+		return 0, 0, err
+	} else if floor2 == ceil2 {
+		return floor, floor, nil
+	} else {
+		return floor, floor+1, nil
+	}
+}
+
 // nSqrtFloor returns for the given number the squred "floor" and "ceiling" of num*num
 // Example for given n=133 return floor=144 (12²) and ceil=169 (13²).
 func (n *N32s) nSqrtFloor(num N) (sqrt, floor, ceil N, err error) {

@@ -54,7 +54,10 @@ func TestN32s(t *testing.T) {
 		// first table
 		{ 0,   "[0,0,0]"      },
 		{ 1,   "[1,1,1]"      },
+		{ 2,   "[1,1,4]"      },
+		{ 3,   "[1,1,4]"      },
 		{ 9,   "[3,9,9]"      }, // second midle square down (1/4)
+		{ 13,  "[3,9,16]"     },
 		{ 49,  "[7,49,49]"    }, // first midle square (1/2)
 		{ 121, "[11,121,121]" }, // second midle square up (3/4)
 		{ 133, "[11,121,144]" }, // non-square

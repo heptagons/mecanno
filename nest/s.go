@@ -2,6 +2,7 @@ package nest
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 )
@@ -29,6 +30,22 @@ func NewS32s(factory *Z32s) *S32s {
 		Z32s:  factory,
 		surds: make(map[int]Z32, 0),
 	}
+}
+
+// sAdd add/subtract integers according surds signs
+func (s *S32s) sAddZ(surds []Z) error {
+	for _, surd := range surds {
+		if surd > 0 {
+			if err := s.sAdd(N(surd)); err != nil {
+				return err
+			}
+		} else {
+			if err := s.sSub(N(-surd)); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 // sAdd add the given surd √in to the current sum of surds
@@ -225,11 +242,34 @@ func (s *S32s) sCmp(t *S32s) (greater, equal bool) {
 	// a√b + c√d > √N
 }
 
-func (s *S32s) sPow2FloorCeil() (floor, ceil N) {
-	// floors = sFloor(d,e,f)
-	// bf,bc := nP
-	// a√b + c√d + e√d + ... = a*floorSqrt()
-	return 0, 0
+func (s *S32s) sFloorCeil() (floor, ceil Z32, err error) {
+	floor = 0
+	ceil = 0
+	for in, out := range s.surds {
+		if in == 1 {
+			floor += out
+			ceil += out
+		} else if f, c, e := s.nSqrtFloorCeil(N(out)*N(out)*N(in)); err != nil {
+			err = e
+			return
+		} else {
+			floor += Z32(f)
+			ceil += Z32(c)
+		}
+	}
+	return
+}
+
+func (s *S32s) sFloat() float64 {
+	f := float64(0)
+	for in, out := range s.surds {
+		if in == 1 {
+			f += float64(out)
+		} else {
+			f += float64(out) * math.Sqrt(float64(in))
+		}
+	}
+	return f
 }
 
 
