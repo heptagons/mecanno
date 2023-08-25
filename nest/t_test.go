@@ -62,6 +62,9 @@ func TestTT(t *testing.T) {
 		{ 5, 5, 2, "1/5 1/5 23/25",     "2√6/5 2√6/5 4√6/25"      }, // √6
 		{ 5, 5, 3, "3/10 3/10 41/50",   "√91/10 √91/10 3√91/50"   }, // √91
 		{ 5, 5, 4, "2/5 2/5 17/25",     "√21/5 √21/5 4√21/25"     }, // √21
+
+		{ 7, 6, 5, "1/5 19/35 5/7",     "2√6/5 12√6/35 2√6/7"     }, // √6
+
 	} {
 		tr := newT(r.a, r.b, r.c)
 		if tr == nil {
@@ -80,4 +83,39 @@ func TestTT(t *testing.T) {
 			t.Fatalf("T.sines got %s exp %s", sines, r.sines)
 		}
 	}
+
+	t765 := newT(7,6,5)
+	diags65, den := t765.diagsBC()
+	t.Logf("7*,6,5 den=%d", den)
+	for d, diags := range diags65 {
+		var surds strings.Builder
+		for pos, diag := range diags {
+			if pos > 0 {
+				surds.WriteString(" ")
+			}
+			if num, den, err := factory.zFrac(diag, Z(den)); err != nil {
+				t.Fatalf("err %v", err)
+			} else if out, in, err := factory.zSqrt(1, Z(num)); err != nil {
+				t.Fatalf("err %v", err)
+			} else {
+				if out == 1 {
+					if in > 1 {
+						surds.WriteString(fmt.Sprintf("√%d", in))
+					} else {
+						surds.WriteString("1")
+					}
+				} else {
+					surds.WriteString(fmt.Sprintf("%d", out))
+					if in > 1 {
+						surds.WriteString(fmt.Sprintf("√%d", in))
+					}
+				}
+				if den > 1 {
+					surds.WriteString(fmt.Sprintf("/%d", den))
+				}
+			}
+		}
+		t.Logf("  diags %d %v -> %s", d, diags, surds.String())
+	}
+
 }
