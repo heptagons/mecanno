@@ -21,8 +21,6 @@ type S32s struct {
 	surds map[int]Z32 // map[in]out
 }
 
-
-
 // NewS32s creates a new S32s factory
 // with an initial sum equals to zero
 func NewS32s(factory *Z32s) *S32s {
@@ -243,8 +241,6 @@ func (s *S32s) sCmp(t *S32s) (greater, equal bool) {
 }
 
 func (s *S32s) sFloorCeil() (floor, ceil Z32, err error) {
-	floor = 0
-	ceil = 0
 	for in, out := range s.surds {
 		if in == 1 {
 			floor += out
@@ -259,6 +255,24 @@ func (s *S32s) sFloorCeil() (floor, ceil Z32, err error) {
 	}
 	return
 }
+
+// sFloorCeil2 first raise this surbs to pow2, then calculate floor and ceil
+// which then both are squared
+func (s *S32s) sFloorCeil2() (floor, ceil Z32, err error) {
+
+	if t, err := s.sNewPow2(); err != nil {
+		return 0, 0, err
+	} else if floor1, ceil1, err := t.sFloorCeil(); err != nil {
+		return 0, 0, err
+	} else if floor, _, err := s.nSqrtFloorCeil(N(floor1)); err != nil {
+		return 0, 0, err
+	} else if _, ceil, err := s.nSqrtFloorCeil(N(ceil1)); err != nil {
+		return 0, 0, err
+	} else {
+		return Z32(floor), Z32(ceil), nil
+	}
+}
+
 
 func (s *S32s) sFloat() float64 {
 	f := float64(0)

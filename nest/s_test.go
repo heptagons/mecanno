@@ -79,48 +79,68 @@ func TestS32s(t *testing.T) {
 		}
 	}
 
-	// test sFloorCeil1
+	// test sFloorCeil simple
 	for _, r := range []struct { surds []Z; floor, ceil Z32 } {
-		{ []Z{ 2, 3 }, 2, 4 }, // √2 + √3 = 3.146... floor=2,ceil=4
+		{ []Z{   2,   3 },        2,  4 }, // √2+√3        = 3.146...  floor=2 ceil=4
+		{ []Z{   3,   8 },        3,  5 }, // √3+√8        = 4.560...  floor=3 ceil=5
+		{ []Z{   5,   7 },        4,  6 }, // √5+√7        = 4.882...  floor=4 ceil=6
+
+		{ []Z{   3,   5,    7 },  5,  8 }, // √3+√5+√7     = 6.614...  floor=5  ceil=8
+		{ []Z{ 4*3, 9*5, 16*7 }, 19, 22 }, // 2√3+3√5+4√7  = 20.755... floor=19 ceil=22
+
+		{ []Z{ 3, 5, 7, 11 },     8, 12 }, // √3+√5+√7+√11 = 9.930...  floor=8 ceil=12
 	} {
 		s := NewS32s(factory)
 		if err := s.sAddZ(r.surds); err != nil {
 			t.Fatalf("error %v", err)
 		} else if floor, ceil, err := s.sFloorCeil(); err != nil {
 			t.Fatalf("error %v", err)
-		} else if floor != r.floor {
-			t.Fatalf("floor got %d exp %d", floor, r.floor)
-		} else if ceil != r.ceil {
-			t.Fatalf("ceil got %d exp %d", ceil, r.ceil)
+		} else if floor != r.floor || ceil != r.ceil {
+			t.Fatalf("floor got %d exp %d, ceil got %d exp %d", floor, r.floor, ceil, r.ceil)
+		} else {
+			t.Logf("%s = %2.3f... floor=%d ceil=%d", s.String(), s.sFloat(), floor, ceil)
+		}
+	}
+
+	// test sFloorCeil pow2 -> sqrt
+	for _, r := range []struct { surds []Z; floor, ceil Z32 } {
+		{ []Z{   2,   3 },        3,  4 }, // √2+√3        = 3.146...  floor=3,  ceil=4
+		{ []Z{   3,   8 },        4,  5 }, // √3+√8        = 4.560...  floor=4,  ceil=5
+		{ []Z{   5,   7 },        4,  5 }, // √5+√7        = 4.882...  floor=4,  ceil=5
+
+		{ []Z{   3,   5,    7 },  6,  7 }, // √3+√5+√7     = 6.614...  floor=6,  ceil=7
+		{ []Z{ 4*3, 9*5, 16*7 }, 20, 21 }, // 2√3+3√5+4√7  = 20.755... floor=20, ceil=21
+
+		{ []Z{ 3, 5, 7, 11 },     9, 11 }, // √3+√5+√7+√11 = 9.930...  floor=9 ceil=11
+
+	} {
+		s := NewS32s(factory)
+		if err := s.sAddZ(r.surds); err != nil {
+			t.Fatalf("error %v", err)
+		} else if floor, ceil, err := s.sFloorCeil2(); err != nil {
+			t.Fatalf("error %v", err)
+		} else if floor != r.floor || ceil != r.ceil {
+			t.Fatalf("floor got %d exp %d, ceil got %d exp %d", floor, r.floor, ceil, r.ceil)
 		} else {
 			t.Logf("%s = %2.3f... floor=%d ceil=%d", s.String(), s.sFloat(), floor, ceil)
 		}
 	}
 }
 
-
 /*
-
  √2 + √3  <  √4 + √9 
           <  2+3 = 5
-
  √3 + √8  <  √4 + √9
           <  2+3 = 5
-
- 
  √5 + √7  < √9 + √9
           < 3+3 = 6
-
 
  √3 + √5 + √7 < √4 + √9 + √9
               < 2 + 3 + 3
               < 8
-
-
  √3 + √5 + √7 > √1 + √4 + √4
               > 1 + 2 + 2
               > 5
-
 
 Integers:
 2√3 + 3√5 + 4√7 = 20.755...
@@ -139,7 +159,6 @@ Integers:
 2√3 + 3√5 + 4√7 > 16
                 < 25
 
-
 2√3 + 3√5 + 4√7
 ===================== 
 169+12√15+16√21+24√35 > min√1
@@ -152,13 +171,6 @@ Integers:
                       < 169 + 12*4 + 16*5 + 24*6
                       < 441
                       < 21
-
-
-
-
-
-
-
 
 2√3 + 3√5 + 4√7 = 20.755...
                 > 2√3 + 3√3 + 4√3

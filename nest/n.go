@@ -211,7 +211,6 @@ func nSqrtFloor(floorPrev, num N, table []N) (pos int, floor, ceil N) {
 		return c-1, table[c-1], table[c-1]
 	}
 	for {
-//fmt.Println("pos", pos)		
 		d >>= 1 // d /= 2
 		if cur := table[pos]; num == cur {
 			// num is a square already in cells
