@@ -8,7 +8,7 @@ import (
 
 func TestTT(t *testing.T) {
 
-	factory := NewZ32s()
+	factory := NewT32s()
 
 	frac := func(num, den Z) string {
 		if den32, num32, err := factory.zFrac(N(den), num); err != nil {
@@ -84,38 +84,48 @@ func TestTT(t *testing.T) {
 		}
 	}
 
-	t765 := newT(7,6,5)
-	diags65, den := t765.diagsBC()
-	t.Logf("7*,6,5 den=%d", den)
-	for d, diags := range diags65 {
-		var surds strings.Builder
-		for pos, diag := range diags {
-			if pos > 0 {
-				surds.WriteString(" ")
-			}
-			if num, den, err := factory.zFrac(diag, Z(den)); err != nil {
-				t.Fatalf("err %v", err)
-			} else if out, in, err := factory.zSqrt(1, Z(num)); err != nil {
-				t.Fatalf("err %v", err)
-			} else {
-				if out == 1 {
-					if in > 1 {
-						surds.WriteString(fmt.Sprintf("√%d", in))
-					} else {
-						surds.WriteString("1")
-					}
+	diagsF := func(diagsXY [][]N, den N) {
+		for d, diags := range diagsXY {
+			var surds strings.Builder
+			for pos, diag := range diags {
+				if pos > 0 {
+					surds.WriteString(" ")
+				}
+				if num, den, err := factory.zFrac(diag, Z(den)); err != nil {
+					t.Fatalf("err %v", err)
+				} else if out, in, err := factory.zSqrt(1, Z(num)); err != nil {
+					t.Fatalf("err %v", err)
 				} else {
-					surds.WriteString(fmt.Sprintf("%d", out))
-					if in > 1 {
-						surds.WriteString(fmt.Sprintf("√%d", in))
+					if out == 1 {
+						if in > 1 {
+							surds.WriteString(fmt.Sprintf("√%d", in))
+						} else {
+							surds.WriteString("1")
+						}
+					} else {
+						surds.WriteString(fmt.Sprintf("%d", out))
+						if in > 1 {
+							surds.WriteString(fmt.Sprintf("√%d", in))
+						}
+					}
+					if den > 1 {
+						surds.WriteString(fmt.Sprintf("/%d", den))
 					}
 				}
-				if den > 1 {
-					surds.WriteString(fmt.Sprintf("/%d", den))
-				}
 			}
+			fmt.Printf("    diags %d %v -> %s\n", d, diags, surds.String())
 		}
-		t.Logf("  diags %d %v -> %s", d, diags, surds.String())
 	}
 
+	t765 := newT(7,6,5)
+	fmt.Println("7,6,5")
+	for _, r := range []struct { sides string; f func(t *T) ([][] N, N) } {
+		{ "a=7", factory.aDiags },
+		{ "b=6", factory.bDiags },
+		{ "c=5", factory.cDiags },
+	} {
+		diags, den := r.f(t765)
+		fmt.Printf("  %s den=%d\n", r.sides, den)
+		diagsF(diags, den)
+	}
 }
