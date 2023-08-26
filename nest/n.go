@@ -167,6 +167,67 @@ func NewN32s() *N32s {
 	}
 }
 
+// nFracN reduces the nums / den
+// Example: nFracN(8, [][]{ 4, 2 } -> 4, [][] { 2,1 }
+func (n *N32s) nFracN(den *N, nums [][]N) error {
+	if *den == 0 {
+		return ErrInfinite
+	}
+	num0 := true
+	min := N32_MAX
+	for _, ns := range nums {
+		for _, n := range ns {
+			if n > 0 {
+				num0 = false
+			}
+			if n < min {
+				min = n
+			}
+		}
+	}
+	if num0 {
+		return nil
+	}
+	all := true
+	for _, prime := range n.primes {
+		p := N(prime)
+		if min < p {
+			break // done: no more primes to check
+		}
+		for {
+			if *den % p != 0 {
+				break // next prime
+			}
+			all = true
+			for _, ns := range nums {
+				for _, n := range ns {
+					if n % p != 0 {
+						all = false
+						break
+					}
+				}
+				if !all {
+					break
+				}
+			}
+			if !all {
+				break // next prime
+			}
+			*den = *den / p // reduce denominator
+			for i := 0; i < len(nums); i++ {
+				for j := 0; j < len(nums[i]); j++ {
+					nums[i][j] = nums[i][j] / p // reduce all numerators
+				}
+			}
+			continue; // check same prime again
+		}
+	}
+	return nil
+}
+
+
+
+
 func (n *N32s) nSqrtFloorCeil(num N) (floor, ceil N, err error) {
 	if floor, floor2, ceil2, err := n.nSqrtFloor(num); err != nil {
 		return 0, 0, err

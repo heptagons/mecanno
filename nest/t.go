@@ -102,10 +102,13 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 	}
 	for x := N(1); x <= N(s1); x++ {
 		for y := N(1); y <= x; y++ {
-			pos := x - y
+			pos := int(x - y)
 			d := (x*x + y*y)*N(den) - 2*x*y*N(num)
 			diags[pos] = append(diags[pos], d)
 		}
 	}
-	return diags, N(den)
+	denN := N(den)
+	ts.nFracN(&denN, diags)
+	return diags, denN
 }
+
