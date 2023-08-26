@@ -117,15 +117,30 @@ func TestTT(t *testing.T) {
 		}
 	}
 
-	t765 := newT(7,6,5)
-	fmt.Println("7,6,5")
-	for _, r := range []struct { sides string; f func(t *T) ([][] N, N) } {
-		{ "a=7", factory.aDiags },
-		{ "b=6", factory.bDiags },
-		{ "c=5", factory.cDiags },
-	} {
-		diags, den := r.f(t765)
-		fmt.Printf("  %s den=%d\n", r.sides, den)
-		diagsF(diags, den)
+	xDiags := []string { "a", "b", "c" }
+	fDiags := []func(*T)([][]N, N) { 
+		factory.abDiags,
+		factory.bcDiags,
+		factory.acDiags,
 	}
+	tr765 := newT(7,6,5)
+	//tr333 := newT(11,10,9)
+	for _, tr := range []*T { 
+		tr765,
+		//tr333,
+	} {
+	fmt.Printf("%d,%d,%d\n", tr.a, tr.b, tr.c)
+		for d, f := range fDiags {
+			diags, den := f(tr)
+			fmt.Printf("  %s den=%d\n", xDiags[d], den)
+			diagsF(diags, den)
+		}
+	}
+
+	tr855 := newT(8,5,5)
+	tr866 := newT(8,6,6)
+	n1,d1 := tr855.cosB()
+	n2,d2 := tr866.cosB()
+	a,b,c,d := factory.tCosAB(N(n1),N(d1),N(n2),N(d2))
+	fmt.Printf("(%d%d√%d)/%d\n", b, c, d, a)
 }

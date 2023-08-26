@@ -61,19 +61,32 @@ func NewT32s() *T32s {
 	}
 }
 
-func (ts *T32s) aDiags(t *T) ([][]N, N) {
+// abDiags return the diagonals between sides a and b.
+func (ts *T32s) abDiags(t *T) ([][]N, N) {
+	num, den := t.cosC()
+	return ts.tDiags(num, den, t.a, t.b)
+}
+
+// bcDiags return the diagonals between sides b and c.
+// in case a = c return nothing, so would be repetitions
+// already obtained by calling abDiags.
+func (ts *T32s) bcDiags(t *T) ([][]N, N) {
+	if t.a == t.c {
+		return nil, 0
+	}
 	num, den := t.cosA()
 	return ts.tDiags(num, den, t.b, t.c)
 }
 
-func (ts *T32s) bDiags(t *T) ([][]N, N) {
+// acDiags return the diagonals between sides a and c.
+// in case b = c return nothing, so would be repetitions
+// already obtained by calling abDiags.
+func (ts *T32s) acDiags(t *T) ([][]N, N) {
+	if t.a == t.b || t.b == t.c {
+		return nil, 0
+	}
 	num, den := t.cosB()
 	return ts.tDiags(num, den, t.a, t.c)
-}
-
-func (ts *T32s) cDiags(t *T) ([][]N, N) {
-	num, den := t.cosC()
-	return ts.tDiags(num, den, t.a, t.b)
 }
 
 // Example for b=6, c=5:
@@ -110,5 +123,24 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 	denN := N(den)
 	ts.nFracN(&denN, diags)
 	return diags, denN
+}
+
+
+func (ts *T32s) tCosAB(cosAN, cosAD, cosBN, cosBD N) (a N32, b,c,d Z32) {
+	an := cosAD*cosBD
+	bz := Z(cosAN)*Z(cosBN)
+	cz := Z(1)
+	dz := Z(cosAD-cosAN)*Z(cosAD+cosAN)*Z(cosBD-cosBN)*Z(cosBD+cosBN)
+	if o, in, err := ts.zSqrt(cz, dz); err != nil {
+		return
+	} else if den32, n32s, err := ts.zFracN(an, bz, Z(o)); err != nil {
+		return
+	} else {
+		a = den32
+		b = n32s[0]
+		c = n32s[1]
+		d = in
+		return
+	}
 }
 
