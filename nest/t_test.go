@@ -71,15 +71,15 @@ func TestTT(t *testing.T) {
 			t.Fatalf("T: nil for %d %d %d", r.a, r.b, r.c)
 		}
 		if cosines := fmt.Sprintf("%s %s %s", 
-			frac(tr.cosA()),
-			frac(tr.cosB()),
-			frac(tr.cosC())); cosines != r.cosines {
+			frac(factory.cos(tr, TangA)),
+			frac(factory.cos(tr, TangB)),
+			frac(factory.cos(tr, TangC))); cosines != r.cosines {
 			t.Fatalf("T.cosines got %s exp %s", cosines, r.cosines)
 		}
 		if sines := fmt.Sprintf("%s %s %s",
-			surdFrac(tr.sinA()), 
-			surdFrac(tr.sinB()),
-			surdFrac(tr.sinC())); sines != r.sines {
+			surdFrac(factory.sin(tr, TangA)), 
+			surdFrac(factory.sin(tr, TangB)),
+			surdFrac(factory.sin(tr, TangC))); sines != r.sines {
 			t.Fatalf("T.sines got %s exp %s", sines, r.sines)
 		}
 	}
@@ -117,12 +117,7 @@ func TestTT(t *testing.T) {
 		}
 	}
 
-	xDiags := []string { "a", "b", "c" }
-	fDiags := []func(*T)([][]N, N) { 
-		factory.abDiags,
-		factory.bcDiags,
-		factory.acDiags,
-	}
+	tAngs := []Tang { TangA, TangB, TangC }
 	tr765 := newT(7,6,5)
 	//tr333 := newT(11,10,9)
 	for _, tr := range []*T { 
@@ -130,17 +125,17 @@ func TestTT(t *testing.T) {
 		//tr333,
 	} {
 	fmt.Printf("%d,%d,%d\n", tr.a, tr.b, tr.c)
-		for d, f := range fDiags {
-			diags, den := f(tr)
-			fmt.Printf("  %s den=%d\n", xDiags[d], den)
+		for _, ang := range tAngs {
+			diags, den := factory.tDiagsAng(tr, ang)
+			fmt.Printf("  %c den=%d\n", ang, den)
 			diagsF(diags, den)
 		}
 	}
 
 	tr855 := newT(8,5,5)
 	tr866 := newT(8,6,6)
-	n1,d1 := tr855.cosB()
-	n2,d2 := tr866.cosB()
-	a,b,c,d := factory.tCosAB(N(n1),N(d1),N(n2),N(d2))
-	fmt.Printf("(%d%d√%d)/%d\n", b, c, d, a)
+	cosX, _ := factory.tCosAplusB(tr855, TangB, tr866, TangB)
+	fmt.Printf("cosX = %s\n", cosX.String())
+	x, _ := factory.tSide(5, 6, cosX)
+	fmt.Printf("x(5,6,cosX) = %s\n", x)
 }
