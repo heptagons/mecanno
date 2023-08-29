@@ -118,21 +118,21 @@ func (ts *T32s) tDiagsAng(t *T, a Tang) ([][]N, N) {
 
 // Example for b=6, c=5:
 //
-//	a0   a1   a2   a3   a4   a5   a6   a7
-//   0    1    2    3    4    5    6    7
-//	   +----+----+----+----+----+----+----+
-//	   | A0 | B0 | C0 | D0 | E0 | F0 | G0 |  b1
-//	   +--, +----+----+----+----+----+----+
-//	       \  A1 | B1 | C1 | D1 | E1 | F1 |  b2
-//	        +--, +----+----+----+----+----+
-//	            \  A2 | B2 | C2 | D2 | E2 |  b3
-//	             +----+----+----+----+----+
-//	                  | A3 | B3 | C3 | D3 |  b4
-//	                  +----+----+----+----+
-//	                       | A4 | B4 | C4 |  b5
-//	                       +----+----+----+
-//                              | A5 |  6 |  b6
-//                              +----+----+
+// a0   a1   a2   a3   a4   a5   a6   a7
+//  0    1    2    3    4    5    6    7
+//	   +---,----,----,----,----,----,----,
+//	   |A0 \ B0 \ C0 \ D0 \ E0 \ F0 \ G0 \  b1
+//	   '--, '--, '--, '--, '--, '--, '--, '
+//	       \ A1 \ B1 \ C1 \ D1 \ E1 \ F1 \  b2
+//	        '--, '--, '--, '--, '--, '--, '
+//	            \ A2 \ B2 \ C2 \ D2 \ E2 \  b3
+//	             '--, '--, '--, '--, '--, '
+//	                 \ A3 \ B3 \ C3 \ D3 \  b4
+//	                  '--, '--, '--, '--, '
+//	                      \ A4 \ B4 \ C4 \  b5
+//	                       '--, '--, '--, '
+//                             \ A5 \  5 \  b6
+//                              '----'----'
 //
 // diagsBC return and array of diagonal factors size = b + c - 1
 func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
@@ -142,6 +142,9 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 	}
 	for x := N(1); x <= N(s1); x++ {
 		for y := N(1); y <= x; y++ {
+			if y > N(s2) {
+				continue
+			}
 			pos := int(x - y)
 			// cos = n/d
 			// z²  = x² + y² - 2xycos
@@ -151,8 +154,6 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 			diags[pos] = append(diags[pos], z*N(den))
 		}
 	}
-	//denN := N(den)
-	//ts.nFracN(&denN, diags)
 	return diags, N(den)
 }
 
