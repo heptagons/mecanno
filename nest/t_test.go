@@ -6,42 +6,17 @@ import (
 	"testing"
 )
 
-func TestTT(t *testing.T) {
+func TestTcos(t *testing.T) {
 
 	factory := NewT32s()
 
 	frac := func(num, den Z) string {
-		if den32, num32, err := factory.zFrac(N(den), num); err != nil {
-			return err.Error()
-		} else if den32 == 1 {
-			return fmt.Sprintf("%d", num32)
-		} else {
-			return fmt.Sprintf("%d/%d", num32, den32)
-		}
+		a, _ := factory.aNew1(N(den), num)
+		return a.String()
 	}
-
 	surdFrac := func(surd, den Z32) string {
-		if out, in, err := factory.zSqrt(1, Z(surd)); err != nil {
-			return err.Error()
-		} else if den32, num32, err := factory.zFrac(N(den), Z(out)); err != nil {
-			return err.Error()
-		} else {
-			var sb strings.Builder
-			if in == 1 {
-				sb.WriteString(fmt.Sprintf("%d", num32))
-			} else if num32 == -1 {
-				sb.WriteString("-")
-			} else if num32 != +1 {
-				sb.WriteString(fmt.Sprintf("%d", num32))
-			}
-			if in > 1 {
-				sb.WriteString(fmt.Sprintf("√%d", in))
-			}
-			if den32 > 1 {
-				sb.WriteString(fmt.Sprintf("/%d", den32))	
-			}
-			return sb.String()
-		}
+		a, _ := factory.aNew3(N(den), 0, 1, Z(surd))
+		return a.String()
 	}
 
 	for _, r := range []struct { a, b, c N32; cosines, sines string } {
@@ -83,59 +58,70 @@ func TestTT(t *testing.T) {
 			t.Fatalf("T.sines got %s exp %s", sines, r.sines)
 		}
 	}
+}
 
-	diagsF := func(diagsXY [][]N, den N) {
-		for d, diags := range diagsXY {
-			var surds strings.Builder
-			for pos, diag := range diags {
-				if pos > 0 {
-					surds.WriteString(" ")
-				}
-				if num, den, err := factory.zFrac(diag, Z(den)); err != nil {
-					t.Fatalf("err %v", err)
-				} else if out, in, err := factory.zSqrt(1, Z(num)); err != nil {
-					t.Fatalf("err %v", err)
-				} else {
-					if out == 1 {
-						if in > 1 {
-							surds.WriteString(fmt.Sprintf("√%d", in))
-						} else {
-							surds.WriteString("1")
-						}
+func TestTdiag1(t *testing.T) {
+
+	factory := NewT32s()
+
+	for _, tr := range []*T { 
+		newT(3,3,3), // equilateral
+		newT(4,3,3), // isoceles
+		newT(7,6,5), // scalene
+	} {
+		fmt.Printf("[%s] diagonals:\n", tr.String())
+		for _, ang := range []Tang { TangC, TangB, TangA } {
+			diagsAng, den := factory.tDiagsAng(tr, ang)
+			fmt.Printf("  ang=%c den=%d:\n", ang, den)
+			for d, diags := range diagsAng {
+				var surds strings.Builder
+				for pos, diag := range diags {
+					if pos > 0 {
+						surds.WriteString(", ")
+					}
+					if a, err := factory.aNew3(den, 0, 1, Z(diag)); err != nil {
+						continue
 					} else {
-						surds.WriteString(fmt.Sprintf("%d", out))
-						if in > 1 {
-							surds.WriteString(fmt.Sprintf("√%d", in))
-						}
+						surds.WriteString(a.String())
 					}
-					if den > 1 {
-						surds.WriteString(fmt.Sprintf("/%d", den))
-					}
+				}
+				fmt.Printf("    %d: %v -> %s\n", d, diags, surds.String())
+			}
+		}
+	}
+}
+
+func TestTdiag2(t *testing.T) {
+	factory := NewT32s()
+	/*   *
+		/|\
+     5 / | \ 6
+      /  |  \
+     /   |   \
+    x1   |8   x2  x1x2 = 3 + 2√5
+     \   |   /
+      \  |  /
+     5 \ | / 6
+        \|/
+         *
+	*/
+    for _, pair := range []struct { t1, t2 *T; max, min N32 } {
+    	{ newT(8,5,5), newT(8,6,6), 6, 5 },
+    	{ newT(7,6,5), newT(6,5,4), 6, 5 },
+    	{ newT(5,5,5), newT(5,5,5), 5, 3 },
+    	{ newT(5,5,5), newT(5,5,4), 5, 4 },
+    	{ newT(5,5,5), newT(5,4,4), 5, 4 },
+    } {
+    	fmt.Printf("Pair [%s] [%s]\n", pair.t1.String(), pair.t2.String())
+		cosX, _ := factory.tCosAplusB(pair.t1, TangB, pair.t2, TangB)
+		fmt.Printf("  cosBB = %s\n", cosX.String())
+		for p1 := N32(1) ; p1 <= pair.max; p1++ {
+			for p2 := N32(1) ; p2 <= pair.min; p2++ {
+				if p1 >= p2 {
+					x, _ := factory.tLawOfCos(p1, p2, cosX)
+					fmt.Printf("    [%d,%d,%s]\n", p1, p2, x)
 				}
 			}
-			fmt.Printf("    diags %d %v -> %s\n", d, diags, surds.String())
 		}
-	}
-
-	tAngs := []Tang { TangA, TangB, TangC }
-	tr765 := newT(7,6,5)
-	//tr333 := newT(11,10,9)
-	for _, tr := range []*T { 
-		tr765,
-		//tr333,
-	} {
-	fmt.Printf("%d,%d,%d\n", tr.a, tr.b, tr.c)
-		for _, ang := range tAngs {
-			diags, den := factory.tDiagsAng(tr, ang)
-			fmt.Printf("  %c den=%d\n", ang, den)
-			diagsF(diags, den)
-		}
-	}
-
-	tr855 := newT(8,5,5)
-	tr866 := newT(8,6,6)
-	cosX, _ := factory.tCosAplusB(tr855, TangB, tr866, TangB)
-	fmt.Printf("cosX = %s\n", cosX.String())
-	x, _ := factory.tSide(5, 6, cosX)
-	fmt.Printf("x(5,6,cosX) = %s\n", x)
+    }
 }

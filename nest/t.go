@@ -122,10 +122,10 @@ func (ts *T32s) tDiagsAng(t *T, a Tang) ([][]N, N) {
 //   0    1    2    3    4    5    6    7
 //	   +----+----+----+----+----+----+----+
 //	   | A0 | B0 | C0 | D0 | E0 | F0 | G0 |  b1
-//	   +----+----+----+----+----+----+----+
-//	        | A1 | B1 | C1 | D1 | E1 | F1 |  b2
-//	        +----+----+----+----+----+----+
-//	             | A2 | B2 | C2 | D2 | E2 |  b3
+//	   +--, +----+----+----+----+----+----+
+//	       \  A1 | B1 | C1 | D1 | E1 | F1 |  b2
+//	        +--, +----+----+----+----+----+
+//	            \  A2 | B2 | C2 | D2 | E2 |  b3
 //	             +----+----+----+----+----+
 //	                  | A3 | B3 | C3 | D3 |  b4
 //	                  +----+----+----+----+
@@ -143,35 +143,41 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 	for x := N(1); x <= N(s1); x++ {
 		for y := N(1); y <= x; y++ {
 			pos := int(x - y)
-			d := (x*x + y*y)*N(den) - 2*x*y*N(num)
-			diags[pos] = append(diags[pos], d)
+			// cos = n/d
+			// z²  = x² + y² - 2xycos
+			// z²  = x² + y² - 2xyn/d
+			// z²d = (x² + y²)d - 2xyn
+			z := (x*x + y*y)*N(den) - 2*x*y*N(num)
+			diags[pos] = append(diags[pos], z*N(den))
 		}
 	}
-	denN := N(den)
-	ts.nFracN(&denN, diags)
-	return diags, denN
+	//denN := N(den)
+	//ts.nFracN(&denN, diags)
+	return diags, N(den)
 }
 
-
-func (ts *T32s) tCosAplusB(t1 *T, a1 Tang, t2 *T, a2 Tang) (*A32, error) {
-	n1,d1 := ts.cos(t1, a1)
-	n2,d2 := ts.cos(t2, a2)
-	//fmt.Printf("%v cos %d/%d\n", t1.String(), n1, d1)
-	//fmt.Printf("%v cos %d/%d\n", t2.String(), n2, d2)
-	an := d1*d2
-	bz := n1*n2
-	cz := Z(-1)
-	dz := (d1*d1 - n1*n1) * (d2*d2 - n2*n2)
-	if o, in, err := ts.zSqrt(cz, dz); err != nil {
-		return nil, err
-	} else if den32, n32s, err := ts.zFracN(N(an), bz, Z(o)); err != nil {
-		return nil, err
-	} else {
-		return ts.aNew3(N(den32), Z(n32s[0]), Z(n32s[1]), Z(in))
-	}
+// tCosAplusB returns cosAcosB - sinAsinB.
+// cosA and cosB are rationals: cosA = nA/dA, cosB= nB/dB
+// cosAcosB - sinAsinB simplifies to:
+//	         ____________________________________
+//	nA*nB + √(dA + nA)(dA - nA)(dB + nB)(dB - nB)
+//	---------------------------------------------
+//	                     dA*dB
+//	where are rationals: 
+func (ts *T32s) tCosAplusB(tA *T, aA Tang, tB *T, aB Tang) (*A32, error) {
+	nA,dA := ts.cos(tA, aA)
+	nB,dB := ts.cos(tB, aB)
+	a := N(dA)*N(dB)
+	b := nA*nB
+	c := Z(-1)
+	d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
+	return ts.aNew3(a,b,c,d)
 }
 
-func (ts *T32s) tSide(y, z N32, cosX *A32) (*A32, error) {
+// tLawOfCos returns
+//    ___________________
+//	 √ y² + z² - 2xycosX
+func (ts *T32s) tLawOfCos(y, z N32, cosX *A32) (*A32, error) {
 	if y2_z2, err := ts.aNew1(1, Z(y)*Z(y) + Z(z)*Z(z)); err != nil {
 		return nil, err
 	} else if _2zy, err := ts.aNew1(1, -2*Z(y)*Z(z)); err != nil {
