@@ -6,7 +6,7 @@
 
 \begin{document}
 
-\newcommand\nodes{{"A","B","C"}}
+\newcommand\nodes{{"B","A","C"}}
 \newcommand{\meccanotriangle}[6]
 {
 \tikzmath{
@@ -25,17 +25,21 @@
 \begin{scope}[shift={(#1,#2)},scale={1}]
 
 \draw[black] (\pX)
--- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{\z}
--- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,right]{\x}
--- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,left]{\y}
+-- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{c=\z}
+-- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,right]{}
+-- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,left]{}
 ;
 \draw[red] (\pX) node[below]{\xn};
 \draw[red] (\pY) node[below]{\yn};
 \draw[red] (\pZ) node[above]{\zn};
 % \i/\k parses {1/1},{1/2},... where \i is the y points at left side `y' from bottom to top
 % and \k is the points at right side `x' from bottom to top
-\foreach \i/\k [count=\j] in {#6} {
+\foreach \i/\k in {#6} {
+	\pgfmathsetmacro\aa{int(\y - \i)}
+	\pgfmathsetmacro\bb{int(\x - \k)}
 	\draw[orange] (\i*\cosX, \i*\sinX) -- (\z-\k*\cosY, \k*\sinY);
+	\draw[blue] (\i*\cosX, \i*\sinX) node[left]{$a_{\aa}$};
+	\draw[blue] (\z-\k*\cosY, \k*\sinY) node[right]{$b_{\bb}$};
 }
 \end{scope}
 }
