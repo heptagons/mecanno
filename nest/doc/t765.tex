@@ -6,10 +6,11 @@
 
 \begin{document}
 
-\newcommand{\meccanotriangle}[5]
+\newcommand\nodes{{"A","B","C"}}
+\newcommand{\meccanotriangle}[6]
 {
 \tikzmath{
-	\x = #1; \y = #2; \z = #3;
+	\x = #3; \y = #4; \z = #5;
 	\xx = 1/\x; \yy = 1/\y; \zz = 1/\z;
 	\cosX = (\y*\y + \z*\z - \x*\x)/(2*\y*\z); \sinX = sqrt(1 - \cosX*\cosX);
 	\cosY = (\z*\z + \x*\x - \y*\y)/(2*\z*\x); \sinY = sqrt(1 - \cosY*\cosY);
@@ -18,24 +19,35 @@
 	\pX = (0,0); %bottom left vertice
 	\pY = (\z,0); %bottom right vertice
 	\pZ = (\y*\cosX, \y*\sinX); %top vertice
+	\xn = \nodes[0]; \yn = \nodes[1]; \zn = \nodes[2];
 }
 
-\begin{scope}[shift={(0,0)},scale={1}]
+\begin{scope}[shift={(#1,#2)},scale={1}]
 
 \draw[black] (\pX)
 -- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{\z}
 -- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,right]{\x}
 -- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,left]{\y}
 ;
-\foreach \i/\k [count=\j] in {#4} { % \i/\k parses 1/1,1/2,...!
-	\draw[green] (-1,\j) node {(\i) debug (\k)};
-	\draw[red] (\i*\cosX, \i*\sinX) -- (\z-\k*\cosY, \k*\sinY);
+\draw[red] (\pX) node[below]{\xn};
+\draw[red] (\pY) node[below]{\yn};
+\draw[red] (\pZ) node[above]{\zn};
+% \i/\k parses {1/1},{1/2},... where \i is the y points at left side `y' from bottom to top
+% and \k is the points at right side `x' from bottom to top
+\foreach \i/\k [count=\j] in {#6} {
+	\draw[orange] (\i*\cosX, \i*\sinX) -- (\z-\k*\cosY, \k*\sinY);
 }
 \end{scope}
 }
 
 \begin{tikzpicture}
-\meccanotriangle{6}{7}{5}{{1/0},{2/1},{3/2},{4/3},{5/4},{6/5}};
+\meccanotriangle{ 3}{ 0}{6}{7}{5}{{1/0},{2/1},{3/2},{4/3},{5/4},{6/5}};
+\meccanotriangle{ 9}{ 0}{6}{7}{5}{{1/1},{2/2},{3/3},{4/4},{5/5}};
+\meccanotriangle{15}{ 0}{6}{7}{5}{{0/1},{1/2},{2/3},{3/4},{4/5}};
+\meccanotriangle{ 0}{-8}{6}{7}{5}{{0/2},{1/3},{2/4},{3/5}};
+\meccanotriangle{ 6}{-8}{6}{7}{5}{{0/3},{1/4},{2/5}};
+\meccanotriangle{12}{-8}{6}{7}{5}{{0/4},{1/5}};
+\meccanotriangle{18}{-8}{6}{7}{5}{{0/5}};
 \end{tikzpicture}
 
 \end{document}
