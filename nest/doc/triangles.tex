@@ -26,7 +26,7 @@ find certain angles joining the triangles which can be used to construct regular
 \section{Basic triangle}
 A basic triangle has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
 consider only the cases $a \ge b$, $b \ge c$ and $a \ge c$. Valid triangles also need the 
-condition $a \ge b + c$.
+condition $b + c > a$.
 
 \subsection{Basic triangle diagonals}
 
@@ -53,18 +53,18 @@ a, b, c &\in \bbb{N}\\
 \overline{a_xb_y}, \overline{b_yc_z}, \overline{a_xc_z} &\in \bbb{A}
 \end{align}
 
+\subsection{Example triangle [7,6,5]}
+
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.65]{t765}
-\caption{Basic triangle $[7,6,5]$, $a_xb_x$ diagonals.}
-\label{t765}
+\includegraphics[scale=1]{t765ab}
+\caption{Triangle $[7,6,5]$, $a_xb_x$ diagonals.}
+\label{t765ab}
 \end{figure}
-\
 
-
-
-Figure \ref{t765} show a basic triangle with sides $a=7$, $b=6$ and $c=5$. For this particular triangle we have seven groups of diagonals shown as orange lines. The diagonals join points from side $a$ nodes described as $a_x$ to side $b$ nodes described as $b_y$ in all combinations. From top to bottom and left to right the groups are:
-
+Figure \ref{t765ab} show triangle $[7,6,5]$ diagonals $a_xb_y$.
+The diagonals join points from side $a$ nodes described as $a_x$ to side $b$ nodes described as $b_y$ in all combinations.
+Next matrix show the diagonals values:
 \[
 a_xb_y = \begin{bmatrix}
 	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & \frac{\sqrt{1393}}7 & 2\sqrt{10} \\
@@ -76,7 +76,24 @@ a_xb_y = \begin{bmatrix}
 \end{bmatrix}
 \]
 
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1]{t765ac}
+\caption{Triangle $[7,6,5]$, $a_xc_z$ diagonals.}
+\label{t765ac}
+\end{figure}
 
-
+Figure \ref{t765ac} show triangle $[7,6,5]$ diagonals $a_xc_z$.
+The diagonals join points from side $a$ nodes described as $a_x$ to side $c$ nodes described as $c_z$ in all combinations.
+Next matrix show the diagonals values:
+\[
+a_xc_z = \begin{bmatrix}
+	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} \\
+	& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} \\
+	& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} \\
+	& & & \frac{16\sqrt{70}}{35} & \frac{3\sqrt{105}}{7} \\
+	& & & & \frac{4\sqrt{70}}{7} & \frac{\sqrt{1393}}{7} \\
+\end{bmatrix}
+\]
 
 \end{document}

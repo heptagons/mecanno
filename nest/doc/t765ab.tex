@@ -1,0 +1,58 @@
+\PassOptionsToPackage{svgnames}{xcolor}
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+
+\begin{document}
+
+\newcommand\nodes{{"B","A","C"}}
+\newcommand{\meccanotriangle}[6]
+{
+\tikzmath{
+	\x = #3; \y = #4; \z = #5;
+	\xx = 1/\x; \yy = 1/\y; \zz = 1/\z;
+	\cosX = (\y*\y + \z*\z - \x*\x)/(2*\y*\z); \sinX = sqrt(1 - \cosX*\cosX);
+	\cosY = (\z*\z + \x*\x - \y*\y)/(2*\z*\x); \sinY = sqrt(1 - \cosY*\cosY);
+	\cosZ = (\x*\x + \y*\y - \z*\z)/(2*\x*\y);
+	coordinate \pX, \pY, \pZ;
+	\pX = (0,0); %bottom left vertice
+	\pY = (\z,0); %bottom right vertice
+	\pZ = (\y*\cosX, \y*\sinX); %top vertice
+	\xn = \nodes[0]; \yn = \nodes[1]; \zn = \nodes[2];
+}
+
+\begin{scope}[shift={(#1,#2)},scale={0.5}]
+
+\draw[black] (\pX)
+-- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{c}
+-- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,right]{}
+-- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,left]{}
+;
+\draw[gray] (\pX) node[below]{\xn};
+\draw[gray] (\pY) node[below]{\yn};
+\draw[gray] (\pZ) node[above]{\zn};
+% \i/\k parses {1/1},{1/2},... where \i is the y points at left side `y' from bottom to top
+% and \k is the points at right side `x' from bottom to top
+\foreach \i/\k in {#6} {
+	\pgfmathsetmacro\aa{int(\y - \i)}
+	\pgfmathsetmacro\bb{int(\x - \k)}
+	\draw[orange] (\i*\cosX, \i*\sinX) -- (\z-\k*\cosY, \k*\sinY);
+	\draw[red] (\i*\cosX, \i*\sinX) node[left]{$a_{\aa}$};
+	\draw[DarkGreen] (\z-\k*\cosY, \k*\sinY) node[right]{$b_{\bb}$};
+}
+\end{scope}
+}
+
+\begin{tikzpicture}
+\meccanotriangle{ 2}{ 0}{6}{7}{5}{{1/0},{2/1},{3/2},{4/3},{5/4},{6/5}};
+\meccanotriangle{ 5.5}{ 0}{6}{7}{5}{{1/1},{2/2},{3/3},{4/4},{5/5}};
+\meccanotriangle{ 9}{ 0}{6}{7}{5}{{0/1},{1/2},{2/3},{3/4},{4/5}};
+\meccanotriangle{   0}{-4}{6}{7}{5}{{0/2},{1/3},{2/4},{3/5}};
+\meccanotriangle{ 3.5}{-4}{6}{7}{5}{{0/3},{1/4},{2/5}};
+\meccanotriangle{ 7.0}{-4}{6}{7}{5}{{0/4},{1/5}};
+\meccanotriangle{10.5}{-4}{6}{7}{5}{{0/5}};
+\end{tikzpicture}
+
+\end{document}

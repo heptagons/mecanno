@@ -128,49 +128,42 @@ func TestTdiag2(t *testing.T) {
 
 func TestTbasic(t *testing.T) {
 	factory := NewT32s()
-	a := N(7)
-	b := N(6)
-	c := N(5)
-	ab := N(a)*N(b)
-	ab2 := Z(ab)*Z(ab)
-	a2_b2_c2 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
-	for _, g := range []struct { x, y Z } {
-		{ 1,1 },
-		{ 2,2 },
-		{ 3,3 },
-		{ 4,4 },
-		{ 5,5 },
-		{ 6,6 },
+	a, b, c := N(7), N(6), N(5)
+	aa, bb, cc := Z(a)*Z(a), Z(b)*Z(b), Z(c)*Z(c)
+	{
+		fmt.Println("ab")
+		ab := N(a)*N(b)
+		ab2 := Z(ab)*Z(ab)
+		a2_b2_c2 := aa + bb - cc
+		for _, g := range []struct { x, y Z } {
+			{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },{ 6,6 },
+			{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },{ 6,5 },
+			{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },{ 7,5 },
+			{ 4,1 },{ 5,2 },{ 6,3 },{ 7,4 },
+			{ 5,1 },{ 6,2 },{ 7,3 },
+			{ 6,1 },{ 7,2 },
+			{ 7,1 },
+		} {
+			in := ab2*(g.x*g.x + g.y*g.y) - Z(ab)*g.x*g.y*a2_b2_c2
+			diag, _ := factory.aNew3(ab, 0, 1, in)
+			fmt.Printf("x_%d y_%d}  diag = %s\n", g.x, g.y, diag)
+		}
+	}
+	{
+		ac := N(a)*N(c)
+		ac2 := Z(ac)*Z(ac)
+		a2_c2_b2 := aa + cc - bb
+		fmt.Println("ac")
+		for _, g := range []struct{ x, z Z } {
+			{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },
+			{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },{ 6,5 },
+			{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },
+		} {
+			in := ac2*(g.x*g.x + g.z*g.z) - Z(ac)*g.x*g.z*a2_c2_b2
+			diag, _ := factory.aNew3(ac, 0, 1, in)
+			fmt.Printf("x_%d z_%d}  diag = %s\n", g.x, g.z, diag)
 
-		{ 2,1 },
-		{ 3,2 },
-		{ 4,3 },
-		{ 5,4 },
-		{ 6,5 },
-
-		{ 3,1 },
-		{ 4,2 },
-		{ 5,3 },
-		{ 6,4 },
-		{ 7,5 },
-
-		{ 4,1 },
-		{ 5,2 },
-		{ 6,3 },
-		{ 7,4 },
-
-		{ 5,1 },
-		{ 6,2 },
-		{ 7,3 },
-
-		{ 6,1 },
-		{ 7,2 },
-
-		{ 7,1 },
-	} {
-		in := ab2*(g.x*g.x + g.y*g.y) - Z(ab)*g.x*g.y*a2_b2_c2
-		diag, _ := factory.aNew3(ab, 0, 1, in)
-		fmt.Printf("overline{x_%dy_%d} &= %s\n", g.x, g.y, diag)
+		}
 	}
 
 }

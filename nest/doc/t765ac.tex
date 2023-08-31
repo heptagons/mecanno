@@ -1,3 +1,4 @@
+\PassOptionsToPackage{svgnames}{xcolor}
 \documentclass[tikz, border=1cm]{standalone}
 
 \usepackage{tikz}
@@ -6,7 +7,7 @@
 
 \begin{document}
 
-\newcommand\nodes{{"B","A","C"}}
+\newcommand\nodes{{"C","A","B"}}
 \newcommand{\meccanotriangle}[6]
 {
 \tikzmath{
@@ -22,36 +23,36 @@
 	\xn = \nodes[0]; \yn = \nodes[1]; \zn = \nodes[2];
 }
 
-\begin{scope}[shift={(#1,#2)},scale={1}]
+\begin{scope}[shift={(#1,#2)},scale={0.5}]
 
 \draw[black] (\pX)
--- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{c=\z}
+-- (\pY) foreach \t in {0,\zz,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,below]{b}
 -- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,right]{}
 -- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}} node[midway,left]{}
 ;
-\draw[red] (\pX) node[below]{\xn};
-\draw[red] (\pY) node[below]{\yn};
-\draw[red] (\pZ) node[above]{\zn};
+\draw[gray] (\pX) node[below]{\xn};
+\draw[gray] (\pY) node[below]{\yn};
+\draw[gray] (\pZ) node[above]{\zn};
 % \i/\k parses {1/1},{1/2},... where \i is the y points at left side `y' from bottom to top
 % and \k is the points at right side `x' from bottom to top
 \foreach \i/\k in {#6} {
 	\pgfmathsetmacro\aa{int(\y - \i)}
-	\pgfmathsetmacro\bb{int(\x - \k)}
+	\pgfmathsetmacro\cc{int(\x - \k)}
 	\draw[orange] (\i*\cosX, \i*\sinX) -- (\z-\k*\cosY, \k*\sinY);
-	\draw[blue] (\i*\cosX, \i*\sinX) node[left]{$a_{\aa}$};
-	\draw[blue] (\z-\k*\cosY, \k*\sinY) node[right]{$b_{\bb}$};
+	\draw[red] (\i*\cosX, \i*\sinX) node[left]{$a_{\aa}$};
+	\draw[blue] (\z-\k*\cosY, \k*\sinY) node[right]{$c_{\cc}$};
 }
 \end{scope}
 }
 
 \begin{tikzpicture}
-\meccanotriangle{ 3}{ 0}{6}{7}{5}{{1/0},{2/1},{3/2},{4/3},{5/4},{6/5}};
-\meccanotriangle{ 9}{ 0}{6}{7}{5}{{1/1},{2/2},{3/3},{4/4},{5/5}};
-\meccanotriangle{15}{ 0}{6}{7}{5}{{0/1},{1/2},{2/3},{3/4},{4/5}};
-\meccanotriangle{ 0}{-8}{6}{7}{5}{{0/2},{1/3},{2/4},{3/5}};
-\meccanotriangle{ 6}{-8}{6}{7}{5}{{0/3},{1/4},{2/5}};
-\meccanotriangle{12}{-8}{6}{7}{5}{{0/4},{1/5}};
-\meccanotriangle{18}{-8}{6}{7}{5}{{0/5}};
+\meccanotriangle{ 0}{ 0}{5}{7}{6}{{2/0},{3/1},{4/2},{5/3},{6/4}};
+\meccanotriangle{ 4}{ 0}{5}{7}{6}{{1/0},{2/1},{3/2},{4/3},{5/4}};
+\meccanotriangle{ 8}{ 0}{5}{7}{6}{{1/1},{2/2},{3/3},{4/4}};
+\meccanotriangle{ 0}{-4}{5}{7}{6}{{0/1},{1/2},{2/3},{3/4}};
+\meccanotriangle{ 4}{-4}{5}{7}{6}{{0/2},{1/3},{2/4}};
+\meccanotriangle{ 8}{-4}{5}{7}{6}{{0/3},{1/4}};
+\meccanotriangle{12}{-4}{5}{7}{6}{{0/4}};
 \end{tikzpicture}
 
 \end{document}
