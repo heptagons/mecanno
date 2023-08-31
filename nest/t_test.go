@@ -170,7 +170,7 @@ func TestTbasic(t *testing.T) {
 	} {
 		in := ab2*(g.x*g.x + g.y*g.y) - Z(ab)*g.x*g.y*a2_b2_c2
 		diag, _ := factory.aNew3(ab, 0, 1, in)
-		t.Logf("diag x=%d y=%d d=%s", g.x, g.y, diag)
+		fmt.Printf("overline{x_%dy_%d} &= %s\n", g.x, g.y, diag)
 	}
 
 }
