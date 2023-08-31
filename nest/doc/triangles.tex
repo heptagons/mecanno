@@ -17,30 +17,30 @@
 
 \maketitle
 \begin{abstract}
-We construct meccano triangles with integers sides and calculate the diagonal distances.
+We construct meccano triangles. Basic triangles has the three sides as integers and calculate the internal diagonal distances.
 Such diagonals then are used as the new side of more complicated triangles and then again we
 calculate new distances formed and so on. Eventually we expect to
-find certain angles which can be used to construct regular polygons or something else.
+find certain angles joining the triangles which can be used to construct regular polygons or more figures.
 \end{abstract}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.78]{t765}
-\caption{The meccano scalene triangle with sides $7$, $6$ and $5$.}
+\caption{The meccano scalene basic triangle with sides $7$, $6$ and $5$.}
 \label{t765}
 \end{figure}
 \
-\section{Meccano triangle}
-A meccano triangle has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
+\section{Basic triangle}
+A basic triangle has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
 consider only the cases $a \ge b$, $b \ge c$ and $a \ge c$. Valid triangles also need the 
 condition $a \ge b + c$.
 
-\subsection{Triangle diagonals}
-Figure \ref{t765} show a meccano triangle with sides $a=7$, $b=6$ and $c=5$. We have seven groups of diagonals shown as orange lines. The diagonals join points from side $a$ to side $b$ in all combinations. From top to bottom and left to right the groups are:
+\subsection{Basic triangle diagonals}
+Figure \ref{t765} show a basic triangle with sides $a=7$, $b=6$ and $c=5$. For this particular triangle we have seven groups of diagonals shown as orange lines. The diagonals join points from side $a$ nodes described as $a_x$ to side $b$ nodes described as $b_y$ in all combinations. From top to bottom and left to right the groups are:
 \begin{center}
 \begin{tabular}{||c c c||} 
  \hline
- Group & $a-b$ & diagonals \\ [0.5ex] 
+ Group & $x-y$ & diagonals \\ [0.5ex] 
  \hline\hline
  1 & 0 & $a_1b_1$ to $a_6b_6$ \\ 
  \hline
@@ -48,7 +48,7 @@ Figure \ref{t765} show a meccano triangle with sides $a=7$, $b=6$ and $c=5$. We 
  \hline
  3 & 2 & $a_3b_1$ to $a_7b_5$ \\
  \hline
- 4 & 3 & $a_4b_1$ to $a_7b_5$ \\
+ 4 & 3 & $a_4b_1$ to $a_7b_4$ \\
  \hline
  5 & 4 & $a_5b_1$ to $a_7b_3$ \\
  \hline
@@ -62,19 +62,20 @@ Figure \ref{t765} show a meccano triangle with sides $a=7$, $b=6$ and $c=5$. We 
 To calculate the diagonals we start calculating $\cos{C}$ where $C$ is the
 opposite angle of side $c=5$:
 \begin{align}
-\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab}\\
-        &= \frac{7^2 + 6^2 - 5^2}{2\times7\times6} = \frac{4}{21}
+\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab}
 \end{align}
 
-Then with the $\cos{C}$ we can calculate every diagonal $\overline{a_xb_y}$ with:
+Then with the $\cos{C}$ we can calculate every diagonal $\overline{a_xb_y}$ with
+the law of cosines:
 \begin{align}
 \overline{a_xb_y} &= \sqrt{x^2 + y^2 - 2xy\cos{C}}\\
-       &= \sqrt{x^2 + y^2 - 2xy\frac{a^2 + b^2 - c^2}{2ab}}
+       &= \sqrt{x^2 + y^2 - 2xy\frac{a^2 + b^2 - c^2}{2ab}}\\
+       &= \frac{\sqrt{a^2b^2(x^2 + y^2)-abxy(a^2 + b^2 - c^2)}}{ab}
 \end{align}
 
 where $1 \le x \le a$, $1 \le y \le b$ and $x - y \ge 0$.
 
-By inspection we deduce that for first meccano triangles:
+By inspection we deduce that for basic meccano triangles:
 \begin{align}
 a, b, c &\in \bbb{N}\\
 \cos{A}, \cos{B}, \cos{C} &\in \bbb{Q}\\
