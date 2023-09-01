@@ -23,12 +23,15 @@ calculate new distances formed and so on. Eventually we expect to
 find certain angles joining the triangles which can be used to construct regular polygons or more figures.
 \end{abstract}
 
-\section{Basic triangle}
-A basic triangle has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
-consider only the cases $a \ge b$, $b \ge c$ and $a \ge c$. Valid triangles also need the 
-condition $b + c > a$.
+\section{Triangle $(a,b,c)$}
+A triangle $(a,b,c)$ has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
+consider only the cases:
+\begin{align}
+a &\ge b \ge c\\
+a &< b + c
+\end{align}
 
-\subsection{Basic triangle diagonals}
+\subsection{Triangle $(a,b,c)$ diagonals}
 
 To calculate the diagonals from side $a$ to side $b$ we start calculating $\cos{C}$ where $C$ is the
 opposite angle of side $c$:
@@ -86,7 +89,7 @@ Figure \ref{t765ab} show triangle $[7,6,5]$ diagonals $a_xb_y$.
 The diagonals join points from side $a$ nodes described as $a_x$ to side $b$ nodes described as $b_y$ in all combinations.
 \\\\
 \newcommand\five{\colorbox{green}{$5$}}
-Matrix for angle $A$ diagonals $b_{1..6}c_{1..5}$:
+Matrix for angle $A$ diagonals joining sides $b$ and $c$. Empty cells are repetitions:
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccc}
 	\frac{2\sqrt{10}}{5} & \frac{\sqrt{105}}{5} & \frac{2\sqrt{55}}{5} & \frac{\sqrt{385}}{5} & 2\sqrt{6} & \frac{\sqrt{865}}{5} \\
@@ -98,29 +101,74 @@ Matrix for angle $A$ diagonals $b_{1..6}c_{1..5}$:
 \end{equation}
 
 
-Matrix for diagonals $ac$:
+Matrix for angle $B$ diagonals joining sides $a$ and $c$. Empty cells are repetitions.
+Values at column 7 (at the right of separator $|$) are repeated and already in previous matrix.
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccccc}
-	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & | & (\frac{2\sqrt{265}}{5})\\
-	& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} & \frac{6\sqrt{385}}{35} & \frac{\sqrt{889}}{7} & \frac{4\sqrt{2065}}{35} & | & (\frac{3\sqrt{105}}{5}) \\
-	& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} & \frac{2\sqrt{217}}{7} & \frac{9\sqrt{385}}{35} & | & (\frac{4\sqrt{55}}{5})\\
-	& & & \frac{16\sqrt{70}}{35} & \frac{3\sqrt{105}}{7} & \frac{2\sqrt{7945}}{35} & | & (\frac{\sqrt{865}}{5})\\
-	& & & & \frac{4\sqrt{70}}{7} & \frac{\sqrt{1393}}{7} & | & (\boxed{6})\\
+	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & | & \frac{2\sqrt{265}}{5}\\
+	& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} & \frac{6\sqrt{385}}{35} & \frac{\sqrt{889}}{7} & \frac{4\sqrt{2065}}{35} & | & \frac{3\sqrt{105}}{5} \\
+	& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} & \frac{2\sqrt{217}}{7} & \frac{9\sqrt{385}}{35} & | & \frac{4\sqrt{55}}{5}\\
+	& & & \frac{16\sqrt{70}}{35} & \frac{3\sqrt{105}}{7} & \frac{2\sqrt{7945}}{35} & | & \frac{\sqrt{865}}{5}\\
+	& & & & \frac{4\sqrt{70}}{7} & \frac{\sqrt{1393}}{7} & | & \boxed{6}\\
 \end{array}\right)
 \end{equation}
 
-Matrix for diagonals $ab$:
+Matrix for angle $C$ diagonals joining sides $a$ and $b$. Empty cells are repetitions.
+Values at columns 6 and 7 (at the right of separator $|$) are repeated and already in previous matrices.
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccccc}
-	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & | &  (\frac{\sqrt{1393}}7) & (2\sqrt{10}) \\
-	 & \frac{4\sqrt7}7 & \frac{\sqrt{217}}7 & \frac{2\sqrt{105}}7 & \frac{\sqrt{721}}7 & | &  (\frac{4\sqrt{70}}7) & (\sqrt{33}) \\
-	 & & \frac{6\sqrt7}7 & \frac{\sqrt{385}}7 & \frac{2\sqrt{154}}7 & | &  (\frac{3\sqrt{105}}7) & (2\sqrt{7}) \\
-	 & & & \frac{8\sqrt7}7 & \frac{\sqrt{609}}7 & | &  (\frac{2\sqrt{217}}7) & (\five) \\
-	 & & & & \frac{10\sqrt7}7 & | &  (\frac{\sqrt{889}}7) & (2\sqrt{6}) \\
-	 & & & & & | & (\frac{12\sqrt7}7) & (\boxed{5}) \\
+	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & | &  \frac{\sqrt{1393}}7 & 2\sqrt{10} \\
+	 & \frac{4\sqrt7}7 & \frac{\sqrt{217}}7 & \frac{2\sqrt{105}}7 & \frac{\sqrt{721}}7 & | &  \frac{4\sqrt{70}}7 & \sqrt{33} \\
+	 & & \frac{6\sqrt7}7 & \frac{\sqrt{385}}7 & \frac{2\sqrt{154}}7 & | &  \frac{3\sqrt{105}}7 & 2\sqrt{7} \\
+	 & & & \frac{8\sqrt7}7 & \frac{\sqrt{609}}7 & | &  \frac{2\sqrt{217}}7 & \five \\
+	 & & & & \frac{10\sqrt7}7 & | &  \frac{\sqrt{889}}7 & 2\sqrt{6} \\
+	 & & & & & | & \frac{12\sqrt7}7 & \boxed{5} \\
 \end{array}\right)
 \end{equation}
 
+\section{Triangles$(\sqrt{a},b,c)$}
 
+Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ where $a^2,b,c \in \bbb N$. So we have:
+\begin{align}
+\sqrt{a} &\ge b \ge c\\
+      a  &\ge b^2 \ge c^2
+\end{align}
+And:
+\begin{align}
+\sqrt{a} &< b + c\\
+a &< (b + c)^2
+\end{align}
+
+\subsection{Example triangles$(2\sqrt{6},b,c)$}
+
+In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$. Then $b = \{ 1,2,3,4 \}$ because $b^2 = \{ 1,4,9,16\} < 24$.
+Also $c = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$. We form a matrix with with the values $(b+c)^2$:
+\begin {equation}\label{E:1}
+(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+c=1 &  2 &  9 & 16 & 25 \cr    
+c=2 &  9 & 16 & 25 & 36 \cr    
+c=3 & 16 & 25 & 36 & 49 \cr    
+c=4 & 25 & 36 & 49 & 64 \cr}
+    \end {equation}
+
+Then we remove cells which don't fulfil condition $b \ge c$:
+\begin {equation}\label{E:2}
+(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+c=1 &  2 &  9 & 16 & 25 \cr    
+c=2 &    & 16 & 25 & 36 \cr    
+c=3 &    &    & 36 & 49 \cr    
+c=4 &    &    &    & 64 \cr}
+    \end {equation}
+
+Then we remove cells which don't fulfil condition $a < (b+c)^2$:
+\begin {equation}\label{E:3}
+(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+c=1 &    &    &    & 25 \cr    
+c=2 &    &    & 25 & 36 \cr    
+c=3 &    &    & 36 & 49 \cr    
+c=4 &    &    &    & 64 \cr}
+    \end {equation}
+    
+So only six triangles are valid: $(2\sqrt{6},4,1)$, $[2\sqrt{6},3,2]$, $[2\sqrt{6},4,2]$, $[2\sqrt{6},3,3]$, $[2\sqrt{6},4,3]$ and $[2\sqrt{6},4,4]$.
 
 \end{document}
