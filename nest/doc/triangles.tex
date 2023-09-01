@@ -24,72 +24,71 @@ find certain angles joining the triangles which can be used to construct regular
 \end{abstract}
 
 \section{Triangle $(a,b,c)$}
-A triangle $(a,b,c)$ has the tree sides $a$, $b$ and $c$ where $a,b,c \in \bbb N$. To avoid repetitions we
-consider only the cases:
+A triangle $(a,b,c)$ has the tree integer sides $a$, $b$ and $c$.
+To avoid repetitions we consider only the cases:
 \begin{align}
-a &\ge b \ge c\\
+a &\ge b \ge c &\in \bbb N\\
 a &< b + c
+\end{align}
+We calculate the three angles:
+\begin{align}
+\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc} &\in \bbb Q\\
+\cos{B} &= \frac{c^2 + a^2 - b^2}{2ca} &\in \bbb Q\\
+\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab} &\in \bbb Q
 \end{align}
 
 \subsection{Triangle $(a,b,c)$ diagonals}
 
-To calculate the diagonals from side $a$ to side $b$ we start calculating $\cos{C}$ where $C$ is the
-opposite angle of side $c$:
+To calculate the diagonals we use the law of cosines.
+With the $\cos{A}$ we can calculate every diagonal $\overline{b_mc_n}$ with:
 \begin{align}
-\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab}
+\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}}\\
+       &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - a^2}{2bc}}\\
+       &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - a^2)}}{bc} &\in \bbb A
+\end{align}
+where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Similarly:
+\begin{align}
+\overline{c_ma_n} &= \frac{\sqrt{c^2a^2(m^2 + n^2)-camn(c^2 + a^2 - b^2)}}{ac} &\in \bbb A\\
+\overline{a_mb_n} &= \frac{\sqrt{a^2b^2(m^2 + n^2)-abmn(a^2 + b^2 - c^2)}}{ab} &\in \bbb A
 \end{align}
 
-Then with the $\cos{C}$ we can calculate every diagonal $\overline{a_xb_y}$ with
-the law of cosines:
-\begin{align}
-\overline{a_xb_y} &= \sqrt{x^2 + y^2 - 2xy\cos{C}}\\
-       &= \sqrt{x^2 + y^2 - 2xy\frac{a^2 + b^2 - c^2}{2ab}}\\
-       &= \frac{\sqrt{a^2b^2(x^2 + y^2)-abxy(a^2 + b^2 - c^2)}}{ab}
-\end{align}
-
-where $1 \le x \le a$, $1 \le y \le b$ and $x - y \ge 0$.
-
-By inspection we deduce that for basic meccano triangles:
-\begin{align}
-a, b, c &\in \bbb{N}\\
-\cos{A}, \cos{B}, \cos{C} &\in \bbb{Q}\\
-\overline{a_xb_y}, \overline{b_yc_z}, \overline{a_xc_z} &\in \bbb{A}
-\end{align}
-
-\subsection{Example triangle [7,6,5]}
+\subsection{Example triangle (7,6,5)}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765bc}
-\caption{Triangle $[7,6,5]$, $bc$ diagonals.}
+\caption{Triangle $(7,6,5)$ $b_mc_n$ diagonals ($m \ge n$).
+For top to bottom and left to right we have six groups of diagonals.
+Each group is defined by $m$ and $n$ indices difference:
+$m - n = 0$, $m - n = 1$, ... $m - n = 5$.
+}
 \label{t765bc}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765ac}
-\caption{Triangle $[7,6,5]$, $ac$ diagonals.}
+\caption{Triangle $(7,6,5)$, $a_mc_n$ diagonals ($m \ge n$).
+We have also six group. But here we found diagonals repetead already
+found in previous figure. Diagonals repeated are all including $a_7$ points.
+}
 \label{t765ac}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765ab}
-\caption{Triangle $[7,6,5]$, $ab$ diagonals.}
+\caption{Triangle $(7,6,5)$, $a_mb_n$ diagonals ($m \ge n$).
+Here we have diagonals repeteated already in previous figure.
+Using matrices we can reject such diagonals rejecting matrices columns.
+}
 \label{t765ab}
 \end{figure}
 
-
-Figure \ref{t765bc} show triangle $[7,6,5]$ diagonals $b_yc_z$.
-\\\\
-Figure \ref{t765ac} show triangle $[7,6,5]$ diagonals $a_xc_z$.
-The diagonals join points from side $a$ nodes described as $a_x$ to side $c$ nodes described as $c_z$ in all combinations.
-\\\\
-Figure \ref{t765ab} show triangle $[7,6,5]$ diagonals $a_xb_y$.
-The diagonals join points from side $a$ nodes described as $a_x$ to side $b$ nodes described as $b_y$ in all combinations.
-\\\\
 \newcommand\five{\colorbox{green}{$5$}}
-Matrix for angle $A$ diagonals joining sides $b$ and $c$. Empty cells are repetitions:
+
+Figure \ref{t765bc} show triangle $(7,6,5)$ diagonals $b_mc_n$ for vertex $A$. For this figure we calculate
+the values and form a matrix. Empty cells are reflections:
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccc}
 	\frac{2\sqrt{10}}{5} & \frac{\sqrt{105}}{5} & \frac{2\sqrt{55}}{5} & \frac{\sqrt{385}}{5} & 2\sqrt{6} & \frac{\sqrt{865}}{5} \\
@@ -100,9 +99,9 @@ Matrix for angle $A$ diagonals joining sides $b$ and $c$. Empty cells are repeti
 \end{array}\right)
 \end{equation}
 
-
-Matrix for angle $B$ diagonals joining sides $a$ and $c$. Empty cells are repetitions.
-Values at column 7 (at the right of separator $|$) are repeated and already in previous matrix.
+Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_mc_n$ for vertex $B$. For this figure we calculate
+the values for a second matrix. Values at column 7 (at the right of separator $|$) are repeated and already in previous matrix.
+Empty cells are reflections.
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccccc}
 	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & | & \frac{2\sqrt{265}}{5}\\
@@ -113,8 +112,9 @@ Values at column 7 (at the right of separator $|$) are repeated and already in p
 \end{array}\right)
 \end{equation}
 
-Matrix for angle $C$ diagonals joining sides $a$ and $b$. Empty cells are repetitions.
-Values at columns 6 and 7 (at the right of separator $|$) are repeated and already in previous matrices.
+Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_mb_n$ for vertex $C$. For this figure we calculate
+the values for a third matrix. Values at columns 6 and 7 (at the right of separator $|$) 
+are repeated and already in previous matrices.
 \begin{equation}\label{eq:appendrow}
 \left(\begin{array}{cccccccc}
 	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & | &  \frac{\sqrt{1393}}7 & 2\sqrt{10} \\
@@ -128,47 +128,73 @@ Values at columns 6 and 7 (at the right of separator $|$) are repeated and alrea
 
 \section{Triangles$(\sqrt{a},b,c)$}
 
-Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ where $a^2,b,c \in \bbb N$. So we have:
+Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ so we have:
 \begin{align}
+a^2, b, c &\in \bbb N\\
 \sqrt{a} &\ge b \ge c\\
-      a  &\ge b^2 \ge c^2
+\sqrt{a} &< b + c
 \end{align}
-And:
+Raising to power 2 the inequalities we have:
 \begin{align}
-\sqrt{a} &< b + c\\
+a  &\ge b^2 \ge c^2\\
 a &< (b + c)^2
 \end{align}
+We calculate the triangle cosines:
+\begin{align}
+\cos{A} &= \frac{b^2 + c^2 - (\sqrt{a})^2}{2bc} = \frac{b^2 + c^2 - a}{2bc} &\in \bbb{Q} \\
+\cos{B} &= \frac{(\sqrt{a})^2 + c^2 - b^2}{2\sqrt{a}c} = \frac{(a + c^2 - b^2)\sqrt{a}}{2ac} &\in \bbb{A} \\
+\cos{C} &= \frac{(\sqrt{a})^2 + b^2 - c^2}{2\sqrt{a}b} = \frac{(a + b^2 - c^2)\sqrt{a}}{2ab} &\in \bbb{A} 
+\end{align}
+
+\subsection{Triangle $(\sqrt{a},b,c)$ diagonals}
+
+The only possible diagonals are for sides with integers, that is $\overline{b_mc_n}$. Using the law of cosines:
+\begin{align}
+\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}}\\
+  &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - a}{2bc}}\\
+  &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - a)}}{bc} &\in \bbb{A}
+\end{align}
+where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$.
 
 \subsection{Example triangles$(2\sqrt{6},b,c)$}
 
-In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$. Then $b = \{ 1,2,3,4 \}$ because $b^2 = \{ 1,4,9,16\} < 24$.
-Also $c = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$. We form a matrix with with the values $(b+c)^2$:
+In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$. Then $m = n = \{ 1,2,3,4 \}$ because $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
+We form a matrix with with the values $(b+c)^2$:
 \begin {equation}\label{E:1}
 (b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
-c=1 &  2 &  9 & 16 & 25 \cr    
+c=1 &  4 &  9 & 16 & 25 \cr    
 c=2 &  9 & 16 & 25 & 36 \cr    
 c=3 & 16 & 25 & 36 & 49 \cr    
 c=4 & 25 & 36 & 49 & 64 \cr}
-    \end {equation}
+\end {equation}
 
 Then we remove cells which don't fulfil condition $b \ge c$:
 \begin {equation}\label{E:2}
 (b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 &  2 &  9 & 16 & 25 \cr    
-c=2 &    & 16 & 25 & 36 \cr    
-c=3 &    &    & 36 & 49 \cr    
-c=4 &    &    &    & 64 \cr}
-    \end {equation}
+c=2 & \times & 16 & 25 & 36 \cr    
+c=3 & \times & \times & 36 & 49 \cr    
+c=4 & \times & \times & \times & 64 \cr}
+\end {equation}
 
 Then we remove cells which don't fulfil condition $a < (b+c)^2$:
 \begin {equation}\label{E:3}
 (b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
-c=1 &    &    &    & 25 \cr    
-c=2 &    &    & 25 & 36 \cr    
-c=3 &    &    & 36 & 49 \cr    
-c=4 &    &    &    & 64 \cr}
-    \end {equation}
+c=1 & \times & \times & \times & 25 \cr    
+c=2 & & \times & 25 & 36 \cr    
+c=3 & & & 36 & 49 \cr    
+c=4 & & & & 64 \cr}
+\end {equation}
     
-So only six triangles are valid: $(2\sqrt{6},4,1)$, $[2\sqrt{6},3,2]$, $[2\sqrt{6},4,2]$, $[2\sqrt{6},3,3]$, $[2\sqrt{6},4,3]$ and $[2\sqrt{6},4,4]$.
+So only six triangles are valid:
+\begin {equation}\label{E:4}
+(2\sqrt{6},b,c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
+(2\sqrt{6},4,1) & & & \cr
+(2\sqrt{6},3,2) & & & \cr
+(2\sqrt{6},4,2) & & & \cr
+(2\sqrt{6},3,3) & & & \cr
+(2\sqrt{6},4,3) & & & \cr
+(2\sqrt{6},4,4) & & & \cr}
+\end{equation}
 
 \end{document}
