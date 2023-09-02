@@ -12,6 +12,10 @@ type T struct {
 	d Z32 // area = √d/4
 }
 
+func (t *T) String() string {
+	return fmt.Sprintf("%d,%d,%d", t.a, t.b, t.c)
+}
+
 func newT(a, b, c N32) *T {
 	if a >= b && b >= c && b+c > a {
 		return &T{
@@ -25,9 +29,25 @@ func newT(a, b, c N32) *T {
 	return nil
 }
 
-func (t *T) String() string {
-	return fmt.Sprintf("%d,%d,%d", t.a, t.b, t.c)
+
+// newTslurAs return all triangles with a = √slur with a >= b >= c
+func newTslurAs(slur N32) (tris []*T) {
+	tris = make([]*T, 0)
+	b := N32(1)
+	for {
+		if b*b > slur {
+			break
+		}
+		for c := N32(1); c <= b; c++ {
+			if slur < (b+c)*(b+c) {
+				tris = append(tris, &T{ a:slur, b:b, c:c })
+			}
+		}
+		b++
+	}
+	return
 }
+
 
 
 type Tang byte
@@ -191,5 +211,22 @@ func (ts *T32s) tLawOfCos(y, z N32, cosX *A32) (*A32, error) {
 		return ts.aSqrt(y2_z2_2zycosX)
 	}
 }
+
+func (ts *T32s) tSlurACosines(t *T) (cosA, cosB, cosC *A32, err error) {
+	a := Z(t.a) // slur
+	b := Z(t.b)
+	c := Z(t.c)
+	if cosA, err = ts.aNew1(2*N(b)*N(c), b*b + c*c - a); err != nil {
+		return
+	} else if cosB, err = ts.aNew3(2*N(a)*N(c), 0, (a + c*c - b*b), a); err != nil {
+		return
+	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, (a + b*b - c*c), a); err != nil {
+		return
+	}
+	return
+}
+
+
+
 
 

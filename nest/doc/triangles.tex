@@ -130,7 +130,7 @@ are repeated and already in previous matrices.
 
 Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ so we have:
 \begin{align}
-a^2, b, c &\in \bbb N\\
+a, b, c &\in \bbb N\\
 \sqrt{a} &\ge b \ge c\\
 \sqrt{a} &< b + c
 \end{align}
@@ -189,12 +189,14 @@ c=4 & & & & 64 \cr}
 So only six triangles are valid:
 \begin {equation}\label{E:4}
 (2\sqrt{6},b,c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
-(2\sqrt{6},4,1) & & & \cr
-(2\sqrt{6},3,2) & & & \cr
-(2\sqrt{6},4,2) & & & \cr
-(2\sqrt{6},3,3) & & & \cr
-(2\sqrt{6},4,3) & & & \cr
-(2\sqrt{6},4,4) & & & \cr}
+(2\sqrt{6},3,2) & -\frac{11}{12} & \frac{19\sqrt{6}}{48} & \frac{29\sqrt{6}}{72} \cr
+(2\sqrt{6},3,3) & -\frac{1}{3}   & \frac{\sqrt{6}}{3}    & \frac{\sqrt{6}}{3}    \cr
+(2\sqrt{6},4,1) & -\frac{7}{8}   & \frac{3\sqrt{6}}{8}   & \frac{13\sqrt{6}}{32} \cr
+(2\sqrt{6},4,2) & -\frac{1}{4}   & \frac{\sqrt{6}}{4}    & \frac{3\sqrt{6}}{8}   \cr
+(2\sqrt{6},4,3) &  \frac{1}{24}  & \frac{17\sqrt{6}}{72} & \frac{31\sqrt{6}}{96} \cr
+(2\sqrt{6},4,4) &  \frac{1}{4}   & \frac{\sqrt{6}}{4}    & \frac{\sqrt{6}}{4}    \cr}
 \end{equation}
+
+data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursA}
 
 \end{document}

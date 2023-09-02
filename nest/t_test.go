@@ -184,3 +184,17 @@ func TestTbasic(t *testing.T) {
 		fmt.Printf("y_%d z_%d}  diag = %s\n", g.y, g.z, diag)
 	}
 }
+
+func TestTslursA(t *testing.T) {
+	factory := NewT32s()
+	sqrt := N32(28)
+	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
+	for _, tri := range newTslurAs(sqrt) {
+		if cosA, cosB, cosC, err := factory.tSlurACosines(tri); err != nil {
+			t.Fatalf("error %v", err)
+		} else {
+			t.Logf("(%s,%d,%d) %s %s %s",
+				slur.String(), tri.b, tri.c, cosA, cosB, cosC)
+		}
+	}
+}
