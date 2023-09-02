@@ -24,13 +24,13 @@ find certain angles joining the triangles which can be used to construct regular
 \end{abstract}
 
 \section{Triangle $(a,b,c)$}
-A triangle $(a,b,c)$ has the tree integer sides $a$, $b$ and $c$.
-To avoid repetitions we consider only the cases:
+A triangle $(a,b,c)$ has the tree integer sides $a$, $b$ and $c$ where $a, b, c \in \bbb N$.
+To avoid repetitions and get only valid triangles, we consider only the cases:
 \begin{align}
-a &\ge b \ge c &\in \bbb N\\
+a &\ge b \ge c\\
 a &< b + c
 \end{align}
-We calculate the three angles:
+We calculate the three angles cosines. The three cosines are rationals:
 \begin{align}
 \cos{A} &= \frac{b^2 + c^2 - a^2}{2bc} &\in \bbb Q\\
 \cos{B} &= \frac{c^2 + a^2 - b^2}{2ca} &\in \bbb Q\\
@@ -51,6 +51,7 @@ where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Similarly:
 \overline{c_ma_n} &= \frac{\sqrt{c^2a^2(m^2 + n^2)-camn(c^2 + a^2 - b^2)}}{ac} &\in \bbb A\\
 \overline{a_mb_n} &= \frac{\sqrt{a^2b^2(m^2 + n^2)-abmn(a^2 + b^2 - c^2)}}{ab} &\in \bbb A
 \end{align}
+The diagonals are algebraic of the form $\frac{y\sqrt{z}}{x}$.
 
 \subsection{Example triangle (7,6,5)}
 
@@ -131,15 +132,10 @@ are repeated and already in previous matrices.
 Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ so we have:
 \begin{align}
 a, b, c &\in \bbb N\\
-\sqrt{a} &\ge b \ge c\\
-\sqrt{a} &< b + c
+\sqrt{a} &> b \ge c &\implies a  > b^2 \ge c^2 \\
+\sqrt{a} &< b + c   &\implies a < (b + c)^2
 \end{align}
-Raising to power 2 the inequalities we have:
-\begin{align}
-a  &\ge b^2 \ge c^2\\
-a &< (b + c)^2
-\end{align}
-We calculate the triangle cosines:
+We calculate the triangle cosines. $\cos{A}$ is rational but $\cos{B}$ and $\cos{C}$ are algebraic:
 \begin{align}
 \cos{A} &= \frac{b^2 + c^2 - (\sqrt{a})^2}{2bc} = \frac{b^2 + c^2 - a}{2bc} &\in \bbb{Q} \\
 \cos{B} &= \frac{(\sqrt{a})^2 + c^2 - b^2}{2\sqrt{a}c} = \frac{(a + c^2 - b^2)\sqrt{a}}{2ac} &\in \bbb{A} \\
@@ -177,7 +173,7 @@ c=3 & \times & \times & 36 & 49 \cr
 c=4 & \times & \times & \times & 64 \cr}
 \end {equation}
 
-Then we remove cells which don't fulfil condition $a < (b+c)^2$:
+Finally we remove cells which don't fulfil condition $a < (b+c)^2$:
 \begin {equation}\label{E:3}
 (b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 & \times & \times & \times & 25 \cr    
@@ -198,5 +194,59 @@ So only six triangles are valid:
 \end{equation}
 
 data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursA}
+
+\section{Triangles$(a,\sqrt{b},c)$}
+
+Triangles$(a,\sqrt{b},c)$ have the tree sides $a$, $\sqrt{b}$, $c$ where $a, b, c \in \bbb N$ and $b$ is squarefree. We have:
+\begin{align}
+a &> \sqrt{b} > c &\implies a^2 > b > c^2 \\
+a &< \sqrt{b} + c &\implies (a-c)^2 < b
+\end{align}
+We calculate the triangle cosines. $\cos{A}$ is algebraic, $\cos{B}$ rational and $\cos{C}$ algebraic:
+\begin{align}
+\cos{A} &= \frac{b + c^2 - a^2}{2\sqrt{b}c} = \frac{(b + c^2 - a^2)\sqrt{b}}{2bc} &\in \bbb{A} \\
+\cos{B} &= \frac{a^2 + c^2 - (\sqrt{b})^2}{2ac} = \frac{a^2 + c^2 - b}{2ac} &\in \bbb{Q} \\
+\cos{C} &= \frac{a^2 + (\sqrt{b})^2 - c^2}{2a\sqrt{b}} = \frac{(a^2 + b - c^2)\sqrt{b}}{2ab} &\in \bbb{A} 
+\end{align}
+
+\subsection{Triangle $(a, \sqrt{b},c)$ diagonals}
+
+The only possible diagonals are for sides with integers, that is $\overline{a_mc_n}$. Using the law of cosines:
+\begin{align}
+\overline{a_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{B}}\\
+  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + c^2 - b}{2ac}}\\
+  &= \frac{\sqrt{a^2c^2(m^2 + n^2)-acmn(a^2 + c^2 - b)}}{ac} &\in \bbb{A}
+\end{align}
+where $1 \le m \le a$, $1 \le n \le c$ and $m - n \ge 0$.
+
+\subsection{Example triangles$(a,2\sqrt{6},c)$}
+
+In this case $\sqrt{b} = 2\sqrt{6}$ so $b = 24$. Then $n = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$.
+We form a matrix with with the values $(a-c)^2$ starting with $a=5$ to fulfil $a^2 > b$:
+\begin {equation}\label{E:11}
+(a_m - c_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & ...\cr
+c=1 & 16 & 25 & 36 & ... \cr    
+c=2 & 25 & 36 & 49 & ... \cr    
+c=3 & 36 & 49 & 64 & ... \cr    
+c=4 & 49 & 64 & 81 & ... \cr}
+\end {equation}
+
+We remove cells which don't fulfil condition $(a-c)^2 < b$:
+\begin {equation}\label{E:12}
+(a_m - c_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & ...\cr
+c=1 & 16 & \times & \times & ... \cr    
+c=2 & \times & \times & \times & ... \cr    
+c=3 & \times & \times & \times & ... \cr    
+c=4 & \times & \times & \times & ... \cr}
+\end {equation}
+
+So only one triangles are valid:
+\begin {equation}\label{E:13}
+(a,2\sqrt{6},c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
+(5,2\sqrt{6},1) & \frac{}{} & \frac{}{} & \frac{}{} \cr}
+\end{equation}
+
+data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursB}
+
 
 \end{document}
