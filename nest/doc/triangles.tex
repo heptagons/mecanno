@@ -249,4 +249,56 @@ So only one triangles are valid:
 data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursB}
 
 
+\section{Triangles$(a,b,\sqrt{c})$}
+
+Triangles$(a,b,\sqrt{c})$ have the tree sides $a$, $b$, $\sqrt{c}$ where $a, b, c \in \bbb N$ and $c$ is squarefree. We have:
+\begin{align}
+a &\ge b > \sqrt{c} &\implies a^2 \ge b^2 > c \\
+a &< b + \sqrt{c} &\implies (a-b)^2 < c
+\end{align}
+We calculate the triangle cosines. $\cos{A}$ and $\cos{B}$ are algebraic and $\cos{C}$ rational:
+\begin{align}
+\cos{A} &= \frac{b^2 + c - a^2}{2b\sqrt{c}} = \frac{(b^2 + c - a^2)\sqrt{c}}{2bc} &\in \bbb{A} \\
+\cos{B} &= \frac{a^2 + c - b^2}{2a\sqrt{c}} = \frac{(a^2 + c - b^2)\sqrt{c}}{2ac} &\in \bbb{A} \\
+\cos{C} &= \frac{a^2 + b^2 - (\sqrt{c})^2}{2ab} = \frac{a^2 + b^2 - c}{2ab} &\in \bbb{Q} 
+\end{align}
+
+\subsection{Triangle $(a, b, \sqrt{c})$ diagonals}
+
+The only possible diagonals are for sides with integers, that is $\overline{a_mb_n}$. Using the law of cosines:
+\begin{align}
+\overline{a_mb_n} &= \sqrt{m^2 + n^2 - 2mn\cos{C}}\\
+  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + b^2 - c}{2ab}}\\
+  &= \frac{\sqrt{a^2b^2(m^2 + n^2)-acmn(a^2 + b^2 - c)}}{ab} &\in \bbb{A}
+\end{align}
+where $1 \le m < a$, $1 \le n < b$ and $m - n \ge 0$.
+
+\subsection{Example triangles$(a,b,2\sqrt{6})$}
+
+In this case $\sqrt{c} = 2\sqrt{6}$ so $c = 24$. 
+We form a matrix with with the values $(a-b)^2$ starting with $a=5$ and $b=5$ to fulfil $a^2 \ge b^2 > c$:
+\begin {equation}\label{E:21}
+(a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
+b=5  & 0 & 1 & 4 &  9 & 16 & 25 & 36 & 49 & \hdots \cr    
+b=6  &   & 0 & 1 &  4 &  9 & 16 & 25 & 36 & \hdots \cr    
+b=7  &   &   & 0 &  1 &  4 &  9 & 16 & 25 & \hdots \cr    
+b=8  &   &   &   &  0 &  1 &  4 &  9 & 16 & \hdots \cr    
+b=9  &   &   &   &    &  0 &  1 &  4 &  9 & \hdots \cr    
+b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr    
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \cr}
+\end {equation}
+
+We remove cells which don't fulfil condition $(a-b)^2 < c$, here $c=24$:
+\begin {equation}\label{E:21}
+(a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
+b=5  & 0 & 1 & 4 &  9 & 16 & \times & \times & \times & \hdots \cr    
+b=6  &   & 0 & 1 &  4 &  9 & 16 & \times & \times & \hdots \cr    
+b=7  &   &   & 0 &  1 &  4 &  9 & 16 & \times & \hdots \cr    
+b=8  &   &   &   &  0 &  1 &  4 &  9 & 16 & \hdots \cr    
+b=9  &   &   &   &    &  0 &  1 &  4 &  9 & \hdots \cr    
+b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr    
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \cr}
+\end {equation}
+
+
 \end{document}
