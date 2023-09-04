@@ -185,12 +185,12 @@ func TestTbasic(t *testing.T) {
 	}
 }
 
-func TestTslursA(t *testing.T) {
+func TestTalphas(t *testing.T) {
 	factory := NewT32s()
 	sqrt := N32(24)
 	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
-	for _, tri := range newTslurAs(sqrt) {
-		if cosA, cosB, cosC, err := factory.tSlurACosines(tri); err != nil {
+	for _, tri := range newTalphas(sqrt) {
+		if cosA, cosB, cosC, err := factory.tAlphaCosines(tri); err != nil {
 			t.Fatalf("error %v", err)
 		} else {
 			t.Logf("(%s,%d,%d) %s %s %s",
@@ -199,16 +199,30 @@ func TestTslursA(t *testing.T) {
 	}
 }
 
-func TestTslursB(t *testing.T) {
+func TestTbetas(t *testing.T) {
 	factory := NewT32s()
 	sqrt := N32(24)
 	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
-	for _, tri := range newTslursBs(sqrt,9) {
-		if cosA, cosB, cosC, err := factory.tSlurBCosines(tri); err != nil {
+	for _, tri := range newTbetas(sqrt,9) {
+		if cosA, cosB, cosC, err := factory.tBetaCosines(tri); err != nil {
 			t.Fatalf("error %v", err)
 		} else {
 			t.Logf("(%d,%s,%d) %s %s %s",
 				tri.a, slur.String(), tri.c, cosA, cosB, cosC)
+		}
+	}
+}
+
+func TestTgammas(t *testing.T) {
+	factory := NewT32s()
+	sqrt := N32(24)
+	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
+	for _, tri := range newTgammas(sqrt,9) {
+		if cosA, cosB, cosC, err := factory.tGammaCosines(tri); err != nil {
+			t.Fatalf("error %v", err)
+		} else {
+			t.Logf("(%d,%d,%s) %s %s %s",
+				tri.a, tri.b, slur.String(), cosA, cosB, cosC)
 		}
 	}
 }

@@ -30,17 +30,19 @@ func newT(a, b, c N32) *T {
 }
 
 
-// newTslurAs return all triangles with a = √slur with a >= b >= c
-func newTslurAs(slur N32) (tris []*T) {
+// newTalphas return all triangles with sides:
+//	 _____
+//	√alpha >= b >= c
+func newTalphas(alpha N32) (tris []*T) {
 	tris = make([]*T, 0)
 	b := N32(1)
 	for {
-		if b*b > slur {
+		if b*b > alpha {
 			break
 		}
 		for c := N32(1); c <= b; c++ {
-			if slur < (b+c)*(b+c) {
-				tris = append(tris, &T{ a:slur, b:b, c:c })
+			if alpha < (b+c)*(b+c) {
+				tris = append(tris, &T{ a:alpha, b:b, c:c })
 			}
 		}
 		b++
@@ -48,21 +50,45 @@ func newTslurAs(slur N32) (tris []*T) {
 	return
 }
 
-// newTslursBs return all triangles with b = √slur with a >= b >= c
-func newTslursBs(slur N32, max N32) (tris []*T) {
+// newTbetas return all triangles with sides:
+//	      ____
+//	a >= √beta >= c
+func newTbetas(beta N32, max N32) (tris []*T) {
 	tris = make([]*T, 0)
 	maxC, minA := N32(1),N32(1)
-	for { // naive way to get i*i > slur
+	for { // naive way to get i*i > beta
 		minA = maxC+1
-		if minA*minA > slur {
+		if minA*minA > beta {
 			break
 		}
 		maxC = minA
 	}
 	for a := minA; a <= max; a++ {
 		for c := N32(1); c <= maxC; c++ {
-			if (a - c)*(a - c) < slur {
-				tris = append(tris, &T{ a:a, b:slur, c:c })
+			if (a - c)*(a - c) < beta {
+				tris = append(tris, &T{ a:a, b:beta, c:c })
+			}
+		}
+	}
+	return
+}
+
+// newTgammas return some triangles with sides:
+//	          _____
+//	a >= b > √gamma
+func newTgammas(gamma N32, max N32) (tris []*T) {
+	tris = make([]*T, 0)
+	min := N32(1)
+	for { // naive way to get i*i > gamma
+		if min*min > gamma {
+			break
+		}
+		min++
+	}
+	for a := min; a <= max; a++ {
+		for b := min; b <= a; b++ {
+			if (a - b)*(a - b) < gamma {
+				tris = append(tris, &T{ a:a, b:b, c:gamma })
 			}
 		}
 	}
@@ -231,29 +257,43 @@ func (ts *T32s) tLawOfCos(y, z N32, cosX *A32) (*A32, error) {
 	}
 }
 
-func (ts *T32s) tSlurACosines(t *T) (cosA, cosB, cosC *A32, err error) {
-	a := Z(t.a) // slur
+func (ts *T32s) tAlphaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
+	alpha := Z(t.a) // slur
 	b := Z(t.b)
 	c := Z(t.c)
-	if cosA, err = ts.aNew1(2*N(b)*N(c), b*b + c*c - a); err != nil {
+	if cosA, err = ts.aNew1(2*N(b)*N(c), b*b + c*c - alpha); err != nil {
 		return
-	} else if cosB, err = ts.aNew3(2*N(a)*N(c), 0, a + c*c - b*b, a); err != nil {
+	} else if cosB, err = ts.aNew3(2*N(alpha)*N(c), 0, alpha + c*c - b*b, alpha); err != nil {
 		return
-	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, a + b*b - c*c, a); err != nil {
+	} else if cosC, err = ts.aNew3(2*N(alpha)*N(b), 0, alpha + b*b - c*c, alpha); err != nil {
 		return
 	}
 	return
 }
 
-func (ts *T32s) tSlurBCosines(t *T) (cosA, cosB, cosC *A32, err error) {
+func (ts *T32s) tBetaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	a := Z(t.a)
-	b := Z(t.b) // slur
+	beta := Z(t.b) // slur
 	c := Z(t.c)
-	if cosA, err = ts.aNew3(2*N(b)*N(c), 0, b + c*c - a*a, b); err != nil {
+	if cosA, err = ts.aNew3(2*N(beta)*N(c), 0, beta + c*c - a*a, beta); err != nil {
 		return
-	} else if cosB, err = ts.aNew1(2*N(a)*N(c), a*a + c*c - b); err != nil {
+	} else if cosB, err = ts.aNew1(2*N(a)*N(c), a*a + c*c - beta); err != nil {
 		return
-	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, a*a + b - c*c, b); err != nil {
+	} else if cosC, err = ts.aNew3(2*N(a)*N(beta), 0, a*a + beta - c*c, beta); err != nil {
+		return
+	}
+	return
+}
+
+func (ts *T32s) tGammaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
+	a := Z(t.a)
+	b := Z(t.b)
+	gamma := Z(t.c)
+	if cosA, err = ts.aNew3(2*N(b)*N(gamma), 0, b*b + gamma - a*a, gamma); err != nil {
+		return
+	} else if cosB, err = ts.aNew3(2*N(a)*N(gamma), 0, a*a + gamma - b*b, gamma); err != nil {
+		return
+	} else if cosC, err = ts.aNew1(2*N(a)*N(b), a*a + b*b - gamma); err != nil {
 		return
 	}
 	return
