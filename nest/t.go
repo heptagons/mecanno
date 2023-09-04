@@ -48,7 +48,26 @@ func newTslurAs(slur N32) (tris []*T) {
 	return
 }
 
-
+// newTslursBs return all triangles with b = √slur with a >= b >= c
+func newTslursBs(slur N32, max N32) (tris []*T) {
+	tris = make([]*T, 0)
+	maxC, minA := N32(1),N32(1)
+	for { // naive way to get i*i > slur
+		minA = maxC+1
+		if minA*minA > slur {
+			break
+		}
+		maxC = minA
+	}
+	for a := minA; a <= max; a++ {
+		for c := N32(1); c <= maxC; c++ {
+			if (a - c)*(a - c) < slur {
+				tris = append(tris, &T{ a:a, b:slur, c:c })
+			}
+		}
+	}
+	return
+}
 
 type Tang byte
 
@@ -218,14 +237,27 @@ func (ts *T32s) tSlurACosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	c := Z(t.c)
 	if cosA, err = ts.aNew1(2*N(b)*N(c), b*b + c*c - a); err != nil {
 		return
-	} else if cosB, err = ts.aNew3(2*N(a)*N(c), 0, (a + c*c - b*b), a); err != nil {
+	} else if cosB, err = ts.aNew3(2*N(a)*N(c), 0, a + c*c - b*b, a); err != nil {
 		return
-	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, (a + b*b - c*c), a); err != nil {
+	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, a + b*b - c*c, a); err != nil {
 		return
 	}
 	return
 }
 
+func (ts *T32s) tSlurBCosines(t *T) (cosA, cosB, cosC *A32, err error) {
+	a := Z(t.a)
+	b := Z(t.b) // slur
+	c := Z(t.c)
+	if cosA, err = ts.aNew3(2*N(b)*N(c), 0, b + c*c - a*a, b); err != nil {
+		return
+	} else if cosB, err = ts.aNew1(2*N(a)*N(c), a*a + c*c - b); err != nil {
+		return
+	} else if cosC, err = ts.aNew3(2*N(a)*N(b), 0, a*a + b - c*c, b); err != nil {
+		return
+	}
+	return
+}
 
 
 

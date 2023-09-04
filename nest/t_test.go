@@ -187,7 +187,7 @@ func TestTbasic(t *testing.T) {
 
 func TestTslursA(t *testing.T) {
 	factory := NewT32s()
-	sqrt := N32(28)
+	sqrt := N32(24)
 	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
 	for _, tri := range newTslurAs(sqrt) {
 		if cosA, cosB, cosC, err := factory.tSlurACosines(tri); err != nil {
@@ -195,6 +195,20 @@ func TestTslursA(t *testing.T) {
 		} else {
 			t.Logf("(%s,%d,%d) %s %s %s",
 				slur.String(), tri.b, tri.c, cosA, cosB, cosC)
+		}
+	}
+}
+
+func TestTslursB(t *testing.T) {
+	factory := NewT32s()
+	sqrt := N32(24)
+	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
+	for _, tri := range newTslursBs(sqrt,10) {
+		if cosA, cosB, cosC, err := factory.tSlurBCosines(tri); err != nil {
+			t.Fatalf("error %v", err)
+		} else {
+			t.Logf("(%d,%s,%d) %s %s %s",
+				tri.a, slur.String(), tri.c, cosA, cosB, cosC)
 		}
 	}
 }
