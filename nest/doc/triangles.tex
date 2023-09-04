@@ -129,13 +129,13 @@ are repeated and already in previous matrices.
 
 \section{Triangles$(\sqrt{a},b,c)$}
 
-Triangles$(\sqrt{a},b,c)$ have the tree sides $\sqrt{a}$, $b$ and $c$ so we have:
+Triangles$(\sqrt{a},b,c)$ have three sides with lengths $\sqrt{a}$, $b$ and $c$ where $a, b, c \in \bbb N$
+and $a$ is squarefree. We have:
 \begin{align}
-a, b, c &\in \bbb N\\
 \sqrt{a} &> b \ge c &\implies a  > b^2 \ge c^2 \\
 \sqrt{a} &< b + c   &\implies a < (b + c)^2
 \end{align}
-We calculate the triangle cosines. $\cos{A}$ is rational but $\cos{B}$ and $\cos{C}$ are algebraic:
+We calculate the triangle cosines. $\cos{A}$ is rational and $\cos{B}$ and $\cos{C}$ are algebraic:
 \begin{align}
 \cos{A} &= \frac{b^2 + c^2 - (\sqrt{a})^2}{2bc} = \frac{b^2 + c^2 - a}{2bc} &\in \bbb{Q} \\
 \cos{B} &= \frac{(\sqrt{a})^2 + c^2 - b^2}{2\sqrt{a}c} = \frac{(a + c^2 - b^2)\sqrt{a}}{2ac} &\in \bbb{A} \\
@@ -150,30 +150,22 @@ The only possible diagonals are for sides with integers, that is $\overline{b_mc
   &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - a}{2bc}}\\
   &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - a)}}{bc} &\in \bbb{A}
 \end{align}
-where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$.
+where $1 \le m \le b$, $1 \le n \le c$ and $m \ge n$.
 
 \subsection{Example triangles$(2\sqrt{6},b,c)$}
 
-In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$. Then $m = n = \{ 1,2,3,4 \}$ because $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
-We form a matrix with with the values $(b+c)^2$:
-\begin {equation}\label{E:1}
-(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
-c=1 &  4 &  9 & 16 & 25 \cr    
-c=2 &  9 & 16 & 25 & 36 \cr    
-c=3 & 16 & 25 & 36 & 49 \cr    
-c=4 & 25 & 36 & 49 & 64 \cr}
-\end {equation}
-
-Then we remove cells which don't fulfil condition $b \ge c$:
+In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$.
+Then $m = n = \{ 1,2,3,4 \}$ because $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
+We form a matrix with the values $(b+c)^2$ and satisfying $b \ge c$:
 \begin {equation}\label{E:2}
-(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+(b_m + c_n)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 &  2 &  9 & 16 & 25 \cr    
 c=2 & \times & 16 & 25 & 36 \cr    
 c=3 & \times & \times & 36 & 49 \cr    
 c=4 & \times & \times & \times & 64 \cr}
 \end {equation}
 
-Finally we remove cells which don't fulfil condition $a < (b+c)^2$:
+Then we remove the cells that don't satisfy the condition $a < (b+c)^2$:
 \begin {equation}\label{E:3}
 (b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 & \times & \times & \times & 25 \cr    
@@ -181,8 +173,16 @@ c=2 & & \times & 25 & 36 \cr
 c=3 & & & 36 & 49 \cr    
 c=4 & & & & 64 \cr}
 \end {equation}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1]{tslurA}
+\caption{Triangles with sides $a = 2\sqrt{6} > b \ge c$}
+\label{tslurA}
+\end{figure}
+
     
-So only six triangles are valid:
+Each remaining cell in the matrix corresponds to a particular triangle:
 \begin {equation}\label{E:4}
 (2\sqrt{6},b,c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
 (2\sqrt{6},3,2) & -\frac{11}{12} & \frac{19\sqrt{6}}{48} & \frac{29\sqrt{6}}{72} \cr
@@ -193,7 +193,9 @@ So only six triangles are valid:
 (2\sqrt{6},4,4) &  \frac{1}{4}   & \frac{\sqrt{6}}{4}    & \frac{\sqrt{6}}{4}    \cr}
 \end{equation}
 
-data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursA}
+Figure \ref{tslurA} show the triangles $(2\sqrt{6},b,c)$. The cosines are calculated by code at:
+\\\\
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursA}
 
 \section{Triangles$(a,\sqrt{b},c)$}
 

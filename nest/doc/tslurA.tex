@@ -1,0 +1,49 @@
+\PassOptionsToPackage{svgnames}{xcolor}
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+
+\begin{document}
+
+\newcommand\nodes{{"C","B","A"}}
+\newcommand{\meccanotriangle}[6]
+{
+\tikzmath{
+	\x = #3; \y = #4; \z = #5;
+	\xx = 1/\x; \yy = 1/\y; \zz = 1/\z;
+	\cosX = (\y*\y + \z*\z - \x*\x)/(2*\y*\z); \sinX = sqrt(1 - \cosX*\cosX);
+	\cosY = (\z*\z + \x*\x - \y*\y)/(2*\z*\x); \sinY = sqrt(1 - \cosY*\cosY);
+	\cosZ = (\x*\x + \y*\y - \z*\z)/(2*\x*\y);
+	coordinate \pX, \pY, \pZ;
+	\pX = (0,0); %bottom left vertice
+	\pY = (\z,0); %bottom right vertice
+	\pZ = (\y*\cosX, \y*\sinX); %top vertice
+	\xn = \nodes[0]; \yn = \nodes[1]; \zn = \nodes[2];
+}
+
+\begin{scope}[shift={(#1,#2)},scale={0.5}]
+
+\draw[black] (\pX)
+-- (\pY) foreach \t in {0,\zz,...,1} { } node[midway,below]{$2\sqrt{6}$}
+-- (\pZ) foreach \t in {0,\xx,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}}
+-- (\pX) foreach \t in {0,\yy,...,1} { pic [pos=\t] {code={\fill circle[radius=0.07];}}}
+;
+\draw[gray] (\pX) node[below]{\xn};
+\draw[gray] (\pY) node[below]{\yn};
+\draw[gray] (\pZ) node[above]{\zn};
+\end{scope}
+}
+
+\begin{tikzpicture}
+\meccanotriangle{ 0}  { 0}{2}{3}{2*sqrt(6)};
+\meccanotriangle{ 3.5}{ 0}{3}{3}{2*sqrt(6)};
+\meccanotriangle{ 7  }{ 0}{1}{4}{2*sqrt(6)};
+\meccanotriangle{   0}{-3}{2}{4}{2*sqrt(6)};
+\meccanotriangle{ 3.5}{-3}{3}{4}{2*sqrt(6)};
+\meccanotriangle{ 7.0}{-3}{4}{4}{2*sqrt(6)};
+\end{tikzpicture}
+
+\end{document}
+
