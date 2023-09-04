@@ -203,7 +203,7 @@ func TestTslursB(t *testing.T) {
 	factory := NewT32s()
 	sqrt := N32(24)
 	slur, _ := factory.aNew3(1, 0, 1, Z(sqrt))
-	for _, tri := range newTslursBs(sqrt,10) {
+	for _, tri := range newTslursBs(sqrt,9) {
 		if cosA, cosB, cosC, err := factory.tSlurBCosines(tri); err != nil {
 			t.Fatalf("error %v", err)
 		} else {

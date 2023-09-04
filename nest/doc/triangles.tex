@@ -127,34 +127,34 @@ are repeated and already in previous matrices.
 \end{array}\right)
 \end{equation}
 
-\section{Triangles$(\sqrt{a},b,c)$}
+\section{Triangles$(\sqrt{\alpha},b,c)$}
 
-Triangles$(\sqrt{a},b,c)$ have three sides with lengths $\sqrt{a}$, $b$ and $c$ where $a, b, c \in \bbb N$
-and $a$ is squarefree. We have:
+Triangles$(\sqrt{\alpha},b,c)$ have three sides with lengths $a=\sqrt{\alpha}$, $b$ and $c$ where $\alpha, b, c \in \bbb N$
+and $\alpha$ is squarefree. We have:
 \begin{align}
-\sqrt{a} &> b \ge c &\implies a  > b^2 \ge c^2 \\
-\sqrt{a} &< b + c   &\implies a < (b + c)^2
+\sqrt{\alpha} &> b \ge c &\implies \alpha  > b^2 \ge c^2 \\
+\sqrt{\alpha} &< b + c   &\implies \alpha < (b + c)^2
 \end{align}
 We calculate the triangle cosines. $\cos{A}$ is rational and $\cos{B}$ and $\cos{C}$ are algebraic:
 \begin{align}
-\cos{A} &= \frac{b^2 + c^2 - (\sqrt{a})^2}{2bc} = \frac{b^2 + c^2 - a}{2bc} &\in \bbb{Q} \\
-\cos{B} &= \frac{(\sqrt{a})^2 + c^2 - b^2}{2\sqrt{a}c} = \frac{(a + c^2 - b^2)\sqrt{a}}{2ac} &\in \bbb{A} \\
-\cos{C} &= \frac{(\sqrt{a})^2 + b^2 - c^2}{2\sqrt{a}b} = \frac{(a + b^2 - c^2)\sqrt{a}}{2ab} &\in \bbb{A} 
+\cos{A} &= \frac{b^2 + c^2 - (\sqrt{\alpha})^2}{2bc} = \frac{b^2 + c^2 - \alpha}{2bc} &\in \bbb{Q} \\
+\cos{B} &= \frac{(\sqrt{\alpha})^2 + c^2 - b^2}{2\sqrt{\alpha}c} = \frac{(\alpha + c^2 - b^2)\sqrt{\alpha}}{2\alpha c} &\in \bbb{A} \\
+\cos{C} &= \frac{(\sqrt{\alpha})^2 + b^2 - c^2}{2\sqrt{\alpha}b} = \frac{(\alpha + b^2 - c^2)\sqrt{\alpha}}{2\alpha b} &\in \bbb{A} 
 \end{align}
 
-\subsection{Triangle $(\sqrt{a},b,c)$ diagonals}
+\subsection{Triangle $(\sqrt{\alpha},b,c)$ diagonals}
 
 The only possible diagonals are for sides with integers, that is $\overline{b_mc_n}$. Using the law of cosines:
 \begin{align}
 \overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - a}{2bc}}\\
-  &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - a)}}{bc} &\in \bbb{A}
+  &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - \alpha}{2bc}}\\
+  &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - \alpha)}}{bc} &\in \bbb{A}
 \end{align}
 where $1 \le m \le b$, $1 \le n \le c$ and $m \ge n$.
 
 \subsection{Example triangles$(2\sqrt{6},b,c)$}
 
-In this case $\sqrt{a} = 2\sqrt{6}$ so $a = 24$.
+In this case $\sqrt{\alpha} = 2\sqrt{6}$ so $\alpha = 24$.
 Then $m = n = \{ 1,2,3,4 \}$ because $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
 We form a matrix with the values $(b+c)^2$ and satisfying $b \ge c$:
 \begin {equation}\label{E:2}
@@ -165,9 +165,9 @@ c=3 & \times & \times & 36 & 49 \cr
 c=4 & \times & \times & \times & 64 \cr}
 \end {equation}
 
-Then we remove the cells that don't satisfy the condition $a < (b+c)^2$:
+Then we remove the cells that don't satisfy the condition $\alpha < (b+c)^2$:
 \begin {equation}\label{E:3}
-(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+(b_m + c_n)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 & \times & \times & \times & 25 \cr    
 c=2 & & \times & 25 & 36 \cr    
 c=3 & & & 36 & 49 \cr    
@@ -176,11 +176,10 @@ c=4 & & & & 64 \cr}
 
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{tslurA}
-\caption{Triangles with sides $a = 2\sqrt{6} > b \ge c$}
+\includegraphics[scale=0.9]{tslurA}
+\caption{All triangles with sides $a = 2\sqrt{6} > b \ge c$}
 \label{tslurA}
 \end{figure}
-
     
 Each remaining cell in the matrix corresponds to a particular triangle:
 \begin {equation}\label{E:4}
@@ -197,33 +196,34 @@ Figure \ref{tslurA} show the triangles $(2\sqrt{6},b,c)$. The cosines are calcul
 \\\\
 \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursA}
 
-\section{Triangles$(a,\sqrt{b},c)$}
+\section{Triangles$(a,\sqrt{\beta},c)$}
 
-Triangles$(a,\sqrt{b},c)$ have the tree sides $a$, $\sqrt{b}$, $c$ where $a, b, c \in \bbb N$ and $b$ is squarefree. We have:
+Triangles$(a,\sqrt{\beta},c)$ have the three sides $a$, $b = \sqrt{\beta}$ and $c$ where $a, \beta, c \in \bbb N$ and $\beta$ is squarefree.
+We have:
 \begin{align}
-a &> \sqrt{b} > c &\implies a^2 > b > c^2 \\
-a &< \sqrt{b} + c &\implies (a-c)^2 < b
+a &> \sqrt{\beta} > c &\implies a^2 > \beta > c^2 \\
+a &< \sqrt{\beta} + c &\implies (a-c)^2 < \beta
 \end{align}
 We calculate the triangle cosines. $\cos{A}$ is algebraic, $\cos{B}$ rational and $\cos{C}$ algebraic:
 \begin{align}
-\cos{A} &= \frac{b + c^2 - a^2}{2\sqrt{b}c} = \frac{(b + c^2 - a^2)\sqrt{b}}{2bc} &\in \bbb{A} \\
-\cos{B} &= \frac{a^2 + c^2 - (\sqrt{b})^2}{2ac} = \frac{a^2 + c^2 - b}{2ac} &\in \bbb{Q} \\
-\cos{C} &= \frac{a^2 + (\sqrt{b})^2 - c^2}{2a\sqrt{b}} = \frac{(a^2 + b - c^2)\sqrt{b}}{2ab} &\in \bbb{A} 
+\cos{A} &= \frac{(\sqrt{\beta})^2 + c^2 - a^2}{2\sqrt{\beta}c} = \frac{(\beta + c^2 - a^2)\sqrt{\beta}}{2\beta c} &\in \bbb{A} \\
+\cos{B} &= \frac{a^2 + c^2 - (\sqrt{\beta})^2}{2ac} = \frac{a^2 + c^2 - \beta}{2ac} &\in \bbb{Q} \\
+\cos{C} &= \frac{a^2 + (\sqrt{\beta})^2 - c^2}{2a\sqrt{\beta}} = \frac{(a^2 + \beta - c^2)\sqrt{\beta}}{2a\beta} &\in \bbb{A} 
 \end{align}
 
-\subsection{Triangle $(a, \sqrt{b},c)$ diagonals}
+\subsection{Triangle $(a, \sqrt{\beta},c)$ diagonals}
 
 The only possible diagonals are for sides with integers, that is $\overline{a_mc_n}$. Using the law of cosines:
 \begin{align}
 \overline{a_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{B}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + c^2 - b}{2ac}}\\
-  &= \frac{\sqrt{a^2c^2(m^2 + n^2)-acmn(a^2 + c^2 - b)}}{ac} &\in \bbb{A}
+  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + c^2 - \beta}{2ac}}\\
+  &= \frac{\sqrt{a^2c^2(m^2 + n^2)-acmn(a^2 + c^2 - \beta)}}{ac} &\in \bbb{A}
 \end{align}
-where $1 \le m \le a$, $1 \le n \le c$ and $m - n \ge 0$.
+where $1 \le m \le a$, $1 \le n \le c$ and $m \ge n$.
 
 \subsection{Example triangles$(a,2\sqrt{6},c)$}
 
-In this case $\sqrt{b} = 2\sqrt{6}$ so $b = 24$. 
+In this case $\sqrt{\beta} = 2\sqrt{6}$ so $\beta = 24$. 
 Then $m = \{ 5,6,7,... \}$ because $m^2 = \{ 25,36,49,... \} > 24$ and
 $n = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$.
 We form a matrix with the values $(a-c)^2$:
@@ -235,7 +235,7 @@ c=3 &  4 &  9 & 16 & 25 & 36 & ...\cr
 c=4 &  1 &  4 &  9 & 16 & 25 & ...\cr}
 \end {equation}
 
-We remove cells which don't satisfy the condition $(a-c)^2 < b$:
+We remove cells which don't satisfy the condition $(a-c)^2 < \beta$:
 \begin {equation}\label{E:12}
 (a_m - c_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & ...\cr
 c=1 & 16 & \times & \times & \times & \times & ...\cr    
@@ -243,6 +243,13 @@ c=2 &  9 & 16 & \times & \times & \times & ...\cr
 c=3 &  4 &  9 & 16 & \times & \times & ...\cr    
 c=4 &  1 &  4 &  9 & 16 & \times & ...\cr}
 \end {equation}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.9]{tslurB}
+\caption{All triangles with sides $a > b = 2\sqrt{6} > c$}
+\label{tslurB}
+\end{figure}
 
 So we have ten triangles are valid:
 \begin {equation}\label{E:13}
@@ -254,42 +261,45 @@ So we have ten triangles are valid:
 (6,2\sqrt{6},2) & \frac{\sqrt{6}}{6} & \frac{2}{3} & \frac{7\sqrt{6}}{18} \cr
 (6,2\sqrt{6},3) & \frac{\sqrt{6}}{24} & \frac{7}{12} & \frac{17\sqrt{6}}{48} \cr
 (6,2\sqrt{6},4) & \frac{\sqrt{6}}{24} & \frac{7}{12} & \frac{11\sqrt{6}}{36} \cr
-(7,2\sqrt{6},3) & \frac{}{} & \frac{}{} & \frac{}{} \cr
-(7,2\sqrt{6},4) & \frac{}{} & \frac{}{} & \frac{}{} \cr
-(8,2\sqrt{6},4) & \frac{}{} & \frac{}{} & \frac{}{} \cr}
+(7,2\sqrt{6},3) & -\frac{2\sqrt{6}}{9} & \frac{17}{21} & \frac{8/sqrt{6}}{21} \cr
+(7,2\sqrt{6},4) & -\frac{3\sqrt{6}}{32} & \frac{41}{56} & \frac{19\sqrt{6}}{56} \cr
+(8,2\sqrt{6},4) & \frac{\sqrt{6}}{4} & \frac{7}{8} & \frac{3\sqrt{6}}{8} \cr}
 \end{equation}
 
-data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursB}
+Figure \ref{tslurB} show the triangles $(a,2\sqrt{6},c)$. The cosines are calculated by code at:
+\\\\
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursB}
 
 
-\section{Triangles$(a,b,\sqrt{c})$}
+\section{Triangles$(a,b,\sqrt{\gamma})$}
 
-Triangles$(a,b,\sqrt{c})$ have the tree sides $a$, $b$, $\sqrt{c}$ where $a, b, c \in \bbb N$ and $c$ is squarefree. We have:
+Triangles$(a,b,\sqrt{\gamma})$ have three sides $a$, $b$, $\sqrt{\gamma}$ where $a, b, \gamma \in \bbb N$ and $\gamma$ is squarefree.
+We have:
 \begin{align}
-a &\ge b > \sqrt{c} &\implies a^2 \ge b^2 > c \\
-a &< b + \sqrt{c} &\implies (a-b)^2 < c
+a &\ge b > \sqrt{\gamma} &\implies a^2 \ge b^2 > \gamma \\
+a &< b + \sqrt{\gamma} &\implies (a-b)^2 < \gamma
 \end{align}
 We calculate the triangle cosines. $\cos{A}$ and $\cos{B}$ are algebraic and $\cos{C}$ rational:
 \begin{align}
-\cos{A} &= \frac{b^2 + c - a^2}{2b\sqrt{c}} = \frac{(b^2 + c - a^2)\sqrt{c}}{2bc} &\in \bbb{A} \\
-\cos{B} &= \frac{a^2 + c - b^2}{2a\sqrt{c}} = \frac{(a^2 + c - b^2)\sqrt{c}}{2ac} &\in \bbb{A} \\
-\cos{C} &= \frac{a^2 + b^2 - (\sqrt{c})^2}{2ab} = \frac{a^2 + b^2 - c}{2ab} &\in \bbb{Q} 
+\cos{A} &= \frac{b^2 + \gamma - a^2}{2b\sqrt{\gamma}} = \frac{(b^2 + \gamma - a^2)\sqrt{\gamma}}{2b\gamma} &\in \bbb{A} \\
+\cos{B} &= \frac{a^2 + \gamma - b^2}{2a\sqrt{\gamma}} = \frac{(a^2 + \gamma - b^2)\sqrt{\gamma}}{2a\gamma} &\in \bbb{A} \\
+\cos{C} &= \frac{a^2 + b^2 - (\sqrt{\gamma})^2}{2ab} = \frac{a^2 + b^2 - \gamma}{2ab} &\in \bbb{Q} 
 \end{align}
 
-\subsection{Triangle $(a, b, \sqrt{c})$ diagonals}
+\subsection{Triangle $(a, b, \sqrt{\gamma})$ diagonals}
 
 The only possible diagonals are for sides with integers, that is $\overline{a_mb_n}$. Using the law of cosines:
 \begin{align}
 \overline{a_mb_n} &= \sqrt{m^2 + n^2 - 2mn\cos{C}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + b^2 - c}{2ab}}\\
-  &= \frac{\sqrt{a^2b^2(m^2 + n^2)-acmn(a^2 + b^2 - c)}}{ab} &\in \bbb{A}
+  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + b^2 - \gamma}{2ab}}\\
+  &= \frac{\sqrt{a^2b^2(m^2 + n^2)-acmn(a^2 + b^2 - \gamma)}}{ab} &\in \bbb{A}
 \end{align}
-where $1 \le m < a$, $1 \le n < b$ and $m - n \ge 0$.
+where $1 \le m < a$, $1 \le n < b$ and $m \ge n$.
 
 \subsection{Example triangles$(a,b,2\sqrt{6})$}
 
-In this case $\sqrt{c} = 2\sqrt{6}$ so $c = 24$. 
-We form a matrix with with the values $(a-b)^2$ satisfying the condition $a^2 \ge b^2 > c$:
+In this case $\sqrt{\gamma} = 2\sqrt{6}$ so $\gamma = 24$. 
+We form a matrix with with the values $(a-b)^2$ satisfying the condition $a^2 \ge b^2 > \gamma$:
 \begin {equation}\label{E:21}
 (a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
 b=5  & 0 & 1 & 4 &  9 & 16 & 25 & 36 & 49 & \hdots \cr    
@@ -298,10 +308,10 @@ b=7  &   &   & 0 &  1 &  4 &  9 & 16 & 25 & \hdots \cr
 b=8  &   &   &   &  0 &  1 &  4 &  9 & 16 & \hdots \cr    
 b=9  &   &   &   &    &  0 &  1 &  4 &  9 & \hdots \cr    
 b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr    
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \cr}
+ &  &  &  &  &  & \vdots & \vdots & \vdots & \ddots \cr}
 \end {equation}
 
-We remove cells except those satisfying the condition $(a-b)^2 < c$:
+We remove cells except those satisfying the condition $(a-b)^2 < \gamma$:
 \begin {equation}\label{E:21}
 (a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
 b=5  & 0 & 1 & 4 &  9 & 16 & \times & \times & \times & \hdots \cr    
@@ -310,8 +320,15 @@ b=7  &   &   & 0 &  1 &  4 &  9 & 16 & \times & \hdots \cr
 b=8  &   &   &   &  0 &  1 &  4 &  9 & 16 & \hdots \cr    
 b=9  &   &   &   &    &  0 &  1 &  4 &  9 & \hdots \cr    
 b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr    
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \cr}
+ &  &  &  &  &  & \vdots & \vdots & \vdots & \ddots \cr}
 \end {equation}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.9]{tslurC}
+\caption{Some triangles with sides $a \ge b > c = 2\sqrt{6}$}
+\label{tslurC}
+\end{figure}
 
 So we found that infinite triangles are valid, the smaller ones are:
 \begin {equation}\label{E:4}
@@ -325,7 +342,9 @@ So we found that infinite triangles are valid, the smaller ones are:
 \hdots & \hdots & \hdots & \hdots \cr}
 \end{equation}
 
-data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursC}
+Figure \ref{tslurC} show some triangles $(a,b,2\sqrt{6})$. The cosines are calculated by code at:
+\\\\
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursC}
 
 
 \end{document}

@@ -7,7 +7,7 @@
 
 \begin{document}
 
-\newcommand\nodes{{"C","B","A"}}
+\newcommand\nodes{{"C","A","B"}}
 \newcommand{\meccanotriangle}[6]
 {
 \tikzmath{
@@ -37,12 +37,17 @@
 }
 
 \begin{tikzpicture}
-\meccanotriangle{ 0}  {0}{2}{3}{2*sqrt(6)};
-\meccanotriangle{ 3.2}{0}{3}{3}{2*sqrt(6)};
-\meccanotriangle{ 6.4}{0}{1}{4}{2*sqrt(6)};
-\meccanotriangle{ 9.6}{0}{2}{4}{2*sqrt(6)};
-\meccanotriangle{12.8}{0}{3}{4}{2*sqrt(6)};
-\meccanotriangle{16}{0}{4}{4}{2*sqrt(6)};
+\meccanotriangle{ 0}   { 0}{1}{5}{2*sqrt(6)};
+\meccanotriangle{ 3.5} { 0}{2}{5}{2*sqrt(6)};
+\meccanotriangle{ 7  } { 0}{3}{5}{2*sqrt(6)};
+\meccanotriangle{ 10.5}{ 0}{4}{5}{2*sqrt(6)};
+\meccanotriangle{ 14}  { 0}{2}{6}{2*sqrt(6)};
+
+\meccanotriangle{   0} {-3}{3}{6}{2*sqrt(6)};
+\meccanotriangle{ 3.5} {-3}{4}{6}{2*sqrt(6)};
+\meccanotriangle{   7} {-3}{3}{7}{2*sqrt(6)};
+\meccanotriangle{10.5} {-3}{4}{7}{2*sqrt(6)};
+\meccanotriangle{ 14}  {-3}{4}{8}{2*sqrt(6)};
 \end{tikzpicture}
 
 \end{document}
