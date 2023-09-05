@@ -91,6 +91,7 @@ func TestTdiag1(t *testing.T) {
 	}
 }
 
+
 func TestTdiag2(t *testing.T) {
 	factory := NewT32s()
 	/*   *
@@ -226,3 +227,54 @@ func TestTgammas(t *testing.T) {
 		}
 	}
 }
+
+func TestTCosAplusB(t *testing.T) {
+
+	factory := NewT32s()
+
+	ts := &Ts{}
+	ts.AddTris(20)
+
+	surds := make(map[string]string)
+	
+	for i:=0; i < len(ts.tris); i++ {
+		m := ts.tris[i]
+		mCos := &tRats{}
+		for _, ang := range []Tang{ TangA, TangB, TangC } {
+			num, den := factory.cos(m, ang)
+			mCos.addRat(ang, num, den)
+		}
+		for j:=0; j <= i; j++ {
+			n := ts.tris[j]
+			nCos := &tRats{}
+			for _, ang := range []Tang{ TangA, TangB, TangC } {
+				num, den := factory.cos(n, ang)
+				nCos.addRat(ang, num, den)
+			}
+			for _, mRat := range mCos.rats {
+				dA, nA := mRat.den, mRat.num
+				for _, nRat := range nCos.rats {
+					dB, nB := nRat.den, nRat.num
+					a := N(dA)*N(dB)
+					b := nA*nB
+					c := Z(-1)
+					d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
+					if cosAB, err := factory.aNew3(a,b,c,d); err == nil {
+						if len(cosAB.num) > 2 && cosAB.num[2] == 5 {
+							key := cosAB.String()
+							if _, ok := surds[key]; !ok {
+								surds[key] = fmt.Sprintf("m=(%s)[%c] n=(%s)[%c]", m, mRat.angle, n, nRat.angle)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	for key, surd := range surds {
+		fmt.Printf("%s\t%s\n", surd, key)
+	}
+}
+
+
+

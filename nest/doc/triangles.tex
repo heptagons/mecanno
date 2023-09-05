@@ -23,8 +23,8 @@ calculate new distances formed and so on. Eventually we expect to
 find certain angles joining the triangles which can be used to construct regular polygons or more figures.
 \end{abstract}
 
-\section{Triangle $(a,b,c)$}
-A triangle $(a,b,c)$ has the tree integer sides $a$, $b$ and $c$ where $a, b, c \in \bbb N$.
+\section{Triangles $(a,b,c)$}
+Triangles $(a,b,c)$ have three sides $a$, $b$ and $c$ where $a, b, c \in \bbb N$.
 To avoid repetitions and get only valid triangles, we consider only the cases:
 \begin{align}
 a &\ge b \ge c\\
@@ -345,6 +345,38 @@ So we found that infinite triangles are valid, the smaller ones are:
 Figure \ref{tslurC} show some triangles $(a,b,2\sqrt{6})$. The cosines are calculated by code at:
 \\\\
 \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursC}
+
+\section{Triangles pairs}
+
+We can attach two triangles to share a common side and vertex to get more angles and diagonals.
+
+\subsection{Triangles pairs rational cosines angles}
+When we sum two angles $Z = X+Y$, where $\cos{X} \equiv x_n / x_d$ and $\cos{Y} \equiv y_n / y_d$ we have:
+\begin{align}
+\cos{Z} &= \cos{X}\cos{Y} - \sin{X}\sin{Y}\\
+ &= \cos{X}\cos{Y} - \sqrt{1 - \cos^2{X}}\sqrt{1 - \cos^2{Y}}\\
+ &= \frac{x_ny_n}{x_dy_d} - \sqrt{\frac{x_d^2 - x_n^2}{x_d^2}} \sqrt{\frac{y_d^2 - y_n^2}{y_d^2}}\\
+ &= \frac{x_ny_n - \sqrt{(x_d^2 - x_n^2)(y_d^2 - y_n^2)}}{x_dy_d} &\equiv \frac{b_1+c_1\sqrt{d_1}}{a_1}
+\end{align}
+
+So we can calculate new diagonals from one triangle side to another triangle side:
+\begin{align}
+\delta &= \sqrt{m^2 + n^2 - 2mn\cos{Z}}\\
+ &= \sqrt{m^2 + n^2 - 2mn\frac{b_1+c_1\sqrt{d_1}}{a_1}}\\
+ &= \frac{\sqrt{a_1^2(m^2 + n^2) - 2mn(b_1 + c_1\sqrt{d_1})}}{a_1}\\
+ &= \frac{\sqrt{a_1^2(m^2 + n^2) - 2b_1mn - 2c_1mn\sqrt{d_1} }}{a_1} &\equiv \frac{b_2 + c_2\sqrt{d_2 + e_2\sqrt{f_2}}}{a_2}
+\end{align}
+
+\subsection{Triangles pairs surds angles}
+
+When we sum two algebraic angles $W = U+V$ when $\cos{U} = \sqrt{u_n}/u_d$ and $\cos{V} = \sqrt{v_n}/v_d$ we have:
+\begin{align}
+\cos{W} &= \cos{U}\cos{V} - \sin{U}\sin{V}\\
+ &= \cos{U}\cos{V} - \sqrt{1 - \cos^2{U}}\sqrt{1 - \cos^2{V}}\\
+ &= \frac{\sqrt{u_nv_n}}{u_dv_d} - \sqrt{\frac{u_d^2 - u_n}{u_d^2}} \sqrt{\frac{v_d^2 - v_n}{v_d^2}}\\
+ &= \frac{\sqrt{u_nv_n} - \sqrt{(u_d^2 - u_n)(v_d^2 - v_n)} }{u_dv_d}
+\end{align}
+
 
 
 \end{document}

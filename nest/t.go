@@ -103,6 +103,8 @@ const (
 	TangC Tang = 'C'
 )
 
+
+
 type T32s struct {
 	*A32s
 }
@@ -226,7 +228,7 @@ func (ts *T32s) tDiags(num, den Z, s1, s2 N32) ([][]N, N) {
 // cosA and cosB are rationals: cosA = nA/dA, cosB= nB/dB
 // cosAcosB - sinAsinB simplifies to:
 //	         ____________________________________
-//	nA*nB + √(dA + nA)(dA - nA)(dB + nB)(dB - nB)
+//	nA*nB - √(dA + nA)(dA - nA)(dB + nB)(dB - nB)
 //	---------------------------------------------
 //	                     dA*dB
 //	where are rationals: 
@@ -297,6 +299,60 @@ func (ts *T32s) tGammaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 		return
 	}
 	return
+}
+
+
+type Ts struct {
+	tris []*T
+}
+
+func (t *Ts) AddTris(max N32) {
+	t.tris = make([]*T, 0)
+	for a:=N32(1); a <= max; a++ {
+		for b:=N32(1); b <= a; b++ {
+			for c:=N32(1); c <= b; c++ {
+				if a < b+c {
+					t.triNew(a, b, c)
+				}
+			}
+		}
+	}
+}
+
+func (t *Ts) triNew(a, b, c N32) {
+	gcd := NatGCD(a, NatGCD(b, c))
+	ga, gb, gc := a / gcd, b / gcd, c / gcd
+	for _, t1 := range t.tris {
+		if t1.a == ga && t1.b == gb && t1.c == gc {
+			return
+		}
+	}
+	t.tris = append(t.tris, &T{ a:a, b:b, c:c })
+}
+
+
+
+type tRat struct {
+	angle Tang
+	num   Z
+	den   Z
+}
+
+type tRats struct {
+	rats []*tRat
+}
+
+func (t *tRats) addRat(angle Tang, num, den Z) {
+	if t.rats == nil {
+		t.rats = make([]*tRat, 0)
+	} else {
+		for _, rat := range t.rats {
+			if rat.num == num && rat.den == den {
+				return
+			}
+		}
+	}
+	t.rats = append(t.rats, &tRat{angle, num, den})
 }
 
 
