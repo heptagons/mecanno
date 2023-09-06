@@ -127,11 +127,48 @@ func TestTdiag2(t *testing.T) {
     }
 }
 
-func TestTbasic(t *testing.T) {
+func TestT765diags(t *testing.T) {
 	factory := NewT32s()
 	a, b, c := N(7), N(6), N(5)
 	aa, bb, cc := Z(a)*Z(a), Z(b)*Z(b), Z(c)*Z(c)
-	fmt.Println("ab")
+	
+	m := make(map[string]*A32)
+
+	bc := N(b)*N(c)
+	bc2 := Z(bc)*Z(bc)
+	b2_c2_a2 := bb + cc - aa
+	for _, g := range []struct { y, z Z } {
+		{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },
+		{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },
+		{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },
+		{ 4,1 },{ 5,2 },{ 6,3 },
+		{ 5,1 },{ 6,2 },
+		{ 6,1 },
+	} {
+		in := bc2*(g.y*g.y + g.z*g.z) - Z(bc)*g.y*g.z*b2_c2_a2
+		if diag, err := factory.aNew3(bc, 0, 1, in); err == nil {
+			m[fmt.Sprintf("b_%d,c_%d", g.y, g.z)] = diag
+		}
+	}
+
+	ac := N(a)*N(c)
+	ac2 := Z(ac)*Z(ac)
+	a2_c2_b2 := aa + cc - bb
+	for _, g := range []struct { x, z Z } {
+		{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },
+		{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },{ 6,5 },
+		{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },
+		{ 4,1 },{ 5,2 },{ 6,3 },{ 7,4 },
+		{ 5,1 },{ 6,2 },{ 7,3 },
+		{ 6,1 },{ 7,2 },
+		{ 7,1 },
+	} {
+		in := ac2*(g.x*g.x + g.z*g.z) - Z(ac)*g.x*g.z*a2_c2_b2
+		if diag, err := factory.aNew3(ac, 0, 1, in); err == nil {
+			m[fmt.Sprintf("a_%d,c_%d", g.x, g.z)] = diag
+		}
+	}
+
 	ab := N(a)*N(b)
 	ab2 := Z(ab)*Z(ab)
 	a2_b2_c2 := aa + bb - cc
@@ -145,44 +182,43 @@ func TestTbasic(t *testing.T) {
 		{ 7,1 },
 	} {
 		in := ab2*(g.x*g.x + g.y*g.y) - Z(ab)*g.x*g.y*a2_b2_c2
-		diag, _ := factory.aNew3(ab, 0, 1, in)
-		fmt.Printf("x_%d y_%d}  diag = %s\n", g.x, g.y, diag)
+		if diag, err := factory.aNew3(ab, 0, 1, in); err == nil {
+			m[fmt.Sprintf("a_%d,b_%d", g.x, g.y)] = diag	
+		}
 	}
 
-	ac := N(a)*N(c)
-	ac2 := Z(ac)*Z(ac)
-	a2_c2_b2 := aa + cc - bb
-	fmt.Println("ac")
-	for _, g := range []struct { x, z Z } {
-		{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },
-		{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },{ 6,5 },
-		{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },
-		{ 4,1 },{ 5,2 },{ 6,3 },{ 7,4 },
-		{ 5,1 },{ 6,2 },{ 7,3 },
-		{ 6,1 },{ 7,2 },
-		{ 7,1 },
-	} {
-		in := ac2*(g.x*g.x + g.z*g.z) - Z(ac)*g.x*g.z*a2_c2_b2
-		diag, _ := factory.aNew3(ac, 0, 1, in)
-		fmt.Printf("x_%d z_%d}  diag = %s\n", g.x, g.z, diag)
-
+	fmt.Println("A[b,c]")
+	for x:=N(1); x <= c; x++ {
+		for y:=N(1); y <= b; y++ {
+			if diag, ok := m[fmt.Sprintf("b_%d,c_%d", y, x)]; ok {
+				fmt.Printf("%12s ", diag)
+			} else {
+				fmt.Printf("%12s ", "x")
+			}
+		}
+		fmt.Println()
 	}
-
-	bc := N(b)*N(c)
-	bc2 := Z(bc)*Z(bc)
-	b2_c2_a2 := bb + cc - aa
-	fmt.Println("bc")
-	for _, g := range []struct { y, z Z } {
-		{ 1,1 },{ 2,2 },{ 3,3 },{ 4,4 },{ 5,5 },
-		{ 2,1 },{ 3,2 },{ 4,3 },{ 5,4 },
-		{ 3,1 },{ 4,2 },{ 5,3 },{ 6,4 },
-		{ 4,1 },{ 5,2 },{ 6,3 },
-		{ 5,1 },{ 6,2 },
-		{ 6,1 },
-	} {
-		in := bc2*(g.y*g.y + g.z*g.z) - Z(bc)*g.y*g.z*b2_c2_a2
-		diag, _ := factory.aNew3(bc, 0, 1, in)
-		fmt.Printf("y_%d z_%d}  diag = %s\n", g.y, g.z, diag)
+	fmt.Println("B[a,c]")
+	for x:=N(1); x <= c; x++ {
+		for y:=N(1); y <= a; y++ {
+			if diag, ok := m[fmt.Sprintf("a_%d,c_%d", y, x)]; ok {
+				fmt.Printf("%12s ", diag)
+			} else {
+				fmt.Printf("%12s ", "x")
+			}
+		}
+		fmt.Println()
+	}
+	fmt.Println("C[a,b]")
+	for x:=N(1); x <= b; x++ {
+		for y:=N(1); y <= a; y++ {
+			if diag, ok := m[fmt.Sprintf("a_%d,b_%d", y, x)]; ok {
+				fmt.Printf("%12s ", diag)
+			} else {
+				fmt.Printf("%12s ", "x")
+			}
+		}
+		fmt.Println()
 	}
 }
 
@@ -233,9 +269,14 @@ func TestTCosAplusB(t *testing.T) {
 	factory := NewT32s()
 
 	ts := &Ts{}
-	ts.AddTris(20)
+	ts.AddTris(3)
 
-	surds := make(map[string]string)
+	type Sum struct {
+		t string
+		a *A32
+	}
+
+	sums := make(map[string]*Sum, 0)
 	
 	for i:=0; i < len(ts.tris); i++ {
 		m := ts.tris[i]
@@ -260,19 +301,55 @@ func TestTCosAplusB(t *testing.T) {
 					c := Z(-1)
 					d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
 					if cosAB, err := factory.aNew3(a,b,c,d); err == nil {
-						if len(cosAB.num) > 2 && cosAB.num[2] == 5 {
+						//if len(cosAB.num) > 2 && cosAB.num[2] == 5 {
 							key := cosAB.String()
-							if _, ok := surds[key]; !ok {
-								surds[key] = fmt.Sprintf("m=(%s)[%c] n=(%s)[%c]", m, mRat.angle, n, nRat.angle)
+							if _, ok := sums[key]; !ok {
+								sums[key] = &Sum{
+									t: fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle),
+									a: cosAB,
+								}
 							}
-						}
+						//}
 					}
 				}
 			}
 		}
 	}
-	for key, surd := range surds {
-		fmt.Printf("%s\t%s\n", surd, key)
+	for _, s := range sums {
+		var sb strings.Builder // convert A32 to $tex$
+		sb.WriteString("$")
+		if den := s.a.den; den > 1 {
+			sb.WriteString("\\frac{")
+			if num := s.a.num; len(num) == 1 {
+				sb.WriteString(fmt.Sprintf("%d", num[0])) // b
+			} else if len(num) == 3 {
+				b, c, d := num[0], num[1], num[2]
+				if b != 0 {
+					sb.WriteString(fmt.Sprintf("%d", b)) // b
+					if c == 1 {
+						// nothing
+					} else if c == -1 {
+						sb.WriteString("-") // -
+					} else {
+						sb.WriteString(fmt.Sprintf("%+d", c)) // +c
+					}
+				} else {
+					if c == 1 {
+						// nothing
+					} else if c == -1 {
+						sb.WriteString("-") // -
+					} else {
+						sb.WriteString(fmt.Sprintf("%d", c)) // c
+					}
+				}
+				if d != 1 {
+					sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
+				}
+			}
+			sb.WriteString(fmt.Sprintf("}{%d}", den)) // a
+		}
+		sb.WriteString("$\\\\")
+		fmt.Printf("%s & %s\n", s.t, sb.String())
 	}
 }
 

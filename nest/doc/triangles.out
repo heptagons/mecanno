@@ -1,15 +1,20 @@
 \BOOKMARK [1][-]{section.1}{Triangles \(a,b,c\)}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Triangle \(a,b,c\) diagonals}{section.1}% 2
 \BOOKMARK [2][-]{subsection.1.2}{Example triangle \(7,6,5\)}{section.1}% 3
-\BOOKMARK [1][-]{section.2}{Triangles\(,b,c\)}{}% 4
-\BOOKMARK [2][-]{subsection.2.1}{Triangle \(,b,c\) diagonals}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.2}{Example triangles\(26,b,c\)}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{Triangles\(a,,c\)}{}% 7
-\BOOKMARK [2][-]{subsection.3.1}{Triangle \(a, ,c\) diagonals}{section.3}% 8
-\BOOKMARK [2][-]{subsection.3.2}{Example triangles\(a,26,c\)}{section.3}% 9
-\BOOKMARK [1][-]{section.4}{Triangles\(a,b,\)}{}% 10
-\BOOKMARK [2][-]{subsection.4.1}{Triangle \(a, b, \) diagonals}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.2}{Example triangles\(a,b,26\)}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{Triangles pairs}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{Triangles pairs rational cosines angles}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{Triangles pairs surds angles}{section.5}% 15
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Triangle\(7,6,5\)[A] diagonals}{subsection.1.2}% 4
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Triangle\(7,6,5\)[B] diagonals}{subsection.1.2}% 5
+\BOOKMARK [3][-]{subsubsection.1.2.3}{Triangle\(7,6,5\)[C] diagonals}{subsection.1.2}% 6
+\BOOKMARK [1][-]{section.2}{Triangles\(,b,c\)}{}% 7
+\BOOKMARK [2][-]{subsection.2.1}{Triangle \(,b,c\) diagonals}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.2}{Example triangles\(26,b,c\)}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Triangles\(a,,c\)}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Triangle \(a, ,c\) diagonals}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{Example triangles\(a,26,c\)}{section.3}% 12
+\BOOKMARK [1][-]{section.4}{Triangles\(a,b,\)}{}% 13
+\BOOKMARK [2][-]{subsection.4.1}{Triangle \(a, b, \) diagonals}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.2}{Example triangles\(a,b,26\)}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Triangles pairs}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Triangles pairs rational cosines angles}{section.5}% 17
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Triangles pairs angles}{subsection.5.1}% 18
+\BOOKMARK [2][-]{subsection.5.2}{Triangles pairs diagonals}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.3}{Triangles pairs surds angles}{section.5}% 20

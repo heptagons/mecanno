@@ -53,45 +53,25 @@ where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Similarly:
 \end{align}
 The diagonals are algebraic of the form $\frac{y\sqrt{z}}{x}$.
 
+\newcommand\five{\colorbox{green}{$5$}}
+
 \subsection{Example triangle (7,6,5)}
+We calculate all the diagonals of triangle(7,6,5) with code at:
+\\\\
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestT765diags}.
+
+\subsubsection{Triangle$(7,6,5)[A]$ diagonals}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765bc}
-\caption{Triangle $(7,6,5)$ $b_mc_n$ diagonals ($m \ge n$).
-For top to bottom and left to right we have six groups of diagonals.
-Each group is defined by $m$ and $n$ indices difference:
-$m - n = 0$, $m - n = 1$, ... $m - n = 5$.
-}
+\caption{Triangle $(7,6,5)$ $b_mc_n$ diagonals ($m \ge n$).}
 \label{t765bc}
 \end{figure}
-
-\begin{figure}[htp]
-\centering
-\includegraphics[scale=1]{t765ac}
-\caption{Triangle $(7,6,5)$, $a_mc_n$ diagonals ($m \ge n$).
-We have also six group. But here we found diagonals repetead already
-found in previous figure. Diagonals repeated are all including $a_7$ points.
-}
-\label{t765ac}
-\end{figure}
-
-\begin{figure}[htp]
-\centering
-\includegraphics[scale=1]{t765ab}
-\caption{Triangle $(7,6,5)$, $a_mb_n$ diagonals ($m \ge n$).
-Here we have diagonals repeteated already in previous figure.
-Using matrices we can reject such diagonals rejecting matrices columns.
-}
-\label{t765ab}
-\end{figure}
-
-\newcommand\five{\colorbox{green}{$5$}}
-
-Figure \ref{t765bc} show triangle $(7,6,5)$ diagonals $b_mc_n$ for vertex $A$. For this figure we calculate
-the values and form a matrix. Empty cells are reflections:
+Figure \ref{t765bc} show triangle $(7,6,5)$ diagonals $b_mc_n$ for vertex $A$.
+The diagonals values are set in a first matrix with columns $b_1,...,b_6$ and rows $c_1,...,c_5$. Empty cells are repetitions.
 \begin{equation}\label{eq:appendrow}
-\left(\begin{array}{cccccc}
+b_{1:6}c_{1:5} = \left(\begin{array}{cccccc}
 	\frac{2\sqrt{10}}{5} & \frac{\sqrt{105}}{5} & \frac{2\sqrt{55}}{5} & \frac{\sqrt{385}}{5} & 2\sqrt{6} & \frac{\sqrt{865}}{5} \\
 	& \frac{4\sqrt{10}}{5} & \frac{\sqrt{265}}{5} & \frac{2\sqrt{105}}{5} & \five & \frac{4\sqrt{55}}{5} \\
 	& & \frac{6\sqrt{10}}{5} & \frac{\sqrt{505}}{5} & 2\sqrt{7} & \frac{3\sqrt{105}}{5}\\
@@ -100,11 +80,19 @@ the values and form a matrix. Empty cells are reflections:
 \end{array}\right)
 \end{equation}
 
-Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_mc_n$ for vertex $B$. For this figure we calculate
-the values for a second matrix. Values at column 7 (at the right of separator $|$) are repeated and already in previous matrix.
-Empty cells are reflections.
+\subsubsection{Triangle$(7,6,5)[B]$ diagonals}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1]{t765ac}
+\caption{Triangle $(7,6,5)$, $a_mc_n$ diagonals ($m \ge n$).}
+\label{t765ac}
+\end{figure}
+Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_mc_n$ for vertex $B$. 
+The diagonals are set in a second matrix with columns $a_1,...,a_7$ and rows $c_1,...,c_5$. Emtpy cells are repetitions.
+Values at column 7 (at the right of separator $|$) are repeated and already accounted in previous matrix.
 \begin{equation}\label{eq:appendrow}
-\left(\begin{array}{cccccccc}
+a_{1:7}c_{1:5}\left(\begin{array}{cccccccc}
 	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & | & \frac{2\sqrt{265}}{5}\\
 	& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} & \frac{6\sqrt{385}}{35} & \frac{\sqrt{889}}{7} & \frac{4\sqrt{2065}}{35} & | & \frac{3\sqrt{105}}{5} \\
 	& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} & \frac{2\sqrt{217}}{7} & \frac{9\sqrt{385}}{35} & | & \frac{4\sqrt{55}}{5}\\
@@ -113,11 +101,19 @@ Empty cells are reflections.
 \end{array}\right)
 \end{equation}
 
-Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_mb_n$ for vertex $C$. For this figure we calculate
-the values for a third matrix. Values at columns 6 and 7 (at the right of separator $|$) 
-are repeated and already in previous matrices.
+\subsubsection{Triangle$(7,6,5)[C]$ diagonals}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1]{t765ab}
+\caption{Triangle $(7,6,5)$, $a_mb_n$ diagonals ($m \ge n$)}
+\label{t765ab}
+\end{figure}
+Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_mb_n$ for vertex $C$.
+The diagonals are set in a third matrix with columns $a_1,...,a_7$ and rows $b_1,...,b_6$. Empty cells are repetitions.
+Values at columns 6 and 7 (at the right of separator $|$) are repeated and already in previous matrices.
 \begin{equation}\label{eq:appendrow}
-\left(\begin{array}{cccccccc}
+a_{1:7}b_{1:6}\left(\begin{array}{cccccccc}
 	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & | &  \frac{\sqrt{1393}}7 & 2\sqrt{10} \\
 	 & \frac{4\sqrt7}7 & \frac{\sqrt{217}}7 & \frac{2\sqrt{105}}7 & \frac{\sqrt{721}}7 & | &  \frac{4\sqrt{70}}7 & \sqrt{33} \\
 	 & & \frac{6\sqrt7}7 & \frac{\sqrt{385}}7 & \frac{2\sqrt{154}}7 & | &  \frac{3\sqrt{105}}7 & 2\sqrt{7} \\
@@ -358,6 +354,77 @@ When we sum two angles $Z = X+Y$, where $\cos{X} \equiv x_n / x_d$ and $\cos{Y} 
  &= \frac{x_ny_n}{x_dy_d} - \sqrt{\frac{x_d^2 - x_n^2}{x_d^2}} \sqrt{\frac{y_d^2 - y_n^2}{y_d^2}}\\
  &= \frac{x_ny_n - \sqrt{(x_d^2 - x_n^2)(y_d^2 - y_n^2)}}{x_dy_d} &\equiv \frac{b_1+c_1\sqrt{d_1}}{a_1}
 \end{align}
+
+\subsubsection{Triangles pairs angles}
+
+Adding the angles of Triangles from $(1,1,1)$ to $(3,3,2)$ we get some sums. The values are calculated with code at:
+\\\\
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusB}
+
+\begin{center}
+\begin{tabular}{||c c c ||} 
+ \hline
+ $Triangle_1$ & $Triangle_2$ & $\cos{Z}$ \\ [0.5ex] 
+ \hline\hline
+$(1,1,1)[A]$ & $(1,1,1)[A]$ & $\frac{-1}{2}$\\
+ \hline
+(2,2,1)[A] & (1,1,1)[A] & $\frac{1-3\sqrt{5}}{8}$\\
+(2,2,1)[C] & (1,1,1)[A] & $\frac{7-3\sqrt{5}}{16}$\\
+(2,2,1)[A] & (2,2,1)[A] & $\frac{-7}{8}$\\
+(2,2,1)[A] & (2,2,1)[C] & $\frac{-1}{4}$\\
+(2,2,1)[C] & (2,2,1)[C] & $\frac{17}{32}$\\
+ \hline
+(3,2,2)[A] & (1,1,1)[A] & $\frac{-1-3\sqrt{21}}{16}$\\
+(3,2,2)[B] & (1,1,1)[A] & $\frac{3-\sqrt{21}}{8}$\\
+(3,2,2)[B] & (2,2,1)[A] & $\frac{3-\sqrt{105}}{16}$\\
+(3,2,2)[A] & (3,2,2)[B] & $\frac{-3}{4}$\\
+(3,2,2)[A] & (2,2,1)[C] & $\frac{-7-3\sqrt{105}}{64}$\\
+(3,2,2)[B] & (2,2,1)[C] & $\frac{21-\sqrt{105}}{32}$\\
+(3,2,2)[B] & (3,2,2)[B] & $\frac{1}{8}$\\
+(3,2,2)[A] & (3,2,2)[A] & $\frac{-31}{32}$\\
+(3,2,2)[A] & (2,2,1)[A] & $\frac{-1-3\sqrt{105}}{32}$\\
+ \hline
+(3,3,1)[A] & (2,2,1)[A] & $\frac{1-5\sqrt{21}}{24}$\\
+(3,3,1)[A] & (2,2,1)[C] & $\frac{7-5\sqrt{21}}{48}$\\
+(3,3,1)[C] & (3,2,2)[B] & $\frac{51-7\sqrt{5}}{72}$\\
+(3,3,1)[C] & (3,3,1)[C] & $\frac{127}{162}$\\
+(3,3,1)[C] & (2,2,1)[C] & $\frac{119-5\sqrt{21}}{144}$\\
+(3,3,1)[A] & (3,3,1)[A] & $\frac{-17}{18}$\\
+(3,3,1)[A] & (3,3,1)[C] & $\frac{-1}{6}$\\
+(3,3,1)[C] & (1,1,1)[A] & $\frac{17-\sqrt{105}}{36}$\\
+(3,3,1)[C] & (3,2,2)[A] & $\frac{-17-21\sqrt{5}}{144}$\\
+(3,3,1)[C] & (2,2,1)[A] & $\frac{17-5\sqrt{21}}{72}$\\
+(3,3,1)[A] & (3,2,2)[A] & $\frac{-1-21\sqrt{5}}{48}$\\
+(3,3,1)[A] & (1,1,1)[A] & $\frac{1-\sqrt{105}}{12}$\\
+(3,3,1)[A] & (3,2,2)[B] & $\frac{3-7\sqrt{5}}{24}$\\
+ \hline
+(3,3,2)[A] & (3,2,2)[A] & $\frac{-1-6\sqrt{14}}{24}$\\
+(3,3,2)[A] & (3,3,1)[C] & $\frac{17-2\sqrt{70}}{54}$\\
+(3,3,2)[A] & (2,2,1)[A] & $\frac{1-2\sqrt{30}}{12}$\\
+(3,3,2)[C] & (3,3,2)[C] & $\frac{17}{81}$\\
+(3,3,2)[C] & (2,2,1)[A] & $\frac{7-4\sqrt{30}}{36}$\\
+(3,3,2)[C] & (3,3,1)[A] & $\frac{7-4\sqrt{70}}{54}$\\
+(3,3,2)[C] & (3,2,2)[B] & $\frac{21-4\sqrt{14}}{36}$\\
+(3,3,2)[A] & (3,3,2)[A] & $\frac{-7}{9}$\\
+(3,3,2)[C] & (3,3,1)[C] & $\frac{119-4\sqrt{70}}{162}$\\
+(3,3,2)[C] & (3,2,2)[A] & $\frac{-7-12\sqrt{14}}{72}$\\
+(3,3,2)[A] & (3,3,2)[C] & $\frac{-1}{3}$\\
+(3,3,2)[A] & (1,1,1)[A] & $\frac{1-2\sqrt{6}}{6}$\\
+(3,3,2)[C] & (1,1,1)[A] & $\frac{7-4\sqrt{6}}{18}$\\
+(3,3,2)[A] & (2,2,1)[C] & $\frac{7-2\sqrt{30}}{24}$\\
+(3,3,2)[A] & (3,2,2)[B] & $\frac{3-2\sqrt{14}}{12}$\\
+(3,3,2)[C] & (2,2,1)[C] & $\frac{49-4\sqrt{30}}{72}$\\
+(3,3,2)[A] & (3,3,1)[A] & $\frac{1-2\sqrt{70}}{18}$\\
+ \hline
+\end{tabular}
+\end{center}
+
+
+
+
+
+\subsection{Triangles pairs diagonals}
+
 
 So we can calculate new diagonals from one triangle side to another triangle side:
 \begin{align}
