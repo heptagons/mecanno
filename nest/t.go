@@ -301,6 +301,14 @@ func (ts *T32s) tGammaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	return
 }
 
+func (ts *T32s) tCos2AC(an, ad, cn, cd Z) (*A32, error) {
+	a := N(ad)*N(ad)*N(cd)
+	b := (2*an*an - ad*ad)*cn
+	c := 2*an
+	d := (ad*ad - an*an)*(cd*cd - cn*cn)
+	return ts.aNew3(a, b, c, d)
+}
+
 
 type Ts struct {
 	tris []*T

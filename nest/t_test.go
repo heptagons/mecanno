@@ -265,20 +265,11 @@ func TestTgammas(t *testing.T) {
 }
 
 func TestTCosAplusB(t *testing.T) {
-
 	factory := NewT32s()
-
 	ts := &Ts{}
-	ts.AddTris(3)
-
-	type Sum struct {
-		t string
-		a *A32
-	}
-
-	sums := make(map[string]*Sum, 0)
+	ts.AddTris(10)
+	sums := make(map[string]bool, 0)
 	list := make([]string, 0)
-	
 	for i:=0; i < len(ts.tris); i++ {
 		m := ts.tris[i]
 		mCos := &tRats{}
@@ -296,23 +287,21 @@ func TestTCosAplusB(t *testing.T) {
 			for _, mRat := range mCos.rats {
 				dA, nA := mRat.den, mRat.num
 				for _, nRat := range nCos.rats {
+					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
 					dB, nB := nRat.den, nRat.num
 					a := N(dA)*N(dB)
 					b := nA*nB
 					c := Z(-1)
 					d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
-					if cosAB, err := factory.aNew3(a,b,c,d); err == nil {
-						//if len(cosAB.num) > 2 && cosAB.num[2] == 5 {
-							key := cosAB.Key()
+					if cos1, err := factory.aNew3(a,b,c,d); err == nil {
+						if len(cos1.num) > 2 && cos1.num[2] == 5 {
+							key := cos1.Key()
 							if _, ok := sums[key]; !ok {
-								ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
-								sums[key] = &Sum{
-									t: ts,
-									a: cosAB,
-								}
-								list = append(list, fmt.Sprintf("%s & $%s$\\\\ %%%s", ts, cosAB.Tex(), cosAB.String()))
+								sums[key] = true
+								listN := len(list)+1
+								list = append(list, fmt.Sprintf("%d & %s & $%s$\\\\ %%%s", listN, ts, cos1.Tex(), cos1.String()))
 							}
-						//}
+						}
 					}
 				}
 			}
@@ -323,5 +312,60 @@ func TestTCosAplusB(t *testing.T) {
 	}
 }
 
+func TestTCos2AplusB(t *testing.T) {
+	factory := NewT32s()
+	ts := &Ts{}
+	ts.AddTris(10)
+	sums1 := make(map[string]bool, 0)
+	sums2 := make(map[string]bool, 0)
+	list := make([]string, 0)
+	for i:=0; i < len(ts.tris); i++ {
+		m := ts.tris[i]
+		mCos := &tRats{}
+		for _, ang := range []Tang{ TangA, TangB, TangC } {
+			num, den := factory.cos(m, ang)
+			mCos.addRat(ang, num, den)
+		}
+		for j:=0; j <= i; j++ {
+			n := ts.tris[j]
+			nCos := &tRats{}
+			for _, ang := range []Tang{ TangA, TangB, TangC } {
+				num, den := factory.cos(n, ang)
+				nCos.addRat(ang, num, den)
+			}
+			for _, mRat := range mCos.rats {
+				dA, nA := mRat.den, mRat.num
+				for _, nRat := range nCos.rats {
+					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
+
+					dC, nC := nRat.den, nRat.num
+					if cos1, err := factory.tCos2AC(nA, dA, nC, dC); err != nil {
+
+					} else if cos2, err := factory.tCos2AC(nC, dC, nA, dA); err != nil {
+
+					} else {
+						if len(cos1.num) > 2 && cos1.num[2] == 5 {
+							key1, tex1 := cos1.Key(), ""
+							if _, ok := sums1[key1]; !ok {
+								sums1[key1] = true
+								tex1 = cos1.Tex()
+							}
+							key2, tex2 := cos2.Key(), ""
+							if _, ok := sums2[key2]; !ok {
+								sums2[key2] = true
+								tex2 = cos2.Tex()
+							}
+							listN := len(list)+1
+							list = append(list, fmt.Sprintf("%d & %s & $%s$ & $%s$\\\\", listN, ts, tex1, tex2))
+						}
+					}
+				}
+			}
+		}
+	}
+	for _, l := range list {
+		fmt.Println(l)
+	}
+}
 
 
