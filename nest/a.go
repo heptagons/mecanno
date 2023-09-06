@@ -2,6 +2,7 @@ package nest
 
 import (
 	"fmt"
+	"strings"
 )
 
 
@@ -171,7 +172,15 @@ func (q *A32) GreaterThanZ(num Z) (bool, error) {
 
 }
 
-
+// Key is a simpler identifier than String
+func (a *A32) Key() string {
+	var sb strings.Builder 
+	sb.WriteString(fmt.Sprintf("%d", a.den))
+	for _, n := range a.num {
+		sb.WriteString(fmt.Sprintf(",%d", n))
+	}
+	return sb.String()
+}
 
 // size   a    b     c     d     e    f    g    h    i
 // ----  ---  ===   ---   ---   ===  ---  ---  ---  ===
@@ -339,5 +348,80 @@ func (q *A32) scd(s *Str, y, z Z) {
 	}
 }
 
+func (a *A32) Tex() string {
+	var sb strings.Builder
+	if len(a.num) == 0 {
+		return "0"
+	}
+	b := a.num[0]
+	if den := a.den; den == 1 { // b
+		if len(a.num) == 1 {
+			return fmt.Sprintf("%d", b)
+		} else if len(a.num) == 3 {
+			sb.WriteString(fmt.Sprintf("%d", b))
+			c, d := a.num[1], a.num[2]
+			if c == 1 {
+				// nothing
+			} else if c == -1 {
+				sb.WriteString("-") // -
+			} else {
+				sb.WriteString(fmt.Sprintf("%+d", c)) // c
+			}
+			if c != 0 && d != 1 {
+				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
+			}
+		} else {
+			return "pending..."
+		}
+	} else { // b/a
+		if len(a.num) == 1 {
+			if b == 0 {
+				return "0"
+			} else if b > 0 {
+				sb.WriteString(fmt.Sprintf("\\frac{%d", b))
+			} else {
+				sb.WriteString(fmt.Sprintf("-\\frac{%d", -b))
+			}
+		} else if len(a.num) == 3 {
+			c, d := a.num[1], a.num[2]
+			if b < 0 {
+				sb.WriteString(fmt.Sprintf("-\\frac{%d", -b)) // b
+				c = -c
+				if c == 1 {
+					// nothing
+				} else if c == -1 {
+					sb.WriteString("-") // -
+				} else {
+					sb.WriteString(fmt.Sprintf("%+d", c)) // c
+				}
+			} else if b == 0 { // c√d/a
+				sb.WriteString("\\frac{")
+				if c == 1 {
+					// nothing
+				} else if c == -1 {
+					sb.WriteString("-") // -
+				} else {
+					sb.WriteString(fmt.Sprintf("%d", c)) // c
+				}
+			} else { // (b+c√d)/a
+				sb.WriteString(fmt.Sprintf("\\frac{%d", b)) // b
+				if c == 1 {
+					// nothing
+				} else if c == -1 {
+					sb.WriteString("-") // -
+				} else {
+					sb.WriteString(fmt.Sprintf("%+d", c)) // +c
+				}
+			}
+			if c != 0 && d != 1 {
+				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
+			}
+		} else {
+			return "pending..."
+		}
+		sb.WriteString(fmt.Sprintf("}{%d}", den)) // a
+	}
+	return sb.String()
+}
 
 

@@ -277,6 +277,7 @@ func TestTCosAplusB(t *testing.T) {
 	}
 
 	sums := make(map[string]*Sum, 0)
+	list := make([]string, 0)
 	
 	for i:=0; i < len(ts.tris); i++ {
 		m := ts.tris[i]
@@ -302,12 +303,14 @@ func TestTCosAplusB(t *testing.T) {
 					d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
 					if cosAB, err := factory.aNew3(a,b,c,d); err == nil {
 						//if len(cosAB.num) > 2 && cosAB.num[2] == 5 {
-							key := cosAB.String()
+							key := cosAB.Key()
 							if _, ok := sums[key]; !ok {
+								ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
 								sums[key] = &Sum{
-									t: fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle),
+									t: ts,
 									a: cosAB,
 								}
+								list = append(list, fmt.Sprintf("%s & $%s$\\\\ %%%s", ts, cosAB.Tex(), cosAB.String()))
 							}
 						//}
 					}
@@ -315,41 +318,8 @@ func TestTCosAplusB(t *testing.T) {
 			}
 		}
 	}
-	for _, s := range sums {
-		var sb strings.Builder // convert A32 to $tex$
-		sb.WriteString("$")
-		if den := s.a.den; den > 1 {
-			sb.WriteString("\\frac{")
-			if num := s.a.num; len(num) == 1 {
-				sb.WriteString(fmt.Sprintf("%d", num[0])) // b
-			} else if len(num) == 3 {
-				b, c, d := num[0], num[1], num[2]
-				if b != 0 {
-					sb.WriteString(fmt.Sprintf("%d", b)) // b
-					if c == 1 {
-						// nothing
-					} else if c == -1 {
-						sb.WriteString("-") // -
-					} else {
-						sb.WriteString(fmt.Sprintf("%+d", c)) // +c
-					}
-				} else {
-					if c == 1 {
-						// nothing
-					} else if c == -1 {
-						sb.WriteString("-") // -
-					} else {
-						sb.WriteString(fmt.Sprintf("%d", c)) // c
-					}
-				}
-				if d != 1 {
-					sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
-				}
-			}
-			sb.WriteString(fmt.Sprintf("}{%d}", den)) // a
-		}
-		sb.WriteString("$\\\\")
-		fmt.Printf("%s & %s\n", s.t, sb.String())
+	for _, l := range list {
+		fmt.Println(l)
 	}
 }
 
