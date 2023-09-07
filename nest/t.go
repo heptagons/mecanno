@@ -149,6 +149,14 @@ func (ts *T32s) sin(t *T, a Tang) (surd, den Z32) {
 	}
 }
 
+func (ts *T32s) tRatCosinesAll(t *T) (a, b, c *TRat) {
+	var n, d Z
+	n, d = ts.cos(t, TangA); a = &TRat{ num:n, den:d }
+	n, d = ts.cos(t, TangB); b = &TRat{ num:n, den:d }
+	n, d = ts.cos(t, TangC); c = &TRat{ num:n, den:d }
+	return
+}
+
 
 // diags return the diagonals:
 //	- For TangC return ths diagonals between sides a and b.
@@ -301,13 +309,40 @@ func (ts *T32s) tGammaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	return
 }
 
-func (ts *T32s) tCos2AC(an, ad, cn, cd Z) (*A32, error) {
-	a := N(ad)*N(ad)*N(cd)
-	b := (2*an*an - ad*ad)*cn
+func (ts *T32s) tRatCosines(tri *T) (tRats *TRats) {
+	tRats = &TRats{}
+	for _, ang := range []Tang{ TangA, TangB, TangC } {
+		num, den := ts.cos(tri, ang)
+		tRats.addRat(ang, num, den)
+	}
+	return
+}
+
+func (ts *T32s) tRatCosAplusB(aRat, bRat *TRat) (*A32, error) {
+	dA, nA := aRat.den, aRat.num
+	dB, nB := bRat.den, bRat.num
+	a := N(dA)*N(dB)
+	b := nA*nB
+	c := Z(-1)
+	d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
+	return ts.aNew3(a,b,c,d)
+}
+
+func (ts *T32s) tRatCos2AplusB(aRat, bRat *TRat) (*A32, error) {
+	an, ad := aRat.num, aRat.den
+	bn, bd := bRat.num, bRat.den
+	a := N(ad)*N(ad)*N(bd)
+	b := (2*an*an - ad*ad)*bn
 	c := 2*an
-	d := (ad*ad - an*an)*(cd*cd - cn*cn)
+	d := (ad*ad - an*an)*(bd*bd - bn*bn)
 	return ts.aNew3(a, b, c, d)
 }
+
+func (ts *T32s) tRatCosAplusBplusC(aRat, bRat, cRat *TRat) (*A32, error) {
+	return nil, nil
+}
+
+
 
 
 type Ts struct {
@@ -340,19 +375,36 @@ func (t *Ts) triNew(a, b, c N32) {
 
 
 
-type tRat struct {
+type TRat struct {
 	angle Tang
 	num   Z
 	den   Z
 }
 
-type tRats struct {
-	rats []*tRat
+func (t *TRat) Tex() string {
+	n, d := t.num, t.den
+	if d < 0 {
+		n = -n
+		d = -d
+	} 
+	if n == 0 {
+		return "0"
+	} else if d == 1 {
+		return fmt.Sprintf("%d", n)
+	} else if n > 0 {
+		return fmt.Sprintf("\\frac{%d}{%d}", n, d)
+	} else {
+		return fmt.Sprintf("-\\frac{%d}{%d}", -n, d)
+	}
 }
 
-func (t *tRats) addRat(angle Tang, num, den Z) {
+type TRats struct {
+	rats []*TRat
+}
+
+func (t *TRats) addRat(angle Tang, num, den Z) {
 	if t.rats == nil {
-		t.rats = make([]*tRat, 0)
+		t.rats = make([]*TRat, 0)
 	} else {
 		for _, rat := range t.rats {
 			if rat.num == num && rat.den == den {
@@ -360,7 +412,7 @@ func (t *tRats) addRat(angle Tang, num, den Z) {
 			}
 		}
 	}
-	t.rats = append(t.rats, &tRat{angle, num, den})
+	t.rats = append(t.rats, &TRat{angle, num, den})
 }
 
 

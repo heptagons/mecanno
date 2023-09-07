@@ -31,12 +31,42 @@ To avoid repetitions and get only valid triangles, we consider only the cases:
 a &\ge b \ge c\\
 a &< b + c
 \end{align}
-We calculate the three angles cosines. The three cosines are rationals:
+The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \cos{B}, \cos{C} \in \bbb {Q}$:
 \begin{align}
-\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc} &\in \bbb Q\\
-\cos{B} &= \frac{c^2 + a^2 - b^2}{2ca} &\in \bbb Q\\
-\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab} &\in \bbb Q
+\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc} &\equiv \frac{a_N}{a_D}\\
+\cos{B} &= \frac{c^2 + a^2 - b^2}{2ca} &\equiv \frac{b_N}{b_D}\\
+\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab} &\equiv \frac{c_N}{c_D}
 \end{align}
+
+Where numerators are integers $a_N, b_N, c_N \in \bbb{Z}$ and denominators are naturals
+$a_D, b_D, c_D \in \bbb{N}$.
+
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\hline
+  & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ \\
+\hline\endhead
+\hline
+  & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ \\
+\hline\endfoot
+1 & (1,1,1) & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$ \\
+2 & (2,2,1) & $\frac{1}{4}$ & $\frac{1}{4}$ & $\frac{7}{8}$ \\
+3 & (3,2,2) & $-\frac{1}{8}$ & $\frac{3}{4}$ & $\frac{3}{4}$ \\
+4 & (3,3,1) & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{17}{18}$ \\
+5 & (3,3,2) & $\frac{1}{3}$ & $\frac{1}{3}$ & $\frac{7}{9}$ \\
+6 & (4,3,2) & $-\frac{1}{4}$ & $\frac{11}{16}$ & $\frac{7}{8}$ \\
+7 & (4,3,3) & $\frac{1}{9}$ & $\frac{2}{3}$ & $\frac{2}{3}$ \\
+8 & (4,4,1) & $\frac{1}{8}$ & $\frac{1}{8}$ & $\frac{31}{32}$ \\
+9 & (4,4,3) & $\frac{3}{8}$ & $\frac{3}{8}$ & $\frac{23}{32}$ \\
+10 & (5,3,3) & $-\frac{7}{18}$ & $\frac{5}{6}$ & $\frac{5}{6}$ \\
+11 & (5,4,2) & $-\frac{5}{16}$ & $\frac{13}{20}$ & $\frac{37}{40}$ \\
+12 & (5,4,3) & $0$ & $\frac{3}{5}$ & $\frac{4}{5}$ \\
+13 & (5,4,4) & $\frac{7}{32}$ & $\frac{5}{8}$ & $\frac{5}{8}$ \\
+14 & (5,5,1) & $\frac{1}{10}$ & $\frac{1}{10}$ & $\frac{49}{50}$ \\
+15 & (5,5,2) & $\frac{1}{5}$ & $\frac{1}{5}$ & $\frac{23}{25}$ \\
+16 & (5,5,3) & $\frac{3}{10}$ & $\frac{3}{10}$ & $\frac{41}{50}$ \\
+17 & (5,5,4) & $\frac{2}{5}$ & $\frac{2}{5}$ & $\frac{17}{25}$ \\
+18 & (7,6,5) & $\frac{1}{5}$ & $\frac{19}{35}$ & $\frac{5}{7}$ \\
+\end{longtable}
 
 \subsection{Triangle $(a,b,c)$ diagonals}
 
