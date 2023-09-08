@@ -325,9 +325,9 @@ func (ts *T32s) tRatCosines(tri *T) (tRats *TRats) {
 	return
 }
 
-func (ts *T32s) tRatCosXY(aRat, bRat *TRat) (*A32, error) {
-	dA, nA := aRat.den, aRat.num
-	dB, nB := bRat.den, bRat.num
+func (ts *T32s) tRatCosXY(x, y *TRat) (*A32, error) {
+	dA, nA := x.den, x.num
+	dB, nB := y.den, y.num
 	a := N(dA)*N(dB)
 	b := nA*nB
 	c := Z(-1)
@@ -335,14 +335,15 @@ func (ts *T32s) tRatCosXY(aRat, bRat *TRat) (*A32, error) {
 	return ts.aNew3(a,b,c,d)
 }
 
-func (ts *T32s) tRatCos2XY(x, y *TRat) (*A32, error) {
-	an, ad := x.num, x.den
-	bn, bd := y.num, y.den
-	a := N(ad)*N(ad)*N(bd)
-	b := (2*an*an - ad*ad)*bn
-	c := 2*an
-	d := (ad*ad - an*an)*(bd*bd - bn*bn)
-	return ts.aNew3(a, b, c, d)
+func (ts *T32s) tRatCos2XY(a, d *TRat) (*A32, error) {
+	an2 := a.num*a.num
+	ad2 := a.den*a.den
+	return ts.aNew3(
+		N(ad2)*N(d.den),     // a
+		(2*an2 - ad2)*d.num, // b
+		-2*a.num,            // c
+		a.S()*d.S(),         // d
+	)
 }
 
 func (ts *T32s) tRatCosXYZ(aRat, bRat, cRat *TRat) (*A32, error) {
