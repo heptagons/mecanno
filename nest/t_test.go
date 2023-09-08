@@ -245,7 +245,7 @@ func TestTgammas(t *testing.T) {
 	}
 }
 
-func TestTCosAplusB(t *testing.T) {
+func TestTCosXY(t *testing.T) {
 	factory := NewT32s()
 	ts := &Ts{}
 	ts.AddTris(5)
@@ -253,21 +253,22 @@ func TestTCosAplusB(t *testing.T) {
 	listN := 0
 	for i:=0; i < len(ts.tris); i++ {
 		m := ts.tris[i]
-		mCosines := factory.tRatCosines(m)
+		xCosines := factory.tRatCosines(m)
 		for j:=0; j <= i; j++ {
 			n := ts.tris[j]
-			nCosines := factory.tRatCosines(n)
-			for _, mRat := range mCosines.rats {
-				for _, nRat := range nCosines.rats {
-					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
-					if cos1, err := factory.tRatCosAplusB(mRat, nRat); err == nil {
-						if len(cos1.num) > 2 && cos1.num[2] == 5 {
-							key := cos1.Key()
+			yCosines := factory.tRatCosines(n)
+
+			for _, xRat := range xCosines.rats {
+				for _, yRat := range yCosines.rats {
+					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, xRat.angle, n, yRat.angle)
+					if xy, err := factory.tRatCosXY(xRat, yRat); err == nil {
+						if len(xy.num) > 2 && xy.num[2] == 5 {
+							key := xy.Key()
 							if _, ok := sums[key]; !ok {
 								sums[key] = true
 								listN++
 								// to be used in /github.com/heptagons/meccano/nest/doc/triangles.tex table
-								fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, cos1.Tex(), cos1.String())
+								fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, xy.Tex(), xy.String())
 							}
 						}
 					}
@@ -277,7 +278,49 @@ func TestTCosAplusB(t *testing.T) {
 	}
 }
 
-func TestTCos2AplusB(t *testing.T) {
+// prints Latex string rows with columns: 
+// triangle-angle-1 | triangle-angle-2 | triangle-angle-3 | cos(X,Y,Z)
+func TestTCosXYZ(t *testing.T) {
+	factory := NewT32s()
+	ts := &Ts{}
+	ts.AddTris(5)
+	sums := make(map[string]bool, 0)
+	listN := 0
+	for i:=0; i < len(ts.tris); i++ {
+		x := ts.tris[i]
+		xCosines := factory.tRatCosines(x)
+		for j:=0; j <= i; j++ {
+			y := ts.tris[j]
+			yCosines := factory.tRatCosines(y)
+			for k := 0; k <= j; k++ {
+				z := ts.tris[k]
+				zCosines := factory.tRatCosines(z)
+
+				for _, xRat := range xCosines.rats {
+					for _, yRat := range yCosines.rats {
+						for _, zRat := range zCosines.rats {
+							ts := fmt.Sprintf("(%s)[%c] & (%s)[%c] & (%s)[%s]", x, xRat.angle, y, yRat.angle, z, zRat.angle)
+							if xyz, err := factory.tRatCosXYZ(xRat, yRat, zRat); err == nil {
+								if len(xyz.num) > 2 && xyz.num[2] == 5 {
+									key := xyz.Key()
+									if _, ok := sums[key]; !ok {
+										sums[key] = true
+										listN++
+										// to be used in /github.com/heptagons/meccano/nest/doc/triangles.tex table
+										fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, xyz.Tex(), xyz.String())
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+func TestTCos2XY(t *testing.T) {
 	factory := NewT32s()
 	ts := &Ts{}
 	ts.AddTris(5)
@@ -286,17 +329,17 @@ func TestTCos2AplusB(t *testing.T) {
 	listN := 0
 	for i:=0; i < len(ts.tris); i++ {
 		m := ts.tris[i]
-		mCosines := factory.tRatCosines(m)
+		xCosines := factory.tRatCosines(m)
 		for j:=0; j <= i; j++ {
 			n := ts.tris[j]
-			nCosines := factory.tRatCosines(n)
-			for _, mRat := range mCosines.rats {
-				for _, nRat := range nCosines.rats {
-					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, mRat.angle, n, nRat.angle)
+			yCosines := factory.tRatCosines(n)
+			for _, xRat := range xCosines.rats {
+				for _, yRat := range yCosines.rats {
+					ts := fmt.Sprintf("(%s)[%c] & (%s)[%c]", m, xRat.angle, n, yRat.angle)
 
-					if cos1, err := factory.tRatCos2AplusB(mRat, nRat); err != nil {
+					if cos1, err := factory.tRatCos2XY(xRat, yRat); err != nil {
 
-					} else if cos2, err := factory.tRatCos2AplusB(nRat, mRat); err != nil {
+					} else if cos2, err := factory.tRatCos2XY(yRat, xRat); err != nil {
 
 					} else {
 						if len(cos1.num) > 2 && cos1.num[2] == 5 {

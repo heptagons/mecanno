@@ -32,7 +32,7 @@ a &\ge b \ge c\\
 a &< b + c
 \end{align}
 
-The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \cos{B}, \cos{C} \in \bbb {Q}$:
+The cosines of the three angles of triangle$(a,b,c)$ are rationals:
 \begin{equation}\label{Eq:cosABC}
 \cos\left({\begin{array}{c} A\\ B\\ C\\ \end{array}}\right)
 = \left({\begin{array}{c}
@@ -46,10 +46,11 @@ The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \co
 \dfrac{c_n}{c_d}\\[10pt]
 \end{array}}\right) \in \bbb {Q}
 \end{equation}
-Where numerators are integers $a_n, b_n, c_n \in \bbb{Z}$ and denominators are naturals
-$a_d, b_d, c_d \in \bbb{N}$ and always $x_n <= x_d$ for $x=\{a,b,c\}$.
+The numerators are integers $a_n, b_n, c_n \in \bbb{Z}$.
+The denominators are naturals $a_d, b_d, c_d \in \bbb{N}$.
+For $x=\{a,b,c\}$ $x_n <= x_d$.
 
-The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb {A}$:
+The sines of the three angles are algebraic:
 \begin{equation}\label{Eq:sinABC}
 \sin\left({\begin{array}{c} A\\ B\\ C\\ \end{array}}\right)
 = \left({\begin{array}{c}
@@ -69,7 +70,8 @@ The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb 
 \end{array}}\right)
  \in \bbb {A}
 \end{equation}
-Where numbers inside square roots are naturals $a_s, b_s, c_s \in \bbb{N}$ and $x_s = x_d^2 - x_n^2 \ge 0$ for $x=\{a,b,c\}$.
+Numbers inside square roots are naturals $a_s, b_s, c_s \in \bbb{N}$.
+For $x=\{a,b,c\}$ $x_s = x_d^2 - x_n^2 \ge 0$.
 
 \renewcommand*{\arraystretch}{1.3} % add space in longtable rows since we have a lot of \frac
 
@@ -100,7 +102,248 @@ Where numbers inside square roots are naturals $a_s, b_s, c_s \in \bbb{N}$ and $
 \end{longtable}
 Data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosSin}
 
-\subsection{Triangle $(a,b,c)$ diagonals}
+
+
+
+\section{Triangles $(a,b,c)$ pairs}
+
+We can attach two triangles $(a,b,c)$ to share a common side and vertex to get more angles and diagonals.
+
+\subsection{Triangles pairs rational cosines angles}
+When two angles $X$ and $Y$ are both like $\{A,B,C\}$ of Triangle(a,b,c) then we can use
+the equations \ref{Eq:cosABC} and \ref{Eq:sinABC} to calculate their sum:
+\begin{align}
+\cos{(X+Y)} &= \cos{X}\cos{Y} - \sin{X}\sin{Y}\\
+ &= \frac{x_n}{x_d} \times \frac{y_n}{y_d} - \frac{\sqrt{x_s}}{x_d} \times \frac{\sqrt{y_s}}{y_d}\\
+ &= \frac{x_ny_n - \sqrt{x_sy_s}}{x_dy_d}
+\end{align}
+
+\subsubsection{Triangles pairs angles}
+From the list of triangles including the range $(1,1,1)$ to $(3,3,2)$
+we can calculate the cosines of sums of the angles in pairs.
+
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\hline
+Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
+\hline\endhead
+\hline\endfoot
+1 & (1,1,1)[A] & (1,1,1)[A] & $-\frac{1}{2}$\\ %-1/2
+2 & (2,2,1)[A] & (1,1,1)[A] & $\frac{1-3\sqrt{5}}{8}$\\ %(1-3√5)/8
+3 & (2,2,1)[C] & (1,1,1)[A] & $\frac{7-3\sqrt{5}}{16}$\\ %(7-3√5)/16
+4 & (2,2,1)[A] & (2,2,1)[A] & $-\frac{7}{8}$\\ %-7/8
+5 & (2,2,1)[A] & (2,2,1)[C] & $-\frac{1}{4}$\\ %-1/4
+6 & (2,2,1)[C] & (2,2,1)[C] & $\frac{17}{32}$\\ %17/32
+7 & (3,2,2)[A] & (1,1,1)[A] & $-\frac{1+3\sqrt{21}}{16}$\\ %(-1-3√21)/16
+8 & (3,2,2)[B] & (1,1,1)[A] & $\frac{3-\sqrt{21}}{8}$\\ %(3√21)/8
+9 & (3,2,2)[A] & (2,2,1)[A] & $-\frac{1+3\sqrt{105}}{32}$\\ %(-1-3√105)/32
+10 & (3,2,2)[A] & (2,2,1)[C] & $-\frac{7+3\sqrt{105}}{64}$\\ %(-7-3√105)/64
+11 & (3,2,2)[B] & (2,2,1)[A] & $\frac{3-\sqrt{105}}{16}$\\ %(3√105)/16
+12 & (3,2,2)[B] & (2,2,1)[C] & $\frac{21-\sqrt{105}}{32}$\\ %(21√105)/32
+13 & (3,2,2)[A] & (3,2,2)[A] & $-\frac{31}{32}$\\ %-31/32
+14 & (3,2,2)[A] & (3,2,2)[B] & $-\frac{3}{4}$\\ %-3/4
+15 & (3,2,2)[B] & (3,2,2)[B] & $\frac{1}{8}$\\ %1/8
+16 & (3,3,1)[A] & (1,1,1)[A] & $\frac{1-\sqrt{105}}{12}$\\ %(1√105)/12
+17 & (3,3,1)[C] & (1,1,1)[A] & $\frac{17-\sqrt{105}}{36}$\\ %(17√105)/36
+18 & (3,3,1)[A] & (2,2,1)[A] & $\frac{1-5\sqrt{21}}{24}$\\ %(1-5√21)/24
+19 & (3,3,1)[A] & (2,2,1)[C] & $\frac{7-5\sqrt{21}}{48}$\\ %(7-5√21)/48
+20 & (3,3,1)[C] & (2,2,1)[A] & $\frac{17-5\sqrt{21}}{72}$\\ %(17-5√21)/72
+21 & (3,3,1)[C] & (2,2,1)[C] & $\frac{119-5\sqrt{21}}{144}$\\ %(119-5√21)/144
+22 & (3,3,1)[A] & (3,2,2)[A] & $-\frac{1+21\sqrt{5}}{48}$\\ %(-1-21√5)/48
+23 & (3,3,1)[A] & (3,2,2)[B] & $\frac{3-7\sqrt{5}}{24}$\\ %(3-7√5)/24
+24 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{17+21\sqrt{5}}{144}$\\ %(-17-21√5)/144
+25 & (3,3,1)[C] & (3,2,2)[B] & $\frac{51-7\sqrt{5}}{72}$\\ %(51-7√5)/72
+26 & (3,3,1)[A] & (3,3,1)[A] & $-\frac{17}{18}$\\ %-17/18
+27 & (3,3,1)[A] & (3,3,1)[C] & $-\frac{1}{6}$\\ %-1/6
+28 & (3,3,1)[C] & (3,3,1)[C] & $\frac{127}{162}$\\ %127/162
+29 & (3,3,2)[A] & (1,1,1)[A] & $\frac{1-2\sqrt{6}}{6}$\\ %(1-2√6)/6
+30 & (3,3,2)[C] & (1,1,1)[A] & $\frac{7-4\sqrt{6}}{18}$\\ %(7-4√6)/18
+31 & (3,3,2)[A] & (2,2,1)[A] & $\frac{1-2\sqrt{30}}{12}$\\ %(1-2√30)/12
+32 & (3,3,2)[A] & (2,2,1)[C] & $\frac{7-2\sqrt{30}}{24}$\\ %(7-2√30)/24
+33 & (3,3,2)[C] & (2,2,1)[A] & $\frac{7-4\sqrt{30}}{36}$\\ %(7-4√30)/36
+34 & (3,3,2)[C] & (2,2,1)[C] & $\frac{49-4\sqrt{30}}{72}$\\ %(49-4√30)/72
+35 & (3,3,2)[A] & (3,2,2)[A] & $-\frac{1+6\sqrt{14}}{24}$\\ %(-1-6√14)/24
+36 & (3,3,2)[A] & (3,2,2)[B] & $\frac{3-2\sqrt{14}}{12}$\\ %(3-2√14)/12
+37 & (3,3,2)[C] & (3,2,2)[A] & $-\frac{7+12\sqrt{14}}{72}$\\ %(-7-12√14)/72
+38 & (3,3,2)[C] & (3,2,2)[B] & $\frac{21-4\sqrt{14}}{36}$\\ %(21-4√14)/36
+39 & (3,3,2)[A] & (3,3,1)[A] & $\frac{1-2\sqrt{70}}{18}$\\ %(1-2√70)/18
+40 & (3,3,2)[A] & (3,3,1)[C] & $\frac{17-2\sqrt{70}}{54}$\\ %(17-2√70)/54
+41 & (3,3,2)[C] & (3,3,1)[A] & $\frac{7-4\sqrt{70}}{54}$\\ %(7-4√70)/54
+42 & (3,3,2)[C] & (3,3,1)[C] & $\frac{119-4\sqrt{70}}{162}$\\ %(119-4√70)/162
+43 & (3,3,2)[A] & (3,3,2)[A] & $-\frac{7}{9}$\\ %-7/9
+44 & (3,3,2)[A] & (3,3,2)[C] & $-\frac{1}{3}$\\ %-1/3
+45 & (3,3,2)[C] & (3,3,2)[C] & $\frac{17}{81}$\\ %17/81
+\end{longtable}
+Calculations by \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusB}
+
+We can also consider bigger triangles and filter, for example, the cosines having the term $\sqrt{5}$:
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\hline
+Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
+\hline\endhead
+\hline\endfoot
+1 & (2,2,1)[A] & (1,1,1)[A] & $\frac{1-3\sqrt{5}}{8}$\\ %(1-3√5)/8
+2 & (2,2,1)[C] & (1,1,1)[A] & $\frac{7-3\sqrt{5}}{16}$\\ %(7-3√5)/16
+3 & (3,3,1)[A] & (3,2,2)[A] & $-\frac{1+21\sqrt{5}}{48}$\\ %(-1-21√5)/48
+4 & (3,3,1)[A] & (3,2,2)[B] & $\frac{3-7\sqrt{5}}{24}$\\ %(3-7√5)/24
+5 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{17+21\sqrt{5}}{144}$\\ %(-17-21√5)/144
+6 & (3,3,1)[C] & (3,2,2)[B] & $\frac{51-7\sqrt{5}}{72}$\\ %(51-7√5)/72
+7 & (4,3,2)[A] & (1,1,1)[A] & $-\frac{1+3\sqrt{5}}{8}$\\ %(-1-3√5)/8
+8 & (4,3,2)[B] & (1,1,1)[A] & $\frac{11-9\sqrt{5}}{32}$\\ %(11-9√5)/32
+9 & (4,4,1)[A] & (3,3,1)[A] & $\frac{1-21\sqrt{5}}{48}$\\ %(1-21√5)/48
+10 & (4,4,1)[A] & (3,3,1)[C] & $\frac{17-21\sqrt{5}}{144}$\\ %(17-21√5)/144
+11 & (4,4,1)[C] & (3,3,1)[A] & $\frac{31-21\sqrt{5}}{192}$\\ %(31-21√5)/192
+12 & (4,4,1)[C] & (3,3,1)[C] & $\frac{527-21\sqrt{5}}{576}$\\ %(527-21√5)/576
+13 & (5,3,3)[A] & (4,4,3)[A] & $-\frac{21+55\sqrt{5}}{144}$\\ %(-21-55√5)/144
+14 & (5,3,3)[A] & (4,4,3)[C] & $-\frac{161+165\sqrt{5}}{576}$\\ %(-161-165√5)/576
+15 & (5,3,3)[B] & (4,4,3)[A] & $\frac{15-11\sqrt{5}}{48}$\\ %(15-11√5)/48
+16 & (5,3,3)[B] & (4,4,3)[C] & $\frac{115-33\sqrt{5}}{192}$\\ %(115-33√5)/192
+17 & (5,4,3)[A] & (4,3,3)[A] & $\frac{-4\sqrt{5}}{9}$\\ %-4√5/9
+18 & (5,4,3)[A] & (4,3,3)[B] & $\frac{-\sqrt{5}}{3}$\\ %√5/3
+19 & (5,4,3)[B] & (4,3,3)[A] & $\frac{3-16\sqrt{5}}{45}$\\ %(3-16√5)/45
+20 & (5,4,3)[B] & (4,3,3)[B] & $\frac{6-4\sqrt{5}}{15}$\\ %(6-4√5)/15
+21 & (5,4,3)[C] & (4,3,3)[A] & $\frac{4-12\sqrt{5}}{45}$\\ %(4-12√5)/45
+22 & (5,4,3)[C] & (4,3,3)[B] & $\frac{8-3\sqrt{5}}{15}$\\ %(8-3√5)/15
+23 & (5,5,1)[A] & (4,4,3)[A] & $\frac{3-33\sqrt{5}}{80}$\\ %(3-33√5)/80
+24 & (5,5,1)[A] & (4,4,3)[C] & $\frac{23-99\sqrt{5}}{320}$\\ %(23-99√5)/320
+25 & (5,5,1)[C] & (4,4,3)[A] & $\frac{147-33\sqrt{5}}{400}$\\ %(147-33√5)/400
+26 & (5,5,1)[C] & (4,4,3)[C] & $\frac{1127-99\sqrt{5}}{1600}$\\ %(1127-99√5)/1600
+\end{longtable}
+
+
+
+\section{Triangles $(a,b,c)$ triplets}
+
+We can attach three triangles to share a common vertex and two sides.
+
+\subsection{Triple angles $2A+D$ and $A+2D$}
+
+Lets add three angles, two angles $A$ from a pair of triangles $(a,b,c)$ and one angle $D$ from single triangle $(d,e,f)$.
+For triangle $(a,b,c)$ and using the equations \ref{Eq:cosABC} and \ref{Eq:sinABC} we have:
+\begin{align}
+\cos{(2A)} &= 2\cos^2{A} - 1 = 2\frac{a_n^2}{a_d^2} - 1 &= \frac{2a_n^2 - a_d^2}{a_d^2}\\
+\sin{(2A)} &= 2\sin{A}\cos{A} &= \frac{2a_n\sqrt{a_s}}{a_d^2}
+\end{align}
+
+As with equations \ref{Eq:cosABC} and \ref{Eq:sinABC} lets define cosines and sines of triangle $(d,e,f)$:
+
+\begin{equation}\label{Eq:cossinDEF}
+\left({\begin{array}{c c} {\cos} & {\sin}\end{array}}\right)
+\left({\begin{array}{c} D\\ E\\ F\\ \end{array}}\right)
+= \left({\begin{array}{c c}
+\dfrac{d_n}{d_d} & \dfrac{\sqrt{d_s}}{d_d}\\[10pt]
+\dfrac{e_n}{e_d} & \dfrac{\sqrt{e_s}}{e_d}\\[10pt]
+\dfrac{f_n}{f_d} & \dfrac{\sqrt{f_s}}{f_d}\\[10pt]
+\end{array}}\right)
+\end{equation}
+
+Using $\cos{(2A)}$, $\sin{(2A)}$, $\cos{D}$ and $\sin{D}$ we have:
+\begin{align}
+\cos{(2A+D)} &= \cos{(2A)}\cos{D} - \sin{(2A)}\sin{D} \nonumber\\
+ &= \frac{(2a_n^2 - a_d^2)d_n - 2a_n\sqrt{a_sd_s}}{a_d^2d_d}
+\end{align}
+
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
+in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
+\hline
+Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
+\hline\endhead
+\hline\endfoot
+1 & (1,1,1)[A] & (1,1,1)[A] & $\frac{1}{2}$ & $\frac{1}{2}$\\
+2 & (2,2,1)[A] & (1,1,1)[A] & $-\frac{7-3\sqrt{5}}{16}$ & $-\frac{1-3\sqrt{5}}{8}$\\
+3 & (2,2,1)[C] & (1,1,1)[A] & $\frac{17+21\sqrt{5}}{64}$ & $-\frac{7-3\sqrt{5}}{16}$\\
+4 & (2,2,1)[A] & (2,2,1)[A] & $\frac{1}{4}$ & $\frac{1}{4}$\\
+5 & (2,2,1)[A] & (2,2,1)[C] & $-\frac{17}{32}$ & $\frac{61}{64}$\\
+6 & (2,2,1)[C] & (2,2,1)[A] & $\frac{61}{64}$ & $-\frac{17}{32}$\\
+7 & (2,2,1)[C] & (2,2,1)[C] & $\frac{7}{8}$ & $\frac{7}{8}$\\
+8 & (3,2,2)[A] & (1,1,1)[A] & $-\frac{31+3\sqrt{21}}{64}$ & $\frac{1+3\sqrt{21}}{16}$\\
+9 & (3,2,2)[B] & (1,1,1)[A] & $\frac{1+3\sqrt{21}}{16}$ & $-\frac{3-\sqrt{21}}{8}$\\
+10 & (3,2,2)[A] & (2,2,1)[A] & $-\frac{31+3\sqrt{105}}{128}$ & $\frac{7+3\sqrt{105}}{64}$\\
+11 & (3,2,2)[A] & (2,2,1)[C] & $-\frac{217+3\sqrt{105}}{256}$ & $-\frac{17-21\sqrt{105}}{256}$\\
+12 & (3,2,2)[B] & (2,2,1)[A] & $\frac{1+3\sqrt{105}}{32}$ & $-\frac{21-\sqrt{105}}{32}$\\
+13 & (3,2,2)[B] & (2,2,1)[C] & $\frac{7+3\sqrt{105}}{64}$ & $\frac{51+7\sqrt{105}}{128}$\\
+14 & (3,2,2)[A] & (3,2,2)[A] & $-\frac{1}{8}$ & $-\frac{1}{8}$\\
+15 & (3,2,2)[A] & (3,2,2)[B] & $-\frac{57}{64}$ & $\frac{31}{32}$\\
+16 & (3,2,2)[B] & (3,2,2)[A] & $\frac{31}{32}$ & $-\frac{57}{64}$\\
+17 & (3,2,2)[B] & (3,2,2)[B] & $\frac{3}{4}$ & $\frac{3}{4}$\\
+18 & (3,3,1)[A] & (1,1,1)[A] & $-\frac{17-\sqrt{105}}{36}$ & $-\frac{1-\sqrt{105}}{12}$\\
+19 & (3,3,1)[C] & (1,1,1)[A] & $\frac{127+17\sqrt{105}}{324}$ & $-\frac{17-\sqrt{105}}{36}$\\
+20 & (3,3,1)[A] & (2,2,1)[A] & $-\frac{17-5\sqrt{21}}{72}$ & $-\frac{7-5\sqrt{21}}{48}$\\
+21 & (3,3,1)[A] & (2,2,1)[C] & $-\frac{119-5\sqrt{21}}{144}$ & $\frac{17+35\sqrt{21}}{192}$\\
+22 & (3,3,1)[C] & (2,2,1)[A] & $\frac{127+85\sqrt{21}}{648}$ & $-\frac{119-5\sqrt{21}}{144}$\\
+23 & (3,3,1)[C] & (2,2,1)[C] & $\frac{889+85\sqrt{21}}{1296}$ & $\frac{289+35\sqrt{21}}{576}$\\
+24 & (3,3,1)[A] & (3,2,2)[A] & $\frac{17+21\sqrt{5}}{144}$ & $-\frac{31+21\sqrt{5}}{192}$\\
+25 & (3,3,1)[A] & (3,2,2)[B] & $-\frac{51-7\sqrt{5}}{72}$ & $\frac{1+21\sqrt{5}}{48}$\\
+26 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{127-357\sqrt{5}}{1296}$ & $-\frac{527+21\sqrt{5}}{576}$\\
+27 & (3,3,1)[C] & (3,2,2)[B] & $\frac{381+119\sqrt{5}}{648}$ & $\frac{17+21\sqrt{5}}{144}$\\
+28 & (3,3,1)[A] & (3,3,1)[A] & $\frac{1}{6}$ & $\frac{1}{6}$\\
+29 & (3,3,1)[A] & (3,3,1)[C] & $-\frac{127}{162}$ & $\frac{361}{486}$\\
+30 & (3,3,1)[C] & (3,3,1)[A] & $\frac{361}{486}$ & $-\frac{127}{162}$\\
+31 & (3,3,1)[C] & (3,3,1)[C] & $\frac{17}{18}$ & $\frac{17}{18}$\\
+32 & (3,3,2)[A] & (1,1,1)[A] & $-\frac{7-4\sqrt{6}}{18}$ & $-\frac{1-2\sqrt{6}}{6}$\\
+33 & (3,3,2)[C] & (1,1,1)[A] & $\frac{17+56\sqrt{6}}{162}$ & $-\frac{7-4\sqrt{6}}{18}$\\
+34 & (3,3,2)[A] & (2,2,1)[A] & $-\frac{7-4\sqrt{30}}{36}$ & $-\frac{7-2\sqrt{30}}{24}$\\
+35 & (3,3,2)[A] & (2,2,1)[C] & $-\frac{49-4\sqrt{30}}{72}$ & $\frac{17+14\sqrt{30}}{96}$\\
+36 & (3,3,2)[C] & (2,2,1)[A] & $\frac{17+56\sqrt{30}}{324}$ & $-\frac{49-4\sqrt{30}}{72}$\\
+37 & (3,3,2)[C] & (2,2,1)[C] & $\frac{119+56\sqrt{30}}{648}$ & $\frac{119+28\sqrt{30}}{288}$\\
+38 & (3,3,2)[A] & (3,2,2)[A] & $\frac{7+12\sqrt{14}}{72}$ & $-\frac{31+6\sqrt{14}}{96}$\\
+39 & (3,3,2)[A] & (3,2,2)[B] & $-\frac{21-4\sqrt{14}}{36}$ & $\frac{1+6\sqrt{14}}{24}$\\
+40 & (3,3,2)[C] & (3,2,2)[A] & $-\frac{17-168\sqrt{14}}{648}$ & $-\frac{217+12\sqrt{14}}{288}$\\
+41 & (3,3,2)[C] & (3,2,2)[B] & $\frac{51+56\sqrt{14}}{324}$ & $\frac{7+12\sqrt{14}}{72}$\\
+42 & (3,3,2)[A] & (3,3,1)[A] & $-\frac{7-4\sqrt{70}}{54}$ & $-\frac{17-2\sqrt{70}}{54}$\\
+43 & (3,3,2)[A] & (3,3,1)[C] & $-\frac{119-4\sqrt{70}}{162}$ & $\frac{127+34\sqrt{70}}{486}$\\
+44 & (3,3,2)[C] & (3,3,1)[A] & $\frac{17+56\sqrt{70}}{486}$ & $-\frac{119-4\sqrt{70}}{162}$\\
+45 & (3,3,2)[C] & (3,3,1)[C] & $\frac{289+56\sqrt{70}}{1458}$ & $\frac{889+68\sqrt{70}}{1458}$\\
+46 & (3,3,2)[A] & (3,3,2)[A] & $\frac{1}{3}$ & $\frac{1}{3}$\\
+47 & (3,3,2)[A] & (3,3,2)[C] & $-\frac{17}{81}$ & $\frac{241}{243}$\\
+48 & (3,3,2)[C] & (3,3,2)[A] & $\frac{241}{243}$ & $-\frac{17}{81}$\\
+49 & (3,3,2)[C] & (3,3,2)[C] & $\frac{7}{9}$ & $\frac{7}{9}$\\
+\end{longtable}
+Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCos2AplusB}
+
+\subsection{Triple angles $Z = A+D+G$}
+
+\begin{align}
+\cos{(A+D)} &= \cos{A}\cos{D} - \sin{A}\sin{D} \nonumber\\
+ &= \frac{a_nd_n - \sqrt{a_sd_s}}{a_dd_d}\\
+\sin{(A+D)} &= \sin{A}\cos{D} + \cos{A}\sin{D} \nonumber\\
+ &= \frac{d_n\sqrt{a_s} + a_n\sqrt{d_s}}{a_dd_d}\\
+\cos{(A+D+G)} &= \cos{(A+D)}\cos{G} - \sin{(A+D)}\sin{G} \nonumber\\
+ &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s}}{a_dd_dg_d}
+ -\frac{d_n\sqrt{a_sg_s} + a_n\sqrt{d_sg_s}}{a_dd_dg_d} \nonumber\\
+ &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s} - d_n\sqrt{a_sg_s} - a_n\sqrt{d_sg_s}}{a_dd_dg_d}
+\end{align}
+
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
+in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
+\hline
+Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $Z = A \lor B \lor C$ & $\cos(X+Y+Z)$ \\
+\hline\endhead
+\hline\endfoot
+\end{longtable}
+Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusBplusC}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Triangle $(a,b,c)$ diagonals}
 Within the triangle $(a,b,c)$ we can form diagonals as lines joining integer points of a given side $a,b,c$ 
 with others points of another side. To calculate the diagonals we use the law of cosines.
 Using equation \ref{Eq:cosABC} we can calculate diagonals $\overline{b_ic_j}$:
@@ -353,20 +596,20 @@ We calculate the triangle cosines:
 
 \subsection{Triangle $(a, b, \sqrt{\gamma})$ diagonals}
 
-The only possible diagonals are for sides with integers, that is $\overline{a_mb_n}$. Using the law of cosines:
+The only possible diagonals are for sides with integers, that is $\overline{a_ib_j}$. Using the law of cosines:
 \begin{align}
-\overline{a_mb_n} &= \sqrt{m^2 + n^2 - 2mn\cos{C}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + b^2 - \gamma}{2ab}}\\
-  &= \frac{\sqrt{a^2b^2(m^2 + n^2)-acmn(a^2 + b^2 - \gamma)}}{ab} &\in \bbb{A}
+\overline{a_ib_j} &= \sqrt{i^2 + j^2 - 2ij\cos{C_{\gamma}}}\\
+  &= \sqrt{i^2 + j^2 - 2ij\frac{\gamma_n}{\gamma_d}}\\
+  &= \frac{\sqrt{\gamma_d^2(i^2 + j^2)-2\gamma_nij}}{\gamma_d} &\in \bbb{A}
 \end{align}
-where $1 \le m < a$, $1 \le n < b$ and $m \ge n$.
+where $1 \le i < a$, $1 \le j < b$ and $i \ge j$.
 
 \subsection{Example triangles$(a,b,2\sqrt{6})$}
 
 In this case $\sqrt{\gamma} = 2\sqrt{6}$ so $\gamma = 24$. 
 We form a matrix with with the values $(a-b)^2$ satisfying the condition $a^2 \ge b^2 > \gamma$:
 \begin {equation}\label{E:21}
-(a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
+(a_i - b_j)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
 b=5  & 0 & 1 & 4 &  9 & 16 & 25 & 36 & 49 & \hdots \cr    
 b=6  &   & 0 & 1 &  4 &  9 & 16 & 25 & 36 & \hdots \cr    
 b=7  &   &   & 0 &  1 &  4 &  9 & 16 & 25 & \hdots \cr    
@@ -378,7 +621,7 @@ b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr
 
 We remove cells except those satisfying the condition $(a-b)^2 < \gamma$:
 \begin {equation}\label{E:21}
-(a_m - b_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
+(a_i - b_j)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & a=10 & a=11 & a=12 & \hdots\cr
 b=5  & 0 & 1 & 4 &  9 & 16 & \times & \times & \times & \hdots \cr    
 b=6  &   & 0 & 1 &  4 &  9 & 16 & \times & \times & \hdots \cr    
 b=7  &   &   & 0 &  1 &  4 &  9 & 16 & \times & \hdots \cr    
@@ -397,7 +640,7 @@ b=10 &   &   &   &    &    &  0 &  1 &  4 & \hdots \cr
 
 So we found that infinite triangles are valid, the smaller ones are:
 \begin {equation}\label{E:4}
-(a,b,2\sqrt{6}) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
+(a,b,2\sqrt{6}) =\bordermatrix{~ & \cos{A_{\gamma}} & \cos{B_{\gamma}} & \cos{C_{\gamma}} \cr
 (5,5,2\sqrt{6}) & \frac{\sqrt{6}}{5} & \frac{\sqrt{6}}{5} & \frac{13}{25} \cr
 (6,5,2\sqrt{6}) & \frac{13\sqrt{6}}{120} & \frac{35\sqrt{6}}{144} & \frac{37}{60} \cr
 (6,6,2\sqrt{6}) & \frac{\sqrt{6}}{6} & \frac{\sqrt{6}}{6} & \frac{2}{3} \cr
@@ -411,113 +654,6 @@ Figure \ref{tslurC} show some triangles $(a,b,2\sqrt{6})$. The cosines are calcu
 \\\\
 \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTslursC}
 
-\section{Triangles pairs}
-
-We can attach two triangles to share a common side and vertex to get more angles and diagonals.
-
-\subsection{Triangles pairs rational cosines angles}
-When we sum two angles $Z = X+Y$, where $\cos{X} \equiv x_N / x_D$ and $\cos{Y} \equiv y_N / y_D$ we have:
-\begin{align}
-\cos{Z} &= \cos{X}\cos{Y} - \sin{X}\sin{Y}\\
- &= \frac{x_N}{x_D} \times \frac{y_N}{y_D} - \frac{\sqrt{x_S}}{x_D} \times \frac{\sqrt{y_S}}{y_D}\\
- &= \frac{x_Ny_N - \sqrt{x_Sy_S}}{x_Dy_D}
-\end{align}
-
-\subsubsection{Triangles pairs angles}
-
-Adding the angles of Triangles from $(1,1,1)$ to $(3,3,2)$ we get some sums. The values are calculated with code at:
-\\\\
-\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusB}
-
-\begin{longtable}{ | p{1cm}| *{15}{c|} }
-\hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
-\hline\endhead
-\hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
-\hline\endfoot
-1 & (1,1,1)[A] & (1,1,1)[A] & $-\frac{1}{2}$\\ %-1/2
-2 & (2,2,1)[A] & (1,1,1)[A] & $\frac{1-3\sqrt{5}}{8}$\\ %(1-3√5)/8
-3 & (2,2,1)[C] & (1,1,1)[A] & $\frac{7-3\sqrt{5}}{16}$\\ %(7-3√5)/16
-4 & (2,2,1)[A] & (2,2,1)[A] & $-\frac{7}{8}$\\ %-7/8
-5 & (2,2,1)[A] & (2,2,1)[C] & $-\frac{1}{4}$\\ %-1/4
-6 & (2,2,1)[C] & (2,2,1)[C] & $\frac{17}{32}$\\ %17/32
-7 & (3,2,2)[A] & (1,1,1)[A] & $-\frac{1+3\sqrt{21}}{16}$\\ %(-1-3√21)/16
-8 & (3,2,2)[B] & (1,1,1)[A] & $\frac{3-\sqrt{21}}{8}$\\ %(3√21)/8
-9 & (3,2,2)[A] & (2,2,1)[A] & $-\frac{1+3\sqrt{105}}{32}$\\ %(-1-3√105)/32
-10 & (3,2,2)[A] & (2,2,1)[C] & $-\frac{7+3\sqrt{105}}{64}$\\ %(-7-3√105)/64
-11 & (3,2,2)[B] & (2,2,1)[A] & $\frac{3-\sqrt{105}}{16}$\\ %(3√105)/16
-12 & (3,2,2)[B] & (2,2,1)[C] & $\frac{21-\sqrt{105}}{32}$\\ %(21√105)/32
-13 & (3,2,2)[A] & (3,2,2)[A] & $-\frac{31}{32}$\\ %-31/32
-14 & (3,2,2)[A] & (3,2,2)[B] & $-\frac{3}{4}$\\ %-3/4
-15 & (3,2,2)[B] & (3,2,2)[B] & $\frac{1}{8}$\\ %1/8
-16 & (3,3,1)[A] & (1,1,1)[A] & $\frac{1-\sqrt{105}}{12}$\\ %(1√105)/12
-17 & (3,3,1)[C] & (1,1,1)[A] & $\frac{17-\sqrt{105}}{36}$\\ %(17√105)/36
-18 & (3,3,1)[A] & (2,2,1)[A] & $\frac{1-5\sqrt{21}}{24}$\\ %(1-5√21)/24
-19 & (3,3,1)[A] & (2,2,1)[C] & $\frac{7-5\sqrt{21}}{48}$\\ %(7-5√21)/48
-20 & (3,3,1)[C] & (2,2,1)[A] & $\frac{17-5\sqrt{21}}{72}$\\ %(17-5√21)/72
-21 & (3,3,1)[C] & (2,2,1)[C] & $\frac{119-5\sqrt{21}}{144}$\\ %(119-5√21)/144
-22 & (3,3,1)[A] & (3,2,2)[A] & $-\frac{1+21\sqrt{5}}{48}$\\ %(-1-21√5)/48
-23 & (3,3,1)[A] & (3,2,2)[B] & $\frac{3-7\sqrt{5}}{24}$\\ %(3-7√5)/24
-24 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{17+21\sqrt{5}}{144}$\\ %(-17-21√5)/144
-25 & (3,3,1)[C] & (3,2,2)[B] & $\frac{51-7\sqrt{5}}{72}$\\ %(51-7√5)/72
-26 & (3,3,1)[A] & (3,3,1)[A] & $-\frac{17}{18}$\\ %-17/18
-27 & (3,3,1)[A] & (3,3,1)[C] & $-\frac{1}{6}$\\ %-1/6
-28 & (3,3,1)[C] & (3,3,1)[C] & $\frac{127}{162}$\\ %127/162
-29 & (3,3,2)[A] & (1,1,1)[A] & $\frac{1-2\sqrt{6}}{6}$\\ %(1-2√6)/6
-30 & (3,3,2)[C] & (1,1,1)[A] & $\frac{7-4\sqrt{6}}{18}$\\ %(7-4√6)/18
-31 & (3,3,2)[A] & (2,2,1)[A] & $\frac{1-2\sqrt{30}}{12}$\\ %(1-2√30)/12
-32 & (3,3,2)[A] & (2,2,1)[C] & $\frac{7-2\sqrt{30}}{24}$\\ %(7-2√30)/24
-33 & (3,3,2)[C] & (2,2,1)[A] & $\frac{7-4\sqrt{30}}{36}$\\ %(7-4√30)/36
-34 & (3,3,2)[C] & (2,2,1)[C] & $\frac{49-4\sqrt{30}}{72}$\\ %(49-4√30)/72
-35 & (3,3,2)[A] & (3,2,2)[A] & $-\frac{1+6\sqrt{14}}{24}$\\ %(-1-6√14)/24
-36 & (3,3,2)[A] & (3,2,2)[B] & $\frac{3-2\sqrt{14}}{12}$\\ %(3-2√14)/12
-37 & (3,3,2)[C] & (3,2,2)[A] & $-\frac{7+12\sqrt{14}}{72}$\\ %(-7-12√14)/72
-38 & (3,3,2)[C] & (3,2,2)[B] & $\frac{21-4\sqrt{14}}{36}$\\ %(21-4√14)/36
-39 & (3,3,2)[A] & (3,3,1)[A] & $\frac{1-2\sqrt{70}}{18}$\\ %(1-2√70)/18
-40 & (3,3,2)[A] & (3,3,1)[C] & $\frac{17-2\sqrt{70}}{54}$\\ %(17-2√70)/54
-41 & (3,3,2)[C] & (3,3,1)[A] & $\frac{7-4\sqrt{70}}{54}$\\ %(7-4√70)/54
-42 & (3,3,2)[C] & (3,3,1)[C] & $\frac{119-4\sqrt{70}}{162}$\\ %(119-4√70)/162
-43 & (3,3,2)[A] & (3,3,2)[A] & $-\frac{7}{9}$\\ %-7/9
-44 & (3,3,2)[A] & (3,3,2)[C] & $-\frac{1}{3}$\\ %-1/3
-45 & (3,3,2)[C] & (3,3,2)[C] & $\frac{17}{81}$\\ %17/81
-\end{longtable}
-
-We can also test more triangles and filter, for example, the cosines to contain term $\sqrt{5}$:
-\begin{longtable}{ | p{1cm}| *{15}{c|} }
-\hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
-\hline\endhead
-\hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(X+Y)$ \\
-\hline\endfoot
-1 & (2,2,1)[A] & (1,1,1)[A] & $\frac{1-3\sqrt{5}}{8}$\\ %(1-3√5)/8
-2 & (2,2,1)[C] & (1,1,1)[A] & $\frac{7-3\sqrt{5}}{16}$\\ %(7-3√5)/16
-3 & (3,3,1)[A] & (3,2,2)[A] & $-\frac{1+21\sqrt{5}}{48}$\\ %(-1-21√5)/48
-4 & (3,3,1)[A] & (3,2,2)[B] & $\frac{3-7\sqrt{5}}{24}$\\ %(3-7√5)/24
-5 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{17+21\sqrt{5}}{144}$\\ %(-17-21√5)/144
-6 & (3,3,1)[C] & (3,2,2)[B] & $\frac{51-7\sqrt{5}}{72}$\\ %(51-7√5)/72
-7 & (4,3,2)[A] & (1,1,1)[A] & $-\frac{1+3\sqrt{5}}{8}$\\ %(-1-3√5)/8
-8 & (4,3,2)[B] & (1,1,1)[A] & $\frac{11-9\sqrt{5}}{32}$\\ %(11-9√5)/32
-9 & (4,4,1)[A] & (3,3,1)[A] & $\frac{1-21\sqrt{5}}{48}$\\ %(1-21√5)/48
-10 & (4,4,1)[A] & (3,3,1)[C] & $\frac{17-21\sqrt{5}}{144}$\\ %(17-21√5)/144
-11 & (4,4,1)[C] & (3,3,1)[A] & $\frac{31-21\sqrt{5}}{192}$\\ %(31-21√5)/192
-12 & (4,4,1)[C] & (3,3,1)[C] & $\frac{527-21\sqrt{5}}{576}$\\ %(527-21√5)/576
-13 & (5,3,3)[A] & (4,4,3)[A] & $-\frac{21+55\sqrt{5}}{144}$\\ %(-21-55√5)/144
-14 & (5,3,3)[A] & (4,4,3)[C] & $-\frac{161+165\sqrt{5}}{576}$\\ %(-161-165√5)/576
-15 & (5,3,3)[B] & (4,4,3)[A] & $\frac{15-11\sqrt{5}}{48}$\\ %(15-11√5)/48
-16 & (5,3,3)[B] & (4,4,3)[C] & $\frac{115-33\sqrt{5}}{192}$\\ %(115-33√5)/192
-17 & (5,4,3)[A] & (4,3,3)[A] & $\frac{-4\sqrt{5}}{9}$\\ %-4√5/9
-18 & (5,4,3)[A] & (4,3,3)[B] & $\frac{-\sqrt{5}}{3}$\\ %√5/3
-19 & (5,4,3)[B] & (4,3,3)[A] & $\frac{3-16\sqrt{5}}{45}$\\ %(3-16√5)/45
-20 & (5,4,3)[B] & (4,3,3)[B] & $\frac{6-4\sqrt{5}}{15}$\\ %(6-4√5)/15
-21 & (5,4,3)[C] & (4,3,3)[A] & $\frac{4-12\sqrt{5}}{45}$\\ %(4-12√5)/45
-22 & (5,4,3)[C] & (4,3,3)[B] & $\frac{8-3\sqrt{5}}{15}$\\ %(8-3√5)/15
-23 & (5,5,1)[A] & (4,4,3)[A] & $\frac{3-33\sqrt{5}}{80}$\\ %(3-33√5)/80
-24 & (5,5,1)[A] & (4,4,3)[C] & $\frac{23-99\sqrt{5}}{320}$\\ %(23-99√5)/320
-25 & (5,5,1)[C] & (4,4,3)[A] & $\frac{147-33\sqrt{5}}{400}$\\ %(147-33√5)/400
-26 & (5,5,1)[C] & (4,4,3)[C] & $\frac{1127-99\sqrt{5}}{1600}$\\ %(1127-99√5)/1600
-\end{longtable}
 
 \subsection{Triangles pairs diagonals}
 
@@ -540,118 +676,6 @@ When we sum two algebraic angles $W = U+V$ when $\cos{U} = \sqrt{u_n}/u_d$ and $
  &= \frac{\sqrt{u_nv_n} - \sqrt{(u_d^2 - u_n)(v_d^2 - v_n)} }{u_dv_d}
 \end{align}
 
-\section{Triangle triplets}
-
-We can attach three triangles to share a common vertex and two sides.
-
-\subsection{Triple angles $2A+D$ and $A+2D$}
-
-Lets add three angles, two angles $A$ from a pair of triangles $(a,b,c)$ and one angle $D$ from single triangle $(d,e,f)$.
-For triangle $(a,b,c)$ and using $\cos{A}$ and $\sin{A}$ from equations \ref{Eq:cosABC} and \ref{Eq:sinABC} we have:
-\begin{align}
-\cos{(2A)} &= 2\cos^2{A} - 1 = 2\frac{a_N^2}{a_D^2} - 1 &= \frac{2a_N^2 - a_D^2}{a_D^2}\\
-\sin{(2A)} &= 2\sin{A}\cos{A} &= \frac{2a_N\sqrt{a_D^2 - a_N^2}}{a_D^2}
-\end{align}
-
-As with equations \ref{Eq:cosABC} and \ref{Eq:sinABC} lets define cosines and sines of triangle $(d,e,f)$:
-
-\begin{equation}\label{Eq:cossinDEF}
-\left({\begin{array}{c c} {\cos} & {\sin}\end{array}}\right)
-\left({\begin{array}{c} D\\ E\\ F\\ \end{array}}\right)
-= \left({\begin{array}{c c}
-\dfrac{d_N}{d_D} & \dfrac{\sqrt{d_D^2 - d_N^2}}{d_D}\\[10pt]
-\dfrac{e_N}{e_D} & \dfrac{\sqrt{e_D^2 - e_N^2}}{e_D}\\[10pt]
-\dfrac{f_N}{f_D} & \dfrac{\sqrt{f_D^2 - f_N^2}}{f_D}\\[10pt]
-\end{array}}\right)
-\end{equation}
-
-Using $\cos{(2A)}$, $\sin{(2A)}$, $\cos{D}$ and $\sin{D}$ we have:
-\begin{align}
-\cos{(2A+D)} &= \cos{(2A)}\cos{D} - \sin{(2A)}\sin{D}\\
- &= \frac{(2a_N^2 - a_D^2)d_N - 2a_N\sqrt{(a_D^2 - a_N^2)(d_D^2 - d_N^2)}}{a_D^2d_D}
-\end{align}
-
-\begin{longtable}{ | p{1cm}| *{15}{c|} }
-\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
-in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
-\hline
-Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
-\hline\endhead
-\hline\endfoot
-1 & (1,1,1)[A] & (1,1,1)[A] & $\frac{1}{2}$ & $\frac{1}{2}$\\
-2 & (2,2,1)[A] & (1,1,1)[A] & $-\frac{7-3\sqrt{5}}{16}$ & $-\frac{1-3\sqrt{5}}{8}$\\
-3 & (2,2,1)[C] & (1,1,1)[A] & $\frac{17+21\sqrt{5}}{64}$ & $-\frac{7-3\sqrt{5}}{16}$\\
-4 & (2,2,1)[A] & (2,2,1)[A] & $\frac{1}{4}$ & $\frac{1}{4}$\\
-5 & (2,2,1)[A] & (2,2,1)[C] & $-\frac{17}{32}$ & $\frac{61}{64}$\\
-6 & (2,2,1)[C] & (2,2,1)[A] & $\frac{61}{64}$ & $-\frac{17}{32}$\\
-7 & (2,2,1)[C] & (2,2,1)[C] & $\frac{7}{8}$ & $\frac{7}{8}$\\
-8 & (3,2,2)[A] & (1,1,1)[A] & $-\frac{31+3\sqrt{21}}{64}$ & $\frac{1+3\sqrt{21}}{16}$\\
-9 & (3,2,2)[B] & (1,1,1)[A] & $\frac{1+3\sqrt{21}}{16}$ & $-\frac{3-\sqrt{21}}{8}$\\
-10 & (3,2,2)[A] & (2,2,1)[A] & $-\frac{31+3\sqrt{105}}{128}$ & $\frac{7+3\sqrt{105}}{64}$\\
-11 & (3,2,2)[A] & (2,2,1)[C] & $-\frac{217+3\sqrt{105}}{256}$ & $-\frac{17-21\sqrt{105}}{256}$\\
-12 & (3,2,2)[B] & (2,2,1)[A] & $\frac{1+3\sqrt{105}}{32}$ & $-\frac{21-\sqrt{105}}{32}$\\
-13 & (3,2,2)[B] & (2,2,1)[C] & $\frac{7+3\sqrt{105}}{64}$ & $\frac{51+7\sqrt{105}}{128}$\\
-14 & (3,2,2)[A] & (3,2,2)[A] & $-\frac{1}{8}$ & $-\frac{1}{8}$\\
-15 & (3,2,2)[A] & (3,2,2)[B] & $-\frac{57}{64}$ & $\frac{31}{32}$\\
-16 & (3,2,2)[B] & (3,2,2)[A] & $\frac{31}{32}$ & $-\frac{57}{64}$\\
-17 & (3,2,2)[B] & (3,2,2)[B] & $\frac{3}{4}$ & $\frac{3}{4}$\\
-18 & (3,3,1)[A] & (1,1,1)[A] & $-\frac{17-\sqrt{105}}{36}$ & $-\frac{1-\sqrt{105}}{12}$\\
-19 & (3,3,1)[C] & (1,1,1)[A] & $\frac{127+17\sqrt{105}}{324}$ & $-\frac{17-\sqrt{105}}{36}$\\
-20 & (3,3,1)[A] & (2,2,1)[A] & $-\frac{17-5\sqrt{21}}{72}$ & $-\frac{7-5\sqrt{21}}{48}$\\
-21 & (3,3,1)[A] & (2,2,1)[C] & $-\frac{119-5\sqrt{21}}{144}$ & $\frac{17+35\sqrt{21}}{192}$\\
-22 & (3,3,1)[C] & (2,2,1)[A] & $\frac{127+85\sqrt{21}}{648}$ & $-\frac{119-5\sqrt{21}}{144}$\\
-23 & (3,3,1)[C] & (2,2,1)[C] & $\frac{889+85\sqrt{21}}{1296}$ & $\frac{289+35\sqrt{21}}{576}$\\
-24 & (3,3,1)[A] & (3,2,2)[A] & $\frac{17+21\sqrt{5}}{144}$ & $-\frac{31+21\sqrt{5}}{192}$\\
-25 & (3,3,1)[A] & (3,2,2)[B] & $-\frac{51-7\sqrt{5}}{72}$ & $\frac{1+21\sqrt{5}}{48}$\\
-26 & (3,3,1)[C] & (3,2,2)[A] & $-\frac{127-357\sqrt{5}}{1296}$ & $-\frac{527+21\sqrt{5}}{576}$\\
-27 & (3,3,1)[C] & (3,2,2)[B] & $\frac{381+119\sqrt{5}}{648}$ & $\frac{17+21\sqrt{5}}{144}$\\
-28 & (3,3,1)[A] & (3,3,1)[A] & $\frac{1}{6}$ & $\frac{1}{6}$\\
-29 & (3,3,1)[A] & (3,3,1)[C] & $-\frac{127}{162}$ & $\frac{361}{486}$\\
-30 & (3,3,1)[C] & (3,3,1)[A] & $\frac{361}{486}$ & $-\frac{127}{162}$\\
-31 & (3,3,1)[C] & (3,3,1)[C] & $\frac{17}{18}$ & $\frac{17}{18}$\\
-32 & (3,3,2)[A] & (1,1,1)[A] & $-\frac{7-4\sqrt{6}}{18}$ & $-\frac{1-2\sqrt{6}}{6}$\\
-33 & (3,3,2)[C] & (1,1,1)[A] & $\frac{17+56\sqrt{6}}{162}$ & $-\frac{7-4\sqrt{6}}{18}$\\
-34 & (3,3,2)[A] & (2,2,1)[A] & $-\frac{7-4\sqrt{30}}{36}$ & $-\frac{7-2\sqrt{30}}{24}$\\
-35 & (3,3,2)[A] & (2,2,1)[C] & $-\frac{49-4\sqrt{30}}{72}$ & $\frac{17+14\sqrt{30}}{96}$\\
-36 & (3,3,2)[C] & (2,2,1)[A] & $\frac{17+56\sqrt{30}}{324}$ & $-\frac{49-4\sqrt{30}}{72}$\\
-37 & (3,3,2)[C] & (2,2,1)[C] & $\frac{119+56\sqrt{30}}{648}$ & $\frac{119+28\sqrt{30}}{288}$\\
-38 & (3,3,2)[A] & (3,2,2)[A] & $\frac{7+12\sqrt{14}}{72}$ & $-\frac{31+6\sqrt{14}}{96}$\\
-39 & (3,3,2)[A] & (3,2,2)[B] & $-\frac{21-4\sqrt{14}}{36}$ & $\frac{1+6\sqrt{14}}{24}$\\
-40 & (3,3,2)[C] & (3,2,2)[A] & $-\frac{17-168\sqrt{14}}{648}$ & $-\frac{217+12\sqrt{14}}{288}$\\
-41 & (3,3,2)[C] & (3,2,2)[B] & $\frac{51+56\sqrt{14}}{324}$ & $\frac{7+12\sqrt{14}}{72}$\\
-42 & (3,3,2)[A] & (3,3,1)[A] & $-\frac{7-4\sqrt{70}}{54}$ & $-\frac{17-2\sqrt{70}}{54}$\\
-43 & (3,3,2)[A] & (3,3,1)[C] & $-\frac{119-4\sqrt{70}}{162}$ & $\frac{127+34\sqrt{70}}{486}$\\
-44 & (3,3,2)[C] & (3,3,1)[A] & $\frac{17+56\sqrt{70}}{486}$ & $-\frac{119-4\sqrt{70}}{162}$\\
-45 & (3,3,2)[C] & (3,3,1)[C] & $\frac{289+56\sqrt{70}}{1458}$ & $\frac{889+68\sqrt{70}}{1458}$\\
-46 & (3,3,2)[A] & (3,3,2)[A] & $\frac{1}{3}$ & $\frac{1}{3}$\\
-47 & (3,3,2)[A] & (3,3,2)[C] & $-\frac{17}{81}$ & $\frac{241}{243}$\\
-48 & (3,3,2)[C] & (3,3,2)[A] & $\frac{241}{243}$ & $-\frac{17}{81}$\\
-49 & (3,3,2)[C] & (3,3,2)[C] & $\frac{7}{9}$ & $\frac{7}{9}$\\
-\end{longtable}
-Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCos2AplusB}
-
-\subsection{Triple angles $Z = A+D+G$}
-
-\begin{align}
-\cos{(A+D)} &= \cos{A}\cos{D} - \sin{A}\sin{D} \nonumber\\
- &= \frac{a_nd_n - \sqrt{a_sd_s}}{a_dd_d}\\
-\sin{(A+D)} &= \sin{A}\cos{D} + \cos{A}\sin{D} \nonumber\\
- &= \frac{d_n\sqrt{a_s} + a_n\sqrt{d_s}}{a_dd_d}\\
-\cos{(A+D+G)} &= \cos{(A+D)}\cos{G} - \sin{(A+D)}\sin{G} \nonumber\\
- &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s}}{a_dd_dg_d}
- -\frac{d_n\sqrt{a_sg_s} + a_n\sqrt{d_sg_s}}{a_dd_dg_d} \nonumber\\
- &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s} - d_n\sqrt{a_sg_s} - a_n\sqrt{d_sg_s}}{a_dd_dg_d}
-\end{align}
-
-\begin{longtable}{ | p{1cm}| *{15}{c|} }
-\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
-in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
-\hline
-Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $Z = A \lor B \lor C$ & $\cos(X+Y+Z)$ \\
-\hline\endhead
-\hline\endfoot
-\end{longtable}
-Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusBplusC}
 
 
 

@@ -325,7 +325,7 @@ func (ts *T32s) tRatCosines(tri *T) (tRats *TRats) {
 	return
 }
 
-func (ts *T32s) tRatCosAplusB(aRat, bRat *TRat) (*A32, error) {
+func (ts *T32s) tRatCosXY(aRat, bRat *TRat) (*A32, error) {
 	dA, nA := aRat.den, aRat.num
 	dB, nB := bRat.den, bRat.num
 	a := N(dA)*N(dB)
@@ -335,9 +335,9 @@ func (ts *T32s) tRatCosAplusB(aRat, bRat *TRat) (*A32, error) {
 	return ts.aNew3(a,b,c,d)
 }
 
-func (ts *T32s) tRatCos2AplusB(aRat, bRat *TRat) (*A32, error) {
-	an, ad := aRat.num, aRat.den
-	bn, bd := bRat.num, bRat.den
+func (ts *T32s) tRatCos2XY(x, y *TRat) (*A32, error) {
+	an, ad := x.num, x.den
+	bn, bd := y.num, y.den
 	a := N(ad)*N(ad)*N(bd)
 	b := (2*an*an - ad*ad)*bn
 	c := 2*an
@@ -345,7 +345,7 @@ func (ts *T32s) tRatCos2AplusB(aRat, bRat *TRat) (*A32, error) {
 	return ts.aNew3(a, b, c, d)
 }
 
-func (ts *T32s) tRatCosAplusBplusC(aRat, bRat, cRat *TRat) (*A32, error) {
+func (ts *T32s) tRatCosXYZ(aRat, bRat, cRat *TRat) (*A32, error) {
 	return nil, nil
 }
 
@@ -386,6 +386,11 @@ type TRat struct {
 	angle Tang
 	num   Z
 	den   Z
+}
+
+// S returns den*den - num*num
+func (t *TRat) S() Z {
+	return t.den*t.den - t.num*t.num
 }
 
 func (t *TRat) Tex() string {
