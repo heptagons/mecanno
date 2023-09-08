@@ -61,7 +61,13 @@ The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb 
 \dfrac{\sqrt{a_D^2 - a_N^2}}{a_D}\\[10pt]
 \dfrac{\sqrt{b_D^2 - b_N^2}}{b_D}\\[10pt]
 \dfrac{\sqrt{c_D^2 - c_N^2}}{c_D}\\[10pt]
-\end{array}}\right) \in \bbb {A}
+\end{array}}\right)
+\equiv \left({\begin{array}{c}
+\dfrac{\sqrt{a_S}}{a_D}\\[10pt]
+\dfrac{\sqrt{b_S}}{b_D}\\[10pt]
+\dfrac{\sqrt{c_S}}{c_D}\\[10pt]
+\end{array}}\right)
+ \in \bbb {A}
 \end{equation}
 
 \renewcommand*{\arraystretch}{1.3} % add space in longtable rows since we have a lot of \frac
@@ -404,12 +410,11 @@ Figure \ref{tslurC} show some triangles $(a,b,2\sqrt{6})$. The cosines are calcu
 We can attach two triangles to share a common side and vertex to get more angles and diagonals.
 
 \subsection{Triangles pairs rational cosines angles}
-When we sum two angles $Z = X+Y$, where $\cos{X} \equiv x_n / x_d$ and $\cos{Y} \equiv y_n / y_d$ we have:
+When we sum two angles $Z = X+Y$, where $\cos{X} \equiv x_N / x_D$ and $\cos{Y} \equiv y_N / y_D$ we have:
 \begin{align}
 \cos{Z} &= \cos{X}\cos{Y} - \sin{X}\sin{Y}\\
- &= \cos{X}\cos{Y} - \sqrt{1 - \cos^2{X}}\sqrt{1 - \cos^2{Y}}\\
- &= \frac{x_ny_n}{x_dy_d} - \sqrt{\frac{x_d^2 - x_n^2}{x_d^2}} \sqrt{\frac{y_d^2 - y_n^2}{y_d^2}}\\
- &= \frac{x_ny_n - \sqrt{(x_d^2 - x_n^2)(y_d^2 - y_n^2)}}{x_dy_d} &\equiv \frac{b_1+c_1\sqrt{d_1}}{a_1}
+ &= \frac{x_N}{x_D} \times \frac{y_N}{y_D} - \frac{\sqrt{x_S}}{x_D} \times \frac{\sqrt{y_S}}{y_D}\\
+ &= \frac{x_Ny_N - \sqrt{x_Sy_S}}{x_Dy_D}
 \end{align}
 
 \subsubsection{Triangles pairs angles}
@@ -560,15 +565,11 @@ Using $\cos{(2A)}$, $\sin{(2A)}$, $\cos{D}$ and $\sin{D}$ we have:
  &= \frac{(2a_N^2 - a_D^2)d_N - 2a_N\sqrt{(a_D^2 - a_N^2)(d_D^2 - d_N^2)}}{a_D^2d_D}
 \end{align}
 
-The values are calculate with code at:
-\\\\
-\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCos2AplusB}
-
 \begin{longtable}{ | p{1cm}| *{15}{c|} }
-\caption{Pair of triangles $(x_A,x_B,x_C)$ and $(y_A,y_B,y_C)$ adding three angles 
+\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
 in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
 \hline
-Pair & $X = A | B | C$ & $Y = A | B | C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
+Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
 \hline\endhead
 \hline\endfoot
 1 & (1,1,1)[A] & (1,1,1)[A] & $\frac{1}{2}$ & $\frac{1}{2}$\\
@@ -621,4 +622,32 @@ Pair & $X = A | B | C$ & $Y = A | B | C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
 48 & (3,3,2)[C] & (3,3,2)[A] & $\frac{241}{243}$ & $-\frac{17}{81}$\\
 49 & (3,3,2)[C] & (3,3,2)[C] & $\frac{7}{9}$ & $\frac{7}{9}$\\
 \end{longtable}
+Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCos2AplusB}
+
+\subsection{Triple angles $Z = A+D+G$}
+
+\begin{align}
+\cos{(A+D)} &= \cos{A}\cos{D} - \sin{A}\sin{D} \nonumber\\
+ &= \frac{a_nd_n - \sqrt{a_sd_s}}{a_dd_d}\\
+\sin{(A+D)} &= \sin{A}\cos{D} + \cos{A}\sin{D} \nonumber\\
+ &= \frac{d_n\sqrt{a_s} + a_n\sqrt{d_s}}{a_dd_d}\\
+\cos{(A+D+G)} &= \cos{(A+D)}\cos{G} - \sin{(A+D)}\sin{G} \nonumber\\
+ &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s}}{a_dd_dg_d}
+ -\frac{d_n\sqrt{a_sg_s} + a_n\sqrt{d_sg_s}}{a_dd_dg_d} \nonumber\\
+ &= \frac{a_nd_ng_n - g_n\sqrt{a_sd_s} - d_n\sqrt{a_sg_s} - a_n\sqrt{d_sg_s}}{a_dd_dg_d}
+\end{align}
+
+\begin{longtable}{ | p{1cm}| *{15}{c|} }
+\caption{Pair of triangles $(X_{ABC})$ and $(Y_{ABC})$ adding three angles 
+in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
+\hline
+Pair & $X = A \lor B \lor C$ & $Y = A \lor B \lor C$ & $Z = A \lor B \lor C$ & $\cos(X+Y+Z)$ \\
+\hline\endhead
+\hline\endfoot
+\end{longtable}
+Data from:\texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosAplusBplusC}
+
+
+
+
 \end{document}
