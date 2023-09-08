@@ -19,6 +19,7 @@ type S32 struct {
 type S32s struct {
 	*Z32s
 	surds map[int]Z32 // map[in]out
+	den   N32
 }
 
 // NewS32s creates a new S32s factory
@@ -27,6 +28,7 @@ func NewS32s(factory *Z32s) *S32s {
 	return &S32s{
 		Z32s:  factory,
 		surds: make(map[int]Z32, 0),
+		den:   1,
 	}
 }
 
@@ -44,6 +46,41 @@ func (s *S32s) sAddZ(surds []Z) error {
 		}
 	}
 	return nil
+}
+
+func (s *S32s) sAddSqrt(out, in Z) error {
+	if o32, i32, err := s.zSqrt(out, Z(in)); err != nil {
+		return err
+	} else {
+		k := int(i32)
+		if out, ok := s.surds[k]; !ok {
+			s.surds[k] = o32
+		} else {
+			s.surds[k] = out + o32
+		}
+	}
+	return nil
+}
+
+func (s *S32s) sDivide(den N) error {
+	ins  := make([]int, len(s.surds))
+	nums := make([]Z, len(s.surds))
+	i := 0
+	for in, out := range s.surds {
+		ins[i] = in
+		nums[i] = Z(out)
+		i++
+	}
+	if newDen, newNums , err := s.zFracN(den, nums...); err != nil {
+		return err
+	} else {
+		for p, num := range newNums {
+			in := ins[p]
+			s.surds[in] = Z32(num)
+		}
+		s.den = newDen
+		return nil
+	}
 }
 
 // sAdd add the given surd √in to the current sum of surds
@@ -201,10 +238,24 @@ func (s *S32s) Keys() []int {
 	return keys
 }
 
+func (s *S32s) Tex() string {
+	return s.string(true)
+}
+
 func (s *S32s) String() string {
-	keys := s.Keys()
+	return s.string(false)
+}
+
+func (s *S32s) string(tex bool) string {
 	var sb strings.Builder
-	for pos, key := range keys {
+	if s.den > 1 {
+		if tex {
+			sb.WriteString("\\frac{")
+		} else {
+			sb.WriteString("(")
+		}
+	}
+	for pos, key := range s.Keys() {
 		out := s.surds[key]
 		if pos == 0 {
 			if out == 1 {
@@ -224,11 +275,23 @@ func (s *S32s) String() string {
 			}
 		}
 		if key != 1 {
-			sb.WriteString(fmt.Sprintf("√%d", key))
+			if tex {
+				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", key))
+			} else {
+				sb.WriteString(fmt.Sprintf("√%d", key))
+			}
 		} else if out == 1 || out == -1 {
 			sb.WriteString("1")
 		}
 	}
+	if s.den > 1 {
+		if tex {
+			sb.WriteString(fmt.Sprintf("}{%d}", s.den))
+		} else {
+			sb.WriteString(fmt.Sprintf(")/%d", s.den))
+		}
+	}
+
 	if s := sb.String(); s != "" {
 		return s
 	}

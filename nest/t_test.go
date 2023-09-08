@@ -59,7 +59,6 @@ func TestTCosXY_(t *testing.T) {
 	factory := NewT32s()
 	ts := &Ts{}
 	ts.AddTris(3)
-fmt.Println(ts.tris)
 	sums := make(map[string]bool, 0)
 	listN := 0
 	for i, m := range ts.tris {
@@ -77,7 +76,6 @@ fmt.Println(ts.tris)
 							if _, ok := sums[key]; !ok {
 								sums[key] = true
 								listN++
-								// to be used in /github.com/heptagons/meccano/nest/doc/triangles.tex table
 								fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, xy.Tex(), xy.String())
 							}
 						//}
@@ -121,9 +119,9 @@ func TestTCos2XY_(t *testing.T) {
 // triangle-angle-1 | triangle-angle-2 | triangle-angle-3 | cos(X,Y,Z)
 func TestTCosXYZ(t *testing.T) {
 	factory := NewT32s()
+	
 	ts := &Ts{}
-	ts.AddTris(5)
-	sums := make(map[string]bool, 0)
+	ts.AddTris(3)
 	listN := 0
 	for i:=0; i < len(ts.tris); i++ {
 		x := ts.tris[i]
@@ -137,17 +135,23 @@ func TestTCosXYZ(t *testing.T) {
 
 				for _, xRat := range xCosines.rats {
 					for _, yRat := range yCosines.rats {
+						if i == j && xRat.angle == yRat.angle { continue }
 						for _, zRat := range zCosines.rats {
+							if i == k && xRat.angle == zRat.angle { continue }
+							if j == k && yRat.angle == zRat.angle { continue }
 							ts := fmt.Sprintf("(%s)[%c] & (%s)[%c] & (%s)[%c]", x, xRat.angle, y, yRat.angle, z, zRat.angle)
-							if xyz, err := factory.tRatCosXYZ(xRat, yRat, zRat); err == nil {
-								key := xyz.Key()
-								if _, ok := sums[key]; !ok {
-									sums[key] = true
-									listN++
-									// to be used in /github.com/heptagons/meccano/nest/doc/triangles.tex table
-									fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, xyz.Tex(), xyz.String())
-								}
-							}
+							an, ad, as := xRat.num, xRat.den, xRat.S()
+							dn, dd, ds := yRat.num, yRat.den, yRat.S()
+							gn, gd, gs := zRat.num, zRat.den, zRat.S()
+							s := NewS32s(factory.Z32s)
+							s.sAddSqrt(an*dn*gn,     1)
+							s.sAddSqrt(     -gn, as*ds)
+							s.sAddSqrt(     -dn, as*gs)
+							s.sAddSqrt(     -an, ds*gs)
+							s.sDivide (N(ad)*N(dd)*N(gd))
+							listN++
+							// to be used in /github.com/heptagons/meccano/nest/doc/triangles.tex table
+							fmt.Printf("%d & %s & $%s$\\\\ %%%s\n", listN, ts, s.Tex(), s.String())
 						}
 					}
 				}
