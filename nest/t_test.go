@@ -198,44 +198,9 @@ func TestT765diags(t *testing.T) {
 			fmt.Println("\\\\")
 		}
 	}
-
-
-
 	fmt.Println("A[b,c]"); print(c, b, "b_%d,c_%d")
 	fmt.Println("B[a,c]"); print(c, a, "a_%d,c_%d")
 	fmt.Println("C[a,b]"); print(b, a, "a_%d,b_%d")
-
-	/*for x:=N(1); x <= c; x++ {
-		first := false
-		for y:=N(1); y <= b; y++ {
-			if !first { first=true } else { fmt.Print("& " ); }
-			if diag, ok := m[fmt.Sprintf("b_%d,c_%d", y, x)]; ok {
-				fmt.Printf("%s ", diag.Tex())
-			}
-		}
-		fmt.Println("\\\\")
-	}*/
-	/*fmt.Println("B[a,c]")
-	for x:=N(1); x <= c; x++ {
-		for y:=N(1); y <= a; y++ {
-			if diag, ok := m[fmt.Sprintf("a_%d,c_%d", y, x)]; ok {
-				fmt.Printf("%12s ", diag)
-			} else {
-				fmt.Printf("%12s ", "x")
-			}
-		}
-		fmt.Println()
-	}
-	for x:=N(1); x <= b; x++ {
-		for y:=N(1); y <= a; y++ {
-			if diag, ok := m[fmt.Sprintf("a_%d,b_%d", y, x)]; ok {
-				fmt.Printf("%12s ", diag)
-			} else {
-				fmt.Printf("%12s ", "x")
-			}
-		}
-		fmt.Println()
-	}*/
 }
 
 func TestTalphas(t *testing.T) {

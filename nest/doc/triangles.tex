@@ -41,13 +41,13 @@ The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \co
 \dfrac{a^2 + b^2 - c^2}{2ab}\\[10pt]
 \end{array}}\right)
 \equiv \left({\begin{array}{c}
-\dfrac{a_N}{a_D}\\[10pt]
-\dfrac{b_N}{b_D}\\[10pt]
-\dfrac{c_N}{c_D}\\[10pt]
+\dfrac{a_n}{a_d}\\[10pt]
+\dfrac{b_n}{b_d}\\[10pt]
+\dfrac{c_n}{c_d}\\[10pt]
 \end{array}}\right) \in \bbb {Q}
 \end{equation}
-Where numerators are integers $a_N, b_N, c_N \in \bbb{Z}$ and denominators are naturals
-$a_D, b_D, c_D \in \bbb{N}$.
+Where numerators are integers $a_n, b_n, c_n \in \bbb{Z}$ and denominators are naturals
+$a_d, b_d, c_d \in \bbb{N}$ and always $x_n <= x_d$ for $x=\{a,b,c\}$.
 
 The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb {A}$:
 \begin{equation}\label{Eq:sinABC}
@@ -58,22 +58,23 @@ The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb 
 \sqrt{1 - \cos^2{C}}\\[4pt]
 \end{array}}\right)
 = \left({\begin{array}{c}
-\dfrac{\sqrt{a_D^2 - a_N^2}}{a_D}\\[10pt]
-\dfrac{\sqrt{b_D^2 - b_N^2}}{b_D}\\[10pt]
-\dfrac{\sqrt{c_D^2 - c_N^2}}{c_D}\\[10pt]
+\dfrac{\sqrt{a_d^2 - a_n^2}}{a_d}\\[10pt]
+\dfrac{\sqrt{b_d^2 - b_n^2}}{b_d}\\[10pt]
+\dfrac{\sqrt{c_d^2 - c_n^2}}{c_d}\\[10pt]
 \end{array}}\right)
 \equiv \left({\begin{array}{c}
-\dfrac{\sqrt{a_S}}{a_D}\\[10pt]
-\dfrac{\sqrt{b_S}}{b_D}\\[10pt]
-\dfrac{\sqrt{c_S}}{c_D}\\[10pt]
+\dfrac{\sqrt{a_s}}{a_d}\\[10pt]
+\dfrac{\sqrt{b_s}}{b_d}\\[10pt]
+\dfrac{\sqrt{c_s}}{c_d}\\[10pt]
 \end{array}}\right)
  \in \bbb {A}
 \end{equation}
+Where numbers inside square roots are naturals $a_s, b_s, c_s \in \bbb{N}$ and $x_s = x_d^2 - x_n^2 \ge 0$ for $x=\{a,b,c\}$.
 
 \renewcommand*{\arraystretch}{1.3} % add space in longtable rows since we have a lot of \frac
 
 \begin{longtable}{ | p{1cm}| *{15}{c|} }
-\caption{Small triangles $(a,b,c)$ vertices cosines and sines.}\\
+\caption{Small triangles $(a,b,c)$ vertices $A,B,C$ cosines and sines.}\\
 \hline
   & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ & $\sin{A}$ & $\sin{B}$ & $\sin{C}$\\
 \hline\endhead
@@ -100,39 +101,37 @@ The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb 
 Data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosSin}
 
 \subsection{Triangle $(a,b,c)$ diagonals}
-Within the triangle $(a,b,c)$ we can form diagonals as lines joining integer points in sides with others sides integer points.
-To calculate the diagonals we use the law of cosines.
-With the $\cos{A} \equiv a_N / a_D$ we can calculate diagonals $\overline{b_mc_n}$:
+Within the triangle $(a,b,c)$ we can form diagonals as lines joining integer points of a given side $a,b,c$ 
+with others points of another side. To calculate the diagonals we use the law of cosines.
+Using equation \ref{Eq:cosABC} we can calculate diagonals $\overline{b_ic_j}$:
 \begin{align}
-\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}} = \sqrt{m^2 + n^2 - 2mn\frac{a_N}{a_D}}\\
-	&= \frac{\sqrt{a_D^2(m^2 + n^2) - 2a_Dmn}}{a_D}
+\overline{b_ic_j} &= \sqrt{i^2 + j^2 - 2ij\cos{A}} = \sqrt{i^2 + j^2 - 2ij\frac{a_n}{a_d}} \nonumber\\
+	&= \frac{\sqrt{a_d^2(i^2 + j^2) - 2a_nij}}{a_d}
 \end{align}
-where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Totally we have:
+where $i,j \in \bbb{N}$ are sides points positions starting with $1$ (don't confuse $i$ with $\sqrt{-1}$)
+and$1 \le i \le b$, $1 \le j \le c$ and $i \ge j$. For the whole triangle we have:
 
 \begin{equation}
 \left({\begin{array}{c}
-\overline{b_mc_n}\\
-\overline{a_mc_n}\\
-\overline{a_mb_n}\\
+\overline{b_ic_j}\\
+\overline{a_ic_j}\\
+\overline{a_ib_j}\\
 \end{array}}\right)
 = \left({\begin{array}{c}
-\dfrac{\sqrt{a_D^2(m^2 + n^2) - 2a_Dmn}}{a_D}\\[10pt]
-\dfrac{\sqrt{b_D^2(m^2 + n^2) - 2b_Dmn}}{b_D}\\[10pt]
-\dfrac{\sqrt{c_D^2(m^2 + n^2) - 2c_Dmn}}{c_D}\\[10pt]
+\dfrac{\sqrt{a_d^2(i^2 + j^2) - 2a_nij}}{a_d}\\[10pt]
+\dfrac{\sqrt{b_d^2(i^2 + j^2) - 2b_nij}}{b_d}\\[10pt]
+\dfrac{\sqrt{c_d^2(i^2 + j^2) - 2c_nij}}{c_d}\\[10pt]
 \end{array}}\right) \in \bbb {A}
 \end{equation}
 
 \newcommand\five{\colorbox{green}{$5$}}
 
 \subsection{Example triangle (7,6,5)}
-We calculate all the diagonals of triangle(7,6,5) with code at:
-\\\\
-\texttt{github.com/heptagons/meccano/nest/t\_test.go TestT765diags}.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765bc}
-\caption{Triangle $(7,6,5)$ $b_mc_n$ diagonals ($m \ge n$).}
+\caption{Triangle $(7,6,5)$ $b_ic_j$ diagonals ($i \ge j$).}
 \label{t765bc}
 \end{figure}
 Figure \ref{t765bc} show triangle $(7,6,5)$ diagonals $b_mc_n$ for vertex $A$.
@@ -150,12 +149,12 @@ b_{1:6}c_{1:5} = \left(\begin{array}{cccccc}
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765ac}
-\caption{Triangle $(7,6,5)$, $a_mc_n$ diagonals ($m \ge n$).}
+\caption{Triangle $(7,6,5)$, $a_ic_j$ diagonals ($i \ge j$).}
 \label{t765ac}
 \end{figure}
-Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_mc_n$ for vertex $B$. 
+Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_ic_j$ for vertex $B$. 
 The diagonals are set in a second matrix with columns $a_1,...,a_7$ and rows $c_1,...,c_5$. Emtpy cells are repetitions.
-Values at column 7 (at the right of separator $|$) are repeated and already accounted in previous matrix.
+Values at column 7 are repeated and already accounted in previous matrix.
 \begin{equation}\label{eq:appendrow}
 a_{1:7}c_{1:5}\left(\begin{array}{ccccccc}
 \frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & \frac{2\sqrt{265}}{5} \\
@@ -169,12 +168,12 @@ a_{1:7}c_{1:5}\left(\begin{array}{ccccccc}
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{t765ab}
-\caption{Triangle $(7,6,5)$, $a_mb_n$ diagonals ($m \ge n$)}
+\caption{Triangle $(7,6,5)$, $a_ib_j$ diagonals ($i \ge j$)}
 \label{t765ab}
 \end{figure}
-Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_mb_n$ for vertex $C$.
+Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_ib_j$ for vertex $C$.
 The diagonals are set in a third matrix with columns $a_1,...,a_7$ and rows $b_1,...,b_6$. Empty cells are repetitions.
-Values at columns 6 and 7 (at the right of separator $|$) are repeated and already in previous matrices.
+Values at columns 6 and 7 are repeated and already in previous matrices.
 \begin{equation}\label{eq:appendrow}
 a_{1:7}b_{1:6} = \left(\begin{array}{ccccccc}
 \frac{2\sqrt{7}}{7} & \frac{\sqrt{105}}{7} & \frac{2\sqrt{70}}{7} & \frac{\sqrt{553}}{7} & \frac{2\sqrt{231}}{7} & \frac{\sqrt{1393}}{7} & 2\sqrt{10} \\
@@ -185,6 +184,8 @@ a_{1:7}b_{1:6} = \left(\begin{array}{ccccccc}
 & & & & & \frac{12\sqrt{7}}{7} & \\
 \end{array}\right)
 \end{equation}
+The values of the matrices are calculated with the code:
+\texttt{github.com/heptagons/meccano/nest/t\_test.go TestT765diags}.
 
 \section{Triangles$(\sqrt{\alpha},b,c)$}
 
@@ -194,30 +195,34 @@ and $\alpha$ is square-free. We have:
 \sqrt{\alpha} &> b \ge c &\implies \alpha  > b^2 \ge c^2 \\
 \sqrt{\alpha} &< b + c   &\implies \alpha < (b + c)^2
 \end{align}
-We calculate the triangle cosines. $\cos{A}$ is rational and $\cos{B}$ and $\cos{C}$ are algebraic:
+We calculate the triangle cosines. $\cos{A_{\alpha}}$ is rational and $\cos{B_{\alpha}}$ and $\cos{C_{\alpha}}$ are algebraic:
 \begin{align}
-\cos{A} &= \frac{b^2 + c^2 - (\sqrt{\alpha})^2}{2bc} = \frac{b^2 + c^2 - \alpha}{2bc} &\in \bbb{Q} \\
-\cos{B} &= \frac{(\sqrt{\alpha})^2 + c^2 - b^2}{2\sqrt{\alpha}c} = \frac{(\alpha + c^2 - b^2)\sqrt{\alpha}}{2\alpha c} &\in \bbb{A} \\
-\cos{C} &= \frac{(\sqrt{\alpha})^2 + b^2 - c^2}{2\sqrt{\alpha}b} = \frac{(\alpha + b^2 - c^2)\sqrt{\alpha}}{2\alpha b} &\in \bbb{A} 
+\cos{A_{\alpha}} &= \frac{b^2 + c^2 - (\sqrt{\alpha})^2}{2bc} 
+ = \frac{b^2 + c^2 - \alpha}{2bc} &\equiv \frac{\alpha_n}{\alpha_d} \in \bbb{Q} \\
+\cos{B_{\alpha}} &= \frac{(\sqrt{\alpha})^2 + c^2 - b^2}{2\sqrt{\alpha}c}
+ = \frac{(\alpha + c^2 - b^2)\sqrt{\alpha}}{2\alpha c} &\in \bbb{A} \\
+\cos{C_{\alpha}} &= \frac{(\sqrt{\alpha})^2 + b^2 - c^2}{2\sqrt{\alpha}b}
+ = \frac{(\alpha + b^2 - c^2)\sqrt{\alpha}}{2\alpha b} &\in \bbb{A} 
 \end{align}
 
 \subsection{Triangle $(\sqrt{\alpha},b,c)$ diagonals}
 
-The only possible diagonals are for sides with integers, that is $\overline{b_mc_n}$. Using the law of cosines:
+The only possible diagonals are for sides with integers points, that is segments $\overline{b_ic_j}$.
+Using the law of cosines:
 \begin{align}
-\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - \alpha}{2bc}}\\
-  &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - \alpha)}}{bc} &\in \bbb{A}
+\overline{b_ic_j} &= \sqrt{i^2 + j^2 - 2ij\cos{A_{\alpha}}} \nonumber\\
+  &= \sqrt{i^2 + j^2 - 2ij\frac{\alpha_n}{\alpha_d}} \nonumber\\
+  &= \frac{\sqrt{\alpha_d^2(i^2 + j^2)-2\alpha_nij}}{\alpha_d} &\in \bbb{A}
 \end{align}
-where $1 \le m \le b$, $1 \le n \le c$ and $m \ge n$.
+where $1 \le i \le b$, $1 \le j \le c$ and $i \ge j$.
 
 \subsection{Example triangles$(2\sqrt{6},b,c)$}
 
 In this case $\sqrt{\alpha} = 2\sqrt{6}$ so $\alpha = 24$.
-Then $m = n = \{ 1,2,3,4 \}$ because $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
+Then sets $i = j = \{ 1,2,3,4 \}$ because sets $b^2 = c^2 = \{ 1,4,9,16\} < 24$.
 We form a matrix with the values $(b+c)^2$ and satisfying $b \ge c$:
 \begin {equation}\label{E:2}
-(b_m + c_n)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
+(b_i + c_j)^2 =\bordermatrix{~ & b=1 & b=2 & b=3 & b=4 \cr
 c=1 &  2 &  9 & 16 & 25 \cr    
 c=2 & \times & 16 & 25 & 36 \cr    
 c=3 & \times & \times & 36 & 49 \cr    
@@ -242,7 +247,7 @@ c=4 & & & & 64 \cr}
     
 Each remaining cell in the matrix corresponds to a particular triangle:
 \begin {equation}\label{E:4}
-(2\sqrt{6},b,c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
+(2\sqrt{6},b,c) =\bordermatrix{~ & \cos{A_{\alpha}} & \cos{B_{\alpha}} & \cos{C_{\alpha}} \cr
 (2\sqrt{6},3,2) & -\frac{11}{12} & \frac{19\sqrt{6}}{48} & \frac{29\sqrt{6}}{72} \cr
 (2\sqrt{6},3,3) & -\frac{1}{3}   & \frac{\sqrt{6}}{3}    & \frac{\sqrt{6}}{3}    \cr
 (2\sqrt{6},4,1) & -\frac{7}{8}   & \frac{3\sqrt{6}}{8}   & \frac{13\sqrt{6}}{32} \cr
@@ -257,46 +262,47 @@ Figure \ref{tslurA} show the triangles $(2\sqrt{6},b,c)$. The cosines are calcul
 
 \section{Triangles$(a,\sqrt{\beta},c)$}
 
-Triangles$(a,\sqrt{\beta},c)$ have the three sides $a$, $b = \sqrt{\beta}$ and $c$ where $a, \beta, c \in \bbb N$ and $\beta$ is squarefree.
+Triangles$(a,\sqrt{\beta},c)$ have the three sides $a$, $b = \sqrt{\beta}$ and $c$ where $a, \beta, c \in \bbb N$ and $\beta$ is square-free.
 We have:
 \begin{align}
 a &> \sqrt{\beta} > c &\implies a^2 > \beta > c^2 \\
 a &< \sqrt{\beta} + c &\implies (a-c)^2 < \beta
 \end{align}
-We calculate the triangle cosines. $\cos{A}$ is algebraic, $\cos{B}$ rational and $\cos{C}$ algebraic:
+We calculate the triangle cosines:
 \begin{align}
-\cos{A} &= \frac{(\sqrt{\beta})^2 + c^2 - a^2}{2\sqrt{\beta}c} = \frac{(\beta + c^2 - a^2)\sqrt{\beta}}{2\beta c} &\in \bbb{A} \\
-\cos{B} &= \frac{a^2 + c^2 - (\sqrt{\beta})^2}{2ac} = \frac{a^2 + c^2 - \beta}{2ac} &\in \bbb{Q} \\
-\cos{C} &= \frac{a^2 + (\sqrt{\beta})^2 - c^2}{2a\sqrt{\beta}} = \frac{(a^2 + \beta - c^2)\sqrt{\beta}}{2a\beta} &\in \bbb{A} 
+\cos{A_{\beta}} &= \frac{(\sqrt{\beta})^2 + c^2 - a^2}{2\sqrt{\beta}c} = \frac{(\beta + c^2 - a^2)\sqrt{\beta}}{2\beta c} &\in \bbb{A} \\
+\cos{B_{\beta}} &= \frac{a^2 + c^2 - (\sqrt{\beta})^2}{2ac} = \frac{a^2 + c^2 - \beta}{2ac} &\equiv \frac{\beta_n}{\beta_d} \in \bbb{Q} \\
+\cos{C_{\beta}} &= \frac{a^2 + (\sqrt{\beta})^2 - c^2}{2a\sqrt{\beta}} = \frac{(a^2 + \beta - c^2)\sqrt{\beta}}{2a\beta} &\in \bbb{A} 
 \end{align}
 
 \subsection{Triangle $(a, \sqrt{\beta},c)$ diagonals}
 
-The only possible diagonals are for sides with integers, that is $\overline{a_mc_n}$. Using the law of cosines:
+The only possible diagonals are for sides with integers points, that is segments $\overline{a_ic_j}$.
+Using the law of cosines:
 \begin{align}
-\overline{a_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{B}}\\
-  &= \sqrt{m^2 + n^2 - 2mn\frac{a^2 + c^2 - \beta}{2ac}}\\
-  &= \frac{\sqrt{a^2c^2(m^2 + n^2)-acmn(a^2 + c^2 - \beta)}}{ac} &\in \bbb{A}
+\overline{a_ic_j} &= \sqrt{i^2 + j^2 - 2ij\cos{B_{\beta}}}\\
+  &= \sqrt{i^2 + j^2 - 2ij\frac{\beta_n}{\beta_d}}\\
+  &= \frac{\sqrt{\beta_d^2(i^2 + j^2)-2\beta_nij}}{\beta_d} &\in \bbb{A}
 \end{align}
-where $1 \le m \le a$, $1 \le n \le c$ and $m \ge n$.
+where $1 \le i \le a$, $1 \le j \le c$ and $i \ge j$.
 
 \subsection{Example triangles$(a,2\sqrt{6},c)$}
 
 In this case $\sqrt{\beta} = 2\sqrt{6}$ so $\beta = 24$. 
-Then $m = \{ 5,6,7,... \}$ because $m^2 = \{ 25,36,49,... \} > 24$ and
-$n = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$.
+Then $i = \{ 5,6,7,... \}$ because $a^2 = \{ 25,36,49,... \} > 24$ and
+$j = \{ 1,2,3,4 \}$ because $c^2 = \{ 1,4,9,16\} < 24$.
 We form a matrix with the values $(a-c)^2$:
 \begin {equation}\label{E:11}
-(a_m - c_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & ...\cr
+(a_i - c_j)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & ...\cr
 c=1 & 16 & 25 & 36 & 49 & 64 & ...\cr    
 c=2 &  9 & 16 & 25 & 36 & 49 & ...\cr    
 c=3 &  4 &  9 & 16 & 25 & 36 & ...\cr    
 c=4 &  1 &  4 &  9 & 16 & 25 & ...\cr}
 \end {equation}
 
-We remove cells which don't satisfy the condition $(a-c)^2 < \beta$:
+We remove cells which don't satisfy the condition $(a-c)^2 < \beta = 24$:
 \begin {equation}\label{E:12}
-(a_m - c_n)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & ...\cr
+(a_i - c_j)^2 =\bordermatrix{~ & a=5 & a=6 & a=7 & a=8 & a=9 & ...\cr
 c=1 & 16 & \times & \times & \times & \times & ...\cr    
 c=2 &  9 & 16 & \times & \times & \times & ...\cr    
 c=3 &  4 &  9 & 16 & \times & \times & ...\cr    
@@ -312,7 +318,7 @@ c=4 &  1 &  4 &  9 & 16 & \times & ...\cr}
 
 So we have ten triangles are valid:
 \begin {equation}\label{E:13}
-(a,2\sqrt{6},c) =\bordermatrix{~ & \cos{A} & \cos{B} & \cos{C} \cr
+(a,2\sqrt{6},c) =\bordermatrix{~ & \cos{A_{\beta}} & \cos{B_{\beta}} & \cos{C_{\beta}} \cr
 (5,2\sqrt{6},1) & 0         & \frac{1}{5} & \frac{2\sqrt{6}}{5} \cr
 (5,2\sqrt{6},2) & \frac{\sqrt{6}}{16} & \frac{1}{4} & \frac{3\sqrt{6}}{8} \cr
 (5,2\sqrt{6},3) & \frac{\sqrt{6}}{9} & \frac{1}{3} & \frac{\sqrt{6}}{3} \cr
@@ -320,7 +326,7 @@ So we have ten triangles are valid:
 (6,2\sqrt{6},2) & \frac{\sqrt{6}}{6} & \frac{2}{3} & \frac{7\sqrt{6}}{18} \cr
 (6,2\sqrt{6},3) & \frac{\sqrt{6}}{24} & \frac{7}{12} & \frac{17\sqrt{6}}{48} \cr
 (6,2\sqrt{6},4) & \frac{\sqrt{6}}{24} & \frac{7}{12} & \frac{11\sqrt{6}}{36} \cr
-(7,2\sqrt{6},3) & -\frac{2\sqrt{6}}{9} & \frac{17}{21} & \frac{8/sqrt{6}}{21} \cr
+(7,2\sqrt{6},3) & -\frac{2\sqrt{6}}{9} & \frac{17}{21} & \frac{8\sqrt{6}}{21} \cr
 (7,2\sqrt{6},4) & -\frac{3\sqrt{6}}{32} & \frac{41}{56} & \frac{19\sqrt{6}}{56} \cr
 (8,2\sqrt{6},4) & \frac{\sqrt{6}}{4} & \frac{7}{8} & \frac{3\sqrt{6}}{8} \cr}
 \end{equation}
@@ -332,17 +338,17 @@ Figure \ref{tslurB} show the triangles $(a,2\sqrt{6},c)$. The cosines are calcul
 
 \section{Triangles$(a,b,\sqrt{\gamma})$}
 
-Triangles$(a,b,\sqrt{\gamma})$ have three sides $a$, $b$, $\sqrt{\gamma}$ where $a, b, \gamma \in \bbb N$ and $\gamma$ is squarefree.
+Triangles$(a,b,\sqrt{\gamma})$ have three sides $a$, $b$, $\sqrt{\gamma}$ where $a, b, \gamma \in \bbb N$ and $\gamma$ is square-free.
 We have:
 \begin{align}
 a &\ge b > \sqrt{\gamma} &\implies a^2 \ge b^2 > \gamma \\
 a &< b + \sqrt{\gamma} &\implies (a-b)^2 < \gamma
 \end{align}
-We calculate the triangle cosines. $\cos{A}$ and $\cos{B}$ are algebraic and $\cos{C}$ rational:
+We calculate the triangle cosines:
 \begin{align}
-\cos{A} &= \frac{b^2 + \gamma - a^2}{2b\sqrt{\gamma}} = \frac{(b^2 + \gamma - a^2)\sqrt{\gamma}}{2b\gamma} &\in \bbb{A} \\
-\cos{B} &= \frac{a^2 + \gamma - b^2}{2a\sqrt{\gamma}} = \frac{(a^2 + \gamma - b^2)\sqrt{\gamma}}{2a\gamma} &\in \bbb{A} \\
-\cos{C} &= \frac{a^2 + b^2 - (\sqrt{\gamma})^2}{2ab} = \frac{a^2 + b^2 - \gamma}{2ab} &\in \bbb{Q} 
+\cos{A_{\gamma}} &= \frac{b^2 + \gamma - a^2}{2b\sqrt{\gamma}} = \frac{(b^2 + \gamma - a^2)\sqrt{\gamma}}{2b\gamma} &\in \bbb{A} \\
+\cos{B_{\gamma}} &= \frac{a^2 + \gamma - b^2}{2a\sqrt{\gamma}} = \frac{(a^2 + \gamma - b^2)\sqrt{\gamma}}{2a\gamma} &\in \bbb{A} \\
+\cos{C_{\gamma}} &= \frac{a^2 + b^2 - (\sqrt{\gamma})^2}{2ab} = \frac{a^2 + b^2 - \gamma}{2ab} &\equiv \frac{\gamma_n}{\gamma_d} \in \bbb{Q} 
 \end{align}
 
 \subsection{Triangle $(a, b, \sqrt{\gamma})$ diagonals}
