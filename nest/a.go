@@ -358,14 +358,20 @@ func (a *A32) Tex() string {
 		if len(a.num) == 1 {
 			return fmt.Sprintf("%d", b)
 		} else if len(a.num) == 3 {
-			sb.WriteString(fmt.Sprintf("%d", b))
+			if b != 0 {
+				sb.WriteString(fmt.Sprintf("%d", b))
+			}
 			c, d := a.num[1], a.num[2]
 			if c == 1 {
 				// nothing
 			} else if c == -1 {
 				sb.WriteString("-") // -
 			} else {
-				sb.WriteString(fmt.Sprintf("%+d", c)) // c
+				if b != 0 {
+					sb.WriteString(fmt.Sprintf("%+d", c)) // c
+				} else {
+					sb.WriteString(fmt.Sprintf("%d", c)) // c
+				}
 			}
 			if c != 0 && d != 1 {
 				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
@@ -373,8 +379,8 @@ func (a *A32) Tex() string {
 		} else {
 			return "pending..."
 		}
-	} else { // b/a
-		if len(a.num) == 1 {
+	} else {
+		if len(a.num) == 1 {  // b/a
 			if b == 0 {
 				return "0"
 			} else if b > 0 {
@@ -384,7 +390,7 @@ func (a *A32) Tex() string {
 			}
 		} else if len(a.num) == 3 {
 			c, d := a.num[1], a.num[2]
-			if b < 0 {
+			if b < 0 { // -(b+c√d)/a
 				sb.WriteString(fmt.Sprintf("-\\frac{%d", -b)) // b
 				c = -c
 				if c == 1 {

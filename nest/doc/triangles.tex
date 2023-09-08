@@ -33,7 +33,7 @@ a &< b + c
 \end{align}
 
 The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \cos{B}, \cos{C} \in \bbb {Q}$:
-\begin{equation}
+\begin{equation}\label{Eq:cosABC}
 \cos\left({\begin{array}{c} A\\ B\\ C\\ \end{array}}\right)
 = \left({\begin{array}{c}
 \dfrac{b^2 + c^2 - a^2}{2bc}\\[10pt]
@@ -44,11 +44,13 @@ The cosines of the three angles of triangle$(a,b,c)$ are rationals $\cos{A}, \co
 \dfrac{a_N}{a_D}\\[10pt]
 \dfrac{b_N}{b_D}\\[10pt]
 \dfrac{c_N}{c_D}\\[10pt]
-\end{array}}\right)
+\end{array}}\right) \in \bbb {Q}
 \end{equation}
+Where numerators are integers $a_N, b_N, c_N \in \bbb{Z}$ and denominators are naturals
+$a_D, b_D, c_D \in \bbb{N}$.
 
 The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb {A}$:
-\begin{equation}
+\begin{equation}\label{Eq:sinABC}
 \sin\left({\begin{array}{c} A\\ B\\ C\\ \end{array}}\right)
 = \left({\begin{array}{c}
 \sqrt{1 - \cos^2{A}}\\[4pt]
@@ -59,57 +61,60 @@ The sines of the three angles are algebraic $\sin{A}, \sin{B}, \sin{C} \in \bbb 
 \dfrac{\sqrt{a_D^2 - a_N^2}}{a_D}\\[10pt]
 \dfrac{\sqrt{b_D^2 - b_N^2}}{b_D}\\[10pt]
 \dfrac{\sqrt{c_D^2 - c_N^2}}{c_D}\\[10pt]
-\end{array}}\right)
+\end{array}}\right) \in \bbb {A}
 \end{equation}
-
-
-Where numerators are integers $a_N, b_N, c_N \in \bbb{Z}$ and denominators are naturals
-$a_D, b_D, c_D \in \bbb{N}$.
 
 \renewcommand*{\arraystretch}{1.3} % add space in longtable rows since we have a lot of \frac
 
 \begin{longtable}{ | p{1cm}| *{15}{c|} }
+\caption{Small triangles $(a,b,c)$ vertices cosines and sines.}\\
 \hline
-  & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ \\
+  & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ & $\sin{A}$ & $\sin{B}$ & $\sin{C}$\\
 \hline\endhead
-\hline
-  & $(a,b,c)$ & $\cos{A}$ & $\cos{B}$ & $\cos{C}$ \\
 \hline\endfoot
-1 & (1,1,1) & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$ \\
-2 & (2,2,1) & $\frac{1}{4}$ & $\frac{1}{4}$ & $\frac{7}{8}$ \\
-3 & (3,2,2) & $-\frac{1}{8}$ & $\frac{3}{4}$ & $\frac{3}{4}$ \\
-4 & (3,3,1) & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{17}{18}$ \\
-5 & (3,3,2) & $\frac{1}{3}$ & $\frac{1}{3}$ & $\frac{7}{9}$ \\
-6 & (4,3,2) & $-\frac{1}{4}$ & $\frac{11}{16}$ & $\frac{7}{8}$ \\
-7 & (4,3,3) & $\frac{1}{9}$ & $\frac{2}{3}$ & $\frac{2}{3}$ \\
-8 & (4,4,1) & $\frac{1}{8}$ & $\frac{1}{8}$ & $\frac{31}{32}$ \\
-9 & (4,4,3) & $\frac{3}{8}$ & $\frac{3}{8}$ & $\frac{23}{32}$ \\
-10 & (5,3,3) & $-\frac{7}{18}$ & $\frac{5}{6}$ & $\frac{5}{6}$ \\
-11 & (5,4,2) & $-\frac{5}{16}$ & $\frac{13}{20}$ & $\frac{37}{40}$ \\
-12 & (5,4,3) & $0$ & $\frac{3}{5}$ & $\frac{4}{5}$ \\
-13 & (5,4,4) & $\frac{7}{32}$ & $\frac{5}{8}$ & $\frac{5}{8}$ \\
-14 & (5,5,1) & $\frac{1}{10}$ & $\frac{1}{10}$ & $\frac{49}{50}$ \\
-15 & (5,5,2) & $\frac{1}{5}$ & $\frac{1}{5}$ & $\frac{23}{25}$ \\
-16 & (5,5,3) & $\frac{3}{10}$ & $\frac{3}{10}$ & $\frac{41}{50}$ \\
-17 & (5,5,4) & $\frac{2}{5}$ & $\frac{2}{5}$ & $\frac{17}{25}$ \\
-18 & (7,6,5) & $\frac{1}{5}$ & $\frac{19}{35}$ & $\frac{5}{7}$ \\
+1 & (1,1,1) & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{1}{2}$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{3}}{2}$\\
+2 & (2,2,1) & $\frac{1}{4}$ & $\frac{1}{4}$ & $\frac{7}{8}$ & $\frac{\sqrt{15}}{4}$ & $\frac{\sqrt{15}}{4}$ & $\frac{\sqrt{15}}{8}$\\
+3 & (3,2,2) & $-\frac{1}{8}$ & $\frac{3}{4}$ & $\frac{3}{4}$ & $\frac{3\sqrt{7}}{8}$ & $\frac{\sqrt{7}}{4}$ & $\frac{\sqrt{7}}{4}$\\
+4 & (3,3,1) & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{17}{18}$ & $\frac{\sqrt{35}}{6}$ & $\frac{\sqrt{35}}{6}$ & $\frac{\sqrt{35}}{18}$\\
+5 & (3,3,2) & $\frac{1}{3}$ & $\frac{1}{3}$ & $\frac{7}{9}$ & $\frac{2\sqrt{2}}{3}$ & $\frac{2\sqrt{2}}{3}$ & $\frac{4\sqrt{2}}{9}$\\
+6 & (4,3,2) & $-\frac{1}{4}$ & $\frac{11}{16}$ & $\frac{7}{8}$ & $\frac{\sqrt{15}}{4}$ & $\frac{3\sqrt{15}}{16}$ & $\frac{\sqrt{15}}{8}$\\
+7 & (4,3,3) & $\frac{1}{9}$ & $\frac{2}{3}$ & $\frac{2}{3}$ & $\frac{4\sqrt{5}}{9}$ & $\frac{\sqrt{5}}{3}$ & $\frac{\sqrt{5}}{3}$\\
+8 & (4,4,1) & $\frac{1}{8}$ & $\frac{1}{8}$ & $\frac{31}{32}$ & $\frac{3\sqrt{7}}{8}$ & $\frac{3\sqrt{7}}{8}$ & $\frac{3\sqrt{7}}{32}$\\
+9 & (4,4,3) & $\frac{3}{8}$ & $\frac{3}{8}$ & $\frac{23}{32}$ & $\frac{\sqrt{55}}{8}$ & $\frac{\sqrt{55}}{8}$ & $\frac{3\sqrt{55}}{32}$\\
+10 & (5,3,3) & $-\frac{7}{18}$ & $\frac{5}{6}$ & $\frac{5}{6}$ & $\frac{5\sqrt{11}}{18}$ & $\frac{\sqrt{11}}{6}$ & $\frac{\sqrt{11}}{6}$\\
+11 & (5,4,2) & $-\frac{5}{16}$ & $\frac{13}{20}$ & $\frac{37}{40}$ & $\frac{\sqrt{231}}{16}$ & $\frac{\sqrt{231}}{20}$ & $\frac{\sqrt{231}}{40}$\\
+12 & (5,4,3) & $0$ & $\frac{3}{5}$ & $\frac{4}{5}$ & $1$ & $\frac{4}{5}$ & $\frac{3}{5}$\\
+13 & (5,4,4) & $\frac{7}{32}$ & $\frac{5}{8}$ & $\frac{5}{8}$ & $\frac{5\sqrt{39}}{32}$ & $\frac{\sqrt{39}}{8}$ & $\frac{\sqrt{39}}{8}$\\
+14 & (5,5,1) & $\frac{1}{10}$ & $\frac{1}{10}$ & $\frac{49}{50}$ & $\frac{3\sqrt{11}}{10}$ & $\frac{3\sqrt{11}}{10}$ & $\frac{3\sqrt{11}}{50}$\\
+15 & (5,5,2) & $\frac{1}{5}$ & $\frac{1}{5}$ & $\frac{23}{25}$ & $\frac{2\sqrt{6}}{5}$ & $\frac{2\sqrt{6}}{5}$ & $\frac{4\sqrt{6}}{25}$\\
+16 & (5,5,3) & $\frac{3}{10}$ & $\frac{3}{10}$ & $\frac{41}{50}$ & $\frac{\sqrt{91}}{10}$ & $\frac{\sqrt{91}}{10}$ & $\frac{3\sqrt{91}}{50}$\\
+17 & (5,5,4) & $\frac{2}{5}$ & $\frac{2}{5}$ & $\frac{17}{25}$ & $\frac{\sqrt{21}}{5}$ & $\frac{\sqrt{21}}{5}$ & $\frac{4\sqrt{21}}{25}$\\
+18 & (7,6,5) & $\frac{1}{5}$ & $\frac{19}{35}$ & $\frac{5}{7}$ & $\frac{2\sqrt{6}}{5}$ & $\frac{12\sqrt{6}}{35}$ & $\frac{2\sqrt{6}}{7}$\\
 \end{longtable}
+Data from \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCosSin}
 
 \subsection{Triangle $(a,b,c)$ diagonals}
-
+Within the triangle $(a,b,c)$ we can form diagonals as lines joining integer points in sides with others sides integer points.
 To calculate the diagonals we use the law of cosines.
-With the $\cos{A}$ we can calculate every diagonal $\overline{b_mc_n}$ with:
+With the $\cos{A} \equiv a_N / a_D$ we can calculate diagonals $\overline{b_mc_n}$:
 \begin{align}
-\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}}\\
-       &= \sqrt{m^2 + n^2 - 2mn\frac{b^2 + c^2 - a^2}{2bc}}\\
-       &= \frac{\sqrt{b^2c^2(m^2 + n^2)-bcmn(b^2 + c^2 - a^2)}}{bc} &\in \bbb A
+\overline{b_mc_n} &= \sqrt{m^2 + n^2 - 2mn\cos{A}} = \sqrt{m^2 + n^2 - 2mn\frac{a_N}{a_D}}\\
+	&= \frac{\sqrt{a_D^2(m^2 + n^2) - 2a_Dmn}}{a_D}
 \end{align}
-where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Similarly:
-\begin{align}
-\overline{c_ma_n} &= \frac{\sqrt{c^2a^2(m^2 + n^2)-camn(c^2 + a^2 - b^2)}}{ac} &\in \bbb A\\
-\overline{a_mb_n} &= \frac{\sqrt{a^2b^2(m^2 + n^2)-abmn(a^2 + b^2 - c^2)}}{ab} &\in \bbb A
-\end{align}
-The diagonals are algebraic of the form $\frac{y\sqrt{z}}{x}$.
+where $1 \le m \le b$, $1 \le n \le c$ and $m - n \ge 0$. Totally we have:
+
+\begin{equation}
+\left({\begin{array}{c}
+\overline{b_mc_n}\\
+\overline{a_mc_n}\\
+\overline{a_mb_n}\\
+\end{array}}\right)
+= \left({\begin{array}{c}
+\dfrac{\sqrt{a_D^2(m^2 + n^2) - 2a_Dmn}}{a_D}\\[10pt]
+\dfrac{\sqrt{b_D^2(m^2 + n^2) - 2b_Dmn}}{b_D}\\[10pt]
+\dfrac{\sqrt{c_D^2(m^2 + n^2) - 2c_Dmn}}{c_D}\\[10pt]
+\end{array}}\right) \in \bbb {A}
+\end{equation}
 
 \newcommand\five{\colorbox{green}{$5$}}
 
@@ -117,8 +122,6 @@ The diagonals are algebraic of the form $\frac{y\sqrt{z}}{x}$.
 We calculate all the diagonals of triangle(7,6,5) with code at:
 \\\\
 \texttt{github.com/heptagons/meccano/nest/t\_test.go TestT765diags}.
-
-\subsubsection{Triangle$(7,6,5)[A]$ diagonals}
 
 \begin{figure}[htp]
 \centering
@@ -130,15 +133,13 @@ Figure \ref{t765bc} show triangle $(7,6,5)$ diagonals $b_mc_n$ for vertex $A$.
 The diagonals values are set in a first matrix with columns $b_1,...,b_6$ and rows $c_1,...,c_5$. Empty cells are repetitions.
 \begin{equation}\label{eq:appendrow}
 b_{1:6}c_{1:5} = \left(\begin{array}{cccccc}
-	\frac{2\sqrt{10}}{5} & \frac{\sqrt{105}}{5} & \frac{2\sqrt{55}}{5} & \frac{\sqrt{385}}{5} & 2\sqrt{6} & \frac{\sqrt{865}}{5} \\
-	& \frac{4\sqrt{10}}{5} & \frac{\sqrt{265}}{5} & \frac{2\sqrt{105}}{5} & \five & \frac{4\sqrt{55}}{5} \\
-	& & \frac{6\sqrt{10}}{5} & \frac{\sqrt{505}}{5} & 2\sqrt{7} & \frac{3\sqrt{105}}{5}\\
-	& & & \frac{8\sqrt{10}}{5} & \sqrt{33} & \frac{2\sqrt{265}}{5}\\
-	& & & & 2\sqrt{10} & \boxed{7} \\
+\frac{2\sqrt{10}}{5} & \frac{\sqrt{105}}{5} & \frac{2\sqrt{55}}{5} & \frac{\sqrt{385}}{5} & 2\sqrt{6} & \frac{\sqrt{865}}{5} \\
+& \frac{4\sqrt{10}}{5} & \frac{\sqrt{265}}{5} & \frac{2\sqrt{105}}{5} & 5 & \frac{4\sqrt{55}}{5} \\
+& & \frac{6\sqrt{10}}{5} & \frac{\sqrt{505}}{5} & 2\sqrt{7} & \frac{3\sqrt{105}}{5} \\
+& & & \frac{8\sqrt{10}}{5} & \sqrt{33} & \frac{2\sqrt{265}}{5} \\
+& & & & 2\sqrt{10} & \\
 \end{array}\right)
 \end{equation}
-
-\subsubsection{Triangle$(7,6,5)[B]$ diagonals}
 
 \begin{figure}[htp]
 \centering
@@ -150,16 +151,14 @@ Figure \ref{t765ac} show triangle $(7,6,5)$ diagonals $a_mc_n$ for vertex $B$.
 The diagonals are set in a second matrix with columns $a_1,...,a_7$ and rows $c_1,...,c_5$. Emtpy cells are repetitions.
 Values at column 7 (at the right of separator $|$) are repeated and already accounted in previous matrix.
 \begin{equation}\label{eq:appendrow}
-a_{1:7}c_{1:5}\left(\begin{array}{cccccccc}
-	\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & | & \frac{2\sqrt{265}}{5}\\
-	& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} & \frac{6\sqrt{385}}{35} & \frac{\sqrt{889}}{7} & \frac{4\sqrt{2065}}{35} & | & \frac{3\sqrt{105}}{5} \\
-	& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} & \frac{2\sqrt{217}}{7} & \frac{9\sqrt{385}}{35} & | & \frac{4\sqrt{55}}{5}\\
-	& & & \frac{16\sqrt{70}}{35} & \frac{3\sqrt{105}}{7} & \frac{2\sqrt{7945}}{35} & | & \frac{\sqrt{865}}{5}\\
-	& & & & \frac{4\sqrt{70}}{7} & \frac{\sqrt{1393}}{7} & | & \boxed{6}\\
+a_{1:7}c_{1:5}\left(\begin{array}{ccccccc}
+\frac{4\sqrt{70}}{35} & \frac{3\sqrt{385}}{35} & \frac{2\sqrt{2065}}{35} & \frac{\sqrt{15505}}{35} & \frac{12\sqrt{7}}{7} & \frac{\sqrt{37345}}{35} & \frac{2\sqrt{265}}{5} \\
+& \frac{8\sqrt{70}}{35} & \frac{\sqrt{7945}}{35} & \frac{6\sqrt{385}}{35} & \frac{\sqrt{889}}{7} & \frac{4\sqrt{2065}}{35} & \frac{3\sqrt{105}}{5} \\
+& & \frac{12\sqrt{70}}{35} & \frac{\sqrt{14665}}{35} & \frac{2\sqrt{217}}{7} & \frac{9\sqrt{385}}{35} & \frac{4\sqrt{55}}{5} \\
+& & & \frac{16\sqrt{70}}{35} & \frac{3\sqrt{105}}{7} & \frac{2\sqrt{7945}}{35} & \frac{\sqrt{865}}{5} \\
+& & & & \frac{4\sqrt{70}}{7} & \frac{\sqrt{1393}}{7} & \\
 \end{array}\right)
 \end{equation}
-
-\subsubsection{Triangle$(7,6,5)[C]$ diagonals}
 
 \begin{figure}[htp]
 \centering
@@ -171,20 +170,20 @@ Figure \ref{t765ab} show triangle $(7,6,5)$ diagonals $a_mb_n$ for vertex $C$.
 The diagonals are set in a third matrix with columns $a_1,...,a_7$ and rows $b_1,...,b_6$. Empty cells are repetitions.
 Values at columns 6 and 7 (at the right of separator $|$) are repeated and already in previous matrices.
 \begin{equation}\label{eq:appendrow}
-a_{1:7}b_{1:6}\left(\begin{array}{cccccccc}
-	\frac{2\sqrt7}7 & \frac{\sqrt{105}}7 & \frac{2\sqrt{70}}7 & \frac{\sqrt{553}}7 & \frac{2\sqrt{231}}7 & | &  \frac{\sqrt{1393}}7 & 2\sqrt{10} \\
-	 & \frac{4\sqrt7}7 & \frac{\sqrt{217}}7 & \frac{2\sqrt{105}}7 & \frac{\sqrt{721}}7 & | &  \frac{4\sqrt{70}}7 & \sqrt{33} \\
-	 & & \frac{6\sqrt7}7 & \frac{\sqrt{385}}7 & \frac{2\sqrt{154}}7 & | &  \frac{3\sqrt{105}}7 & 2\sqrt{7} \\
-	 & & & \frac{8\sqrt7}7 & \frac{\sqrt{609}}7 & | &  \frac{2\sqrt{217}}7 & \five \\
-	 & & & & \frac{10\sqrt7}7 & | &  \frac{\sqrt{889}}7 & 2\sqrt{6} \\
-	 & & & & & | & \frac{12\sqrt7}7 & \boxed{5} \\
+a_{1:7}b_{1:6} = \left(\begin{array}{ccccccc}
+\frac{2\sqrt{7}}{7} & \frac{\sqrt{105}}{7} & \frac{2\sqrt{70}}{7} & \frac{\sqrt{553}}{7} & \frac{2\sqrt{231}}{7} & \frac{\sqrt{1393}}{7} & 2\sqrt{10} \\
+& \frac{4\sqrt{7}}{7} & \frac{\sqrt{217}}{7} & \frac{2\sqrt{105}}{7} & \frac{\sqrt{721}}{7} & \frac{4\sqrt{70}}{7} & \sqrt{33} \\
+& & \frac{6\sqrt{7}}{7} & \frac{\sqrt{385}}{7} & \frac{2\sqrt{154}}{7} & \frac{3\sqrt{105}}{7} & 2\sqrt{7} \\
+& & & \frac{8\sqrt{7}}{7} & \frac{\sqrt{609}}{7} & \frac{2\sqrt{217}}{7} & 5 \\
+& & & & \frac{10\sqrt{7}}{7} & \frac{\sqrt{889}}{7} & 2\sqrt{6} \\
+& & & & & \frac{12\sqrt{7}}{7} & \\
 \end{array}\right)
 \end{equation}
 
 \section{Triangles$(\sqrt{\alpha},b,c)$}
 
 Triangles$(\sqrt{\alpha},b,c)$ have three sides with lengths $a=\sqrt{\alpha}$, $b$ and $c$ where $\alpha, b, c \in \bbb N$
-and $\alpha$ is squarefree. We have:
+and $\alpha$ is square-free. We have:
 \begin{align}
 \sqrt{\alpha} &> b \ge c &\implies \alpha  > b^2 \ge c^2 \\
 \sqrt{\alpha} &< b + c   &\implies \alpha < (b + c)^2
@@ -536,16 +535,29 @@ We can attach three triangles to share a common vertex and two sides.
 
 \subsection{Triple angles $2A+D$ and $A+2D$}
 
-The simpler triplet is join angles $2A+D$ and $A+2D$ with three triangles with segments $a,b,c,d,e,f \in \bbb{N}$.
+Lets add three angles, two angles $A$ from a pair of triangles $(a,b,c)$ and one angle $D$ from single triangle $(d,e,f)$.
+For triangle $(a,b,c)$ and using $\cos{A}$ and $\sin{A}$ from equations \ref{Eq:cosABC} and \ref{Eq:sinABC} we have:
 \begin{align}
-\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc}  &\equiv \frac{a_n}{a_d}\\
-\cos{(2A)} &= 2\cos^2{A} - 1 = 2\frac{a_n^2}{a_d^2} - 1 &= \frac{2a_n^2 - a_d^2}{a_d^2}\\
-\sin{A} &= \sqrt{1 - \cos^2{A}} = \sqrt{1 - \frac{a_n^2}{a_d^2}} &= \frac{\sqrt{a_d^2 - a_n^2}}{a_d}\\
-\sin{(2A)} &= 2\sin{A}\cos{A} &= \frac{2a_n\sqrt{a_d^2 - a_n^2}}{a_d^2}\\
-\cos{D} &= \frac{e^2 + f^2 - d^2}{2ef} &\equiv \frac{d_n}{d_d}\\
-\sin{D} &= \sqrt{1 - \cos^2{D}} = \sqrt{1 - \frac{d_n^2}{d_d^2}} &= \frac{\sqrt{d_d^2 - d_n^2}}{d_d}\\
+\cos{(2A)} &= 2\cos^2{A} - 1 = 2\frac{a_N^2}{a_D^2} - 1 &= \frac{2a_N^2 - a_D^2}{a_D^2}\\
+\sin{(2A)} &= 2\sin{A}\cos{A} &= \frac{2a_N\sqrt{a_D^2 - a_N^2}}{a_D^2}
+\end{align}
+
+As with equations \ref{Eq:cosABC} and \ref{Eq:sinABC} lets define cosines and sines of triangle $(d,e,f)$:
+
+\begin{equation}\label{Eq:cossinDEF}
+\left({\begin{array}{c c} {\cos} & {\sin}\end{array}}\right)
+\left({\begin{array}{c} D\\ E\\ F\\ \end{array}}\right)
+= \left({\begin{array}{c c}
+\dfrac{d_N}{d_D} & \dfrac{\sqrt{d_D^2 - d_N^2}}{d_D}\\[10pt]
+\dfrac{e_N}{e_D} & \dfrac{\sqrt{e_D^2 - e_N^2}}{e_D}\\[10pt]
+\dfrac{f_N}{f_D} & \dfrac{\sqrt{f_D^2 - f_N^2}}{f_D}\\[10pt]
+\end{array}}\right)
+\end{equation}
+
+Using $\cos{(2A)}$, $\sin{(2A)}$, $\cos{D}$ and $\sin{D}$ we have:
+\begin{align}
 \cos{(2A+D)} &= \cos{(2A)}\cos{D} - \sin{(2A)}\sin{D}\\
- &= \frac{(2a_n^2 - a_d^2)d_n - 2a_n\sqrt{(a_d^2 - a_n^2)(d_d^2 - d_n^2)}}{a_d^2d_d}
+ &= \frac{(2a_N^2 - a_D^2)d_N - 2a_N\sqrt{(a_D^2 - a_N^2)(d_D^2 - d_N^2)}}{a_D^2d_D}
 \end{align}
 
 The values are calculate with code at:
@@ -553,11 +565,11 @@ The values are calculate with code at:
 \texttt{github.com/heptagons/meccano/nest/t\_test.go TestTCos2AplusB}
 
 \begin{longtable}{ | p{1cm}| *{15}{c|} }
+\caption{Pair of triangles $(x_A,x_B,x_C)$ and $(y_A,y_B,y_C)$ adding three angles 
+in two different forms $(2X+Y)$ and $(X+2Y)$.}\\
 \hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
+Pair & $X = A | B | C$ & $Y = A | B | C$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
 \hline\endhead
-\hline
-Pair & $vertex_X$ & $vertex_Y$ & $\cos(2X+Y)$ & $\cos(X+2Y)$ \\
 \hline\endfoot
 1 & (1,1,1)[A] & (1,1,1)[A] & $\frac{1}{2}$ & $\frac{1}{2}$\\
 2 & (2,2,1)[A] & (1,1,1)[A] & $-\frac{7-3\sqrt{5}}{16}$ & $-\frac{1-3\sqrt{5}}{8}$\\

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestTcos(t *testing.T) {
+func TestTCosSin(t *testing.T) {
 
 	factory := NewT32s()
 
@@ -14,10 +14,10 @@ func TestTcos(t *testing.T) {
 		a, _ := factory.aNew1(N(t.den), t.num)
 		return a.String()
 	}
-	surdFrac := func(surd, den Z32) string {
-		a, _ := factory.aNew3(N(den), 0, 1, Z(surd))
-		return a.String()
-	}
+	//surdFrac := func(surd, den Z32) string {
+	//	a, _ := factory.aNew3(N(den), 0, 1, Z(surd))
+	//	return a.String()
+	//}
 
 	for p, r := range []struct { a, b, c N32; cosines, sines string } {
 		{ 1, 1, 1, "1/2 1/2 1/2",       "√3/2 √3/2 √3/2"          }, // √3
@@ -46,16 +46,16 @@ func TestTcos(t *testing.T) {
 			t.Fatalf("T: nil for %d %d %d", r.a, r.b, r.c)
 		}
 		cosA, cosB, cosC := factory.tRatCosinesAll(tr) // always three angles A,B,C including repetitions
+		sinA, sinB, sinC := factory.tRatSinesAll(tr)
 
 		if cosines := fmt.Sprintf("%s %s %s", frac(cosA), frac(cosB), frac(cosC)); cosines != r.cosines {
 			t.Fatalf("T.cosines got %s exp %s", cosines, r.cosines)
-		} else if sines := fmt.Sprintf("%s %s %s",
-			surdFrac(factory.sin(tr, TangA)), 
-			surdFrac(factory.sin(tr, TangB)),
-			surdFrac(factory.sin(tr, TangC))); sines != r.sines {
+		} else if sines := fmt.Sprintf("%s %s %s", sinA.String(), sinB.String(), sinC.String()); sines != r.sines {
 			t.Fatalf("T.sines got %s exp %s", sines, r.sines)
 		} else {
-			fmt.Printf("%d & (%s) & $%s$ & $%s$ & $%s$ \\\\\n", (p+1), tr.String(), cosA.Tex(), cosB.Tex(), cosC.Tex())
+			fmt.Printf("%d & (%s) & $%s$ & $%s$ & $%s$ & $%s$ & $%s$ & $%s$\\\\\n", (p+1), tr.String(),
+				cosA.Tex(), cosB.Tex(), cosC.Tex(),
+				sinA.Tex(), sinB.Tex(), sinC.Tex())
 		}
 	}
 }
@@ -186,19 +186,36 @@ func TestT765diags(t *testing.T) {
 			m[fmt.Sprintf("a_%d,b_%d", g.x, g.y)] = diag	
 		}
 	}
+	print := func(X, Y N, f string) {
+		for x:=N(1); x <= X; x++ {
+			first := false
+			for y:=N(1); y <= Y; y++ {
+				if !first { first=true } else { fmt.Print("& " ); }
+				if diag, ok := m[fmt.Sprintf(f, y, x)]; ok {
+					fmt.Printf("%s ", diag.Tex())
+				}
+			}
+			fmt.Println("\\\\")
+		}
+	}
 
-	fmt.Println("A[b,c]")
-	for x:=N(1); x <= c; x++ {
+
+
+	fmt.Println("A[b,c]"); print(c, b, "b_%d,c_%d")
+	fmt.Println("B[a,c]"); print(c, a, "a_%d,c_%d")
+	fmt.Println("C[a,b]"); print(b, a, "a_%d,b_%d")
+
+	/*for x:=N(1); x <= c; x++ {
+		first := false
 		for y:=N(1); y <= b; y++ {
+			if !first { first=true } else { fmt.Print("& " ); }
 			if diag, ok := m[fmt.Sprintf("b_%d,c_%d", y, x)]; ok {
-				fmt.Printf("%12s ", diag)
-			} else {
-				fmt.Printf("%12s ", "x")
+				fmt.Printf("%s ", diag.Tex())
 			}
 		}
-		fmt.Println()
-	}
-	fmt.Println("B[a,c]")
+		fmt.Println("\\\\")
+	}*/
+	/*fmt.Println("B[a,c]")
 	for x:=N(1); x <= c; x++ {
 		for y:=N(1); y <= a; y++ {
 			if diag, ok := m[fmt.Sprintf("a_%d,c_%d", y, x)]; ok {
@@ -209,7 +226,6 @@ func TestT765diags(t *testing.T) {
 		}
 		fmt.Println()
 	}
-	fmt.Println("C[a,b]")
 	for x:=N(1); x <= b; x++ {
 		for y:=N(1); y <= a; y++ {
 			if diag, ok := m[fmt.Sprintf("a_%d,b_%d", y, x)]; ok {
@@ -219,7 +235,7 @@ func TestT765diags(t *testing.T) {
 			}
 		}
 		fmt.Println()
-	}
+	}*/
 }
 
 func TestTalphas(t *testing.T) {

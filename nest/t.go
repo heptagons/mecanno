@@ -157,6 +157,13 @@ func (ts *T32s) tRatCosinesAll(t *T) (a, b, c *TRat) {
 	return
 }
 
+func (ts *T32s) tRatSinesAll(t *T) (a, b, c *A32) {
+	var s, d Z32
+	s, d = ts.sin(t, TangA); a,_ = ts.aNew3(N(d), 0, 1, Z(s))
+	s, d = ts.sin(t, TangB); b,_ = ts.aNew3(N(d), 0, 1, Z(s))
+	s, d = ts.sin(t, TangC); c,_ = ts.aNew3(N(d), 0, 1, Z(s))
+	return
+}
 
 // diags return the diagonals:
 //	- For TangC return ths diagonals between sides a and b.
