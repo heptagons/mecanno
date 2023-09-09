@@ -99,10 +99,41 @@ In other words we have four different distances:
 \item $a$ distance of segment $\overline{AB}$.
 \item $b$ distance of segments $\overline{BC}$ and $\overline{AE}$.
 \item $c$ distance of segments $\overline{CD}$ and $\overline{EF}$.
-\item $d$ distance of segments $\overline{DE}$ and $\overline{EF}$.
+\item $d$ distance of segments $\overline{DE}$ and $\overline{CF}$.
 \end{itemize}
 We are going to test several values of $(a,b,c,d)$ and calculate the angle $\angle{HBD}$.
 First we'll calculate a formula and then we'll run a program iterating integer values.
+
+\section{Algebra}
+From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and have cosines and sines:
+\begin{align}
+\theta &\equiv \angle{HBD} = \angle{GAE}\\
+\overline{BH} &= (b+c)\cos{\theta}\\
+\overline{DH} &= (b+c)\sin{\theta}\\
+\overline{AG} &= b\cos{\theta}\\
+\overline{EG} &= b\sin{\theta}
+\end{align}
+We calculate $d$ in function of $(a,b,c)$:
+\begin{align}
+d^2 &= (\overline{DE})^2\\
+ &= (\overline{DI})^2 + (\overline{EI})^2\\
+ &= (\overline{AG} + \overline{AB} + \overline{BH})^2 + (\overline{DH} - \overline{EG})^2\\
+ &= (b\cos{\theta} + a + (b+c)\cos{\theta})^2 + ((b+c)\sin{\theta} - b\sin{\theta})^2\\
+ &= (a + (2b+c)\cos{\theta})^2 + (c\sin{\theta})^2)\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (2b+c)^2\cos^2{\theta} + c^2\sin^2{\theta}\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc + c^2)\cos^2{\theta} + c^2\sin^2{\theta}\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc)\cos^2{\theta} + c^2\\
+ &= 4b(b + c)\cos^2{\theta} + 2a(2b+c)\cos{\theta} + a^2 + c^2
+\end{align}
+Let do $X = \cos^2{\theta}$ so last equation can be written as:
+\begin{align}
+4b(b + c)X^2 + 2a(2b+c)X + a^2 + c^2 - d^2 &= 0\\
+\end{align}
+So we can calculate $X = \cos^2{\theta}$ with the quadratic formula:
+\begin{align}
+\cos{\theta} &= \frac{-2a(2b+c) \pm \sqrt{4a^2(2b+c)^2 - 16b(b+c)(a^2 + c^2 - d^2)}}{8b(b+c)}\\
+ &= \frac{-a(2b+c) \pm \sqrt{a^2(2b+c)^2 - 4b(b+c)(a^2 + c^2 - d^2)}}{4b(b+c)}\\
+\end{align}
 
 \end{document}
 
