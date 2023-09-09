@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\title{\textbf{Fox-face unit}}
+\author{https://github.com/heptagons/meccano/fox-face}
+\date{}
+
+\usepackage{../meccano}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+Fox-face is a group of five meccano strips not forming implicit triangles
+but a fox-faced figure used to build a regular pentagon. Here, we'll look for other
+angles but not only pentagon's $\cos{2\pi/5}$.
+\end{abstract}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}
+
+\newcommand{\rod}[4][000000] % [color][n][sep][prop]
+{
+ \definecolor{main}{HTML}{#1}
+ \draw[main] (0,{{2*#4}})
+   -- ++({#2*#3},0) arc(+90:-90:{2*#4})
+   -- ++({-#2*#3},0) arc(270:90:{2*#4});
+ \foreach \x in {0,1,...,#2}
+  \draw[main] (\x*#3,0) circle (#4);
+}
+
+\def\s {12} \def\f {0.5} \def\p {3pt}
+\def\red {FF3300} \def\blue {0000cc} \def\green {00cc00}
+\begin{scope}
+ \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{O};
+ \begin{scope}[shift={(\s*\f,0)},rotate=72]
+  \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{B};
+  \begin{scope}[shift={(\s*\f,0)},rotate=180-28.2]
+   \rod[\green]{11}{\f}{\p}
+   \path (11*\f,0) ++(-20:5*\p) node{E};
+  \end{scope}
+  \begin{scope}[shift={(\s*\f,0)},rotate=72]
+   \path (0,0) ++(240:5*\p) node{D};
+  \end{scope}
+ \end{scope}
+ \begin{scope}[shift={(9*\f,0)},rotate=72+36]
+  \rod[\red]{\s}{\f}{\p}
+  \path (0,0) ++(-180:5*\p) node{A};
+  \path (\s*\f,0) ++(0:5*\p) node{F};
+  \begin{scope}[shift={(\s*\f,0)},rotate=180+28.2]
+   \rod[\green]{11}{\f}{\p}
+   \path (11*\f,0) ++(20:5*\p) node{C};
+  \end{scope}
+ \end{scope}
+
+\end{scope}
+
+\pgfmathsetmacro{\cosA}{cos(72)}
+\pgfmathsetmacro{\sinA}{sin(72)}
+
+\def\a{12*\f}
+\def\c{4*\f}
+\def\ab{9*\f} % a - b
+\coordinate (F) at (\ab,0);
+\coordinate (B) at (\a,0);
+\coordinate (L) at (\a  + \a*\cosA, 0);
+\coordinate (C) at (\a  + \a*\cosA, \a*\sinA);
+\coordinate (K) at (\ab - \c*\cosA, \a*\sinA);
+\coordinate (I) at (\ab - \c*\cosA, \c*\sinA);
+\coordinate (J) at (\ab - \c*\cosA, 0);
+\draw[black] (F) 
+-- (B) node [midway,shift={(0,1.1em)}]{$a$}
+-- (C) node [midway,shift={(+2.1em,-.7em)}]{$b+c$}
+-- (I) node [midway,shift={(-.7em,1.1em)}]{$d$}
+-- (F) node [midway,shift={(1.2em,0)}]{$b$};
+\draw[dashed,cyan] (B) 
+-- (L) node[shift={(.7em,-.7em)}]{H} 
+-- (C)
+-- (K) node[shift={(-.7em,.7em)}]{I} 
+-- (I)
+-- (J) node[shift={(0,-1.2em)}]{G}
+-- (F);    
+\end{tikzpicture}
+\caption{Fox-figure}
+\label{fig:fox-face}
+\end{figure}
+
+Figure \ref{fig:fox-face} show the so called fox-face unit.
+Has five strips of three types:
+\begin{itemize}
+\item Single $\overline{AB}$ of length $a$.
+\item Pair \{ $\overline{BD}$, $\overline{AF}$ \} of length $b+c$.
+\item Pair \{ $\overline{DE}$, $\overline{CF}$ \} of length $d$.
+\end{itemize}
+In other words we have four different distances:
+\begin{itemize}
+\item $a$ distance of segment $\overline{AB}$.
+\item $b$ distance of segments $\overline{BC}$ and $\overline{AE}$.
+\item $c$ distance of segments $\overline{CD}$ and $\overline{EF}$.
+\item $d$ distance of segments $\overline{DE}$ and $\overline{EF}$.
+\end{itemize}
+We are going to test several values of $(a,b,c,d)$ and calculate the angle $\angle{HBD}$.
+First we'll calculate a formula and then we'll run a program iterating integer values.
+
+\end{document}
+
