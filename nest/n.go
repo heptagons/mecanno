@@ -124,6 +124,14 @@ func (a *N32) Reduce3(b, c *N32) {
 	}
 }
 
+func (a *N32) Reduce4(b, c, d *N32) {
+	if g := NatGCD(NatGCD(NatGCD(*a, *b), *c), *d); g > 1 {
+		*a /= g
+		*b /= g
+		*c /= g
+		*d /= g		
+	}
+}
 
 // N32s is factory with a primes list to speed up
 // some 32-bit nested algebraic rational numbers
