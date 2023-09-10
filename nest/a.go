@@ -348,6 +348,20 @@ func (q *A32) scd(s *Str, y, z Z) {
 	}
 }
 
+func (a *A32) IsZero() bool {
+	if a == nil {
+		return true
+	}
+	if len := len(a.num); len == 0 {
+		return true
+	} else if len == 2 {
+		if a.num[0] == 0 {
+			return true
+		}
+	}
+	return false // TODO
+}
+
 func (a *A32) Tex() string {
 	var sb strings.Builder
 	if len(a.num) == 0 {

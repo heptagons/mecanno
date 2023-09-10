@@ -65,6 +65,10 @@ func (qs *A32s) aNew1(a N, b Z) (*A32, error) {
 	}
 }
 
+func (as *A32s) ANew3(a N, b, c, d Z) (*A32, error) {
+	return as.aNew3(a, b, c, d)
+}
+
 // aNew3 produces at most a number of deep 3, that is a number of the form
 //	
 //	(b + c√d) / a

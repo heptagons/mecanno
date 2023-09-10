@@ -12,7 +12,7 @@
 
 \maketitle
 \begin{abstract}
-Fox-face is a group of five meccano strips not forming implicit triangles
+Fox-face is a group of five meccano\meccanoref strips not forming implicit triangles
 but a fox-faced figure used to build a regular pentagon. Here, we'll look for other
 angles but not only pentagon's $\cos{2\pi/5}$.
 \end{abstract}
@@ -34,7 +34,7 @@ angles but not only pentagon's $\cos{2\pi/5}$.
 \def\s {12} \def\f {0.5} \def\p {3pt}
 \def\red {FF3300} \def\blue {0000cc} \def\green {00cc00}
 \begin{scope}
- \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{O};
+ \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{};
  \begin{scope}[shift={(\s*\f,0)},rotate=72]
   \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{B};
   \begin{scope}[shift={(\s*\f,0)},rotate=180-28.2]
@@ -105,7 +105,7 @@ We are going to test several values of $(a,b,c,d)$ and calculate the angle $\ang
 First we'll calculate a formula and then we'll run a program iterating integer values.
 
 \section{Algebra}
-From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and have cosines and sines:
+From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and figure out sines and cosines:
 \begin{align}
 \theta &\equiv \angle{HBD} = \angle{GAE}\\
 \overline{BH} &= (b+c)\cos{\theta}\\
@@ -115,25 +115,40 @@ From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and have cosin
 \end{align}
 We calculate $d$ in function of $(a,b,c)$:
 \begin{align}
-d^2 &= (\overline{DE})^2\\
- &= (\overline{DI})^2 + (\overline{EI})^2\\
+d^2 &= (\overline{DE})^2 \nonumber\\
+ &= (\overline{DI})^2 + (\overline{EI})^2 \nonumber\\
  &= (\overline{AG} + \overline{AB} + \overline{BH})^2 + (\overline{DH} - \overline{EG})^2\\
  &= (b\cos{\theta} + a + (b+c)\cos{\theta})^2 + ((b+c)\sin{\theta} - b\sin{\theta})^2\\
- &= (a + (2b+c)\cos{\theta})^2 + (c\sin{\theta})^2)\\
- &= a^2 + 2a(2b+c)\cos{\theta} + (2b+c)^2\cos^2{\theta} + c^2\sin^2{\theta}\\
- &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc + c^2)\cos^2{\theta} + c^2\sin^2{\theta}\\
- &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc)\cos^2{\theta} + c^2\\
+ &= (a + (2b+c)\cos{\theta})^2 + (c\sin{\theta})^2)\nonumber\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (2b+c)^2\cos^2{\theta} + c^2\sin^2{\theta}\nonumber\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc + c^2)\cos^2{\theta} + c^2\sin^2{\theta}\nonumber\\
+ &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc)\cos^2{\theta} + c^2\nonumber\\
  &= 4b(b + c)\cos^2{\theta} + 2a(2b+c)\cos{\theta} + a^2 + c^2
 \end{align}
 Let do $X = \cos^2{\theta}$ so last equation can be written as:
 \begin{align}
-4b(b + c)X^2 + 2a(2b+c)X + a^2 + c^2 - d^2 &= 0\\
+4b(b + c)X^2 + 2a(2b+c)X + a^2 + c^2 - d^2 &= 0
 \end{align}
 So we can calculate $X = \cos^2{\theta}$ with the quadratic formula:
 \begin{align}
-\cos{\theta} &= \frac{-2a(2b+c) \pm \sqrt{4a^2(2b+c)^2 - 16b(b+c)(a^2 + c^2 - d^2)}}{8b(b+c)}\\
- &= \frac{-a(2b+c) \pm \sqrt{a^2(2b+c)^2 - 4b(b+c)(a^2 + c^2 - d^2)}}{4b(b+c)}\\
+\cos{\theta} &= \frac{-2a(2b+c) \pm \sqrt{4a^2(2b+c)^2 - 16b(b+c)(a^2 + c^2 - d^2)}}{8b(b+c)} \nonumber\\
+ &= \frac{-a(2b+c) \pm \sqrt{a^2c^2 + 4b(b+c)(d^2-c^2)}}{4b(b+c)}
 \end{align}
 
+\subsection{Test pentagon known case}
+Fox-face unit appears in the single solution found of the meccano regular pentagon type 1 construction
+\footnote{
+\href{https://github.com/heptagons/meccano/penta}{Meccano pentagons}	
+}.
+
+In this case we have $a=3$, $b=4$, $c=8$ and $d=11$. Applying these values in the last equation we have:
+\begin{align}
+\cos{\theta} &= \frac{-48 \pm \sqrt{11520}}{192} \nonumber\\
+ &= \frac{-1 \pm \sqrt{5}}{4}
+\end{align}
+Since $\cos{2\pi/5} = (\sqrt{5} - 1)/4$ the equation passes one test.
+In the next section, a program will find more angles changing the distances $a,b,c,d$.
+
+\section{Program}
 \end{document}
 
