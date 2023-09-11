@@ -36,6 +36,22 @@ func newA32(den N32, num ...Z32) *A32 {
 	}
 }
 
+func (a *A32) Equals(den N32, num ...Z32) bool {
+	if n := len(num); n != len(a.num) {
+		return false
+	} else {
+		if den != a.den {
+			return false
+		}
+		for i := 0; i < n; i++ {
+			if num[i] != a.num[i] {
+				return false
+			}
+		}
+		return true
+	}
+}
+
 func newA32Int(z Z32) *A32 {
 	return &A32{
 		den: 1, // a
