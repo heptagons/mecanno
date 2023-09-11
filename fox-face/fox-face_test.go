@@ -84,8 +84,9 @@ func TestFoxFaceAll(t *testing.T) {
 	}
 }
 
+// max=100, pentagons=1 last=[3,4,8,11] time=399 seconds
 func TestFoxFacePentagons(t *testing.T) {
-	max := N32(100) // max=100, pentagons=1 last=[3,4,8,11] time=399 seconds
+	max := N32(11)
 	fmt.Printf("max-lenght=%d a,b,c,d pentagons:\n", max)
 	i := 0
 	FoxFace(max, func(a, b, c, d N32, cos *A32) {
@@ -118,7 +119,7 @@ func TestFoxFaceOctagons(t *testing.T) {
 	fmt.Printf("max-lenght=%d a,b,c,d octagons:\n", max)
 	i := 0
 	FoxFace(max, func(a, b, c, d N32, cos *A32) {
-		if cos.Equals(2,0,1,2) { //  cos 45°
+		if cos.Equals(2,0,1,2) { //  cos 45 degrees sqrt{2}/2
 			i++
 			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
 		}
@@ -126,14 +127,14 @@ func TestFoxFaceOctagons(t *testing.T) {
 }
 
 func TestFoxFaceDodecagons(t *testing.T) {
-	// max=80 dodecagons=none, time=116 seconds
 	max := N32(80)
 	fmt.Printf("max-lenght=%d a,b,c,d dodecagons:\n", max)
 	i := 0
 	FoxFace(max, func(a, b, c, d N32, cos *A32) {
-		if cos.Equals(2,0,1,3) { //  cos 30° √3/2
+		if cos.Equals(3,0,1,3) { //  cos 30 degrees sqrt{3}/3
 			i++
 			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
 		}
 	})
 }
+// max=80 dodecagons=none, time=116 seconds

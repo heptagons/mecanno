@@ -12,9 +12,13 @@
 
 \maketitle
 \begin{abstract}
-Fox-face is a group of five meccano\meccanoref strips not forming implicit triangles
-but a fox-faced figure used to build a regular pentagon. Here, we'll look for other
-angles but not only pentagon's $\cos{2\pi/5}$.
+Fox-face unit is a group of five meccano\meccanoref strips not forming implicit triangles
+but two rigid quadrilaterals. You need to image the unit as a fox with two big pointing ears.
+The unit was originally used to build a regular pentagon\footnote{
+\href{https://github.com/heptagons/meccano/tree/main/penta/pentagons.pdf}{Meccano pentagons}	
+} and here we explore more polygons.
+We conjecture the fox-face unit permits to build the single pentagon, also infinite hexagons,
+but zero octagons and zero dodecagons according a brute-force searching.
 \end{abstract}
 
 \begin{figure}[htb]
@@ -37,7 +41,7 @@ angles but not only pentagon's $\cos{2\pi/5}$.
  \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{};
  \begin{scope}[shift={(\s*\f,0)},rotate=72]
   \rod[\red]{\s}{\f}{\p} \path (0,0) ++(240:5*\p) node{B};
-  \draw[black] (2*\f,0) arc (2*\f:-72:2*\f) node[midway,above,right]{$\alpha$};
+  \draw[black] (2*\f,0) arc (2*\f:-72:2*\f) node[midway,above,right]{$\theta$};
   \begin{scope}[shift={(\s*\f,0)},rotate=180-28.2]
    \rod[\green]{11}{\f}{\p}
    \path (11*\f,0) ++(-20:5*\p) node{E};
@@ -106,7 +110,7 @@ We are going to test several values of $(a,b,c,d)$ and calculate the angle $\ang
 First we'll calculate a formula and then we'll run a program iterating integer values.
 
 \section{Algebra}
-From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and figure out sines and cosines:
+From figure \ref{fig:fox-face} we define $\theta$ = $\angle{HBD}$ and calculate sines and cosines:
 \begin{align}
 \theta &\equiv \angle{HBD} = \angle{GAE}\\
 \overline{BH} &= (b+c)\cos{\theta}\\
@@ -126,58 +130,50 @@ d^2 &= (\overline{DE})^2 \nonumber\\
  &= a^2 + 2a(2b+c)\cos{\theta} + (4b^2 + 4bc)\cos^2{\theta} + c^2\nonumber\\
  &= 4b(b + c)\cos^2{\theta} + 2a(2b+c)\cos{\theta} + a^2 + c^2
 \end{align}
-Let do $X = \cos^2{\theta}$ so last equation can be written as:
-\begin{align}
-4b(b + c)X^2 + 2a(2b+c)X + a^2 + c^2 - d^2 &= 0
-\end{align}
-So we can calculate $X = \cos^2{\theta}$ with the quadratic formula:
+We solve for $\cos{\theta}$ with the quadratic formula:
 \begin{align}
 \cos{\theta} &= \frac{-2a(2b+c) \pm \sqrt{4a^2(2b+c)^2 - 16b(b+c)(a^2 + c^2 - d^2)}}{8b(b+c)} \nonumber\\
  &= \frac{-a(2b+c) \pm \sqrt{a^2c^2 + 4b(b+c)(d^2-c^2)}}{4b(b+c)}
 \end{align}
 
 \subsection{Test pentagon known case}
-Fox-face unit appears in the single solution found of the meccano regular pentagon type 1 construction
-\footnote{
-\href{https://github.com/heptagons/meccano/penta}{Meccano pentagons}	
-}.
-
+Fox-face unit appears in the single solution found of the meccano regular pentagon type 1 construction.
 In this case we have $a=3$, $b=4$, $c=8$ and $d=11$. Applying these values in the last equation we have:
 \begin{align}
 \cos{\theta} &= \frac{-48 \pm \sqrt{11520}}{192} \nonumber\\
  &= \frac{-1 \pm \sqrt{5}}{4}
 \end{align}
-Since $\cos{2\pi/5} = (\sqrt{5} - 1)/4$ the equation passes one test.
-In the next section, a program will find more angles changing the distances $a,b,c,d$.
+Since $\cos{2\pi/5} = (\sqrt{5} - 1)/4$ the equation for $\cos{\theta}$ passes the pentagon's test.
 
-\subsection{Angle for regular polygons}
+\subsection{Fox-face possible polygons}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|c c c c|}\hline
- Polygon & $\angle{ABC}$ & $\alpha$ & $\cos{\alpha}$ \rule[-2ex]{0pt}{6ex}\\ \hline\hline
- Pentagon & $72^\circ$ & $\dfrac{2\pi}{5}$ & $\dfrac{\sqrt{5}-1}{4}$ \rule[-2ex]{0pt}{6ex}\\ \hline
- Hexagon & $120^\circ$ & $\dfrac{\pi}{3}$ & $\dfrac{1}{2}$ \rule[-2ex]{0pt}{6ex}\\ \hline
- Octagon & $135^\circ$ & $\dfrac{\pi}{4}$ & $\dfrac{\sqrt{2}}{2}$ \rule[-2ex]{0pt}{6ex}\\ \hline
- Dodecagon & $150^\circ$ & $\dfrac{\pi}{6}$ & $\dfrac{\sqrt{3}}{3}$ \rule[-2ex]{0pt}{6ex}\\ 
+\begin{tabular}{|c c c c c|}\hline
+ Polygon & $\angle{ABC}$ & $\theta$ & $\cos{\theta}$ & $\{A,B,C,D\}$\rule[-2ex]{0pt}{6ex}\\ \hline\hline
+ Pentagon & $72^\circ$ & $\dfrac{2\pi}{5}$ & $\dfrac{\sqrt{5}-1}{4}$ & $\{4,-1,1,5\}$ \rule[-2ex]{0pt}{6ex}\\ \hline
+ Hexagon & $120^\circ$ & $\dfrac{\pi}{3}$ & $\dfrac{1}{2}$ & $\{2,1,0,0\}$ \rule[-2ex]{0pt}{6ex}\\ \hline
+ Octagon & $135^\circ$ & $\dfrac{\pi}{4}$ & $\dfrac{\sqrt{2}}{2}$ & $\{2,0,1,2\}$ \rule[-2ex]{0pt}{6ex}\\ \hline
+ Dodecagon & $150^\circ$ & $\dfrac{\pi}{6}$ & $\dfrac{\sqrt{3}}{3}$ & $\{3,0,1,3\}$ \rule[-2ex]{0pt}{6ex}\\ 
  \hline
 \end{tabular}
-\caption{Regular polygons with $\cos{\alpha}$ of the form $\frac{B+C\sqrt{D}}{A}$.}
+\caption{Regular polygons with $\cos{\theta}$ of the form $\frac{B+C\sqrt{D}}{A}$
+where $A,D \in \bbb N$ and $B,C \in \bbb Z$.}
 \label{tbl:polygons}
 \end{table}
 
-From figure \ref{fig:fox-face} we notice angle $\angle{ABC}$ can be used as internal angle
-to construct a regular polygon.
-The internal angle is the complement of angle $\alpha$. Since $\cos{\alpha}$ is an algebraic number of the form
-$\frac{B+C\sqrt{D}}{A}$ we can expect only a small group of regular polygons constructable.
-Table \ref{tbl:polygons} list such polygons excluding triangles and squares.
+From figure \ref{fig:fox-face} we notice angle $\angle{ABC}$ can be used as the internal angle
+of a regular polygon.
+The internal angle is the suplemment of angle $\theta$. Since $\cos{\theta}$ is an algebraic number of the form
+$\frac{B+C\sqrt{D}}{A}$ we can construct only a small group of regular polygons.
+Table \ref{tbl:polygons} list such polygons excluding triangles and rectangles.
 
 \section{Program}
 
-Next program using brute-force found a single pentagon, several hexagons and none of octagons or dodecagons.
-This paper conjectures that by using fox-face unit we can construct a single pentagon, infinite hexagons and
-none octagon and none dodecagon. 
-
+Next program iterates $a,b,c,d$ to find polygons of different sizes.
+We set the maximum size to increase the strips lenghts and we get a callback with the
+sizes $a,b,c,d$ and the algebraic cosine value of the form $\frac{B+C\sqrt{D}}{A}$. The algorithm prevents repetitions
+by scale. We use the package \texttt{github.com/heptagons/meccano/nest} algebra system.
 \begin{lstlisting}
 func FoxFace(max N32, found func(a, b, c, d N32, cos *A32)) {
 	factory := NewA32s()
@@ -209,8 +205,29 @@ func FoxFace(max N32, found func(a, b, c, d N32, cos *A32)) {
 }
 \end{lstlisting}
 
+\subsection{Pentagons}
+As mentioned above, this program found only a single pentagon. We use this call:
+\begin{lstlisting}
+func TestFoxFacePentagons(t *testing.T) {
+	max := N32(100)
+	fmt.Printf("max-lenght=%d a,b,c,d pentagons:\n", max)
+	i := 0
+	FoxFace(max, func(a, b, c, d N32, cos *A32) {
+		if cos.Equals(4, -1, 1, 5) { //  cos 72°
+			i++
+			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
+		}
+	})
+}
+\end{lstlisting}
+And we get the single result $a=3, b=4, c=8, d=11$:
+\begin{lstlisting}
+max-lenght=100 a,b,c,d pentagons:
+  1 3,4,8,11
+\end{lstlisting}
+
 \subsection{Hexagons}
-The more interesting costructions are the hexagons, since the algorithms found several.
+More interesting costructions are the hexagons, since the algorithm found several.
 We run and filter the solutions where $\cos{\alpha} = 1/2$. In order to build efficient
 hexagons we impose another condition $a > b+c$. This way the hexagons size will be $a$.
 
@@ -232,7 +249,7 @@ func TestFoxFaceHexagons(t *testing.T) {
 \end{lstlisting}
 
 We found 42 different hexagons when the maximum strip is of size $40$ as shown in next table.
-The rows four numbers correspond to the lenghts of the strips $a,b,c,d$:
+Each row last four numbers correspond to the lenghts of the strips $a,b,c,d$:
 \setlength{\columnsep}{200pt}
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -284,7 +301,44 @@ The rows four numbers correspond to the lenghts of the strips $a,b,c,d$:
 When we extend the maximum size to $100$ we found $350$ hexagons where the last one
 has strips $a=84, b=1, c=11, d=91$.
 
+\subsection{Octagons and dodecagons}
 
+The program found no octagons nor dodecagons by calling these two functions (time ellapsed 116 seconds):
+\begin{lstlisting}
+func TestFoxFaceOctagons(t *testing.T) {
+	max := N32(80)
+	fmt.Printf("max-lenght=%d a,b,c,d octagons:\n", max)
+	i := 0
+	FoxFace(max, func(a, b, c, d N32, cos *A32) {
+		if cos.Equals(2,0,1,2) { //  cos 45 degrees sqrt{2}/2
+			i++
+			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
+		}
+	})
+}
+
+func TestFoxFaceDodecagons(t *testing.T) {
+	max := N32(80)
+	fmt.Printf("max-lenght=%d a,b,c,d dodecagons:\n", max)
+	i := 0
+	FoxFace(max, func(a, b, c, d N32, cos *A32) {
+		if cos.Equals(3,0,1,3) { //  cos 30 degrees sqrt{3}/3
+			i++
+			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
+		}
+	})
+}
+\end{lstlisting}
+
+\subsection{Conjectures}
+
+According to the program results, we conjecture that including the \textbf{Fox-face unit} exist: A single pentagon, infinite hexagons, zero octagons and zero dodecagons. 
+
+\section{Fox-faced hexagons examples}
+
+Here we build some hexagons not mentioned originally in the paper\footnote{
+\href{https://github.com/heptagons/meccano/tree/main/hexa/hexagons.pdf}{Meccano hexagons}	
+}
 
 \end{document}
 
