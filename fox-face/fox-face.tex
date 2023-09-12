@@ -164,9 +164,11 @@ where $A,D \in \bbb N$ and $B,C \in \bbb Z$.}
 
 From figure \ref{fig:fox-face} we notice angle $\angle{ABC}$ can be used as the internal angle
 of a regular polygon.
-The internal angle is the suplemment of angle $\theta$. Since $\cos{\theta}$ is an algebraic number of the form
+The internal angle is the supplement of angle $\theta$. Since $\cos{\theta}$ is an algebraic number of the form
 $\frac{B+C\sqrt{D}}{A}$ we can construct only a small group of regular polygons.
-Table \ref{tbl:polygons} list such polygons excluding triangles and rectangles.
+Table \ref{tbl:polygons} list such polygons excluding triangles and rectangles\footnote{
+\href{https://en.wikipedia.org/wiki/Exact_trigonometric_values}{Exact trigonometric values}	
+}.
 
 \section{Program}
 
@@ -205,6 +207,23 @@ func FoxFace(max N32, found func(a, b, c, d N32, cos *A32)) {
 }
 \end{lstlisting}
 
+\newcommand{\foxface}[6]{
+ \begin{tikzpicture}
+ \def\a{#3};\def\b{#4};\def\c{#5};\def\d{#6};\def\bc{#4+#5}
+ \pgfmathsetmacro\angleB{acos((#5*#5 + #6*#6 - (#3+#4)*(#3+#4))/(2.0*#5*#6))}
+ \def\angleA{acos{0.5}}
+ \begin{scope}
+  \meccanostrip[0000FF]{\a}{#1}{#2} %a
+ \end{scope}
+ \begin{scope}[shift={(#1*\a,0)},rotate=\angleA]
+  \meccanostrip[00FF00]{\a}{#1}{#2} %a > b+c
+  \begin{scope}[shift={(#1*\bc,0)},rotate=180-\angleB]
+   \meccanostrip[FF0000]{\d}{#1}{#2}; %d
+  \end{scope}
+ \end{scope}
+ \end{tikzpicture}
+}
+
 \subsection{Pentagons}
 As mentioned above, this program found only a single pentagon. We use this call:
 \begin{lstlisting}
@@ -226,10 +245,20 @@ max-lenght=100 a,b,c,d pentagons:
   1 3,4,8,11
 \end{lstlisting}
 
+\begin{figure}[h!]
+\centering
+\scalebox{0.5}{
+ \foxface{1}{5pt}{3}{4}{8}{11} % size,factor,a,b,c,d
+}
+\caption{Fox-face(3,4,8,11)}
+\end{figure}
+
+
 \subsection{Hexagons}
 More interesting costructions are the hexagons, since the algorithm found several.
 We run and filter the solutions where $\cos{\alpha} = 1/2$. In order to build efficient
-hexagons we impose another condition $a > b+c$. This way the hexagons size will be $a$.
+hexagons we impose another condition $a > b+c$. This way the hexagons size will be $a$
+and the number of strips will be small since diagonals will remain inside each hexagon.
 
 \begin{lstlisting}
 func TestFoxFaceHexagons(t *testing.T) {
@@ -330,15 +359,35 @@ func TestFoxFaceDodecagons(t *testing.T) {
 }
 \end{lstlisting}
 
-\subsection{Conjectures}
+\section{Conjectures}
 
 According to the program results, we conjecture that including the \textbf{Fox-face unit} exist: A single pentagon, infinite hexagons, zero octagons and zero dodecagons. 
 
 \section{Fox-faced hexagons examples}
 
-Here we build some hexagons not mentioned originally in the paper\footnote{
+Here we build hexagons constructions not presented originally in the paper Meccano hexagons\footnote{
 \href{https://github.com/heptagons/meccano/tree/main/hexa/hexagons.pdf}{Meccano hexagons}	
+}. There the so-called irregular diagonals connects hexagon's adjacent sides. 
+The difference here is that fox-faced diagonals $d$ connects not adjacent sides but skipping one. 
+From figure \ref{fig:fox-face} we see the irregular diagonal $d$ connects hexagon's side $\overline{FA}$
+with side $\overline{BD}$ skipping side $\overline{AB}$.
+
+
+\begin{figure}[h!]
+\centering
+\scalebox{0.5}{
+ \foxface{1}{5pt}{4}{1}{3}{7} % size,factor,a,b,c,d
 }
+\caption{Fox-face(4,1,3,7)}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\scalebox{0.4}{
+ \foxface{1}{5pt}{9}{1}{6}{14} % size,factor,a,b,c,d
+}
+\caption{Fox-face(9,1,6,14)}
+\end{figure}
 
 \end{document}
 
