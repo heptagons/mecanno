@@ -264,7 +264,7 @@ max-lenght=100 a,b,c,d pentagons:
 
 \subsection{Hexagons}
 More interesting costructions are the hexagons, since the algorithm found several.
-We run and filter the solutions where $\cos{\alpha} = 1/2$. In order to build efficient
+We run and filter the solutions where $\cos{\theta} = 1/2$. In order to build efficient
 hexagons we impose another condition $a > b+c$. This way the hexagons size will be $a$
 and the number of strips will be small since diagonals will remain inside each hexagon.
 
@@ -286,7 +286,7 @@ func TestFoxFaceHexagons(t *testing.T) {
 \end{lstlisting}
 
 We found 42 different hexagons when the maximum strip is of size $40$ as shown in next table.
-Each row last four numbers correspond to the lenghts of the strips $a,b,c,d$:
+Each row last four numbers correspond to the lenghts of the strips segments $a,b,c,d$:
 \setlength{\columnsep}{200pt}
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -340,7 +340,7 @@ has strips $a=84, b=1, c=11, d=91$.
 
 \subsection{Octagons and dodecagons}
 
-The program found no octagons nor dodecagons by calling these two functions (time ellapsed 116 seconds):
+The program found no octagons nor dodecagons by calling these two functions (time ellapsed around 116 seconds each):
 \begin{lstlisting}
 func TestFoxFaceOctagons(t *testing.T) {
 	max := N32(80)
@@ -373,10 +373,11 @@ According to the program results, we conjecture that including the \textbf{Fox-f
 
 \section{Fox-faced hexagons examples}
 
-Here we build hexagons constructions not presented originally in the paper Meccano hexagons\footnote{
+Here we build the first hexagons from the list values. The figures are not presented originally in the paper
+Meccano hexagons\footnote{
 \href{https://github.com/heptagons/meccano/tree/main/hexa/hexagons.pdf}{Meccano hexagons}	
-}. There the so-called irregular diagonals connects hexagon's adjacent sides. 
-The difference here is that fox-faced diagonals $d$ connects not adjacent sides but skipping one. 
+}. In that paper the so-called irregular diagonals connects hexagon's adjacent sides. 
+The difference here is that fox-faced diagonals $d$ connects not adjacent sides but skips one. 
 From figure \ref{fig:fox-face} we see the irregular diagonal $d$ connects hexagon's side $\overline{FA}$
 with side $\overline{BD}$ skipping side $\overline{AB}$.
 
