@@ -60,46 +60,65 @@ A' &\equiv \angle{EA_1B_1} = \pi - A\\
 \cos{A'} &= \cos{(\pi-A)} = -\cos{A} = \frac{- b^2 - c^2 + a^2}{2bc}
 \end{align}
 
-We define $f=b+d$ and $g \equiv \overline{EB_1}$ and with the law of cosines we have:
+We define $f\equiv b+d$ and $g \equiv \overline{EB_1}$. With the law of cosines we have:
 \begin{align}
-f &\equiv b + d\\
+f &\equiv \boxed{b + d} &\in \bbb{N}\\
 g^2 &= c^2 + d^2 - 2cd\cos{A'}\\
- &= c^2 + d^2 - (2cd)\frac{-b^2 - c^2 + a^2}{2bc}\\
- &= \frac{bc^2 + bd^2 + b^2d + c^2d - a^2d}{b}\\
- &= \frac{(b+d)(bd+c^2) - a^2d }{b}\\
- &= \frac{(bd+c^2)f - a^2d}{b} \equiv \frac{h}{b} &\text{if and only if } 0 < h < b
+ &= c^2 + d^2 - (2cd)\frac{-b^2 - c^2 + a^2}{2bc} \nonumber\\
+ &= \frac{bc^2 + bd^2 + b^2d + c^2d - a^2d}{b} \nonumber\\
+ &= \frac{(b+d)(bd+c^2) - a^2d }{b}
+\end{align}
+
+Define a new variable $h = (b+d)(bd+c^2) - a^2d$:
+\begin{align}
+h &\equiv \boxed{(bd+c^2)f - a^2d} &\in \bbb{Z}\\
+g^2 &= \boxed{\frac{h}{b}}  &\text{if and only if } 0 < h < b
+\end{align}
+
+
+We calculate angles $F \equiv \angle{C_1B1E}$ and $G \equiv \angle{B_2B_1E}$.
+We replace $g^2$ by $h/b$:
+\begin{align}
+\cos{F} &= \frac{a^2 + g^2 - f^2}{2ag} = \frac{a^2b - bf^2 + h}{2abg}\\
+\cos{G} &= \boxed{ \frac{e}{2g} }
+\end{align}
+Define new variable $j = a^2b - bf^2 + h$ so:
+\begin{align}
+j &\equiv \boxed{a^2b - bf^2 + h} &\in \bbb{Z}\\
+\cos{F} &= \frac{a^2b - bf^2 + h}{2abg} = \boxed{\frac{j}{2abg}}
+\end{align}
+
+We calculate cosines squares and products. Again we replace $g^2$ by $h/b$:
+\begin{align}
+\cos{F}\cos{G} &= \frac{ej}{4abg^2} = \frac{bej}{4abh} = \boxed{\frac{ej}{4ah}} &\in \bbb{Q}\\
+\cos^2{F} &= \frac{j^2}{4a^2b^2g^2} = \frac{bj^2}{4a^2b^2h} = \boxed{\frac{j^2}{4a^2bh}} &\in \bbb{Q}\\
+\cos^2{G} &= \frac{e^2}{4g^2} = \boxed{\frac{be^2}{4h}} &\in \bbb{Q}\\
+\cos^2{F}\cos^2{G} &= \frac{be^2j^2}{16a^2bh^2} = \boxed{\frac{e^2j^2}{16a^2h^2}} &\in \bbb{Q}\\
+\end{align}
+
+We calculate the sines part squared and set a common denominator as square $16a^2b^2h^2$:
+\begin{align}
+(\sin{F}\sin{G})^2 &= (1 - cos^2{F})(1 - cos^2{G})\\
+ &= 1 - cos^2{F} - cos^2{G} + cos^2{F}\cos^2{G} \nonumber\\
+ &= 1 - \frac{j^2}{4a^2bh} - \frac{be^2}{4h} + \frac{e^2j^2}{16a^2h^2}\nonumber\\
+ &= 1 - \frac{j^2}{4a^2bh} - \frac{be^2}{4h} + \frac{e^2j^2}{16a^2h^2}\nonumber\\
+ &= \frac{16a^2b^2h^2 -(4bh)j^2 -(4a^2b^2h)be^2 +(b^2)e^2j^2 }{16a^2b^2h^2}\nonumber\\
+ &= \frac{16a^2b^2h^2 -4bhj^2 -4a^2b^3e^2h +b^2e^2j^2 }{16a^2b^2h^2}\nonumber\\
+ &= \frac{b(be^2-4h)(j^2-4a^2bh)}{16a^2b^2h^2}
+\end{align}
+
+Extract square root to get $\sin{F}\sin{G} = \sqrt{D}/A$ where $D,A \in \bbb{Z}$:
+\begin{align}
+\sin{F}\sin{G} &= \boxed{\frac{\sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}} &\in \bbb{A}
 \end{align}
 
 We sum the angles $F$ and $G$ to get:
 \begin{align}
-F &\equiv \angle{C_1B1E}\\
-\cos{F} &= \frac{a^2 + g^2 - f^2}{2ag} = \boxed{\frac{a^2b - bf^2 + h}{2abg}}\\
-G &\equiv \angle{B_2B_1E}\\
-\cos{G} &= \boxed{ \frac{e}{2g} }\\
 F+G &\equiv \angle{B_2B_1C_1}\\
-\cos{(F+G)} &= \cos{F}\cos{G} - \sin{F}\sin{G}
+\cos{(F+G)} &= \cos{F}\cos{G} - \sin{F}\sin{G}\\
+ &= \frac{ej}{4ah} - \frac{\sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\\
+ &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh} &\in \bbb{A}
 \end{align}
-We calculate cosines squared and multiplied:
-\begin{align}
-\cos^2{F} &= \frac{(a^2b - bf^2 + h)^2}{4a^2b^2g^2}
- = \boxed{\frac{(a^2b - bf^2 + h)^2}{4a^2bh}}\\
-\cos^2{G} &= \frac{e^2}{4g^2} = \boxed{\frac{be^2}{4h}}\\
-\cos^2{F}\cos^2{G} &= \frac{be^2(a^2b - bf^2 + h)^2}{16a^2bh^2}
- = \boxed{\frac{e^2(a^2b - bf^2 + h)^2}{16a^2h^2}}\\
-\cos{F}\cos{G} &= \boxed{\frac{e(a^2b - bf^2 + h)}{4ah}}
-\end{align}
-
-We calculate the sines part squared. Replace $g^2$ with $h/b$ first in the denominator:
-\begin{align}
-(\sin{F}\sin{G})^2 &= (1 - cos^2{F})(1 - cos^2{G})\\
- &= cos^2{F}\cos^2{G} - cos^2{F} - cos^2{G} + 1\\
- &= \frac{e^2(a^2b - bf^2 + h)^2}{16a^2h^2}
- - \frac{(a^2b - bf^2 + h)^2}{4a^2bh}
- - \frac{be^2}{4h}
- + 1
-\end{align}
-
-
 
 
 
