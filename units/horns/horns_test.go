@@ -31,11 +31,11 @@ func Horns(max N32, found func(a, b, c, d, e N32, cos *A32)) {
 		for b := n1; b <= max; b++ {
 			ab := NatGCD(a, b)
 			for c := n1; c <= max; c++ {
-				if a >= b+c {
+				if a >= b+c || b >= a+c || c >= a+b {
 					continue
 				}
 				abc := NatGCD(ab, c)
-				for d := n1; d <= max; d++ { // d >= c always
+				for d := n1; d <= max; d++ {
 
 					abcd := NatGCD(abc, d)
 					f := b + d
@@ -44,7 +44,7 @@ func Horns(max N32, found func(a, b, c, d, e N32, cos *A32)) {
 
 					na := 4*N(a)*N(b)*N(h)
 
-					for e := n1; e <= max; e++ {
+					for e := a; e <= max; e++ { // e >= a
 						if abcde := NatGCD(abcd, e); abcde > 1 {
 							continue // skip scale repetitions
 						}
@@ -68,14 +68,14 @@ func Horns(max N32, found func(a, b, c, d, e N32, cos *A32)) {
 
 
 func TestHorns(t *testing.T) {
-	max := N32(5)
+	max := N32(7)
 	Horns(max, func(a, b, c, d, e N32, cos *A32) {
 		fmt.Printf("(%d,%d,%d,%d,%d)=%s\n", a, b, c, d, e, cos.String())
 	})
 }
 
 func TestHornsAll(t *testing.T) {
-	max := N32(20)
+	max := N32(11)
 	m := make(map[string]*ABCDE, 0)
 	i := 1
 	Horns(max, func(a, b, c, d, e N32, cos *A32) {
@@ -110,5 +110,48 @@ arcos(1/2)
 arcos((-1+√5)/4)
 	<nil>
 */
+
+
+// max=30 errors???
+func TestHornsHexagons(t *testing.T) {
+	max := N32(30)
+	fmt.Printf("max-lenght=%d a,b,c,d,e efficient hexagons:\n", max)
+	i := 0
+	Horns(max, func(a, b, c, d, e N32, cos *A32) {
+		if cos.Equals(2,1) { //  cos 60°
+			// Efficient hexagons are those when a > b+c
+			if a != b && a !=c {
+				i++
+				fmt.Printf("% 3d %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+			}
+		}
+	})
+}
+
+/*
+  1) 2,3,3,3,8
+  2) 3,2,3,7,12
+  3) 7,18,17,3,28
+  4) 9,10,11,17,36
+  5) 9,20,19,7,36
+  6) 10,9,11,21,40
+  7) 14,9,9,9,16
+  8) 14,11,11,11,24
+  9) 21,21,14,6,24
+panic: test timed out after 10m0s
+*/
+func TestHornsOctagons(t *testing.T) {
+	max := N32(40)
+	fmt.Printf("max-lenght=%d a,b,c,d,e octagons:\n", max)
+	i := 0
+	Horns(max, func(a, b, c, d, e N32, cos *A32) {
+		if cos.Equals(2,0,1,2) { //  cos 45 degrees sqrt{2}/2
+			i++
+			fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+		}
+	})
+}
+
+
 
 
