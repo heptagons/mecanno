@@ -131,7 +131,7 @@ func TestFoxFaceDodecagons(t *testing.T) {
 	fmt.Printf("max-lenght=%d a,b,c,d dodecagons:\n", max)
 	i := 0
 	FoxFace(max, func(a, b, c, d N32, cos *A32) {
-		if cos.Equals(3,0,1,3) { //  cos 30 degrees sqrt{3}/3
+		if cos.Equals(2,0,1,3) { //  cos 30 degrees sqrt{3}/2
 			i++
 			fmt.Printf("% 3d %d,%d,%d,%d\n", i, a, b, c, d)
 		}

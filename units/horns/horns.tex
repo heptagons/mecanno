@@ -12,6 +12,8 @@
 \maketitle
 \begin{abstract}
 Horns unit is a group of seven meccano\meccanoref strips intended to build polygons.
+We found the formula to calculate the internal angles then look for polygons and
+found hexagons, octagons and dodecagons. We found no pentagons.
 \end{abstract}
 
 \begin{figure}[h]
@@ -134,25 +136,42 @@ F+G &\equiv \angle{B_2B_1C_1}\\
   \meccanostrip[FF0000]{#7}{#1}{#2} %e
  \end{scope}
  \begin{scope}[shift={(#1*#7,0)},rotate=\ang]
-  \meccanostrip[008800]{#7}{#1}{#2} %a long as e right
+  \meccanostrip[FF0000]{#7}{#1}{#2} %a long as e right
   \begin{scope}[rotate=acos(\angB)]
-   \meccanostrip[0000FF]{#5}{#1}{#2} %c
+   \meccanostrip[008800]{#5}{#1}{#2} %c
   \end{scope}
   \begin{scope}[shift={(#1*#3,0)},rotate=180-acos(\angC)] % a
-   \meccanostrip[cc00cc]{\f}{#1}{#2} %b+d=f
+   \meccanostrip[0000FF]{\f}{#1}{#2} %b+d=f
   \end{scope}
  \end{scope}
  \begin{scope}[rotate=180-\ang]
-  \meccanostrip[008800]{#7}{#1}{#2} %a long as e left
+  \meccanostrip[F00000]{#7}{#1}{#2} %a long as e left
   \begin{scope}[rotate=-acos(\angB)]
-   \meccanostrip[0000FF]{\c}{#1}{#2} %c
+   \meccanostrip[008800]{\c}{#1}{#2} %c
   \end{scope}
   \begin{scope}[shift={(#1*\a,0)},rotate=180+acos(\angC)]
-   \meccanostrip[cc00cc]{\f}{#1}{#2} %b+d=f
+   \meccanostrip[0000FF]{\f}{#1}{#2} %b+d=f
   \end{scope}
  \end{scope}
  \end{tikzpicture}
 }
+
+\subsection{Hexagons examples}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.5}{ \horns{1}{5pt}{5}{8}{7}{0}{11}{60}}
+\caption{Horns(5,8,7,0,11) $60^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.5}{ \horns{1}{5pt}{7}{3}{5}{4}{6}{60}}
+\caption{Horns(7,3,5,4,9) $60^\circ$.}
+\end{figure}
+
+
+
 
 \subsection{Octagons examples}
 
@@ -185,5 +204,48 @@ F+G &\equiv \angle{B_2B_1C_1}\\
 \scalebox{0.25}{\horns{1}{5pt}{21}{21}{14}{6}{24}{45}}
 \caption{Horns(21,21,14,6,24) $45^\circ$.}
 \end{figure}
+
+
+\subsection{Dodecagons examples}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.3}{ \horns{1}{5pt}{6}{5}{5}{5}{8}{30}}
+\caption{Horns(6,5,5,5,8) $30^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.25}{ \horns{1}{5pt}{15}{4}{13}{21}{20}{30}}
+\caption{Horns(15,4,13,21,20) $30^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.3}{ \horns{1}{5pt}{15}{9}{12}{16}{20}{30}}
+\caption{Horns(15,9,12,16,20) $30^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.25}{ \horns{1}{5pt}{15}{14}{13}{11}{20}{30}}
+\caption{Horns(15,14,13,11,20) $30^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.25}{ \horns{1}{5pt}{15}{18}{15}{7}{20}{30}}
+\caption{Horns(15,18,15,7,20) $30^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.2}{ \horns{1}{5pt}{10}{13}{13}{13}{24}{30}}
+\caption{Horns(10,13,13,13,24) $30^\circ$.}
+\end{figure}
+
+
+
+
 
 \end{document}

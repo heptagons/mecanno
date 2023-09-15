@@ -112,9 +112,25 @@ arcos((-1+√5)/4)
 */
 
 
+func TestHornsPentagons(t *testing.T) {
+	max := N32(40)
+	fmt.Printf("max-lenght=%d a,b,c,d,e pentagons:\n", max)
+	i := 0
+	Horns(max, func(a, b, c, d, e N32, cos *A32) {
+		if cos.Equals(4, -1, 1, 5) { //  cos 72°
+			i++
+			fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+		}
+	})
+}
+/*
+max-lenght=40 a,b,c,d,e pentagons: NONE
+panic: test timed out after 10m0s
+*/
+
 // max=30 errors???
 func TestHornsHexagons(t *testing.T) {
-	max := N32(30)
+	max := N32(15)
 	fmt.Printf("max-lenght=%d a,b,c,d,e efficient hexagons:\n", max)
 	i := 0
 	Horns(max, func(a, b, c, d, e N32, cos *A32) {
@@ -122,24 +138,24 @@ func TestHornsHexagons(t *testing.T) {
 			// Efficient hexagons are those when a > b+c
 			if a != b && a !=c {
 				i++
-				fmt.Printf("% 3d %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+				fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
 			}
 		}
 	})
 }
-
-/*
-  1) 2,3,3,3,8
-  2) 3,2,3,7,12
-  3) 7,18,17,3,28
-  4) 9,10,11,17,36
-  5) 9,20,19,7,36
-  6) 10,9,11,21,40
-  7) 14,9,9,9,16
-  8) 14,11,11,11,24
-  9) 21,21,14,6,24
-panic: test timed out after 10m0s
+// valid 5,8,7,0,11
+/* Wrong results TODO: fix
+max-lenght=15 a,b,c,d,e efficient hexagons:
+  1) 5,8,7,1,14
+  2) 5,8,7,2,15
+  3) 7,3,5,4,9
+  4) 11,7,7,7,15
+  5) 13,7,8,6,14
+  6) 13,10,7,3,14
+  7) 13,12,7,1,14
+--- PASS: TestHornsHexagons (8.47s)
 */
+
 func TestHornsOctagons(t *testing.T) {
 	max := N32(40)
 	fmt.Printf("max-lenght=%d a,b,c,d,e octagons:\n", max)
@@ -151,6 +167,42 @@ func TestHornsOctagons(t *testing.T) {
 		}
 	})
 }
+/* Octagons:
+  1) 2,3,3,3,8
+  2) 3,2,3,7,12
+  3) 7,18,17,3,28
+  4) 9,10,11,17,36
+  5) 9,20,19,7,36
+  6) 10,9,11,21,40
+  7) 14,9,9,9,16
+  8) 14,11,11,11,24
+  9) 21,21,14,6,24
+panic: test timed out after 10m0s
+*/
+
+func TestHornsDodecagons(t *testing.T) {
+	max := N32(40)
+	fmt.Printf("max-lenght=%d a,b,c,d,e dodecagons:\n", max)
+	i := 0
+	Horns(max, func(a, b, c, d, e N32, cos *A32) {
+		if cos.Equals(2,0,1,3) { //  cos 30 degrees sqrt{3}/2
+			i++
+			fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+		}
+	})
+}
+/*
+max-lenght=40 a,b,c,d,e dodecagons:
+  1) 6,5,5,5,8
+  2) 10,13,13,13,24
+  3) 15,4,13,21,20
+  4) 15,9,12,16,20
+  5) 15,14,13,11,20
+  6) 15,18,15,7,20
+  7) 16,17,17,17,30
+  8) 21,10,17,25,28
+panic: test timed out after 10m0s
+*/
 
 
 
