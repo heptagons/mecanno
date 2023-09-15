@@ -132,9 +132,9 @@ func (t *Tri3F) tri3New(tri2 int) ([]*Tri3, error) {
 // triCosLaw2 return the third side (squared) cc. Squared to keep simple the A32 returned.
 // Uses the law of cosines to determine the rational algebraic side cc = aa + bb - 2abcosC
 func (t *Tri3F) tri3CosLaw2(a, b N32, cosC *A32) (*A32, error) {
-	if aa_bb, err := t.aNew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
+	if aa_bb, err := t.ANew(1, Z(a)*Z(a) + Z(b)*Z(b)); err != nil { // a*a + b*b
 		return nil, err
-	} else if ab, err := t.aNew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
+	} else if ab, err := t.ANew(1, -2*Z(a)*Z(b)); err != nil { // -2a*b
 		return nil, err
 	} else if abCosC, err := t.aMul(ab, cosC); err != nil { // -2a*b*cosC
 		return nil, err

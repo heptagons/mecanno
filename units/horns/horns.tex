@@ -158,16 +158,57 @@ F+G &\equiv \angle{B_2B_1C_1}\\
 
 \subsection{Hexagons examples}
 
+\begin{lstlisting}
+segments min=0 max=20 a,b,c,d,e:
+  1) 3,7,5,0,10
+  2) 3,8,7,0,13
+  3) 10,13,7,0,13
+  4) 8,13,7,0,14
+  5) 3,8,7,1,15
+  6) 5,8,7,2,15
+  7) 11,7,7,7,15
+  8) 7,13,8,0,16
+  9) 3,8,7,2,17
+ 10) 5,8,7,3,17
+ 11) 16,14,6,7,17
+ 12) 8,7,5,7,18
+ 13) 3,8,7,3,19
+ 14) 5,8,7,4,19
+ 15) 7,3,5,11,19
+ 16) 7,8,5,6,19
+--- PASS: TestHornsEHexagons (28.73s)
+\end{lstlisting}
+
 \begin{figure}[H]
 \centering
-\scalebox{0.5}{ \horns{1}{5pt}{5}{8}{7}{0}{11}{60}}
-\caption{Horns(5,8,7,0,11) $60^\circ$.}
+\scalebox{0.4}{
+ \horns{1}{5pt}{3}{7}{5}{0}{10}{60}
+}
+\caption{Hexagon size 10.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\scalebox{0.5}{ \horns{1}{5pt}{7}{3}{5}{4}{6}{60}}
-\caption{Horns(7,3,5,4,9) $60^\circ$.}
+\scalebox{0.3}{
+ \horns{1}{5pt}{3}{8}{7}{0}{13}{60}
+ \horns{1}{5pt}{10}{13}{7}{0}{13}{60}
+}
+\caption{Hexagons size 13.}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+\centering
+\scalebox{0.2}{ \horns{1}{5pt}{5}{8}{7}{2}{15}{60}}
+\caption{Horns() $60^\circ$.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.2}{ \horns{1}{5pt}{16}{14}{6}{7}{17}{60}}
+\caption{Horns() $60^\circ$.}
 \end{figure}
 
 
@@ -175,17 +216,37 @@ F+G &\equiv \angle{B_2B_1C_1}\\
 
 \subsection{Octagons examples}
 
+\begin{lstlisting}
+segments min=1 max=40 a,b,c,d,e:
+  1) 2,3,3,3,8
+  2) 3,2,3,7,12
+  3) 14,9,9,9,16
+  4) 14,11,11,11,24
+  5) 21,21,14,6,24
+  6) 7,18,17,3,28
+  7) 9,10,11,17,36
+  8) 9,20,19,7,36
+  9) 10,9,11,21,40
+ 10) 35,27,22,18,40
+--- PASS: TestHornsEOctagons (566.86s)
+\end{lstlisting}
+
+\setlength{\columnsep}{2pt}
+\begin{multicols}{1}
+
 \begin{figure}[H]
 \centering
-\scalebox{0.5}{ \horns{1}{5pt}{2}{3}{3}{3}{8}{45}}
+\scalebox{0.4}{ \horns{1}{5pt}{2}{3}{3}{3}{8}{45}}
 \caption{Horns(2,3,3,3,8) $45^\circ$.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\scalebox{0.45}{ \horns{1}{5pt}{3}{2}{3}{7}{12}{45}}
+\scalebox{0.3}{ \horns{1}{5pt}{3}{2}{3}{7}{12}{45}}
 \caption{Horns(3,2,3,7,12) $45^\circ$.}
 \end{figure}
+
+\end{multicols}
 
 \begin{figure}[H]
 \centering
@@ -196,55 +257,76 @@ F+G &\equiv \angle{B_2B_1C_1}\\
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{\horns{1}{5pt}{14}{11}{11}{11}{24}{45}}
-\caption{Horns(14,11,11,11,24) $45^\circ$.}
-\end{figure}
-
-\begin{figure}[H]
-\centering
 \scalebox{0.25}{\horns{1}{5pt}{21}{21}{14}{6}{24}{45}}
-\caption{Horns(21,21,14,6,24) $45^\circ$.}
+\caption{Octagons. Horns(14,11,11,11,24) and (21,21,14,6,24).}
 \end{figure}
-
 
 \subsection{Dodecagons examples}
 
+\begin{lstlisting}
+segments min=1 max=40 a,b,c,d,e:
+  1) 6,5,5,5,8
+  2) 15,4,13,21,20
+  3) 15,9,12,16,20
+  4) 15,14,13,11,20
+  5) 15,18,15,7,20
+  6) 10,13,13,13,24
+  7) 21,10,17,25,28
+  8) 16,17,17,17,30
+  9) 30,11,25,39,40
+--- PASS: TestHornsEDodecagons (566.19s)
+\end{lstlisting}
+
 \begin{figure}[H]
 \centering
-\scalebox{0.3}{ \horns{1}{5pt}{6}{5}{5}{5}{8}{30}}
-\caption{Horns(6,5,5,5,8) $30^\circ$.}
+\scalebox{0.4}{ \horns{1}{5pt}{6}{5}{5}{5}{8}{30}}
+\caption{Dodecagon: Horns(6,5,5,5,8).}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{4}{13}{21}{20}{30}}
-\caption{Horns(15,4,13,21,20) $30^\circ$.}
+\caption{ Dodecagons. Horns (15,4,13,21,20). Special case $d > e$.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\scalebox{0.3}{ \horns{1}{5pt}{15}{9}{12}{16}{20}{30}}
-\caption{Horns(15,9,12,16,20) $30^\circ$.}
+\scalebox{0.25}{ \horns{1}{5pt}{15}{9}{12}{16}{20}{30}}
+\caption{ Dodecagons. Horns (15,9,12,16,20).
+}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{14}{13}{11}{20}{30}}
-\caption{Horns(15,14,13,11,20) $30^\circ$.}
+\caption{ Dodecagons. Horns (15,14,13,11,20).
+}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{18}{15}{7}{20}{30}}
-\caption{Horns(15,18,15,7,20) $30^\circ$.}
+\caption{ Dodecagons. Horns (15,18,15,7,20).
+}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.2}{ \horns{1}{5pt}{10}{13}{13}{13}{24}{30}}
-\caption{Horns(10,13,13,13,24) $30^\circ$.}
+\caption{Dodecagon. Horns(10,13,13,13,24).}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\scalebox{0.2}{ \horns{1}{5pt}{21}{10}{17}{25}{28}{30}}
+\caption{Dodecagon. Horns(21,10,17,25,28).}
+\end{figure}
 
+\begin{figure}[H]
+\centering
+\scalebox{0.2}{ \horns{1}{5pt}{16}{17}{17}{17}{30}{30}}
+\caption{Dodecagon. Horns(16,17,17,17,30).}
+\end{figure}
 
 
 

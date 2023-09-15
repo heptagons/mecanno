@@ -159,9 +159,9 @@ func (ts *T32s) tRatCosinesAll(t *T) (a, b, c *TRat) {
 
 func (ts *T32s) tRatSinesAll(t *T) (a, b, c *A32) {
 	var s, d Z32
-	s, d = ts.sin(t, TangA); a,_ = ts.aNew3(N(d), 0, 1, Z(s))
-	s, d = ts.sin(t, TangB); b,_ = ts.aNew3(N(d), 0, 1, Z(s))
-	s, d = ts.sin(t, TangC); c,_ = ts.aNew3(N(d), 0, 1, Z(s))
+	s, d = ts.sin(t, TangA); a,_ = ts.ANew3(N(d), 0, 1, Z(s))
+	s, d = ts.sin(t, TangB); b,_ = ts.ANew3(N(d), 0, 1, Z(s))
+	s, d = ts.sin(t, TangC); c,_ = ts.ANew3(N(d), 0, 1, Z(s))
 	return
 }
 
@@ -254,16 +254,16 @@ func (ts *T32s) tCosAplusB(tA *T, aA Tang, tB *T, aB Tang) (*A32, error) {
 	b := nA*nB
 	c := Z(-1)
 	d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
-	return ts.aNew3(a,b,c,d)
+	return ts.ANew3(a,b,c,d)
 }
 
 // tLawOfCos returns
 //    ___________________
 //	 √ y² + z² - 2xycosX
 func (ts *T32s) tLawOfCos(y, z N32, cosX *A32) (*A32, error) {
-	if y2_z2, err := ts.aNew1(1, Z(y)*Z(y) + Z(z)*Z(z)); err != nil {
+	if y2_z2, err := ts.ANew1(1, Z(y)*Z(y) + Z(z)*Z(z)); err != nil {
 		return nil, err
-	} else if _2zy, err := ts.aNew1(1, -2*Z(y)*Z(z)); err != nil {
+	} else if _2zy, err := ts.ANew1(1, -2*Z(y)*Z(z)); err != nil {
  		return nil, err
 	} else if _2zycosX, err := ts.aMul(cosX, _2zy); err != nil {
 		return nil, err
@@ -278,11 +278,11 @@ func (ts *T32s) tAlphaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	alpha := Z(t.a) // slur
 	b := Z(t.b)
 	c := Z(t.c)
-	if cosA, err = ts.aNew1(2*N(b)*N(c), b*b + c*c - alpha); err != nil {
+	if cosA, err = ts.ANew1(2*N(b)*N(c), b*b + c*c - alpha); err != nil {
 		return
-	} else if cosB, err = ts.aNew3(2*N(alpha)*N(c), 0, alpha + c*c - b*b, alpha); err != nil {
+	} else if cosB, err = ts.ANew3(2*N(alpha)*N(c), 0, alpha + c*c - b*b, alpha); err != nil {
 		return
-	} else if cosC, err = ts.aNew3(2*N(alpha)*N(b), 0, alpha + b*b - c*c, alpha); err != nil {
+	} else if cosC, err = ts.ANew3(2*N(alpha)*N(b), 0, alpha + b*b - c*c, alpha); err != nil {
 		return
 	}
 	return
@@ -292,11 +292,11 @@ func (ts *T32s) tBetaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	a := Z(t.a)
 	beta := Z(t.b) // slur
 	c := Z(t.c)
-	if cosA, err = ts.aNew3(2*N(beta)*N(c), 0, beta + c*c - a*a, beta); err != nil {
+	if cosA, err = ts.ANew3(2*N(beta)*N(c), 0, beta + c*c - a*a, beta); err != nil {
 		return
-	} else if cosB, err = ts.aNew1(2*N(a)*N(c), a*a + c*c - beta); err != nil {
+	} else if cosB, err = ts.ANew1(2*N(a)*N(c), a*a + c*c - beta); err != nil {
 		return
-	} else if cosC, err = ts.aNew3(2*N(a)*N(beta), 0, a*a + beta - c*c, beta); err != nil {
+	} else if cosC, err = ts.ANew3(2*N(a)*N(beta), 0, a*a + beta - c*c, beta); err != nil {
 		return
 	}
 	return
@@ -306,11 +306,11 @@ func (ts *T32s) tGammaCosines(t *T) (cosA, cosB, cosC *A32, err error) {
 	a := Z(t.a)
 	b := Z(t.b)
 	gamma := Z(t.c)
-	if cosA, err = ts.aNew3(2*N(b)*N(gamma), 0, b*b + gamma - a*a, gamma); err != nil {
+	if cosA, err = ts.ANew3(2*N(b)*N(gamma), 0, b*b + gamma - a*a, gamma); err != nil {
 		return
-	} else if cosB, err = ts.aNew3(2*N(a)*N(gamma), 0, a*a + gamma - b*b, gamma); err != nil {
+	} else if cosB, err = ts.ANew3(2*N(a)*N(gamma), 0, a*a + gamma - b*b, gamma); err != nil {
 		return
-	} else if cosC, err = ts.aNew1(2*N(a)*N(b), a*a + b*b - gamma); err != nil {
+	} else if cosC, err = ts.ANew1(2*N(a)*N(b), a*a + b*b - gamma); err != nil {
 		return
 	}
 	return
@@ -332,13 +332,13 @@ func (ts *T32s) tRatCosXY(x, y *TRat) (*A32, error) {
 	b := nA*nB
 	c := Z(-1)
 	d := (dA + nA)*(dA - nA) * (dB + nB)*(dB - nB)
-	return ts.aNew3(a,b,c,d)
+	return ts.ANew3(a,b,c,d)
 }
 
 func (ts *T32s) tRatCos2XY(a, d *TRat) (*A32, error) {
 	an2 := a.num*a.num
 	ad2 := a.den*a.den
-	return ts.aNew3(
+	return ts.ANew3(
 		N(ad2)*N(d.den),     // a
 		(2*an2 - ad2)*d.num, // b
 		-2*a.num,            // c

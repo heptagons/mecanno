@@ -129,13 +129,13 @@ func (t *TriF) triSinCos() error {
 		// area = √(area2_4)/4
 		// https://en.wikipedia.org/wiki/Law_of_sines
 		// Area = (absinC)/2 -> sinC = 2A/(a*b)
-		if sinA, err := t.aNew(2*N(b*c), 0, 1, area2_4); err != nil {
+		if sinA, err := t.ANew(2*N(b*c), 0, 1, area2_4); err != nil {
 			return err
 		} else 
-		if sinB, err := t.aNew(2*N(c*a), 0, 1, area2_4); err != nil {
+		if sinB, err := t.ANew(2*N(c*a), 0, 1, area2_4); err != nil {
 			return err
 		} else
-		if sinC, err := t.aNew(2*N(a*b), 0, 1, area2_4); err != nil {
+		if sinC, err := t.ANew(2*N(a*b), 0, 1, area2_4); err != nil {
 			return err
 		} else {
 			t1.sin = []*A32 { sinA, sinB, sinC }
@@ -151,7 +151,7 @@ func (t *TriF) triSinCos() error {
 func (t *TriF) triCosC(a, b, c N32) (*A32, error) {
 	den64 := 2*N(a)*N(b)
 	num64 := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
-	return t.aNew(den64, num64)
+	return t.ANew(den64, num64)
 }
 
 // triCosLaw2 return the third side (squared) cc to help later comparisons.
@@ -159,9 +159,9 @@ func (t *TriF) triCosC(a, b, c N32) (*A32, error) {
 func (t *TriF) triCosLaw2(a, b N32, cosC *A32) (*A32, error) {
 	A := N(1)
 	B := Z(a)*Z(a) + Z(b)*Z(b)
-	if aa_bb, err := t.aNew(A, B); err != nil { // a*a + b*b
+	if aa_bb, err := t.ANew(A, B); err != nil { // a*a + b*b
 		return nil, err
-	} else if ab, err := t.aNew(A, -2*Z(a)*Z(b)); err != nil { // -2a*b
+	} else if ab, err := t.ANew(A, -2*Z(a)*Z(b)); err != nil { // -2a*b
 		return nil, err
 	} else if abCosC, err := t.aMul(ab, cosC); err != nil { // -2a*b*cosC
 		return nil, err
