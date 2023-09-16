@@ -94,14 +94,14 @@ func HornsE(min, max N32, found func(a, b, c, d, e N32), den N32, num ...Z32) {
 						}
 						f := b + d
 						h := (b*d + c*c)*f - a*a*d
-						j := -(a*a*b - b*f*f + h)
+						j := -(a*a*b - b*f*f + h) // negative for hexagons!
 						na := 4*N(a)*N(b)*N(h)
 
 						zb := Z(b)*Z(e)*Z(j)
 						zd0 := Z(b)
 						zd1 := Z(b)*Z(e)*Z(e) - 4*Z(h)
 						zd2 := Z(j)*Z(j) - 4*Z(a)*Z(a)*Z(b)*Z(h)
-						if zd1 == 0 || zd2 == 0 { 
+						if zd1 == 0 || zd2 == 0 { // hexagon arcos=1/2
 							if cos, err := factory.ANew1(na, zb); err != nil {
 								// silent overflow
 							} else if cos.Equals(den, num...) {
@@ -155,7 +155,7 @@ func TestHornsAll(t *testing.T) {
 }
 
 
-func TestHornsPentagons(t *testing.T) {
+func TestHornsEPentagons(t *testing.T) {
 	max := N32(40)
 	fmt.Printf("max-lenght=%d a,b,c,d,e pentagons:\n", max)
 	i := 0
@@ -177,10 +177,10 @@ func TestHornsEHexagons(t *testing.T) {
 	i := 0
 	HornsE(min, max, func(a, b, c, d, e N32) {
 		// Interesting hexagons are those when abc triangle is not equilateral
-		if a != b && a !=c {
+		//if a != b && a !=c {
 			i++
 			fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
-		}
+		//}
 	},2,1) //  cos 60°
 }
 

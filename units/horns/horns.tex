@@ -84,10 +84,10 @@ We replace $g^2$ by $h/b$:
 \cos{F} &= \frac{a^2 + g^2 - f^2}{2ag} = \frac{a^2b - bf^2 + h}{2abg}\\
 \cos{G} &= \boxed{ \frac{e}{2g} }
 \end{align}
-Define new variable $j = a^2b - bf^2 + h$ so:
+Define new variable $j = bf^2 - a^2b - h$ so:
 \begin{align}
-j &\equiv \boxed{a^2b - bf^2 + h} &\in \bbb{Z}\\
-\cos{F} &= \frac{a^2b - bf^2 + h}{2abg} = \boxed{\frac{j}{2abg}}
+j &\equiv \boxed{bf^2 - a^2b - h} &\in \bbb{Z}\\
+\cos{F} &= \frac{a^2b - bf^2 + h}{2abg} = \boxed{\frac{-j}{2abg}}
 \end{align}
 
 We calculate cosines squares and products. Again we replace $g^2$ by $h/b$:
@@ -116,15 +116,62 @@ Extract square root to get $\sin{F}\sin{G} = \sqrt{D}/A$ where $D,A \in \bbb{Z}$
 
 We sum the angles $F$ and $G$ to get:
 \begin{align}
-F+G &\equiv \angle{B_2B_1C_1}\\
-\cos{(F+G)} &= \cos{F}\cos{G} - \sin{F}\sin{G}\\
- &= \frac{ej}{4ah} - \frac{\sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
+\cos{(F+G)} &= \frac{ej}{4ah} - \frac{\sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
  &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh} &\in \bbb{A}
 \end{align}
 
-\section{Software}
 
-\section{Examples}
+\section{Software}
+We write a general routine called \texttt{HornsE} to iterate over increasing segments
+sizes $e,a,b,c,d$ from $min$ to $max$ and filter cosines of the form $B+C\sqrt{D}/A$:
+\begin{lstlisting}
+func HornsE(min, max N32, found func(a, b, c, d, e N32), den N32, num ...Z32) {
+	factory := NewA32s()
+	for e := min; e <= max; e++ {
+		for a := min; a <= e; a++ {
+			ea := NatGCD(e, a)
+			for b := min; b <= e; b++ {
+				eab := NatGCD(ea, b)
+				for c:= min; c <= max; c++ {
+					if a >= b+c || b >= a+c || c >= a+b {
+						continue // impossible triangle abc
+					}
+					eabc := NatGCD(eab, c)
+					for d := min; d <= max; d++ {
+						if eabcd := NatGCD(eabc, d); eabcd > 1 {
+							continue // scaled repetition
+						}
+						f := b + d
+						h := (b*d + c*c)*f - a*a*d
+						j := -(a*a*b - b*f*f + h) // non zero for hexagons
+						na := 4*N(a)*N(b)*N(h)
+
+						zb := Z(b)*Z(e)*Z(j)
+						zd0 := Z(b)
+						zd1 := Z(b)*Z(e)*Z(e) - 4*Z(h)
+						zd2 := Z(j)*Z(j) - 4*Z(a)*Z(a)*Z(b)*Z(h)
+						if zd1 == 0 || zd2 == 0 { // hexagon arcos=1/2
+							if cos, err := factory.ANew1(na, zb); err != nil {
+								// silent overflow
+							} else if cos.Equals(den, num...) {
+								found(a, b, c, d, e)
+							}
+						} else if zd := zd0*zd1*zd2; zd < 0 {
+							// skip imaginary numbers
+						} else if cos, err := factory.ANew3(na, zb, 1, zd); err != nil {
+							// silent overflow
+						} else if cos.Equals(den, num...) {
+							found(a, b, c, d, e)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+\section{Polygons}
 
 \newcommand{\horns}[8]{ % size,factor,a,b,c,d,e,ang
  \begin{tikzpicture}
@@ -156,8 +203,25 @@ F+G &\equiv \angle{B_2B_1C_1}\\
  \end{tikzpicture}
 }
 
-\subsection{Hexagons examples}
+\subsection{Hexagons}
+For hexagons we call function \texttt{TestHornsEHexagons} which filters for cosine $1/2$.
+We reject later trivial cases where $a=b=c$ that is, an equilateral triangle present:
+\begin{lstlisting}
+func TestHornsEHexagons(t *testing.T) {
+	min, max := N32(0), N32(20)
+	fmt.Printf("segments min=%d max=%d a,b,c,d,e:\n", min, max)
+	i := 0
+	HornsE(min, max, func(a, b, c, d, e N32) {
+		// Interesting hexagons are those when abc triangle is not equilateral
+		if a != b && a !=c {
+			i++
+			fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+		}
+	},2,1) //  cos 60°
+}
+\end{lstlisting}
 
+For a range of sizes from $0$ to $20$ we get 16 hexagons, some non trivial:
 \begin{lstlisting}
 segments min=0 max=20 a,b,c,d,e:
   1) 3,7,5,0,10
@@ -181,10 +245,12 @@ segments min=0 max=20 a,b,c,d,e:
 
 \begin{figure}[H]
 \centering
-\scalebox{0.4}{
+\scalebox{0.3}{
  \horns{1}{5pt}{3}{7}{5}{0}{10}{60}
+ \horns{1}{5pt}{8}{13}{7}{0}{14}{60}
 }
-\caption{Hexagon size 10.}
+\caption{Trivial hexagons of size 10 and 14. $d=0$.
+We call the solutions trivial because contain triangles used by simpler hexagons search.}
 \end{figure}
 
 \begin{figure}[H]
@@ -193,29 +259,55 @@ segments min=0 max=20 a,b,c,d,e:
  \horns{1}{5pt}{3}{8}{7}{0}{13}{60}
  \horns{1}{5pt}{10}{13}{7}{0}{13}{60}
 }
-\caption{Hexagons size 13.}
-\end{figure}
-
-
-
-
-\begin{figure}[H]
-\centering
-\scalebox{0.2}{ \horns{1}{5pt}{5}{8}{7}{2}{15}{60}}
-\caption{Horns() $60^\circ$.}
+\caption{Hexagons of size 13. $d=0$. Image at the right is not trivial.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\scalebox{0.2}{ \horns{1}{5pt}{16}{14}{6}{7}{17}{60}}
-\caption{Horns() $60^\circ$.}
+\scalebox{0.25}{
+ \horns{1}{5pt}{11}{7}{7}{7}{15}{60}
+ \horns{1}{5pt}{16}{14}{6}{7}{17}{60}
+}
+\caption{Non trivial hexagons sizes 15 and 17.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.25}{
+ \horns{1}{5pt}{8}{7}{5}{7}{18}{60}
+}
+\caption{Non trivial hexagon of size 18.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\scalebox{0.22}{
+ %\horns{1}{5pt}{3}{8}{7}{3}{19}{60}
+ %\horns{1}{5pt}{5}{8}{7}{4}{19}{60}
+ \horns{1}{5pt}{7}{3}{5}{11}{19}{60}
+ \horns{1}{5pt}{7}{8}{5}{6}{19}{60}
+}
+\caption{Non trivial hexagons of sizes 19.}
 \end{figure}
 
 
+\subsection{Octagons}
 
+For octagons we call function \texttt{TestHornsEOctagons} which filters for
+cosine $\sqrt{2}/2$
+\begin{lstlisting}
+func TestHornsEOctagons(t *testing.T) {
+	min, max := N32(1), N32(40)
+	fmt.Printf("segments min=%d max=%d a,b,c,d,e:\n", min, max)
+	i := 0
+	HornsE(min, max, func(a, b, c, d, e N32) {
+		i++
+		fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+	},2,0,1,2) //  cos 45 degrees sqrt{2}/2
+}
+\end{lstlisting}
 
-\subsection{Octagons examples}
-
+For a range of segments sizes from $1$ to $40$ we get 10 solutions:
 \begin{lstlisting}
 segments min=1 max=40 a,b,c,d,e:
   1) 2,3,3,3,8
@@ -232,18 +324,18 @@ segments min=1 max=40 a,b,c,d,e:
 \end{lstlisting}
 
 \setlength{\columnsep}{2pt}
-\begin{multicols}{1}
+\begin{multicols}{2}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.4}{ \horns{1}{5pt}{2}{3}{3}{3}{8}{45}}
-\caption{Horns(2,3,3,3,8) $45^\circ$.}
+\caption{Octagon of size 8.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.3}{ \horns{1}{5pt}{3}{2}{3}{7}{12}{45}}
-\caption{Horns(3,2,3,7,12) $45^\circ$.}
+\caption{Octagon of size 12.}
 \end{figure}
 
 \end{multicols}
@@ -251,18 +343,33 @@ segments min=1 max=40 a,b,c,d,e:
 \begin{figure}[H]
 \centering
 \scalebox{0.3}{\horns{1}{5pt}{14}{9}{9}{9}{16}{45}}
-\caption{Horns(14,9,9,9,16) $45^\circ$.}
+\caption{Octagon of size 16.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{\horns{1}{5pt}{14}{11}{11}{11}{24}{45}}
 \scalebox{0.25}{\horns{1}{5pt}{21}{21}{14}{6}{24}{45}}
-\caption{Octagons. Horns(14,11,11,11,24) and (21,21,14,6,24).}
+\caption{Octagons of sizes 24.}
 \end{figure}
 
-\subsection{Dodecagons examples}
+\subsection{Dodecagons}
 
+For dodecagons we call function \texttt{TestHornsEDodecagons} which filters for
+cosine $\sqrt{3}/2$
+\begin{lstlisting}
+func TestHornsEDodecagons(t *testing.T) {
+	min, max := N32(1), N32(40)
+	fmt.Printf("segments min=%d max=%d a,b,c,d,e:\n", min, max)
+	i := 0
+	HornsE(min, max, func(a, b, c, d, e N32) {
+		i++
+		fmt.Printf("% 3d) %d,%d,%d,%d,%d\n", i, a, b, c, d, e)
+	}, 2,0,1,3) //  cos 30 degrees sqrt{3}/2
+}
+\end{lstlisting}
+
+For a range of segments $1$ to $40$ we found 9 solutions:
 \begin{lstlisting}
 segments min=1 max=40 a,b,c,d,e:
   1) 6,5,5,5,8
@@ -280,53 +387,71 @@ segments min=1 max=40 a,b,c,d,e:
 \begin{figure}[H]
 \centering
 \scalebox{0.4}{ \horns{1}{5pt}{6}{5}{5}{5}{8}{30}}
-\caption{Dodecagon: Horns(6,5,5,5,8).}
+\caption{Dodecagon of size 8.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{4}{13}{21}{20}{30}}
-\caption{ Dodecagons. Horns (15,4,13,21,20). Special case $d > e$.}
+\caption{Dodecagon of size 20. Special case $d > e$.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{9}{12}{16}{20}{30}}
-\caption{ Dodecagons. Horns (15,9,12,16,20).
-}
+\caption{Dodecagon of size 20.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{14}{13}{11}{20}{30}}
-\caption{ Dodecagons. Horns (15,14,13,11,20).
-}
+\caption{Dodecagon of size 20.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.25}{ \horns{1}{5pt}{15}{18}{15}{7}{20}{30}}
-\caption{ Dodecagons. Horns (15,18,15,7,20).
-}
+\caption{Dodecagon of size 20.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.2}{ \horns{1}{5pt}{10}{13}{13}{13}{24}{30}}
-\caption{Dodecagon. Horns(10,13,13,13,24).}
+\caption{Dodecagon of size 24.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.2}{ \horns{1}{5pt}{21}{10}{17}{25}{28}{30}}
-\caption{Dodecagon. Horns(21,10,17,25,28).}
+\caption{Dodecagon of size 28.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \scalebox{0.2}{ \horns{1}{5pt}{16}{17}{17}{17}{30}{30}}
-\caption{Dodecagon. Horns(16,17,17,17,30).}
+\caption{Dodecagon of size 30.}
 \end{figure}
+
+\section{Algebra simplifications}
+If $be^2 = 4h$ then:
+\begin{align}
+\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
+ &= \frac{bej}{4abh} = \frac{bej}{ab(be^2)} = \frac{j}{abe}\nonumber\\
+ &= \frac{bf^2 - a^2b - h}{abe}
+\end{align}
+
+\subsection{Simple formula por octagons and dodecagons}
+If $j = 0$ then:
+\begin{align}
+\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
+ &= \frac{-\sqrt{b(be^2-4h)(-4a^2bh)}}{4abh}\nonumber\\
+ &= \frac{-2ab\sqrt{(be^2-4h)(-h)}}{4abh}\nonumber\\
+ &= \frac{-\sqrt{h(4h-be^2)}}{2h}\\
+ j &= 0 \implies h = bf^2 - a^2b
+\end{align}
+So $\cos{(F+G)}$ is in the form $\sqrt{D}/A$ and we can look for octagons and
+dodecagons since they have as cosines $\sqrt{2}/2$ and $\sqrt{3}/2$ respectivelly.
+
 
 
 
