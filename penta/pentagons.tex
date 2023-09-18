@@ -51,40 +51,39 @@ d = \overline{CI}
 \end{align*}
 
 By the figure the angles $\angle{LBC}$ and $\angle{JFI}$ are equal to $2\pi / 5$ so:
-\begin{align*}
-\alpha &= \frac{2\pi}{5}\\
+\begin{align}
+\alpha &\equiv \frac{2\pi}{5}\\
 \overline{BL} &= a\cos{\alpha}\\
 \overline{CL} &= a\sin{\alpha}\\
 \overline{FJ} &= c\cos{\alpha}\\
 \overline{IJ} &= c\sin{\alpha}
-\end{align*}
+\end{align}
 
 For type 1 we have four variables and one angle. Let calculate $d$ in function of $a$, $b$ and $c$:
-\begin{align*}
-d^2 &= (\overline{CI})^2\\
-    &= (\overline{CK})^2 + (\overline{IK})^2\\
-    &= (\overline{BL} + \overline{BF} + \overline{FJ})^2 + (\overline{CL} - \overline{IJ})^2\\
-    &= (a\cos{\alpha} + b + c\cos{\alpha})^2 + (a\sin{\alpha} - c\sin{\alpha})^2\\
-    &= ((a+c)\cos{\alpha} + b)^2 + ((a-c)\sin{\alpha})^2\\
-    &= (a+c)^2\cos^2{\alpha} + 2(a+c)b\cos{\alpha} + b^2 + (a-c)^2\sin^2{\alpha}\\
-    &= (a^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2\\
-    &= (a^2+c^2) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2\\
-\end{align*}
+\begin{align}
+d^2 &= (\overline{CI})^2 = (\overline{CK})^2 + (\overline{IK})^2\\
+    &= (\overline{BL} + \overline{BF} + \overline{FJ})^2 + (\overline{CL} - \overline{IJ})^2 \nonumber\\
+    &= (a\cos{\alpha} + b + c\cos{\alpha})^2 + (a\sin{\alpha} - c\sin{\alpha})^2 \nonumber\\
+    &= ((a+c)\cos{\alpha} + b)^2 + ((a-c)\sin{\alpha})^2 \nonumber\\
+    &= (a+c)^2\cos^2{\alpha} + 2(a+c)b\cos{\alpha} + b^2 + (a-c)^2\sin^2{\alpha} \nonumber\\
+    &= (a^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2 \nonumber\\
+    &= (a^2+c^2) + 2ac(cos^2{\alpha}-\sin^2{\alpha})+ 2(a+c)b\cos{\alpha} + b^2
+\end{align}
 
 For $\alpha = 2\pi / 5$ we will use the following common pentagon identities:
-\begin{align*}
+\begin{align}
 cos{\alpha}   &= \frac{-1 + \sqrt{5}}{4} \\
 cos^2{\alpha} &= \frac{{ 3 - \sqrt{5}}}{8} \\
 sin^2{\alpha} &= \frac{5 + \sqrt{5}}{8} \\
 cos^2{\alpha} - sin^2{\alpha} &= -\frac{1 + \sqrt{5}}{4}
-\end{align*}
+\end{align}
 
 Applying the identities to the last equation of $d$ we get:
-\begin{align*}
-d^2 &= a^2 + c^2 - (\frac{1 + \sqrt{5}}{2})ac + (\frac{-1 + \sqrt{5}}{2})(a+c)b + b^2\\
-    &= a^2 + c^2 - \frac{ac}{2} - \frac{(a+c)b}{2} + b^2 + [- \frac{ac}{2} + \frac{(a+c)b}{2}]\sqrt{5}\\
-    &= a^2 + b^2 + c^2 - \frac{ac + (a+c)b}{2} + [\frac{-ac + (a+c)b}{2}]\sqrt{5}
-\end{align*}
+\begin{align}
+d^2 &= a^2 + c^2 - \left(\frac{1 + \sqrt{5}}{2}\right)ac + \left(\frac{-1 + \sqrt{5}}{2}\right)(a+c)b + b^2 \nonumber\\
+    &= a^2 + c^2 - \frac{ac}{2} - \frac{(a+c)b}{2} + b^2 + \left(- \frac{ac}{2} + \frac{(a+c)b}{2}\right)\sqrt{5} \nonumber\\
+    &= a^2 + b^2 + c^2 - \frac{ac + (a+c)b}{2} + \left(\frac{-ac + (a+c)b}{2}\right)\sqrt{5}
+\end{align}
 
 Let define two variables $p$ and $q$ such that $d^2 = p + q\sqrt{5}$ so we have:
 \begin{align*}
@@ -99,12 +98,11 @@ For a meccano pentagon we need $d$ to be an integer. If we let the integer $q > 
 
 So before calculating $d$, we \textbf{need} to force the condition $q = 0$ which is 
 equivalent to make $-ac + (a+c)b = 0$:
-\begin{align*}
-a  & > b\\
-a  & > c\\
+\begin{align}
+a  & > b, \qquad a > c\\
 ac &= (a + c)b\\
  d &= \sqrt{a^2 + b^2 + c^2 + ac}
-\end{align*}
+\end{align}
 
 \subsection{Type 1 program}
 
@@ -191,84 +189,68 @@ e = \overline{KL}
 \end{align*}
 
 
-From the figure the angles $\angle{NBC}$ and $\angle{MAH}$ are equal to $2\pi / 5$ and
-angle $\angle{PLH}$ is equal to $\pi / 5$ so:
-\begin{align*}
-\alpha &= \frac{2\pi}{5}\\
-\overline{BN} &= b\cos{\alpha}\\
-\overline{KN} &= b\sin{\alpha}\\
-\overline{AM} &= c\cos{\alpha}\\
-\overline{HM} &= c\sin{\alpha}\\
-\beta &= \frac{\pi}{5}\\
-\overline{LP} &= d\cos{\beta}\\
-\overline{HP} &= d\sin{\beta}
-\end{align*}
+From the figure we note the $\angle{NBC} = 2\pi/5$ and $\angle{MAH} = \pi/5$ so we have:
+\begin{align}
+\alpha &= \frac{2\pi}{5}, \qquad\beta = \frac{\pi}{5}\\
+\overline{BN} &= b\cos{\alpha}, \quad \overline{KN} = b\sin{\alpha}\\
+\overline{AM} &= c\cos{\alpha}, \quad \overline{HM} = c\sin{\alpha}\\
+\overline{LP} &= d\cos{\beta}, \quad \overline{HP} = d\sin{\beta}
+\end{align}
 
-Our goal is to find $e$ as integer as funcion of variables $a$, $b$, $c$ and $d$.
+We express $e$ as a funcion of variables $a$, $b$, $c$ and $d$.
 $e^2$ equals $(\overline{KO})^2 + (\overline{LO})^2$ so we first calculate 
 $\overline{KO}$ and $\overline{LO}$. From figure \ref{fig:type-2}:
-\begin{align*}
-\overline{KO} &= \overline{AM} + \overline{AB} + \overline{BN} - \overline{LP}\\
-              &= b\cos{\alpha} + a + c\cos{\alpha} - d\cos{\beta}\\
+\begin{align}
+\overline{KO} &= \overline{AM} + \overline{AB} + \overline{BN} - \overline{LP} \nonumber\\
+              &= b\cos{\alpha} + a + c\cos{\alpha} - d\cos{\beta} \nonumber\\
               &= (b+c)\cos{\alpha} + a  - d\cos{\beta}\\
-\overline{LO} &= \overline{KN} - \overline{HM} - \overline{HP}\\
-              &= c\sin{\alpha} - b\sin{\alpha} - d\sin{\beta}\\
+\overline{LO} &= \overline{KN} - \overline{HM} - \overline{HP} \nonumber\\
+              &= c\sin{\alpha} - b\sin{\alpha} - d\sin{\beta} \nonumber\\
               &= (c-b)\sin{\alpha} - d\sin{\beta}
-\end{align*}
+\end{align}
 
 So by adding the squares we get:
-\begin{align*}
-e^2 &= (\overline{KO})^2 + (\overline{LO})^2\\
-    &= ((b+c)\cos{\alpha})^2 + 2(b+c)\cos{\alpha}(a - d\cos{\beta}) + (a - d\cos{\beta})^2\\
-    &\qquad + ((c-b)\sin{\alpha})^2 - 2(c-b)\sin{\alpha}d\sin{\beta} + (d\sin{\beta})^2\\
-    &= (b^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2bc(cos^2{\alpha}-sin^2{\alpha})\\
-    &\qquad + 2a(b+c)cos{\alpha} - 2(b+c)d\cos{\alpha}\cos{\beta} - 2(c-b)d\sin{\alpha}\sin{\beta}\\
-    &\qquad + a^2 - 2ad\cos{\beta} + d^2(\cos^2{\beta} + \sin^2{\beta})
-\end{align*}
+\begin{align}
+e^2 &= (\overline{KO})^2 + (\overline{LO})^2 \nonumber\\
+ &= ((b+c)\cos{\alpha})^2 + 2(b+c)\cos{\alpha}(a - d\cos{\beta}) + (a - d\cos{\beta})^2 \nonumber\\
+  &\qquad + ((c-b)\sin{\alpha})^2 - 2(c-b)\sin{\alpha}d\sin{\beta} + (d\sin{\beta})^2 \nonumber\\
+ &= (b^2+c^2)(cos^2{\alpha}+sin^2{\alpha}) + 2bc(cos^2{\alpha}-sin^2{\alpha}) \nonumber\\
+  &\qquad + 2a(b+c)cos{\alpha} - 2(b+c)d\cos{\alpha}\cos{\beta} - 2(c-b)d\sin{\alpha}\sin{\beta} \nonumber\\
+  &\qquad + a^2 - 2ad\cos{\beta} + d^2(\cos^2{\beta} + \sin^2{\beta}) \nonumber\\
+ &= a^2+b^2+c^2+d^2 + 2bc\cos{(2\alpha)} \nonumber\\
+  &\qquad + 2a(b+c)\cos{\alpha} - 2(b+c)d\cos{\alpha}\cos{\beta} - 2(c-b)d\sin{\alpha}\sin{\beta} - 2ad\cos{\beta} \nonumber\\
+ &= a^2+b^2+c^2+d^2 + 2bc\cos{(2\alpha)} + 2a(b+c)\cos{\alpha} \nonumber\\
+  &\qquad- 2((b+c)\cos{\alpha}\cos{\beta} + (c-b)\sin{\alpha}\sin{\beta} +a\cos{\beta})d \nonumber\\
+ &= \boxed{a^2+b^2+c^2+d^2 + 2bc\cos{(2\alpha)} + 2a(b+c)\cos{\alpha} - 2(b\cos{(\alpha+\beta)} + c\cos{(\alpha-\beta)} +a\cos{\beta})d} \end{align}
 
-We will use the following pentagon identities for angles $\alpha = 2\pi/5$ and $\beta = \pi/5$:
-\begin{align*}
-\cos^2{\alpha} - \sin^2{\alpha} &= -\frac{1 + \sqrt{5}}{4}\\
-                   \cos{\alpha} &= \frac{-1+\sqrt{5}}{4}\\
-        \cos{\alpha}\cos{\beta} &= \frac{1}{4}\\
-        \sin{\alpha}\sin{\beta} &= \frac{\sqrt{5}}{4}\\
-                    \cos{\beta} &= \frac{1+\sqrt{5}}{4}
-\end{align*}
+We will use the following identities for angles $\alpha = 2\pi/5$ and $\beta = \pi/5$:
+\begin{align}
+2\cos{\alpha} &= \frac{-1+\sqrt{5}}{2} \\
+2\cos{\beta} &= \frac{1+\sqrt{5}}{2} = 2\cos{(\alpha-\beta)} \\
+2\cos{(2\alpha)} &= -2\cos{\beta} \\
+2\cos{(\alpha+\beta)} &= -2\cos{\alpha}
+\end{align}
 
-Replace the identities:
-\begin{align*}
-e^2 &= (b^2+c^2)(1) + 2bc(-\frac{1 + \sqrt{5}}{4})\\
-    &\qquad + 2a(b+c)(\frac{-1+\sqrt{5}}{4}) - 2(b+c)d(\frac{1}{4}) - 2(c-b)d(\frac{\sqrt{5}}{4})\\
-    &\qquad + a^2 - 2ad(\frac{1+\sqrt{5}}{4}) + d^2(1)\\
-    &= b^2+c^2 - bc(\frac{1 + \sqrt{5}}{2})\\
-    &\qquad + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (b+c)d(\frac{1}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
-    &\qquad + a^2 - ad(\frac{1+\sqrt{5}}{2}) + d^2
-\end{align*}
-Simplify:
-\begin{align*}
-e^2 &= a^2+b^2+c^2 + d^2 - (b+c)d(\frac{1}{2}) \\
-    &\qquad - (ad+bc)(\frac{1 + \sqrt{5}}{2}) + a(b+c)(\frac{-1+\sqrt{5}}{2}) - (c-b)d(\frac{\sqrt{5}}{2})\\
-    &= a^2+b^2+c^2 + d^2 - \frac{(b+c)d}{2} \\
-    &\qquad - \frac{(ad+bc)(1 + \sqrt{5})}{2} + \frac{a(b+c)(-1+\sqrt{5})}{2} - \frac{(c-b)d\sqrt{5}}{2}
-\end{align*}
+We replace identities in $e^2$ equation:
+\begin{align}
+e^2 &= a^2+b^2+c^2+d^2 + bc\left(\frac{-1-\sqrt{5}}{2}\right) + a(b+c)\left(\frac{-1+\sqrt{5}}{2}\right) \nonumber\\
+&\quad - bd\left(\frac{1-\sqrt{5}}{2}\right) - cd\left(\frac{1+\sqrt{5}}{2}\right) - ad\left(\frac{1+\sqrt{5}}{2}\right) \nonumber\\
+ &= a^2+b^2+c^2+d^2 - \frac{bc+ab+ac+bd+cd+ad}{2} + \frac{-bc+ab+ac+bd-cd-ad}{2}\sqrt{5} \nonumber\\
+ &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+cd}{2} + \frac{(a-b)(c-d)+ab-cd}{2}\sqrt{5}
+\end{align}
 
 Let define two variables $p$ and $q$ such that $e^2 = p + q\sqrt{5}$:
 \begin{align*}
-p &= a^2+b^2+c^2 + d^2 - \frac{(b+c)d}{2} - \frac{ad+bc}{2} + \frac{-a(b+c)}{2}\\
-  &= a^2+b^2+c^2 + d^2 - \frac{bd +cd +ad +bc +ab + ac}{2}\\
-  &= a^2+b^2+c^2 + d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
-q &= - \frac{ad+bc}{2} + \frac{a(b+c)}{2} - \frac{(c-b)d}{2}\\
-  &= \frac{-ad - bc + ab + ac - cd + bd}{2}\\
-  &= \frac{(a-b)(c-d) + ab - cd}{2}
+p &\equiv a^2+b^2+c^2 + d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
+q &\equiv \frac{(a-b)(c-d) + ab - cd}{2}
 \end{align*}
 
 For a meccano pentagon we need $e$ to be an integer. If we let the integer $q > 0$ then $e = \sqrt{p + q\sqrt{5}}$ will never be an integer for $p$ and $q$ integers. If we force $q$ to be zero then $e = \sqrt{p}$ has possibilities to be an integer.
 So before calculating $e$ we \textbf{need} to force the condition that $q = 0$ or that is the same $cd = (a-b)(c-d)+ab$:
-\begin{align*}
-a  & > b\\
-a  & > c\\
-cd &= (a-b)(c-d)+ab\\
-\end{align*}
+\begin{align}
+a  & > b, \qquad a > c\\
+cd &= (a-b)(c-d)+ab
+\end{align}
 
 We can use this $cd$ value to simplify $p$:
 \begin{align*}
@@ -278,14 +260,14 @@ p &= a^2+b^2+c^2+d^2 - \frac{(a+b)(c+d)+ab+cd}{2}\\
 \end{align*}
 
 So finally, when $q=0$ we calculate $e = \sqrt{p}$ expecting to be an integer:
-\begin{align*}
-e &= \sqrt{a^2 + b^2 + c^2 + d^2 -ac -bd - ab}
-\end{align*}
+\begin{align}
+\boxed{ e = \sqrt{a^2 + b^2 + c^2 + d^2 -ac -bd - ab} }
+\end{align}
 
 Another solution is:
-\begin{align*}
+\begin{align}
 e &= \sqrt{a^2 + b^2 + c^2 + d^2 -ad -bc - cd}
-\end{align*}
+\end{align}
 
 
 \subsection{Type 2 first program}
