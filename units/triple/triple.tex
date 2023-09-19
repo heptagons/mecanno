@@ -54,11 +54,14 @@ Triple unis has been using to build the pentagon type 2 mentioned in pentagons p
 \label{fig:triple}
 \end{figure}
 
-From the fig \ref{fig:triple} we have:
+From nodes $A$ and $B$ of fig \ref{fig:triple} we get $\alpha$ from $\theta$ ($\pi = 180^\circ$):
 \begin{align}
-\theta &= \pi - \alpha & \texttt{in nodes } A, B \\
-\theta &= \alpha + \beta & \texttt{in node } H \\
-\alpha &= \pi - \theta \\
+\theta &= \pi - \alpha \nonumber\\
+\alpha &= \pi - \theta
+\end{align}
+And from node $H$ we get $\beta$ from $\theta$:
+\begin{align}
+\theta &= \alpha + \beta \nonumber\\
 \beta &= \theta - \alpha = \theta - (\pi - \theta) = 2\theta - \pi
 \end{align}
 
@@ -83,11 +86,23 @@ And vertical segment $\overline{OL}$:
 So we can express $e$ in function of $a,b,c,d$ and angles $\alpha,\beta$:
 \begin{align}
 e^2 &= (\overline{OK})^2 + (\overline{OL})^2 \nonumber\\
- &= (a - (b+c)\cos{\theta} + d\cos{(2\theta)})^2 + ((c-b)\sin{\theta} - d\sin{(2\theta)})^2 \nonumber\\
+ &= (a - (b+c)\cos{\theta} +d\cos{(2\theta)})^2 +((c-b)\sin{\theta} -d\sin{(2\theta)})^2 \nonumber\\
  &= a^2 + (b^2+2bc+c^2)\cos^2{\theta} + d^2\cos^2{(2\theta)}
-  -2a(b+c)\cos{\theta} + 2ad\cos{(2\theta)} - 2(b+c)d\cos{\theta}\cos{(2\theta)} \nonumber\\
-  &\qquad (c^2-2cb+b^2)\sin^2{\theta} - 2(c-b)d\sin{\theta}\sin{(2\theta)} + d^2\sin^2{(2\theta)} \nonumber \\
- &= a^2 + (b^2+c^2)(cos^2{\theta}+sin^2{\theta}) +d^2(cos^2{(2\theta)}+sin^2{(2\theta)})
+  -2a(b+c)\cos{\theta} +2ad\cos{(2\theta)} -2(b+c)d\cos{\theta}\cos{(2\theta)} \nonumber\\
+  &\qquad (c^2-2bc+b^2)\sin^2{\theta} -2(c-b)d\sin{\theta}\sin{(2\theta)} +d^2\sin^2{(2\theta)} \nonumber \\
+ &= a^2 + (b^2+c^2)(cos^2{\theta}+sin^2{\theta}) +d^2(cos^2{(2\theta)}+sin^2{(2\theta)}) \nonumber\\
+  &\qquad +2bc\cos^2{\theta}-2a(b+c)\cos{\theta} +2ad\cos{(2\theta)} -2(b+c)d\cos{\theta}\cos{(2\theta)}
+  -2bc\sin^2{\theta}-2(c-b)d\sin{\theta}\sin{(2\theta)} \nonumber\\
+ &= a^2 +b^2 +c^2 + d^2 + 2bc(\cos^2{\theta}-\sin^2{\theta}) -2a(b+c)\cos{\theta} +2ad\cos{(2\theta)} \nonumber\\
+ &\qquad -2(b+c)d\cos{\theta}\cos{(2\theta)}
+  -2(c-b)d\sin{\theta}\sin{(2\theta)} \nonumber\\
+ &= a^2 +b^2 +c^2 + d^2 + 2bc\cos{(2\theta)} -2a(b+c)\cos{\theta} +2ad\cos{(2\theta)} \nonumber\\
+ &\qquad -2bd(\cos\theta\cos(2\theta)-sin\theta\sin(2\theta)) \nonumber
+  -2cd(\cos\theta\cos(2\theta)+sin\theta\sin(2\theta)) \nonumber\\
+ &= a^2 +b^2 +c^2 + d^2 + 2(bc+ad)\cos{(2\theta)} -2a(b+c)\cos{\theta} \nonumber\\
+ &\qquad -2bd\cos(\theta+2\theta) -2cd\cos(\theta-2\theta) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 +2(bc+ad)\cos{(2\theta)} -2(ab+ac)\cos{\theta} -2bd\cos(3\theta) -2cd\cos(-\theta) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+cd)\cos{\theta} +2(bc+ad)\cos{(2\theta)} -2bd\cos(3\theta)
 \end{align}
 
 
