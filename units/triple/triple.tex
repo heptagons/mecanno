@@ -24,30 +24,72 @@ Triple unis has been using to build the pentagon type 2 mentioned in pentagons p
 \draw[black,thick] (0,0)
 -- node[below] {$a$} ++(8,0) node[below]{B}
 -- node[below,right] {$c$} ++(4,6) node[right]{K}
--- node[below] {$e$} ++(-11,-1) node[above]{L}
+-- node[below] {$e$} ++(-11,-1) node[right,below]{L}
 -- node[below] {$d$} ++(-3,-2) node[left]{H}
 -- node[right] {$b$} cycle node[below]{A};
 \draw[cyan] (0,0)
 -- ++(-2,0) node[below,left] {M}
 -- ++(0,3)
 -- ++(0,2) node[above,left] {P}
--- ++(3,0);
+-- ++(3,0)
+-- ++(0,1) node[above] {O}
+-- ++(11,0);
 \draw[cyan] (8,0)
 -- ++(4,0) node[below,right] {N}
 -- ++(0,6);
 
 \draw[orange] (0,0)+(-1,0)
  arc(180:180-atan(3/2):1) node[midway,above,left,blue] {$\alpha$}
- arc(180-atan(3/2):0:1) node[midway,above,right,blue] {$\theta$};
+ arc(180-atan(3/2):0:1) node[above,blue,pos=0.7] {$\theta$};
 \draw[orange] (8,0)+(-1,0)
- arc(180:atan(3/2):1) node[midway,above,left,blue] {$\theta$}
+ arc(180:atan(3/2):1) node[above,blue,pos=0.5] {$\theta$}
  arc(atan(3/2):0:1) node[midway,above,right,blue] {$\alpha$};
-%\draw[orange] (-2,3)+(-1.2,1.2)
- 
-
+\draw[orange] (-2,3)+(0.832,0.554) %sin(atan(3/2),cos(atan(3/2))
+ arc(atan(2/3):-atan(3/2):1) node[right,blue,pos=0.7] {$\theta$};
+\draw[orange] (1,5)+(-0.832,-0.554)
+ arc(180+atan(2/3):180:1) node[left,blue,pos=0.1] {$\beta$};
 \end{scope}
 \end{tikzpicture}
 \caption{Triple unit has five strips $a,b,c,d,e$}
 \label{fig:triple}
 \end{figure}
+
+From the fig \ref{fig:triple} we have:
+\begin{align}
+\theta &= \pi - \alpha & \texttt{in nodes } A, B \\
+\theta &= \alpha + \beta & \texttt{in node } H \\
+\alpha &= \pi - \theta \\
+\beta &= \theta - \alpha = \theta - (\pi - \theta) = 2\theta - \pi
+\end{align}
+
+We calculate horizontal segment $\overline{OK}$:
+\begin{align}
+\overline{OK} &= \overline{MA} + a + \overline{BN} - \overline{PL} \nonumber\\
+ &= b\cos{\alpha} + a + c\cos{\alpha} - d\cos{\beta} \nonumber\\
+ &= a + (b+c)\cos{\alpha} - d\cos{\beta} \nonumber\\
+ &= a + (b+c)\cos{(\pi-\theta)} - d\cos{(2\theta - \pi)} \nonumber\\
+ &= a - (b+c)\cos{\theta} + d\cos{(2\theta)}
+\end{align} 
+
+And vertical segment $\overline{OL}$:
+\begin{align}
+\overline{OL} &= \overline{KN} - \overline{PH} - \overline{HM} \nonumber\\
+ &= c\sin{\alpha} - d\sin{\beta} - b\sin{\alpha} \nonumber\\
+ &= (c-b)\sin{\alpha} - d\sin{\beta} \nonumber\\
+ &= (c-b)\sin{(\pi-\theta)} - d\sin{(2\theta-\pi)} \nonumber\\
+ &= (c-b)\sin{\theta} - d\sin{(2\theta)}
+\end{align}
+
+So we can express $e$ in function of $a,b,c,d$ and angles $\alpha,\beta$:
+\begin{align}
+e^2 &= (\overline{OK})^2 + (\overline{OL})^2 \nonumber\\
+ &= (a - (b+c)\cos{\theta} + d\cos{(2\theta)})^2 + ((c-b)\sin{\theta} - d\sin{(2\theta)})^2 \nonumber\\
+ &= a^2 + (b^2+2bc+c^2)\cos^2{\theta} + d^2\cos^2{(2\theta)}
+  -2a(b+c)\cos{\theta} + 2ad\cos{(2\theta)} - 2(b+c)d\cos{\theta}\cos{(2\theta)} \nonumber\\
+  &\qquad (c^2-2cb+b^2)\sin^2{\theta} - 2(c-b)d\sin{\theta}\sin{(2\theta)} + d^2\sin^2{(2\theta)} \nonumber \\
+ &= a^2 + (b^2+c^2)(cos^2{\theta}+sin^2{\theta}) +d^2(cos^2{(2\theta)}+sin^2{(2\theta)})
+\end{align}
+
+
+
 \end{document}
