@@ -189,16 +189,16 @@ e = \overline{KL}
 \end{align*}
 
 
-From the figure we note the $\angle{NBC} = 2\pi/5$ and $\angle{MAH} = \pi/5$ so we have:
+From the figure we find two different angles $\alpha$ and $\beta$:
 \begin{align}
-\alpha &= \frac{2\pi}{5}, \qquad\beta = \frac{\pi}{5}\\
+\alpha &\equiv \angle{NBK} = \angle{MAH}\\
+\beta  &\equiv \angle{HLP}\\
 \overline{BN} &= b\cos{\alpha}, \quad \overline{KN} = b\sin{\alpha}\\
 \overline{AM} &= c\cos{\alpha}, \quad \overline{HM} = c\sin{\alpha}\\
 \overline{LP} &= d\cos{\beta}, \quad \overline{HP} = d\sin{\beta}
 \end{align}
 
-We express $e$ as a funcion of variables $a$, $b$, $c$ and $d$.
-$e^2$ equals $(\overline{KO})^2 + (\overline{LO})^2$ so we first calculate 
+We will calculate $e$ from variables $a$, $b$, $c$ and $d$. We first calculate 
 $\overline{KO}$ and $\overline{LO}$. From figure \ref{fig:type-2}:
 \begin{align}
 \overline{KO} &= \overline{AM} + \overline{AB} + \overline{BN} - \overline{LP} \nonumber\\
@@ -209,7 +209,7 @@ $\overline{KO}$ and $\overline{LO}$. From figure \ref{fig:type-2}:
               &= (c-b)\sin{\alpha} - d\sin{\beta}
 \end{align}
 
-So by adding the squares we get:
+So by adding the squares we get the segment $e$ squared:
 \begin{align}
 e^2 &= (\overline{KO})^2 + (\overline{LO})^2 \nonumber\\
  &= ((b+c)\cos{\alpha})^2 + 2(b+c)\cos{\alpha}(a - d\cos{\beta}) + (a - d\cos{\beta})^2 \nonumber\\
@@ -223,7 +223,7 @@ e^2 &= (\overline{KO})^2 + (\overline{LO})^2 \nonumber\\
   &\qquad- 2((b+c)\cos{\alpha}\cos{\beta} + (c-b)\sin{\alpha}\sin{\beta} +a\cos{\beta})d \nonumber\\
  &= \boxed{a^2+b^2+c^2+d^2 + 2bc\cos{(2\alpha)} + 2a(b+c)\cos{\alpha} - 2(b\cos{(\alpha+\beta)} + c\cos{(\alpha-\beta)} +a\cos{\beta})d} \end{align}
 
-We will use the following identities for angles $\alpha = 2\pi/5$ and $\beta = \pi/5$:
+For the regular pentagon $\alpha = 2\pi/5$ and $\beta = \pi/5$ and we have exact cosines:
 \begin{align}
 2\cos{\alpha} &= \frac{-1+\sqrt{5}}{2} \\
 2\cos{\beta} &= \frac{1+\sqrt{5}}{2} = 2\cos{(\alpha-\beta)} \\
@@ -231,7 +231,7 @@ We will use the following identities for angles $\alpha = 2\pi/5$ and $\beta = \
 2\cos{(\alpha+\beta)} &= -2\cos{\alpha}
 \end{align}
 
-We replace identities in $e^2$ equation:
+We replace the cosines in the $e^2$ equation:
 \begin{align}
 e^2 &= a^2+b^2+c^2+d^2 + bc\left(\frac{-1-\sqrt{5}}{2}\right) + a(b+c)\left(\frac{-1+\sqrt{5}}{2}\right) \nonumber\\
 &\quad - bd\left(\frac{1-\sqrt{5}}{2}\right) - cd\left(\frac{1+\sqrt{5}}{2}\right) - ad\left(\frac{1+\sqrt{5}}{2}\right) \nonumber\\
