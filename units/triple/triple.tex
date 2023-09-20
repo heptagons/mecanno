@@ -233,9 +233,10 @@ The results has related pairs and there are several ways to build an hexagon fro
 \def\x{0.5}
 \def\y{0.866}
 \begin{scope}[scale=0.3]
-\begin{scope}[shift={(0,0)}]
-\draw[black,fill=black](-1*\x,1*\y)
- -- node[left] {1} ++(1*\x,-1*\y) circle(5pt)
+
+\begin{scope}[shift={(0,0)}] %row-1 col-2
+\draw[black](10,0) node{$(a)$};
+\draw[black,fill=black](0,0)
  -- node[below] {7} ++(7,0) circle(5pt)
  -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
  -- node[right] {5} ++(5*\x,5*\y) circle(5pt)
@@ -245,15 +246,113 @@ The results has related pairs and there are several ways to build an hexagon fro
  -- node[left] {1} ++(-\x,-\y) circle(5pt)
  -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
  -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
- -- node[left] {6} ++(+6*\x,+6*\y) circle(5pt)
- -- node[left] {6} ++(-6*\x,+6*\y) circle(5pt);
-\draw[red] (5*\x,7*\y) -- node[above] {7} (7+2*\x,2*\y);
+ -- node[left] {1} ++(\x, -\y) circle(5pt);
+\draw[blue] (-1*\x,+1*\y) -- node[left] {6} ++(6*\x,6*\y);
+\draw[blue] (5*\x,7*\y) -- node[left] {6} ++(-6*\x,6*\y);
+\draw[red,fill=red] (5*\x,7*\y) circle(5pt) -- node[below] {7} (7+2*\x,2*\y);
 \draw[red] (5*\x,7*\y) -- node[above] {7} (7+2*\x,12*\y);
 \end{scope}
+
+\begin{scope}[shift={(18,0)}] %row-1 col-2
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {6} ++(6*\x,6*\y) circle(5pt)
+ -- node[right] {1} ++(1*\x,1*\y) circle(5pt)
+ -- node[right] {5} ++(-5*\x,5*\y) circle(5pt)
+ -- node[right] {2} ++(-2*\x,2*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {1} ++(-\x,-\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left] {1} ++(\x, -\y) circle(5pt);
+\draw[blue] (-1*\x,+1*\y) -- node[left] {6} ++(6*\x,6*\y);
+\draw[blue] (5*\x,7*\y) -- node[left] {6} ++(-6*\x,6*\y);
+\draw[red,fill=red] (5*\x,7*\y) circle(5pt) -- node[below] {7} (7+6*\x,6*\y);
+\draw[red] (5*\x,7*\y) -- node[above] {7} (7+2*\x,12*\y);
+\end{scope}
+
+\begin{scope}[shift={(36,0)}] %row-1 col-3
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
+ -- node[right] {4} ++(4*\x,4*\y) circle(5pt)
+ -- node[right] {1} ++(1*\x,1*\y) circle(5pt)
+ -- node[right] {7} ++(-7*\x,7*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {1} ++(-\x,-\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left] {1} ++(\x, -\y) circle(5pt);
+\draw[blue] (-1*\x,+1*\y) -- node[left] {6} ++(6*\x,6*\y);
+\draw[blue] (5*\x,7*\y) -- node[left] {6} ++(-6*\x,6*\y);
+\draw[red,fill=red] (5*\x,7*\y) circle(5pt) -- node[below] {7} (7+2*\x,2*\y);
+\draw[red,fill=red] (5*\x,7*\y) circle(5pt) -- node[above] {7} (7+6*\x,6*\y);
+\end{scope}
+
+\begin{scope}[shift={(0,-18)}] %row-2 col-1
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
+ -- node[right] {7} ++(-7*\x,7*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {1} ++(-\x,-\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left] {1} ++(\x, -\y) circle(5pt);
+\draw[blue,fill=blue] (-1*\x,+1*\y)
+ -- node[left] {4} ++(4*\x,4*\y) circle(5pt)
+ -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
+ -- node[right] {2} ++(-2*\x,2*\y) circle(5pt)
+ -- node[left] {4} ++(-4*\x,4*\y);
+\draw[red] (3*\x,5*\y) -- node[below] {7} (7,0);
+\draw[red] (3*\x,9*\y) -- node[above] {7} (7,14*\y);
+\end{scope}
+
+\begin{scope}[shift={(18,-18)}] %row-2 col-2
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
+ -- node[right] {7} ++(-7*\x,7*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {1} ++(-\x,-\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left] {1} ++(\x, -\y) circle(5pt);
+\draw[blue,fill=blue] (-1*\x,+1*\y)
+ -- node[left] {5} ++(5*\x,5*\y) circle(5pt)
+ -- node[left] {1} ++(1*\x,1*\y) circle(5pt)
+ -- node[left] {1} ++(-1*\x,1*\y) circle(5pt)
+ -- node[left] {5} ++(-5*\x,5*\y);
+\draw[red] (4*\x,6*\y) -- node[below] {7} (7+7*\x,7*\y);
+\draw[red] (4*\x,8*\y) -- node[above] {7} (7+7*\x,7*\y);
+\end{scope}
+
+\begin{scope}[shift={(36,-18)}] %row-2 col-3
+\draw[black,fill=black](0,0)
+ -- node[below]{7} ++(7,0) circle(5pt)
+ -- node[right]{3} ++(3*\x,3*\y) circle(5pt)
+ -- node[right]{4} ++(4*\x,4*\y) circle(5pt)
+ -- node[right]{4} ++(-4*\x,4*\y) circle(5pt)%
+ -- node[right]{3} ++(-3*\x,3*\y) circle(5pt)%
+ -- node[above]{7} ++(-7,0) circle(5pt)
+ -- node[left]{1} ++(-\x,-\y) circle(5pt)
+ -- node[left]{6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left]{6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left]{1} ++(\x, -\y) circle(5pt);
+\draw[blue,fill=blue](-1*\x,+1*\y)
+ -- node[left]{6} ++(6*\x,6*\y) circle(5pt)
+ -- node[]{} ++(1*\x,1*\y) circle(5pt) node[above]{1};
+\draw[blue,fill=blue](-1*\x,13*\y) 
+ -- node[left]{6} ++(6*\x,-6*\y) circle(5pt)
+ -- node[]{} ++(1*\x,-1*\y) circle(5pt) node[below]{1};
+\draw[red] (6*\x,8*\y) -- node[below] {7} (7+3*\x,3*\y);
+\draw[red] (6*\x,6*\y) -- node[above] {7} (7+3*\x,11*\y);
+\end{scope}
+
 \end{scope}
 \end{tikzpicture}
-\caption{Hexagon.}
-\label{fig:hexagon}
+\caption{Constructions options of the nice hexagon side $a=7,b=1,e=7$.}
+\label{fig:nice-hexagon}
 \end{figure}
 
 
