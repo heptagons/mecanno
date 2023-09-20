@@ -196,8 +196,65 @@ e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos
 e &= \sqrt{(a+b)^2 +(c-d)(a-b+c-d) -ab}
 \end{align} 
 
+We wrote software code to look for hexagons using the formula for $e$ and set several
+filters to prevent trivial solutions. We say an hexagon is nice when $e \leq a$.
+Next is a partial list of nice hexagons:
+\begin{lstlisting}
+  1  a=  7 b=  1 c=  2 d=  6 e=  7
+  2  a=  7 b=  1 c=  4 d=  6 e=  7
+  3  a= 13 b=  2 c=  5 d= 11 e= 13
+  4  a= 13 b=  2 c=  6 d= 11 e= 13
+  5  a= 14 b=  1 c=  6 d= 13 e= 13
+  6  a= 14 b=  1 c=  7 d= 13 e= 13
+  7  a= 15 b=  1 c=  5 d= 14 e= 14
+  8  a= 15 b=  1 c=  9 d= 14 e= 14
+  9  a= 19 b=  2 c=  3 d= 17 e= 19
+ 10  a= 19 b=  2 c= 14 d= 17 e= 19
+ 11  a= 20 b=  1 c=  4 d= 19 e= 19
+ 12  a= 20 b=  1 c= 15 d= 19 e= 19
+     ...
+105  a= 58 b=  5 c= 10 d= 53 e= 57
+106  a= 58 b=  5 c= 43 d= 53 e= 57
+107  a= 59 b=  1 c= 27 d= 58 e= 52
+108  a= 59 b=  1 c= 31 d= 58 e= 52
+109  a= 59 b=  4 c= 11 d= 55 e= 57
+110  a= 59 b=  4 c= 44 d= 55 e= 57
+111  a= 59 b=  5 c= 19 d= 54 e= 56
+112  a= 59 b=  5 c= 35 d= 54 e= 56
+--- PASS: TestHexagonsNice (0.01s)
+\end{lstlisting}
+Results from \texttt{github.com/heptagons/meccano/units/triple/triple\_test.go TestHexagonsNice}
 
+The results has related pairs and there are several ways to build an hexagon from each pair.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\def\x{0.5}
+\def\y{0.866}
+\begin{scope}[scale=0.3]
+\begin{scope}[shift={(0,0)}]
+\draw[black,fill=black](-1*\x,1*\y)
+ -- node[left] {1} ++(1*\x,-1*\y) circle(5pt)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
+ -- node[right] {5} ++(5*\x,5*\y) circle(5pt)
+ -- node[right] {5} ++(-5*\x,5*\y) circle(5pt)
+ -- node[right] {2} ++(-2*\x,2*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {1} ++(-\x,-\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,-6*\y) circle(5pt)
+ -- node[left] {6} ++(+6*\x,+6*\y) circle(5pt)
+ -- node[left] {6} ++(-6*\x,+6*\y) circle(5pt);
+\draw[red] (5*\x,7*\y) -- node[above] {7} (7+2*\x,2*\y);
+\draw[red] (5*\x,7*\y) -- node[above] {7} (7+2*\x,12*\y);
+\end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{Hexagon.}
+\label{fig:hexagon}
+\end{figure}
 
 
 \end{document}

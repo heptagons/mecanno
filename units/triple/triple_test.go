@@ -29,12 +29,10 @@ func (t *Triples) squareRoot(radical int) (int, bool) {
 	}
 }
 
-func (t *Triples) Hexagons(max int) {
+func (t *Triples) HexagonsNice(max int) {
     for a := 1 ; a < max; a++ {
     	for b := 1; b < a; b++ {
-    		ab2 := (a+b)*(a+b)
-    		a_b := a - b
-    		ab := a*b
+    		ab2, a_b, ab := (a+b)*(a+b), a - b, a*b
         	for c := 0; c < a; c++ {
           		for d := 1; d < a; d++ {
           			if c == b+d {
@@ -56,8 +54,7 @@ func (t *Triples) Hexagons(max int) {
     }
 }
 
-func TestHexagons(t *testing.T) {
+func TestHexagonsNice(t *testing.T) {
 	tri := NewTriples()
-	tri.Hexagons(60)
-	//_ = sols
+	tri.HexagonsNice(60)
 }
