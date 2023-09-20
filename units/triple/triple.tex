@@ -11,46 +11,73 @@
 
 \maketitle
 \begin{abstract}
-Triple unit is a group of five meccano\meccanoref strips $a,b,c,d,e$ intended to build regular polygons three consecutive perimeter sides.
-This unit has three angles equal to the polygon internal angle $\theta$. 
-Triple unis has been using to build the pentagon type 2 mentioned in pentagons paper\footnote{
+A \textbf{Triple unit} is a group of \textbf{five} meccano\meccanoref strips $a,b,c,d,e$
+forming \textbf{three equal angles} $\theta$ intended to build three consecutive perimeter sides
+of some regular polygons.
+We look for integer values of strip $e$ in function of integer values of sides $a,b,c,d$ and 
+a particular angle $\theta$.
+We confirm a generic equation found matches the one used to build pentagons of type 2 \footnote{
 \href{https://github.com/heptagons/meccano/blob/main/penta/pentagons.pdf}{Meccano pentagons}}.
-\end{abstract}
+Here we found a lot of hexagons and filter some not trivial solutions.
+We look for octagons, decagons and dodecagons.
+\end{abstract}.
 
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}
-\begin{scope}[scale=0.5]
+\begin{scope}[scale=0.5] %left figure
 \draw[black,thick] (0,0)
--- node[below] {$a$} ++(8,0) node[below]{B}
--- node[below,right] {$c$} ++(4,6) node[right]{K}
--- node[below] {$e$} ++(-11,-1) node[right,below]{L}
--- node[below] {$d$} ++(-3,-2) node[left]{H}
--- node[right] {$b$} cycle node[below]{A};
+-- node[below] {$a$} ++(8,0) node[below]{$B$}
+-- node[below,right] {$c$} ++(4,6) node[right]{$K$}
+-- node[below] {$e$} ++(-11,-1) node[right,below]{$L$}
+-- node[below] {$d$} ++(-3,-2) node[left]{$H$}
+-- node[right] {$b$} cycle node[below]{$A$};
 \draw[cyan] (0,0)
--- ++(-2,0) node[below,left] {M}
+-- ++(-2,0) node[below,left] {$M$}
 -- ++(0,3)
--- ++(0,2) node[above,left] {P}
+-- ++(0,2) node[above,left] {$P$}
 -- ++(3,0)
--- ++(0,1) node[above] {O}
+-- ++(0,1) node[above] {$O$}
 -- ++(11,0);
 \draw[cyan] (8,0)
--- ++(4,0) node[below,right] {N}
+-- ++(4,0) node[below,right] {$N$}
 -- ++(0,6);
-
-\draw[orange] (0,0)+(-1,0)
+\draw[brown] (0,0)+(-1,0)
  arc(180:180-atan(3/2):1) node[midway,above,left,blue] {$\alpha$}
- arc(180-atan(3/2):0:1) node[above,blue,pos=0.7] {$\theta$};
-\draw[orange] (8,0)+(-1,0)
- arc(180:atan(3/2):1) node[above,blue,pos=0.5] {$\theta$}
+ arc(180-atan(3/2):0:1) node[above,red,pos=0.7] {$\theta$};
+\draw[brown] (8,0)+(-1,0)
+ arc(180:atan(3/2):1) node[above,red,pos=0.5] {$\theta$}
  arc(atan(3/2):0:1) node[midway,above,right,blue] {$\alpha$};
-\draw[orange] (-2,3)+(0.832,0.554) %sin(atan(3/2),cos(atan(3/2))
- arc(atan(2/3):-atan(3/2):1) node[right,blue,pos=0.7] {$\theta$};
-\draw[orange] (1,5)+(-0.832,-0.554)
+\draw[brown] (-2,3)+(0.832,0.554) %sin(atan(3/2),cos(atan(3/2))
+ arc(atan(2/3):-atan(3/2):1) node[right,red,pos=0.7] {$\theta$};
+\draw[brown] (1,5)+(-0.832,-0.554)
  arc(180+atan(2/3):180:1) node[left,blue,pos=0.1] {$\beta$};
 \end{scope}
+
+\begin{scope}[scale=0.30,shift={(30,0)}]
+\draw[black](0,0)
+ -- node[above] {$a$} ++(7,0) node[below]{$B$}
+ -- node[left] {$c$} ++(2,3) node[right]{$K$}
+ -- node[right] {$a-c$} ++(2,3) node[right]{$C$}
+ -- node[right] {$a-c$} ++(-2,3) node[right]{$K'$}
+ -- node[left] {$c$} ++(-2,3) node[above]{$D$}
+ -- node[below] {$a$} ++(-7,0) node[above]{$E$}
+ -- node[right] {$b$} ++(-1,-1.5) node[left]{$H'$}
+ -- node[left] {$a-b$} ++(-3,-4.5) node[left]{$F$}
+ -- node[left] {$a-b$} ++(+3,-4.5) node[left]{$H$}
+ -- node[right] {$b$} ++(1,-1.5) node[below]{$A$};
+\draw[brown](-1,1.5)
+ -- node[above,right]{$d$} ++(2,3) node[left]{$L$}
+ -- node[right]{$b-d$} ++(1,1.5) node[left]{$G$}
+ -- node[right]{$b-d$} ++(-1,1.5) node[left]{$L'$}
+ -- node[below,right]{$d$} ++(-2,3) node[]{};
+\draw[red](1,4.5) -- node[below]{$e$} ++(8,-1.5);
+\draw[red](1,7.5) -- node[above]{$e$} ++(8,1.5);
+\end{scope}
+
 \end{tikzpicture}
-\caption{Triple unit has five strips $a,b,c,d,e$}
+\caption{At the left we have the Triple unit (three angles $\theta$) with the strips $a,b,c,d,e$.
+At the right we use two units to build a regular polygon of side $a$ extending strips $b,c,d$ to fix everthing.}
 \label{fig:triple}
 \end{figure}
 
