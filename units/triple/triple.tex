@@ -427,42 +427,57 @@ is replaced by an irregular hexagon clearly visible in case $(e1)$.
 \label{fig:nice-hexagon-var}
 \end{figure}
 
+\newcommand{\nicehexagon}[5] %a,b,c,d,e
+{
+\def\x{0.5}
+\def\y{0.866}
+\pgfmathsetmacro{\ab}{int(#1-#2)} %a-b
+\pgfmathsetmacro{\ac}{int(#1-#3)} %a-c
+\pgfmathsetmacro{\bdA}{int(#4-#2)} %-b+d
+\pgfmathsetmacro{\bdB}{int(#2+#4)} %b+d
+\draw[black,fill=black](0,0)
+ -- node[below]{#1} ++(#1,0) circle(5pt) %+a,0
+ -- node[right]{#3} ++(#3*\x,#3*\y) circle(5pt) %cx,cy
+ -- node[right]{\ac} ++(\ac*\x,\ac*\y) circle(5pt)
+ -- node[right]{\ac} ++(-\ac*\x,\ac*\y) circle(5pt)
+ -- node[right]{#3} ++(-#3*\x,#3*\y) circle(5pt)
+ -- node[above]{#1} ++(-#1,0) circle(5pt) %-a,0
+ -- node[left]{#2} ++(-#2*\x,-#2*\y) circle(5pt) %b
+ -- node[left]{\ab} ++(-\ab*\x,-\ab*\y) circle(5pt) %a-b
+ -- node[left]{\ab} ++(+\ab*\x,-\ab*\y) circle(5pt)
+ -- node[left]{#2} ++(#2*\x, -#2*\y) circle(5pt);
+\draw[blue] (-#2*\x,+#2*\y) %bx,by
+ -- node[left]{\ab} ++(\ab*\x,\ab*\y) circle(5pt)
+ -- node[left]{\ab} ++(-\ab*\x,\ab*\y);
+\draw[red] (#1+#3*\x,#3*\y) %a+cx,cy
+ -- node[below]{#5} (\bdA*\x,\bdB*\y) %(-b+d)x,(b+d)y
+ -- node[above]{#5} (#1+#3*\x,#3*\y + 2*\ac*\y); %a+cx,(c+2(a-c))y
+}
 
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}
-\def\x{0.5}
-\def\y{0.866}
-
-
 
 \begin{scope}[scale=0.15]
-
 \begin{scope}[shift={(0,0)}] %row-1 col-1
-\draw[black,fill=black](0,0)
- -- node[below]{13} ++(13,0) circle(5pt)
- -- node[right]{5} ++(5*\x,5*\y) circle(5pt)
- -- node[right]{8} ++(8*\x,8*\y) circle(5pt)
- -- node[right]{8} ++(-8*\x,8*\y) circle(5pt)
- -- node[right]{5} ++(-5*\x,5*\y) circle(5pt)
- -- node[above]{13} ++(-13,0) circle(5pt)
- -- node[left]{2} ++(-2*\x,-2*\y) circle(5pt)
- -- node[left]{11} ++(-11*\x,-11*\y) circle(5pt)
- -- node[left]{11} ++(+11*\x,-11*\y) circle(5pt)
- -- node[left]{2} ++(2*\x, -2*\y) circle(5pt);
-\draw[blue] (-2*\x,+2*\y) 
- -- node[left]{11} ++(11*\x,11*\y) circle(5pt)
- -- node[left]{11} ++(-11*\x,11*\y);
-\draw[red] (13+5*\x,5*\y) 
- -- node[below]{13} (9*\x,13*\y)
- -- node[above]{13} (13+5*\x,21*\y);
+\nicehexagon{13}{2}{5}{11}{13}
 \end{scope}
-
+\begin{scope}[shift={(32,0)}] %row-1 col-2
+\nicehexagon{14}{1}{6}{13}{13}
 \end{scope}
-
+\begin{scope}[shift={(66,0)}] %row-1 col-3
+\nicehexagon{15}{1}{5}{14}{14}
+\end{scope}
+\begin{scope}[shift={(10,-44)}] %row-2 col-1
+\nicehexagon{19}{2}{3}{17}{19}
+\end{scope}
+\begin{scope}[shift={(55,-44)}] %row-2 col-2
+\nicehexagon{20}{1}{4}{19}{19}
+\end{scope}
+\end{scope}
 
 \end{tikzpicture}
-\caption{More hexagons.}
+\caption{More nice hexagons from sizes $13 - 20$.}
 \label{fig:nice-hexagon-more}
 \end{figure}
 
