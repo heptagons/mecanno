@@ -148,15 +148,19 @@ e^2 &= (\overline{OK})^2 + (\overline{OL})^2 \nonumber\\
 Polygon & $\theta$ & $\cos\theta$ & $\cos(2\theta)$ & $\cos(3\theta)$ \rule[-2ex]{0pt}{6ex}\\ \hline\hline 
 Pentagon & $\dfrac{3\pi}{5}$ & $\dfrac{1-\sqrt{5}}{4}$ & $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{1+\sqrt{5}}{4}$\rule[-2ex]{0pt}{6ex}\\ \hline
 Hexagon & $\dfrac{2\pi}{3}$ & $-\dfrac{1}{2}$ & $-\dfrac{1}{2}$ & $1$ \rule[-2ex]{0pt}{6ex}\\ \hline
-Heptagon & $\dfrac{5\pi}{7}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
-Octagon & $\dfrac{3\pi}{4}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
-Decagon & $\dfrac{4\pi}{5}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
+%Heptagon & $\dfrac{5\pi}{7}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
+Octagon & $\dfrac{3\pi}{4}$ & $-\dfrac{\sqrt{2}}{2}$ & $0$ & $\dfrac{\sqrt{2}}{2}$ \rule[-2ex]{0pt}{6ex}\\ \hline
+Decagon & $\dfrac{4\pi}{5}$ & $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ \rule[-2ex]{0pt}{6ex}\\ \hline
 Dodecagon & $\dfrac{5\pi}{6}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
 
 \end{tabular}
 \caption{Regular polygons internal angles and cosines.}
 \label{tbl:polygons}
 \end{table}
+
+We will test last equation into several polygons. Table \ref{tbl:polygons}
+show the possible constructions and the angles and cosines.
+Only when we'll get $e$ integer we'll have a solution.
 
 \section{Equilateral pentagons}
 
@@ -172,16 +176,17 @@ e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos
 $e$ cannot to be and integer if the factor of $\sqrt{5}$ is not zero so we force this factor to be zero:
 \begin{align}
  ab+ac+bd-bc-ad-cd &= 0\nonumber\\
- ab+ac+bd &= bc+ad+cd
+ ab+ac+bd &= bc+ad+cd \\
+ ab+ac-bc &= (a-b+c)d
 \end{align}
 We replace $ab+ac+bd$ by $bc+ad+cd$ in the $e^2$ equation to get:
 \begin{align}
 e^2 &= a^2 +b^2 +c^2 +d^2 -\frac{(bc+ad+cd)+bc+ad+cd}{2} +\frac{0}{2}\sqrt{5} \nonumber\\
  &= a^2 +b^2 +c^2 +d^2 -bc -ad -cd \nonumber\\
-e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -ad -cd}
+e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a+c)d } \quad\texttt{iff } ab+ac-bc = (a-b+c)d
 \end{align}
 The last formula matches the formula used in the paper Meccano pentagons which finds several pentagons of type 2. 
-Only when we get $e$ integer we have a solution.
+
 
 \section{Equilateral hexagons}
 
@@ -478,13 +483,56 @@ is replaced by an irregular hexagon clearly visible in case $(e1)$.
 
 \end{tikzpicture}
 \caption{More nice hexagons from sizes $13 - 20$.}
-\label{fig:nice-hexagon-more}
+\label{fig:nice-hexagon-more} 
 \end{figure}
 
+\section{Regular octagons}
+
+We replace the cosines for octagon in table \ref{tbl:polygons} in $e^2$ equation:
+\begin{align}
+e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 
+ -2(ab+ac+bd)\left(-\frac{\sqrt{2}}{2}\right) 
+ +2(bc+ad)\left(0\right) 
+ -2cd\left(\frac{\sqrt{2}}{2}\right) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 +(ab +ac +bd -cd)\sqrt{2}
+\end{align} 
+
+$e$ cannot to be and integer if the factor of $\sqrt{2}$ is not zero, so we force this factor to be zero:
+\begin{align}
+ab + ac + bd - cd &= 0 \nonumber\\
+a(b+c) &= (c-b)d \\
+e^2 &= a^2 +b^2 +c^2 +d^2 
+\end{align}
+
+\subsection{Octagons examples}
+
+\textbf{Conjecture}: No possible octagons formed with triple unit.
+
+\section{Equilateral decagons}
+
+We replace the cosines for decagon in table \ref{tbl:polygons} in $e^2$ equation:
+\begin{align}
+e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2
+  -2(ab+ac+bd)\left(\dfrac{-1-\sqrt{5}}{4}\right)
+  +2(bc+ad)\left(\dfrac{-1+\sqrt{5}}{4}\right)
+  -2cd\left(\dfrac{-1+\sqrt{5}}{4}\right) \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 +\frac{ab+ac+bd -bc-ad +cd}{2} +\frac{ab+ac+bd +bc+ad -cd}{2}\sqrt{5}
+\end{align}
+$e$ cannot to be and integer if the factor of $\sqrt{5}$ is not zero so we force this factor to be zero:
+\begin{align}
+ ab+ac+bd +bc+ad -cd &= 0\nonumber\\
+ ab+ac+bc &= (c -a -b)d
+\end{align}
+We replace $ab+ac+bd$ by $cd -bc-ad$ in the $e^2$ equation to get:
+\begin{align}
+e^2 &= a^2 +b^2 +c^2 +d^2 +\frac{(cd -bc-ad) -bc-ad+cd}{2} +\frac{0}{2}\sqrt{5} \nonumber\\
+ &= a^2 +b^2 +c^2 +d^2 + cd -bc -ad\nonumber\\
+e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a-c)d }
+\end{align}
 
 
-
-\section{Octagons}
 
 
 \end{document}

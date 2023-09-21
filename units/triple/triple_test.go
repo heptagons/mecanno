@@ -1,6 +1,7 @@
 package triple
 
 import (
+    "fmt"
 	"math"
 	"testing"
 
@@ -29,8 +30,32 @@ func (t *Triples) squareRoot(radical int) (int, bool) {
 	}
 }
 
+func (t *Triples) Pentagons(max int) {
+    for a := 1; a <= max; a++ {
+        for b := 1; b < a; b++ {
+            for c := 0; c < a; c++ {
+                ab_ac_bc := a*b + a*c - b*c // ab + ac - bc
+                aa_bb_cc := a*a + b*b + c*c // aa + bb + cc
+                for d := 1; d < a; d++ {
+                    if ab_ac_bc != (a-b+c)*d { // ab + c - bc != (a-b+c)d
+                        // condition to reject sqrt{5} from ee equation
+                        continue
+                    }
+                    // e = sqrt{ aa + bb + cc + dd - bc - (a+c)d }
+                    if e, ok := t.squareRoot(aa_bb_cc + d*d - b*c - (a+c)*d); !ok {
+                        // radical negative or not square
+                    } else {
+                        t.Add(a, b, c, d, e)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 func (t *Triples) HexagonsNice(max int) {
-    for a := 1 ; a < max; a++ {
+    for a := 1; a < max; a++ {
     	for b := 1; b < a; b++ {
     		ab2, a_b, ab := (a+b)*(a+b), a - b, a*b
         	for c := 0; c < a; c++ {
@@ -54,7 +79,71 @@ func (t *Triples) HexagonsNice(max int) {
     }
 }
 
+func (t *Triples) Octagons(max int) {
+    for a := 1; a <= max; a++ {
+        for b := 1; b < a; b++ {
+            for c := 0; c < a; c++ {
+                a_b_c := a*(b+c)
+                aa_bb_cc := a*a + b*b + c*c
+                for d := 1; d < a; d++ {
+                    if a_b_c - (c-b)*d != 0 {
+                        continue // condition to reject sqrt{2} from e equation
+                    }
+                    fmt.Println(a,b,c,d)
+                    if e, ok := t.squareRoot(aa_bb_cc + d*d); !ok {
+                        // radical negative or not square
+                    } else {
+                        t.Add(a, b, c, d, e)
+                    }
+                }
+            }
+        }
+        fmt.Println("a",a)
+    }
+}
+
+
+func (t *Triples) Decagons(max int) {
+    for a := 1; a <= max; a++ {
+        for b := 1; b < a; b++ {
+            for c := 0; c < a; c++ {
+                ab_ac_bc := a*b + a*c + b*c
+                aa_bb_cc := a*a + b*b + c*c
+                for d := 1; d < a; d++ {
+                    if ab_ac_bc != (c-a-b)*d {
+                        continue // condition to reject sqrt{5} from e equation
+                    }
+                    if e, ok := t.squareRoot(aa_bb_cc + d*d - b*c -(a-c)*d); !ok {
+                        // radical negative or not square
+                    } else {
+                        t.Add(a, b, c, d, e)
+                    }
+                }
+            }
+        }
+        fmt.Println("a", a)
+    }
+}
+
+func TestPentagons(t *testing.T) {
+    tri := NewTriples()
+    tri.Pentagons(500)
+}
+
+
 func TestHexagonsNice(t *testing.T) {
 	tri := NewTriples()
 	tri.HexagonsNice(60)
+}
+
+func TestOctagons(t *testing.T) {
+    tri := NewTriples()
+    tri.Octagons(600)
+    // Conjecture: No possible octagons for triple unit!
+}
+
+func TestDecagons(t *testing.T) {
+    tri := NewTriples()
+    tri.Decagons(500)
+    // Conjecture: No possible decagons for triple unit!
 }
