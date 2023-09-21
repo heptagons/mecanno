@@ -158,7 +158,7 @@ Dodecagon & $\dfrac{5\pi}{6}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
 \label{tbl:polygons}
 \end{table}
 
-\subsection{Equilateral pentagon}
+\section{Equilateral pentagons}
 
 We replace the cosines for pentagon in table \ref{tbl:polygons} in $e^2$ equation:
 \begin{align}
@@ -183,7 +183,7 @@ e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -ad -cd}
 The last formula matches the formula used in the paper Meccano pentagons which finds several pentagons of type 2. 
 Only when we get $e$ integer we have a solution.
 
-\subsection{Equilateral hexagon}
+\section{Equilateral hexagons}
 
 We replace the cosines for hexagon in table \ref{tbl:polygons} in $e^2$ equation:
 \begin{align}
@@ -196,6 +196,7 @@ e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos
 e &= \sqrt{(a+b)^2 +(c-d)(a-b+c-d) -ab}
 \end{align} 
 
+\subsection{Hexagons software}
 We wrote software code to look for hexagons using the formula for $e$ and set several
 filters to prevent trivial solutions. We say an hexagon is nice when $e \leq a$.
 Next is a partial list of nice hexagons:
@@ -225,7 +226,7 @@ Next is a partial list of nice hexagons:
 \end{lstlisting}
 Results from \texttt{github.com/heptagons/meccano/units/triple/triple\_test.go TestHexagonsNice}
 
-The results has related pairs and there are several ways to build an hexagon from each pair.
+\subsection{Hexagons examples}
 
 \begin{figure}[h]
 \centering
@@ -254,6 +255,7 @@ The results has related pairs and there are several ways to build an hexagon fro
 \end{scope}
 
 \begin{scope}[shift={(18,0)}] %row-1 col-2
+\draw[black](10,0) node{$(b)$};
 \draw[black,fill=black](0,0)
  -- node[below] {7} ++(7,0) circle(5pt)
  -- node[right] {6} ++(6*\x,6*\y) circle(5pt)
@@ -272,6 +274,7 @@ The results has related pairs and there are several ways to build an hexagon fro
 \end{scope}
 
 \begin{scope}[shift={(36,0)}] %row-1 col-3
+\draw[black](10,0) node{$(c)$};
 \draw[black,fill=black](0,0)
  -- node[below] {7} ++(7,0) circle(5pt)
  -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
@@ -290,6 +293,7 @@ The results has related pairs and there are several ways to build an hexagon fro
 \end{scope}
 
 \begin{scope}[shift={(0,-18)}] %row-2 col-1
+\draw[black](10,0) node{$(d)$};
 \draw[black,fill=black](0,0)
  -- node[below] {7} ++(7,0) circle(5pt)
  -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
@@ -309,6 +313,7 @@ The results has related pairs and there are several ways to build an hexagon fro
 \end{scope}
 
 \begin{scope}[shift={(18,-18)}] %row-2 col-2
+\draw[black](10,0) node{$(e)$};
 \draw[black,fill=black](0,0)
  -- node[below] {7} ++(7,0) circle(5pt)
  -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
@@ -328,6 +333,7 @@ The results has related pairs and there are several ways to build an hexagon fro
 \end{scope}
 
 \begin{scope}[shift={(36,-18)}] %row-2 col-3
+\draw[black](10,0) node{$(f)$};
 \draw[black,fill=black](0,0)
  -- node[below]{7} ++(7,0) circle(5pt)
  -- node[right]{3} ++(3*\x,3*\y) circle(5pt)
@@ -351,9 +357,119 @@ The results has related pairs and there are several ways to build an hexagon fro
 
 \end{scope}
 \end{tikzpicture}
-\caption{Constructions options of the nice hexagon side $a=7,b=1,e=7$.}
+\caption{
+Constructions options of the nice hexagon side $a=7,b=1,e=7$.
+Cases $(a)-(e)$ requires only eleven bolts. Case $(f)$ has the 10 strips of size $7$.}
 \label{fig:nice-hexagon}
 \end{figure}
+
+The nice hexagons results has related pairs and there are several ways to build each case.
+Figure \ref{fig:nice-hexagon} show different ways to build a nice hexagon.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\def\x{0.5}
+\def\y{0.866}
+\begin{scope}[scale=0.3]
+
+\begin{scope}[shift={(0,0)}] %row-1 col-1
+\draw[black](10,0) node{$(d1)$};
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
+ -- node[right] {7} ++(-7*\x,7*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {3} ++(-3*\x,-3*\y) circle(5pt)
+ -- node[left] {4} ++(-4*\x,-4*\y) circle(5pt)
+ -- node[left] {4} ++(+4*\x,-4*\y) circle(5pt)
+ -- node[left] {3} ++(3*\x, -3*\y) circle(5pt);
+\draw[blue,fill=blue] (-3*\x,+3*\y)
+ -- node[right] {4} ++(4*\x,4*\y) circle(5pt)
+ -- node[right] {2} ++(2*\x,2*\y) circle(5pt)
+ ++(0,-4*\y) circle(5pt)
+ -- node[right] {2} ++(-2*\x,2*\y) circle(5pt)
+ -- node[right] {4} ++(-4*\x,4*\y);
+\draw[red] (3*\x,5*\y) -- node[below] {7} (7,0);
+\draw[red] (3*\x,9*\y) -- node[above] {7} (7,14*\y);
+\end{scope}
+
+\begin{scope}[shift={(18,0)}] %row-1 col-2
+\draw[black](10,0) node{$(e1)$};
+\draw[black,fill=black](0,0)
+ -- node[below] {7} ++(7,0) circle(5pt)
+ -- node[right] {7} ++(7*\x,7*\y) circle(5pt)
+ -- node[right] {7} ++(-7*\x,7*\y) circle(5pt)
+ -- node[above] {7} ++(-7,0) circle(5pt)
+ -- node[left] {2} ++(-2*\x,-2*\y) circle(5pt)
+ -- node[left] {5} ++(-5*\x,-5*\y) circle(5pt)
+ -- node[left] {5} ++(+5*\x,-5*\y) circle(5pt)
+ -- node[left] {2} ++(2*\x, -2*\y) circle(5pt);
+\draw[blue,fill=blue] (-2*\x,+2*\y)
+ -- node[left] {5} ++(5*\x,5*\y) circle(5pt)
+ -- node[above] {1} ++(1*\x,1*\y) circle(5pt)
+ ++(0,-2*\y) circle(5pt)
+ -- node[below] {1} ++(-1*\x,1*\y) circle(5pt)
+ -- node[left] {5} ++(-5*\x,5*\y);
+\draw[red] (4*\x,6*\y) -- node[below] {7} (7+7*\x,7*\y);
+\draw[red] (4*\x,8*\y) -- node[above] {7} (7+7*\x,7*\y);
+\end{scope}
+
+
+\end{scope}
+\end{tikzpicture}
+\caption{
+Variations of constructions of the nice hexagon side $a=7,b=1,e=7$.
+Cases $(d1)$ and $(e1)$ are adaptations of cases $(d)$ and $(e)$ of figure \ref{fig:nice-hexagon} where only the blue strips are displaced. Such changes mantain the internal bolts,
+red strips and perimeter the same. The original \textbf{Triple unit} $a,b,c,d,e$ irregular pentagon 
+is replaced by an irregular hexagon clearly visible in case $(e1)$.
+}
+\label{fig:nice-hexagon-var}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\def\x{0.5}
+\def\y{0.866}
+
+
+
+\begin{scope}[scale=0.15]
+
+\begin{scope}[shift={(0,0)}] %row-1 col-1
+\draw[black,fill=black](0,0)
+ -- node[below]{13} ++(13,0) circle(5pt)
+ -- node[right]{5} ++(5*\x,5*\y) circle(5pt)
+ -- node[right]{8} ++(8*\x,8*\y) circle(5pt)
+ -- node[right]{8} ++(-8*\x,8*\y) circle(5pt)
+ -- node[right]{5} ++(-5*\x,5*\y) circle(5pt)
+ -- node[above]{13} ++(-13,0) circle(5pt)
+ -- node[left]{2} ++(-2*\x,-2*\y) circle(5pt)
+ -- node[left]{11} ++(-11*\x,-11*\y) circle(5pt)
+ -- node[left]{11} ++(+11*\x,-11*\y) circle(5pt)
+ -- node[left]{2} ++(2*\x, -2*\y) circle(5pt);
+\draw[blue] (-2*\x,+2*\y) 
+ -- node[left]{11} ++(11*\x,11*\y) circle(5pt)
+ -- node[left]{11} ++(-11*\x,11*\y);
+\draw[red] (13+5*\x,5*\y) 
+ -- node[below]{13} (9*\x,13*\y)
+ -- node[above]{13} (13+5*\x,21*\y);
+\end{scope}
+
+\end{scope}
+
+
+\end{tikzpicture}
+\caption{More hexagons.}
+\label{fig:nice-hexagon-more}
+\end{figure}
+
+
+
+
+\section{Octagons}
 
 
 \end{document}
