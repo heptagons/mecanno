@@ -81,15 +81,15 @@ func (t *Triples) HexagonsNice(max int) {
 
 func (t *Triples) Octagons(max int) {
     for a := 1; a <= max; a++ {
-        for b := 1; b < a; b++ {
-            for c := 0; c < a; c++ {
+        for b := 1; b <= max; b++ {
+            for c := 0; c <= max; c++ {
                 a_b_c := a*(b+c)
                 aa_bb_cc := a*a + b*b + c*c
-                for d := 1; d < a; d++ {
+                for d := 1; d <= max; d++ {
                     if a_b_c - (c-b)*d != 0 {
                         continue // condition to reject sqrt{2} from e equation
                     }
-                    fmt.Println(a,b,c,d)
+                    fmt.Println(a,b,c,d, math.Sqrt(float64(aa_bb_cc + d*d)))
                     if e, ok := t.squareRoot(aa_bb_cc + d*d); !ok {
                         // radical negative or not square
                     } else {
@@ -98,31 +98,32 @@ func (t *Triples) Octagons(max int) {
                 }
             }
         }
-        fmt.Println("a",a)
     }
 }
 
 
-func (t *Triples) Decagons(max int) {
-    for a := 1; a <= max; a++ {
-        for b := 1; b < a; b++ {
-            for c := 0; c < a; c++ {
-                ab_ac_bc := a*b + a*c + b*c
-                aa_bb_cc := a*a + b*b + c*c
-                for d := 1; d < a; d++ {
-                    if ab_ac_bc != (c-a-b)*d {
-                        continue // condition to reject sqrt{5} from e equation
-                    }
-                    if e, ok := t.squareRoot(aa_bb_cc + d*d - b*c -(a-c)*d); !ok {
-                        // radical negative or not square
-                    } else {
-                        t.Add(a, b, c, d, e)
-                    }
-                }
-            }
-        }
-        fmt.Println("a", a)
-    }
+func (t *Triples) DecagonsCBA(max int) {
+	for c := 1; c <= max; c++ {
+		for b := 1; b <= c; b++ {
+			for a := 1; a <= c; a++ {
+				ab_ac_bc := a*b + a*c + b*c
+				aa_bb_cc := a*a + b*b + c*c
+				for d := 1; d <= max; d++ {
+					if ab_ac_bc != (c-a-b)*d {
+						continue // condition to reject sqrt{5} from e equation
+					}
+					if e, ok := t.squareRoot(aa_bb_cc + d*d - b*c -(a-c)*d); ok {
+						t.Add(a, b, c, d, e)
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestDecagonsCBA(t *testing.T) {
+    tri := NewTriples()
+    tri.DecagonsCBA(500)
 }
 
 func TestPentagons(t *testing.T) {
@@ -138,12 +139,7 @@ func TestHexagonsNice(t *testing.T) {
 
 func TestOctagons(t *testing.T) {
     tri := NewTriples()
-    tri.Octagons(600)
+    tri.Octagons(100)
     // Conjecture: No possible octagons for triple unit!
 }
 
-func TestDecagons(t *testing.T) {
-    tri := NewTriples()
-    tri.Decagons(500)
-    // Conjecture: No possible decagons for triple unit!
-}
