@@ -655,58 +655,90 @@ e \equiv 1\mod{10}
 \newcommand{\decagonTriple}[5] %a,b,c,d,e c>a, c>b
 {
 \pgfmathsetmacro{\ca}{int(#3-#1)} %c-a
+\pgfmathsetmacro{\cb}{int(#3-#2)} %c-b
 \pgfmathsetmacro{\bx}{#2*cos(36)}
 \pgfmathsetmacro{\by}{#2*sin(36)}
 \pgfmathsetmacro{\cx}{#3*cos(36)}
 \pgfmathsetmacro{\cy}{#3*sin(36)}
+\pgfmathsetmacro{\cxx}{#3*cos(72)}
+\pgfmathsetmacro{\cyy}{#3*sin(72)}
 \pgfmathsetmacro{\dxx}{#4*cos(72)}
 \pgfmathsetmacro{\dyy}{#4*sin(72)}
 \pgfmathsetmacro{\cax}{\ca*cos(36)}
 \pgfmathsetmacro{\cay}{\ca*sin(36)}
+\pgfmathsetmacro{\cbx}{\cb*cos(36)}
+\pgfmathsetmacro{\cby}{\cb*sin(36)}
 \pgfmathsetmacro{\ax}{#1*cos(36)}
 \pgfmathsetmacro{\ay}{#1*sin(36)}
-\coordinate(A) at (0,0);
+\coordinate(O) at (0,0);
 \coordinate(B) at (#1,0);
-\coordinate(K) at (#1+\cx, \cy);
+\coordinate(C) at (#1+\cx, \cy);
+\coordinate(D) at (#1+\cx+\cxx, \cy+\cyy);
 \coordinate(H) at (-\bx,\by);
 \coordinate(L) at (-\bx-\dxx,\by+\dyy);
-\coordinate(AA) at (-\ca,0);
+\coordinate(A) at (-\ca,0);
 \coordinate(AC) at (-\ca-\cax,+\cay);
-\coordinate(CC) at (-\ca-\cax-\ax, +\cay+\ay);
-\coordinate(CCC) at (-\cax, +\cay);
-\draw[blue,fill=blue](K)
- -- node[above]{$#3$} (B) circle(5pt)
- -- node[above]{$#1$} (A) circle(5pt)
+\coordinate(J) at (-\ca-\cax-\ax, +\cay+\ay);
+\coordinate(I) at (-\ca-\cax-\ax-\cxx, +\cay+\ay+\cyy);
+\coordinate(II) at (-\cax-\ax-\cxx, +\cay+\ay+\cyy);
+\coordinate(III) at (-\cax-\ax-\cxx+\cbx, +\cay+\ay+\cyy-\cby);
+\coordinate(JJ) at (-\cax-\ax, +\cay+\ay);
+\draw[red,fill=red](C) node[right]{$C$}
+ -- node[above]{$#3$} (B) node[below]{$B$} circle(5pt) 
+ -- node[above]{$#1$} (O) circle(5pt)
  -- node[above]{$#2$} (H) circle(5pt)
  -- node[right]{$#4$} (L) circle(5pt)
- -- node[below]{$#5$} (K) circle(5pt)
+ -- node[below]{$#5$} (C) circle(5pt)
  ;
-\draw[black,fill=black](A)
- -- node[below]{$\ca$} (AA) circle(5pt)
- -- node[below]{$\ca$} (AC) circle(5pt)
- -- node[below]{$#1$} (CC) circle(5pt) (AC)
- -- node[above]{$\ca$} (CCC) circle(5pt)
+\draw[black,fill=black] (O) node[below]{$O$}
+ -- node[below]{$\ca$} (A) node[below]{$A$} circle(5pt)
+ -- node[below,red]{$#3$} (J) node[left]{$J$} circle(5pt)
+ -- node[below]{$\ca$} (JJ) circle(5pt)
+ -- node[below,blue]{$\cb$} (H) circle(5pt)
+ (J)
+ -- node[left,red]{$#3$} (I) node[left]{$I$} circle(5pt)
+ -- node[below]{$\ca$} (II) circle(5pt)
+ -- node[left,red]{$#3$} (JJ) circle(5pt)
+ (II)
+ -- node[below,blue]{$\cb$} (III) circle(5pt)
+ -- (L)
+ ;
+\draw[black,fill=black](C) 
+ -- node[right,red]{$#3$} (D) node[right]{$D$} circle(5pt)
  ;
 }
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
-\begin{scope}[scale=0.15]
+\begin{scope}[scale=0.12]
  \begin{scope}[shift={(0,0)}] %row-1 col-1
   \decagonTriple{3}{6}{18}{20}{31}
  \end{scope}
-
- \begin{scope}[shift={(60,0)}] %row-1 col-1
+ \begin{scope}[shift={(70,0)}] %row-1 col-1
   \decagonTriple{6}{3}{20}{18}{31}
  \end{scope}
-
-
 \end{scope}
- 
 \end{tikzpicture}
-\caption{Decagons}
+\caption{Decagons with $e=31$}
 \label{fig:decagons} 
 \end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{scope}[scale=0.08]
+ \begin{scope}[shift={(0,0)}] %row-1 col-1
+  \decagonTriple{12}{8}{36}{51}{71}
+ \end{scope}
+ \begin{scope}[shift={(0,-100)}] %row-1 col-1
+  \decagonTriple{8}{12}{51}{36}{71}
+ \end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{Decagons with $e=71$}
+\label{fig:decagons} 
+\end{figure}
+
 
 \end{document}
