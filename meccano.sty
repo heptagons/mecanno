@@ -53,4 +53,20 @@
 \scriptscriptfont\bbbfam=\bbbfive
 \def\bbb{\fam=\bbbfam}
 
+\RequirePackage{empheq}
+\RequirePackage{xcolor}
+\definecolor{lightgreen}{HTML}{AAFFAA}
+
+\newcommand{\boxedeq}[2]{
+ \begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2
+ \end{empheq}
+}
+
+\newcommand{\coloredeq}[2]{
+ \begin{empheq}[box={\fboxsep=1em\colorbox{lightgreen}}]
+  {align}\label{#1}#2
+ \end{empheq}
+}
+
 \endinput
+

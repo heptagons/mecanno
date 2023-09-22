@@ -76,8 +76,10 @@ We look for octagons, decagons and dodecagons.
 \end{scope}
 
 \end{tikzpicture}
-\caption{At the left we have the Triple unit (three angles $\theta$) with the strips $a,b,c,d,e$.
-At the right we use two units to build a regular polygon of side $a$ extending strips $b,c,d$ to fix everthing.}
+\caption{
+At the left we have the Triple unit (three angles $\theta$) with the strips $a,b,c,d,e$.
+At the right we use two units to build a regular polygon of side $a$ extending strips $b,c,d$ to fix everthing. This construction is possible only when $a > b,c$.
+}
 \label{fig:triple}
 \end{figure}
 
@@ -135,10 +137,11 @@ e^2 &= (\overline{OK})^2 + (\overline{OL})^2 \nonumber\\
 % 
  &= a^2 +b^2 +c^2 +d^2 +2(bc+ad)\cos(2\theta) -2a(b+c)\cos\theta -2d(b\cos\theta + c\cos(3\theta)) \nonumber\\
 % 
- &= a^2 +b^2 +c^2 +d^2 +2(bc+ad)\cos(2\theta) -2(ab+ac)\cos\theta -2(bd\cos\theta + cd\cos(3\theta)) \nonumber\\
-%
- &= \boxed{ a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta) }
-\end{align}
+ &= a^2 +b^2 +c^2 +d^2 +2(bc+ad)\cos(2\theta) -2(ab+ac)\cos\theta -2(bd\cos\theta + cd\cos(3\theta)) \end{align}
+
+\boxedeq{eq:triple}{
+ e^2 = a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta)
+}
 
 \section{Regular polygons}
 
@@ -164,7 +167,7 @@ Only when we'll get $e$ integer we'll have a solution.
 
 \section{Equilateral pentagons}
 
-We replace the cosines for pentagon in table \ref{tbl:polygons} in $e^2$ equation:
+We replace the cosines for pentagon in table \ref{tbl:polygons} in equation \ref{eq:triple}:
 \begin{align}
 e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta) \nonumber\\
  &= a^2 +b^2 +c^2 +d^2
@@ -182,24 +185,31 @@ $e$ cannot to be and integer if the factor of $\sqrt{5}$ is not zero so we force
 We replace $ab+ac+bd$ by $bc+ad+cd$ in the $e^2$ equation to get:
 \begin{align}
 e^2 &= a^2 +b^2 +c^2 +d^2 -\frac{(bc+ad+cd)+bc+ad+cd}{2} +\frac{0}{2}\sqrt{5} \nonumber\\
- &= a^2 +b^2 +c^2 +d^2 -bc -ad -cd \nonumber\\
-e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a+c)d } \quad\texttt{iff } ab+ac-bc = (a-b+c)d
+ &= a^2 +b^2 +c^2 +d^2 -bc -ad -cd
 \end{align}
+
+\coloredeq{eq:pentagon-e}{
+e = \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a+c)d } \quad\Longleftrightarrow\quad ab+ac-bc = (a-b+c)d
+}
+
 The last formula matches the formula used in the paper Meccano pentagons which finds several pentagons of type 2. 
 
 
 \section{Equilateral hexagons}
 
-We replace the cosines for hexagon in table \ref{tbl:polygons} in $e^2$ equation:
+We replace the cosines for hexagon in table \ref{tbl:polygons} in equation \ref{eq:triple}:
 \begin{align}
 e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos(3\theta) \nonumber\\
  &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\left(-\frac{1}{2}\right) +2(bc+ad)\left(-\frac{1}{2}\right) -2cd(1) \nonumber\\
  &= a^2 +b^2 +c^2 +d^2 +ab+ac+bd -bc-ad-2cd \nonumber\\
  &= (a+b)^2 +(c-d)^2 -ab+ac+bd-bc-ad\nonumber\\
  &= (a+b)^2 +(c-d)^2 +(c-d)(a-b) -ab \nonumber\\
- &= (a+b)^2 +(c-d)(a-b+c-d) -ab \nonumber\\
-e &= \sqrt{(a+b)^2 +(c-d)(a-b+c-d) -ab}
+ &= (a+b)^2 +(c-d)(a-b+c-d) -ab
 \end{align} 
+
+\coloredeq{eq:hexagon-e}{
+e &= \sqrt{(a+b)^2 +(c-d)(a-b+c-d) -ab}
+}
 
 \subsection{Hexagons software}
 We wrote software code to look for hexagons using the formula for $e$ and set several
@@ -499,11 +509,16 @@ e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos
 \end{align} 
 
 $e$ cannot to be and integer if the factor of $\sqrt{2}$ is not zero, so we force this factor to be zero:
-\begin{align}
-ab + ac + bd - cd &= 0 \nonumber\\
+\begin{align*}
+ab + ac + bd - cd &= 0 \\
 a(b+c) &= (c-b)d \\
-e^2 &= a^2 +b^2 +c^2 +d^2 
-\end{align}
+e^2 &= a^2 +b^2 +c^2 +d^2 + (0)\sqrt{2}
+\end{align*}
+
+\coloredeq{eq:octagon-e}{
+e = \sqrt{a^2 +b^2 +c^2 +d^2 } \quad\Longleftrightarrow\quad a(b+c) &= (c-b)d
+}
+
 
 \subsection{Octagons examples}
 
@@ -523,14 +538,18 @@ e^2 &= a^2 +b^2 +c^2 +d^2 -2(ab+ac+bd)\cos\theta +2(bc+ad)\cos(2\theta) -2cd\cos
 $e$ cannot to be and integer if the factor of $\sqrt{5}$ is not zero so we force this factor to be zero:
 \begin{align}
  ab+ac+bd +bc+ad -cd &= 0\nonumber\\
+ ab+ac+bd &= cd -bc-ad \\
  ab+ac+bc &= (c -a -b)d
 \end{align}
 We replace $ab+ac+bd$ by $cd -bc-ad$ in the $e^2$ equation to get:
 \begin{align}
 e^2 &= a^2 +b^2 +c^2 +d^2 +\frac{(cd -bc-ad) -bc-ad+cd}{2} +\frac{0}{2}\sqrt{5} \nonumber\\
- &= a^2 +b^2 +c^2 +d^2 + cd -bc -ad\nonumber\\
-e &= \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a-c)d }
+ &= a^2 +b^2 +c^2 +d^2 + cd -bc -ad\nonumber
 \end{align}
+
+\coloredeq{eq:decagon-e}{
+e = \sqrt{a^2 +b^2 +c^2 +d^2 -bc -(a-c)d } \quad\Longleftrightarrow\quad ab+ac+bc = (c -a -b)d
+}
 
 \subsection{Decagons software}
 
@@ -538,6 +557,11 @@ Common routine where $a \ge b,c$ doesn't return solutions. But when we change th
 other type of solutions.
 
 \begin{lstlisting}
+func TestDecagonsCBA(t *testing.T) {
+    tri := NewTriples()
+    tri.DecagonsCBA(500)
+}
+
 func (t *Triples) DecagonsCBA(max int) {
 	for c := 1; c <= max; c++ {
 		for b := 1; b <= c; b++ {
@@ -556,15 +580,14 @@ func (t *Triples) DecagonsCBA(max int) {
 		}
 	}
 }
-
-func TestDecagonsCBA(t *testing.T) {
-    tri := NewTriples()
-    tri.DecagonsCBA(500)
-}
 \end{lstlisting}
 
-The software solutions are in next listing. As with the case for pentagons, we notice
-the variable $e$ is in the form $10x + 1, x \in \bbb{Z}$:
+The software solutions are in next listing. As with the case for pentagons,
+we \textbf{conjecture} again the variable $e$ is in the form $10x + 1, x \in \bbb{Z}$ or simply:
+\begin{align}
+e \equiv 1\mod{10}
+\end{align}
+
 \setlength{\columnsep}{50pt}
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -629,5 +652,61 @@ the variable $e$ is in the form $10x + 1, x \in \bbb{Z}$:
 \end{multicols}
 
 
+\newcommand{\decagonTriple}[5] %a,b,c,d,e c>a, c>b
+{
+\pgfmathsetmacro{\ca}{int(#3-#1)} %c-a
+\pgfmathsetmacro{\bx}{#2*cos(36)}
+\pgfmathsetmacro{\by}{#2*sin(36)}
+\pgfmathsetmacro{\cx}{#3*cos(36)}
+\pgfmathsetmacro{\cy}{#3*sin(36)}
+\pgfmathsetmacro{\dxx}{#4*cos(72)}
+\pgfmathsetmacro{\dyy}{#4*sin(72)}
+\pgfmathsetmacro{\cax}{\ca*cos(36)}
+\pgfmathsetmacro{\cay}{\ca*sin(36)}
+\pgfmathsetmacro{\ax}{#1*cos(36)}
+\pgfmathsetmacro{\ay}{#1*sin(36)}
+\coordinate(A) at (0,0);
+\coordinate(B) at (#1,0);
+\coordinate(K) at (#1+\cx, \cy);
+\coordinate(H) at (-\bx,\by);
+\coordinate(L) at (-\bx-\dxx,\by+\dyy);
+\coordinate(AA) at (-\ca,0);
+\coordinate(AC) at (-\ca-\cax,+\cay);
+\coordinate(CC) at (-\ca-\cax-\ax, +\cay+\ay);
+\coordinate(CCC) at (-\cax, +\cay);
+\draw[blue,fill=blue](K)
+ -- node[above]{$#3$} (B) circle(5pt)
+ -- node[above]{$#1$} (A) circle(5pt)
+ -- node[above]{$#2$} (H) circle(5pt)
+ -- node[right]{$#4$} (L) circle(5pt)
+ -- node[below]{$#5$} (K) circle(5pt)
+ ;
+\draw[black,fill=black](A)
+ -- node[below]{$\ca$} (AA) circle(5pt)
+ -- node[below]{$\ca$} (AC) circle(5pt)
+ -- node[below]{$#1$} (CC) circle(5pt) (AC)
+ -- node[above]{$\ca$} (CCC) circle(5pt)
+ ;
+}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{scope}[scale=0.15]
+ \begin{scope}[shift={(0,0)}] %row-1 col-1
+  \decagonTriple{3}{6}{18}{20}{31}
+ \end{scope}
+
+ \begin{scope}[shift={(60,0)}] %row-1 col-1
+  \decagonTriple{6}{3}{20}{18}{31}
+ \end{scope}
+
+
+\end{scope}
+ 
+\end{tikzpicture}
+\caption{Decagons}
+\label{fig:decagons} 
+\end{figure}
 
 \end{document}
