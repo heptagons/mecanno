@@ -147,14 +147,27 @@ e^2 &= (\overline{OK})^2 + (\overline{OL})^2 \nonumber\\
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|c c c c c|}\hline
-Polygon & $\theta$ & $\cos\theta$ & $\cos(2\theta)$ & $\cos(3\theta)$ \rule[-2ex]{0pt}{6ex}\\ \hline\hline 
-Pentagon & $\dfrac{3\pi}{5}$ & $\dfrac{1-\sqrt{5}}{4}$ & $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{1+\sqrt{5}}{4}$\rule[-2ex]{0pt}{6ex}\\ \hline
-Hexagon & $\dfrac{2\pi}{3}$ & $-\dfrac{1}{2}$ & $-\dfrac{1}{2}$ & $1$ \rule[-2ex]{0pt}{6ex}\\ \hline
-%Heptagon & $\dfrac{5\pi}{7}$ &  &  & \rule[-2ex]{0pt}{6ex}\\ \hline
-Octagon & $\dfrac{3\pi}{4}$ & $-\dfrac{\sqrt{2}}{2}$ & $0$ & $\dfrac{\sqrt{2}}{2}$ \rule[-2ex]{0pt}{6ex}\\ \hline
-Decagon & $\dfrac{4\pi}{5}$ & $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ \rule[-2ex]{0pt}{6ex}\\ \hline
-Dodecagon & $\dfrac{5\pi}{6}$ & $-\dfrac{\sqrt{3}}{2}$ &  & \rule[-2ex]{0pt}{6ex}\\ \hline
+\begin{tabular}{|c c c c c c|}\hline
+Polygon & $\theta$ & $\cos\theta$ & $\cos(2\theta)$ & $\cos(3\theta)$ & Notes 
+ \rule[-2ex]{0pt}{6ex}\\ \hline\hline 
+Pentagon & $\dfrac{3\pi}{5}$ &
+ $\dfrac{1-\sqrt{5}}{4}$ & $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{1+\sqrt{5}}{4}$ & 
+ \rule[-2ex]{0pt}{6ex}\\ \hline
+Hexagon & $\dfrac{2\pi}{3}$ &
+ $-\dfrac{1}{2}$ & $-\dfrac{1}{2}$ & $1$ & 
+ \rule[-2ex]{0pt}{6ex}\\ \hline
+Heptagon & $\dfrac{5\pi}{7}$ &
+ $-\cos{B}$ & $\cos{C}$ & $\cos{A}$ & $\cos{A}\cos{B}\cos{C} = -\frac{1}{8} $
+ \rule[-2ex]{0pt}{6ex}\\ \hline
+Octagon & $\dfrac{3\pi}{4}$ &
+ $-\dfrac{\sqrt{2}}{2}$ & $0$ & $\dfrac{\sqrt{2}}{2}$ & 
+ \rule[-2ex]{0pt}{6ex}\\ \hline
+Decagon & $\dfrac{4\pi}{5}$ &
+ $\dfrac{-1-\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ & $\dfrac{-1+\sqrt{5}}{4}$ &
+ \rule[-2ex]{0pt}{6ex}\\ \hline
+Dodecagon & $\dfrac{5\pi}{6}$ &
+ $-\dfrac{\sqrt{3}}{2}$ &  &  &
+ \rule[-2ex]{0pt}{6ex}\\ \hline
 
 \end{tabular}
 \caption{Regular polygons internal angles and cosines.}
@@ -651,6 +664,7 @@ e \equiv 1\mod{10}
 \end{lstlisting}
 \end{multicols}
 
+\subsection{Decagons examples}
 
 \newcommand{\decagonTriple}[5] %a,b,c,d,e c>a, c>b
 {
@@ -693,14 +707,14 @@ e \equiv 1\mod{10}
 \draw[black,fill=black] (O) node[below]{$O$}
  -- node[below]{$\ca$} (A) node[below]{$A$} circle(5pt)
  -- node[below,red]{$#3$} (J) node[left]{$J$} circle(5pt)
- -- node[below]{$\ca$} (JJ) circle(5pt)
- -- node[below,blue]{$\cb$} (H) circle(5pt)
+ -- node[above]{$\ca$} (JJ) circle(5pt)
+ -- node[above,blue]{$\cb$} (H) circle(5pt)
  (J)
  -- node[left,red]{$#3$} (I) node[left]{$I$} circle(5pt)
- -- node[below]{$\ca$} (II) circle(5pt)
+ -- node[above]{$\ca$} (II) circle(5pt)
  -- node[left,red]{$#3$} (JJ) circle(5pt)
  (II)
- -- node[below,blue]{$\cb$} (III) circle(5pt)
+ -- node[above,blue]{$\cb$} (III) circle(5pt)
  -- (L)
  ;
 \draw[black,fill=black](C) 
@@ -715,30 +729,56 @@ e \equiv 1\mod{10}
  \begin{scope}[shift={(0,0)}] %row-1 col-1
   \decagonTriple{3}{6}{18}{20}{31}
  \end{scope}
- \begin{scope}[shift={(70,0)}] %row-1 col-1
+ \begin{scope}[shift={(70,0)}] %row-1 col-2
   \decagonTriple{6}{3}{20}{18}{31}
  \end{scope}
 \end{scope}
 \end{tikzpicture}
-\caption{Decagons with $e=31$}
-\label{fig:decagons} 
+\caption{Half of decagons with $e=31$, sizes $18$ and $20$.}
+\label{fig:decagons-31} 
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-\begin{scope}[scale=0.08]
+\begin{scope}[scale=0.06]
  \begin{scope}[shift={(0,0)}] %row-1 col-1
   \decagonTriple{12}{8}{36}{51}{71}
  \end{scope}
- \begin{scope}[shift={(0,-100)}] %row-1 col-1
+ \begin{scope}[shift={(0,-90)}] %row-2 col-1
   \decagonTriple{8}{12}{51}{36}{71}
  \end{scope}
 \end{scope}
 \end{tikzpicture}
-\caption{Decagons with $e=71$}
-\label{fig:decagons} 
+\caption{Half of decagons with $e=71$, sizes $36$ and $51$.}
+\label{fig:decagons-71} 
 \end{figure}
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{scope}[scale=0.04]
+ \begin{scope}[shift={(0,0)}] %row-1 col-1
+  \decagonTriple{24}{8}{51}{96}{121}
+ \end{scope}
+ \begin{scope}[shift={(0,-160)}] %row-2 col-1
+  \decagonTriple{8}{24}{96}{51}{121}
+ \end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{Half of decagons with $e=121$, sizes $51$ and $96$.}
+\label{fig:decagons-121} 
+\end{figure}
+
+With the results where $c > a$ we need to add helping rhombi to start
+building complete decagons. See figures \ref{fig:decagons-31},
+\ref{fig:decagons-71} and \ref{fig:decagons-121}. In red we have the unit, for each
+pair for the same $e$ the pairs interchage segments $a,b$ and $c,d$. The complete
+building and dispositions of helping strips and rigidity is beyond this paper.
+
+
+
 
 
 \end{document}
