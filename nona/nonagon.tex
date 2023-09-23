@@ -70,13 +70,22 @@ From equation \ref{eq:cubic} we know the product of roots is $\frac{1}{8}$ match
  &= \frac{1}{64} - 1 + \frac{3}{2} +\left(\frac{\sqrt{3}}{8}\right)^2 = \left(\frac{9}{4}\right)^2 
 \end{align}
 
-From the figure \ref{fig:noagons}, sines of angles $A$, $B$ and $D$ are related as:
+From the figure \ref{fig:nonagons}, sines of angles $A$, $B$ and $D$ are related as:
 \begin{align}
 \sin{A} + \sin{B} &= \sin{D} \\
- &= \sin(2A + B) \\
- &= \sin(2A)\cos{B} + \cos(2A)\sin{B} \\
- &= 2\sin{A}\cos{A}\cos{B} + (\cos^2{A}-\sin^2{A})\sin{B}
+ &= \sin(2A + B) \nonumber\\
+ &= \sin(2A)\cos{B} + \cos(2A)\sin{B} \nonumber\\
+ &= 2\sin{A}\cos{A}\cos{B} + (1-2\sin^2{A})\sin{B} \nonumber\\
+\sin{A} &= 2\sin{A}\cos{A}\cos{B} -2\sin^2{A}\sin{B} \nonumber\\
+1 &= 2\cos{A}\cos{B} -2\sin{A}\sin{B} \\
+  &= 2\cos(A+B) = 2\cos{C} \nonumber
 \end{align}
+
+Nonagon height is sum of all sines:
+\begin{align}
+\sin{A}+\sin{B}+\sin{C}+\sin{D} &= 2\sin{D} + \frac{\sqrt{3}}{2}
+\end{align}
+
 
 
 Last equation solves this cubic equation:
