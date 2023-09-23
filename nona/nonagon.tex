@@ -1,75 +1,83 @@
 \documentclass[11pt]{article}
-%Gummi|065|=)
 \title{\textbf{Meccano nonagon}}
 \author{https://github.com/heptagons/meccano/nona}
 \date{}
 
-\usepackage{amsmath}
-\usepackage[pdftex]{graphicx}
+\usepackage{../meccano}
+
+%\usepackage{amsmath}
+%\usepackage[pdftex]{graphicx}
 
 \begin{document}
 
 \maketitle
 
-\section{Meccano regular nonagon}
-
-\begin{figure}
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.75]{figs/3nonagons}
+\includegraphics[scale=0.7]{figs/3nonagons}
 \caption{Three regular nonagons connected by an equilateral triangle.
 We note four angles in the figure $A$, $B$, $C$ and $D$.}
-\label{fig:1}
+\label{fig:nonagons}
 \end{figure}
 
-Figure \ref{fig:1} shows three regular nonagons connected by an equilateral 
+\section{Algebra}
+
+Figure \ref{fig:nonagons} shows three regular nonagons connected by an equilateral 
 triangle. Four angles appear orthogonally in any regular nonagon:
-\begin{align*}
+\begin{align}
 A &= \pi/9 = 20^{\circ} \\
 B &= 2\pi/9 = 40^{\circ} \\
 C &= 3\pi/9 = 60^{\circ} \\
-D &= 4\pi/9 = 80^{\circ}
-\end{align*}
+D &= 4\pi/9 = 80^{\circ} \\
+A + B &= D - A = C
+\end{align}
 
-The relations of angle $D$ are those of equilateral triangle:
-\begin{align*}
-\cos{D} &= -\frac{1}{2}\\
-\sin{D} &= \frac{\sqrt{3}}{2}
-\end{align*}
+The relations of angle $C$ are those of equilateral triangle:
+\begin{align}
+\cos{C} &= -\frac{1}{2}\\
+\sin{C} &= \frac{\sqrt{3}}{2}
+\end{align}
 
-From the figure \ref{fig:1}, cosines of angles $A$, $B$ and $C$ are related as:
-\begin{align*}
-\cos{C} &= \cos{A} - \cos{B}
-\end{align*}
-
-Since by definition $C=4A$ and $B=2A$ previous equation converts into:
-\begin{align*}
-\cos{4A} &= \cos{A} - \cos{2A}
-\end{align*}
+From the figure \ref{fig:nonagons}, cosines of angles $A$, $B$ and $D$ are related as:
+\begin{align}
+\cos{A} &= \cos{B} + \cos{D} \\
+ &= \cos{(2A)} + \cos{(4A)} \nonumber\\
+ &= (2\cos^2{A} - 1) + (1 -8\cos^2{A} + 8\cos^4{A}) \nonumber\\
+ &= 8\cos^4{A} - 6\cos^2{A} \nonumber\\
+ 1 &= 8\cos^3{A} - 6\cos{A}
+\end{align}
 
 Previous cosines equation solves this cubic equation:
-\begin{align*}
-8x^3 - 6x - 1 &= 0\\
-x^3 - \frac{3x}{4} - \frac{1}{8} &= 0\\
-x_1 &= +\cos{A} \approx +0.939692 \\
-x_2 &= -\cos{B} \approx -0.766044 \\
-x_3 &= -\cos{C} \approx -0.173648
-\end{align*}
+\begin{align}
+x^3 - \frac{3}{4}x - \frac{1}{8} &= 0 \label{eq:cubic}\\
+x_1 &= +\cos{A} \approx +0.939692 \nonumber\\
+x_2 &= -\cos{B} \approx -0.766044 \nonumber\\
+x_3 &= -\cos{D} \approx -0.173648 \nonumber
+\end{align}
 
-More cosines relations are:
-\begin{align*}
-\cos{A}\cos{B}\cos{C} &= \frac{1}{8} \\
-\cos^2{A} + \cos^2{B} + cos^2{C} &= \frac{3}{2}
-\end{align*}
+From equation \ref{eq:cubic} we know the product of roots squares is $\frac{3}{2}$:
+\begin{align}
+\cos^2{A} + \cos^2{B} + \cos^2{D} &= \frac{3}{2} \\
+1 - \sin^2{A} + 1 - \sin^2{B} + 1 - \sin^2{D} &= \frac{3}{2} \nonumber\\
+\sin^2{A} + \sin^2{B} + \sin^2{D} &= \frac{3}{2}
+\end{align}
 
-From the figure \ref{fig:1}, sines of angles $A$, $B$ and $C$ are related as:
-\begin{align*}
-\sin{C} &= \sin{B} + \sin{A}
-\end{align*}
+From equation \ref{eq:cubic} we know the product of roots is $\frac{1}{8}$ matching the ``Morrie's law'':
+\begin{align}
+\cos{A}\cos{B}\cos{D} &= \frac{1}{8} \\
+(1-\sin^2{A})(1-\sin^2{B})(1-\sin^2{D}) &= \frac{1}{64} \nonumber\\
+(\sin{A}\sin{B})^2 +(\sin{A}\sin{D})^2 +(\sin{C}\sin{D})^2 &= \frac{1}{64} - 1 +\sin^2{A}+\sin^2{B}+\sin^2{D} +(\sin{A}\sin{B}\sin{D})^2 \nonumber\\
+ &= \frac{1}{64} - 1 + \frac{3}{2} +\left(\frac{\sqrt{3}}{8}\right)^2 = \left(\frac{9}{4}\right)^2 
+\end{align}
 
-Since by definition $C=4A$ and $B=2A$ previous equation converts into:
-\begin{align*}
-\sin{4A} &= \sin{2A} + \sin{A}
-\end{align*}
+From the figure \ref{fig:noagons}, sines of angles $A$, $B$ and $D$ are related as:
+\begin{align}
+\sin{A} + \sin{B} &= \sin{D} \\
+ &= \sin(2A + B) \\
+ &= \sin(2A)\cos{B} + \cos(2A)\sin{B} \\
+ &= 2\sin{A}\cos{A}\cos{B} + (\cos^2{A}-\sin^2{A})\sin{B}
+\end{align}
+
 
 Last equation solves this cubic equation:
 \begin{align*}
