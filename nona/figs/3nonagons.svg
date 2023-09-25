@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.937531"
-     inkscape:cx="270.75965"
+     inkscape:cx="194.37378"
      inkscape:cy="263.31786"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -186,7 +186,7 @@
          sodipodi:role="line"
          id="tspan5792"
          x="311.4332"
-         y="865.56403">cosD</tspan></text>
+         y="865.56403">cosC</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:17.5px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -197,7 +197,7 @@
          sodipodi:role="line"
          id="tspan5780-0"
          x="353.43015"
-         y="796.98431">sinD</tspan></text>
+         y="796.98431">sinC</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 258.04649,704.14857 17.2564,30.37532"
@@ -244,7 +244,7 @@
          sodipodi:role="line"
          id="tspan5776-2"
          x="68.841881"
-         y="772.25134">cosC</tspan></text>
+         y="772.25134">cosD</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:17.5px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -255,7 +255,7 @@
          sodipodi:role="line"
          id="tspan5780-08"
          x="124.67086"
-         y="705.62781">sinC</tspan></text>
+         y="705.62781">sinD</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 94.06272,696.18325 25.1369,3.52704"
@@ -300,10 +300,10 @@
          sodipodi:role="line"
          id="tspan5792-1"
          x="73.318466"
-         y="711.37268">C</tspan></text>
+         y="711.37268">D</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:17.5px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       style="font-style:normal;font-weight:normal;font-size:17.5px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="41.799122"
        y="822.76941"
        id="text5774-6-0"
@@ -313,7 +313,7 @@
          sodipodi:role="line"
          id="tspan5776-2-7"
          x="41.799122"
-         y="822.76941">D</tspan></text>
+         y="822.76941">C</tspan></text>
     <path
        style="fill:#ff00ff;fill-rule:evenodd;stroke:#000000;stroke-width:2.99999898;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.5;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
        d="M 273.99858,1005.3836 443.12504,943.82658"
@@ -352,7 +352,7 @@
          sodipodi:role="line"
          id="tspan6786"
          x="316.29916"
-         y="665.45447">d = a + b</tspan></text>
+         y="665.45447">d = 2bcosB</tspan></text>
     <g
        id="g7903"
        style="stroke-width:2.99999905;stroke-miterlimit:4;stroke-dasharray:none;stroke:#000000;stroke-opacity:0.52040815"
@@ -383,7 +383,7 @@
          sodipodi:role="line"
          id="tspan7901"
          x="257.21817"
-         y="937.08258">c = a(1+2cosB)</tspan></text>
+         y="937.08258">c = a(2sinB+1)</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#0000ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 503.11531,556.58004 0,271.55712"
@@ -401,7 +401,7 @@
          sodipodi:role="line"
          id="tspan5780-0-1"
          x="502.56955"
-         y="847.41998">tanD</tspan><tspan
+         y="847.41998">tanC</tspan><tspan
          sodipodi:role="line"
          x="502.56955"
          y="869.29498"
