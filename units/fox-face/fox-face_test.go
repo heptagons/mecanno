@@ -155,31 +155,6 @@ func TestFoxFaceDodecagons(t *testing.T) {
 // max=80 dodecagons=none, time=116 seconds
 
 
-
-
-
-func FoxTriangle() {
-	min := N32(1)
-	max := N32(10)
-	for a := min; a <= max; a++ {
-		for b := min; b <= max; b++ {
-			for c := min; c <= max; c++ {
-				if cos, err := factory.ANew1(2*a*b, c*c - a*a - b*b); err != nil {
-					// silent
-				} else {
-					for d := min; d <= max; d++ {
-						for e := min; e <= max; e++ {
-
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-
-
 // FoxFace iterate a,b,c,√d until max an reports a,b,c,√d and
 //	                    ,---------------------
 //	       -a(2b+c) +- √ a²c² + 4b(b+c)(d-c²)
@@ -278,4 +253,37 @@ func TestFoxFaceDsurdDecagons(t *testing.T) {
 // max-lenght=40 a,b,c,surdD decagons:
 // --- PASS: TestFoxFaceDsurdDecagons (157.71s)
 // NO SOLUTIONS
+
+
+func TestFoxTriangles(t *testing.T) {
+	factory := NewA32s()
+	min := N32(1)
+	max := N32(50)
+	for a := min; a <= max; a++ {
+		for b := min; b <= max; b++ {
+			for c := min; c <= max; c++ {
+				if cos, err := factory.ANew1(N(2*a*b), Z(c*c) -Z(a*a) - Z(b*b)); err != nil {
+					// silent
+				} else {
+					//fmt.Println("cos", cos, a, b, c)
+					for d := N32(0); d <= max; d++ {
+						for e := N32(0); e <= max; e++ {
+							if m, err := factory.ANew1(N(1), Z(-2)*Z(a+d)*Z(b+e)); err != nil {
+								// silent
+							} else if prod, err := factory.AMulN(cos, m); err != nil {
+								// silent
+							} else if f, ok := prod.IsInteger(); !ok {
+								// silent
+							} else if g := Z(a+d)*Z(a+d) + Z(b+e)*Z(b+e) + Z(f); g == 31 {
+								fmt.Printf("a=%d b=%d c=%d d=%d e=%d g=sqrt(%d)\n", a, b, c, d, e, g)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
 

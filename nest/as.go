@@ -231,6 +231,10 @@ func (qs *A32s) aAddN(q ...*A32) (s *A32, err error) {
 	return
 }
 
+func (qs *A32s) AMulN(q ...*A32) (s *A32, err error) { // TODO
+	return qs.aMulN(q...)
+}
+
 // aMulN multiplies the given numbers and return a new result number.
 // Call multiple times this function aMul and follows its limitations.
 // Return an error if multiplands sizes cannot be multiplied.

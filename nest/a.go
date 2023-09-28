@@ -92,6 +92,13 @@ func (a *A32) addInt(z Z32) *A32 {
 	return a
 }
 
+func (q *A32) IsInteger() (Z32, bool) {
+	if q.den == 1 {
+		return q.num[0], true
+	}
+	return 0, false
+}
+
 // Equal returns true it the given number is identical to this one.
 func (q *A32) Equal(r *A32) bool {
 	if q == nil || r == nil {
