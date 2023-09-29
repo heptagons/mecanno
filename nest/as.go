@@ -77,7 +77,7 @@ func (qs *A32s) ANew3(a N, b, c, d Z) (*A32, error) {
 		return qs.ANew1(a, b)                                   // b/a
 	} else if d == 1 {
 		return qs.ANew1(a, b + c)                               // (b+c)/a
-	} else if C, D, err := qs.zSqrt(c, d); err != nil {         // (b + C√D)/a
+	} else if C, D, err := qs.ZSqrt(c, d); err != nil {         // (b + C√D)/a
 		return nil, err
 	} else if D == 1 {
 		return qs.ANew1(a, b + Z(C))                            // (b+c)/a
@@ -102,11 +102,11 @@ func (qs *A32s) ANew5(a N, b, c, d, e, f Z) (*A32, error) {
 		return qs.ANew3(a, b+e, c, d)
 	} else if d == f {                                 // (b + (c+e)√d)/a
 		return qs.ANew3(a, b, c+e, d)
-	} else if C, D, err := qs.zSqrt(c, d); err != nil { // (b + C√D + e√f)/a
+	} else if C, D, err := qs.ZSqrt(c, d); err != nil { // (b + C√D + e√f)/a
 		return nil, err
 	} else if D == +1 {                                // (b+C + e√f)/a
 		return qs.ANew3(a, b+Z(C), e, f) 
-	} else if E, F, err := qs.zSqrt(e, f); err != nil { // (b + C√D + E√F)/a
+	} else if E, F, err := qs.ZSqrt(e, f); err != nil { // (b + C√D + E√F)/a
 		return nil, err
 	} else if F == 1 {                                 // (b+E, C√D)/a
 		return qs.ANew3(a, b+Z(E), Z(C), Z(D))
@@ -137,21 +137,21 @@ func (qs *A32s) ANew7(a N, b, c, d, e, f, g, h Z) (*A32, error) {
 		return qs.ANew5(a, b, c, d, e, f+g)          
 	} else if e == 0 {                                  // (b+c√d)/a
 		return qs.ANew3(a, b, c, d)               
-	} else if G, H, err := qs.zSqrt(g, h); err != nil { // (b+c√d+e√(f+G√H))/a
+	} else if G, H, err := qs.ZSqrt(g, h); err != nil { // (b+c√d+e√(f+G√H))/a
 		return nil, err
 	} else if H == + 1 {                                // (b+c√d+e√f+G)/a
 		return qs.ANew5(a, b, c, d, e, f+Z(G))
 
-	} else if E, FG, err := qs.zSqrtN(e, f, Z(G)); err != nil { // (b+c√d+E√(F+G√H))/a
+	} else if E, FG, err := qs.ZSqrtN(e, f, Z(G)); err != nil { // (b+c√d+E√(F+G√H))/a
 		return nil, err
-	} else if C, D, err := qs.zSqrt(c, d); err != nil {         // (b+C√D+E√(F+G√H))/a
+	} else if C, D, err := qs.ZSqrt(c, d); err != nil {         // (b+C√D+E√(F+G√H))/a
 		return nil, err
 	} else if A, BCE, err := qs.zFracN(a, b, Z(C), Z(E)); err != nil { // (B + C√E + D√(F+G√H))/A
 		return nil, err
 	} else {
 		F, G := FG[0], FG[1]
 		// try to denest √(F+G√H)
-		if den, num, err := qs.zSqrtDenest3(Z(F), Z(G), Z(H)); err != nil {
+		if den, num, err := qs.ZSqrtDenest3(Z(F), Z(G), Z(H)); err != nil {
 			return nil, err
 		} else {
 			a := N(A)*N(den)
@@ -464,7 +464,7 @@ func (qs *A32s) aSqrt(q *A32) (s *A32, err error) {
 				Z(a)*c, d) // G√H
 		}
 		
-		den, num, err := qs.zSqrtDenest3(b, c, d)
+		den, num, err := qs.ZSqrtDenest3(b, c, d)
 		if err != nil {
 			return nil, err
 		}

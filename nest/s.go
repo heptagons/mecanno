@@ -49,7 +49,7 @@ func (s *S32s) sAddZ(surds []Z) error {
 }
 
 func (s *S32s) sAddSqrt(out, in Z) error {
-	if o32, i32, err := s.zSqrt(out, Z(in)); err != nil {
+	if o32, i32, err := s.ZSqrt(out, Z(in)); err != nil {
 		return err
 	} else {
 		k := int(i32)
@@ -86,7 +86,7 @@ func (s *S32s) sDivide(den N) error {
 // sAdd add the given surd √in to the current sum of surds
 func (s *S32s) sAdd(in N) error {
 	// reduce 1√in -> o32√in32
-	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
+	if o32, i32, err := s.ZSqrt(1, Z(in)); err != nil {
 		return err
 	} else {
 		k := int(i32)
@@ -103,7 +103,7 @@ func (s *S32s) sAdd(in N) error {
 // sSub substract the given surd √in from the current sum of surds
 func (s *S32s) sSub(in N) error {
 	// reduce 1√in -> o32√in32
-	if o32, i32, err := s.zSqrt(1, Z(in)); err != nil {
+	if o32, i32, err := s.ZSqrt(1, Z(in)); err != nil {
 		return err
 	} else {
 		k := int(i32)
@@ -138,7 +138,7 @@ func (s *S32s) sNewPow2() (*S32s, error) {
 			} else {
 				// x√a * y√b = xy√(ab) = o√i
 				x, y := Z(s.surds[k1]), Z(s.surds[k2])
-				o32, i32, err := s.zSqrt(x*y, Z(k1)*Z(k2))
+				o32, i32, err := s.ZSqrt(x*y, Z(k1)*Z(k2))
 				if err != nil {
 					return nil, err
 				}
@@ -171,7 +171,7 @@ func (s *S32s) sNewSqrt() (*S32s, error) {
 	// For √(b + c√d) look if b² - c²d = x²
 	// In other words, look a x such that 1√(b²-c²d) = x√1
 	// Case example: √(6+2√5) = 1+√5
-	if x, r, err := s.zSqrt(1, b*b - c*c*d); err != nil{
+	if x, r, err := s.ZSqrt(1, b*b - c*c*d); err != nil{
 		return nil, err
 	} else if r != 1 {
 		// cannot denest
@@ -179,10 +179,10 @@ func (s *S32s) sNewSqrt() (*S32s, error) {
 	} else {
 		// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
 		// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
-		if o1, i1, err := s.zSqrt(1, 2*(b + Z(x))); err != nil {
+		if o1, i1, err := s.ZSqrt(1, 2*(b + Z(x))); err != nil {
 			return nil, err
 		} else
-		if o2, i2, err := s.zSqrt(1, 2*(b - Z(x))); err != nil {
+		if o2, i2, err := s.ZSqrt(1, 2*(b - Z(x))); err != nil {
 			return nil, err
 		} else {
 			// o1√i1 = √(b+x)

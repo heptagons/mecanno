@@ -151,11 +151,11 @@ func (z *N32s) zFracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	return N32(den), n32s, nil
 }
 
-// zSqrt reduce the number o√i 
+// ZSqrt reduce the number o√i 
 // Example zSqrt(3,8) return 6,2,nil:
 //    _     _
 //	3√8 = 6√2
-func (z *Z32s) zSqrt(o, i Z) (o32, i32 Z32, err error) {
+func (z *Z32s) ZSqrt(o, i Z) (o32, i32 Z32, err error) {
 	if o == 0 || i == 0 {
 		return 0, 0, nil
 	}
@@ -184,11 +184,11 @@ func (z *Z32s) zSqrt(o, i Z) (o32, i32 Z32, err error) {
 	return o32, i32, nil
 }
 
-// zSqrtN reduces the external o and several internal i
+// ZSqrtN reduces the external o and several internal i
 // Example zSqrt(3,8,16) return 6,[2,4],nil:
 //    __________     _________
 //	3√(8x + 16y) = 6√(2x + 4y)
-func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
+func (z *Z32s) ZSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	ins0 := true
 	for _, i := range is {
 		if i != 0 {
@@ -250,7 +250,7 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 	return o32, i32s, nil
 }
 
-// zSqrtDenest3 returns a denominator and array of denested numerators
+// ZSqrtDenest3 returns a denominator and array of denested numerators
 // if √(b + c√d) can be denested. There are four results types:
 //	- len(n) == 0:
 //		arguments cannot be denest.
@@ -273,18 +273,18 @@ func (z *Z32s) zSqrtN(o Z, is ...Z) (o32 Z32, i32s []Z32, err error) {
 //		√                         den
 //	                 where den > 0, n[0] = 0, n[1] != 0, n[3] != 0, n[2] != n[4] != 1.
 //
-func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
+func (z *Z32s) ZSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	den = 1
 	if b == 0 {
 		// simpler case √(c√d)
 		if c == 0 || d == 0 {
 			// √(0) = 0
 			n = []Z32 { 0 }
-		} else if o, i, err := z.zSqrt(c, d); err != nil {
+		} else if o, i, err := z.ZSqrt(c, d); err != nil {
 			e = err
 		} else if i == 1 {
 			// √(c√d) = √o
-			if o2, i2, err := z.zSqrt(1, Z(o)); err != nil {
+			if o2, i2, err := z.ZSqrt(1, Z(o)); err != nil {
 				e = err
 			} else if i2 == 1 {
 				// √(c√d) = √o = o2
@@ -300,7 +300,7 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	}
 	if c == 0 || d == 0 {
 		// simpler case √b
-		if o, i, err := z.zSqrt(1, b); err != nil {
+		if o, i, err := z.ZSqrt(1, b); err != nil {
 			e = err
 		} else if i == 1 {
 			// √b = o√1
@@ -313,7 +313,7 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	}
 	if d == 1 {
 		// simpler case √(b+c)
-		if o, i, err := z.zSqrt(1, b+c); err != nil {
+		if o, i, err := z.ZSqrt(1, b+c); err != nil {
 			e = err
 		} else if i == 1 {
 			// √(b+c) = o√1 = o
@@ -327,17 +327,17 @@ func (z *Z32s) zSqrtDenest3(b, c, d Z) (den N32, n [] Z32, e error) {
 	// For √(b + c√d) look if b² - c²d = x²
 	// In other words, look a x such that 1√(b²-c²d) = x√1
 	// Case example: √(6+2√5) = 1+√5
-	if x, r, err := z.zSqrt(1, b*b - c*c*d); err != nil{
+	if x, r, err := z.ZSqrt(1, b*b - c*c*d); err != nil{
 		e = err
 	} else if r != 1 {
 		// cannot denest
 	} else {
 		// √(b + c√d) = (√(2b+2x) + √(2b-2x))/2
 		// √(b - c√d) = (√(2b+2x) - √(2b-2x))/2
-		if o1, i1, err := z.zSqrt(1, 2*(b + Z(x))); err != nil {
+		if o1, i1, err := z.ZSqrt(1, 2*(b + Z(x))); err != nil {
 			e = err
 		} else
-		if o2, i2, err := z.zSqrt(1, 2*(b - Z(x))); err != nil {
+		if o2, i2, err := z.ZSqrt(1, 2*(b - Z(x))); err != nil {
 			e = err
 		} else {
 			// o1√i1 = √(b+x)

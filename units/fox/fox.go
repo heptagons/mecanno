@@ -74,10 +74,12 @@ func FoxSurd(max N32, found func(a, b, c, d N32, cos *A32)) {
 				zc := Z(1)                  // 1
 				a2c2 := Z(a*a)*Z(c*c)       // a
 				for surdD := c*c; surdD <= max*max; surdD++ { // surdD >= c*c always
-					if g := NatGCD(abc, surdD); g > 1 {
-						continue // skip scale repetitions, eg. [1,2,3,4] = [2,4,6,8]
-					}
-					if zd := a2c2 + 4*Z(b)*Z(b+c)*(Z(surdD) - Z(c*c)); zd < 0 {
+
+					if o, _, err := factory.ZSqrt(1, Z(surdD)); err != nil {
+						// 
+					} else if g := NatGCD(abc, N32(o)); g > 1 {
+						// skip scale repetitions, eg. [1,2,3,4] = [2,4,6,8]
+					} else if zd := a2c2 + 4*Z(b)*Z(b+c)*(Z(surdD) - Z(c*c)); zd < 0 {
 						// skip imaginary numbers invalid fox-face, like d too short
 					} else if cos, err := factory.ANew3(N(na), zb, zc, zd); err != nil {
 						// silent overflow
@@ -90,10 +92,19 @@ func FoxSurd(max N32, found func(a, b, c, d N32, cos *A32)) {
 	}
 }
 
-func FoxTriangles(surd Z) {
+// FoxTrianglesSurdExt creates a virtual strip ED of type surd outside an integer triangle.
+// Integral triangle ABC has integral extentionss D from A and E from B:
+//                              a*a + b*b - c*c 
+//       C-_            cosC = ----------------
+//      /   -_                      2*a*b
+//     /   __ A_        __   __ __   __ __     __ __
+//    B__--     -_      ED = CD*CD + CE*CE - 2*CD*CE*cosC
+//   /            -_
+//  E---------------D
+//
+func FoxTrianglesSurdExt(surd Z, max N32) {
 	factory := NewA32s()
 	min := N32(1)
-	max := N32(20)
 	for a := min; a <= max; a++ {
 		for b := min; b <= max; b++ {
 			_2ab := N(2)*N(a)*N(b)
@@ -115,10 +126,14 @@ func FoxTriangles(surd Z) {
 							} else if f, ok := prod.IsInteger(); !ok {
 								// silent
 							} else if g := Z(a+d)*Z(a+d) + Z(b+e)*Z(b+e) + Z(f); g == surd {
-
-								if d == 0 || e == 0 {
+									fmt.Printf("√%d ", g)
+								if d == 0 {
 									// triangle extension with only 4 bolts not 5
-									fmt.Printf("a=%d b=%d c=%d d=%d e=%d g=sqrt(%d)\n", a, b, c, d, e, g)
+									fmt.Printf("a=%d b=%d+%d c=%d\n", a, b,e, c)
+								} else if e == 0 {
+									fmt.Printf("a+d=%d+%d b=%d c=%d\n", a,d, b, c)
+								} else {
+									fmt.Printf("a+d=%d+%d b=%d+%d c=%d\n", a,d, b,e, c)
 								}
 							}
 						}

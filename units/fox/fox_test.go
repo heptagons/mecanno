@@ -112,7 +112,7 @@ func TestFoxDodecagons(t *testing.T) {
 
 // max=100, pentagons=1 last=[3,4,8,11] time=399 seconds
 func TestFoxSurdPentagons(t *testing.T) {
-	max := N32(50)
+	max := N32(40)
 	fmt.Printf("max-lenght=%d a,b,c,surdD pentagons:\n", max)
 	i := 0
 	FoxSurd(max, func(a, b, c, surdD N32, cos *A32) {
@@ -123,21 +123,21 @@ func TestFoxSurdPentagons(t *testing.T) {
 	})
 }
 /* SOLUTIONS!!!
-=== RUN   TestFoxDsurdPentagons
+=== RUN   TestFoxSurdPentagons
 max-lenght=40 a,b,c,surdD pentagons:
-  1) 2,3,3,sqrt(31)
-  2) 3,4,8,sqrt(121) <- skip this is d*d=11 (original solution)
-  3) 4,5,15,sqrt(341)
-  4) 5,6,24,sqrt(781)
-  5) 6,7,35,sqrt(1555)
-  6) 6,10,5,sqrt(211)
-  7) 10,14,21,sqrt(1031)
-  8) 12,21,7,sqrt(781)
-  9) 15,24,16,sqrt(1441)
---- PASS: TestFoxDsurdPentagons (155.52s)
+  1) 2,3,3,sqrt(31)      = sqrt(31)
+  2) 3,4,8,sqrt(121)     = sqrt(11*11) Skip
+  3) 4,5,15,sqrt(341)    = sqrt(11*31)
+  4) 5,6,24,sqrt(781)    = sqrt(11*71)
+  5) 6,7,35,sqrt(1555)   = sqrt(5*311)
+  6) 6,10,5,sqrt(211)    = sqrt(211)
+  7) 10,14,21,sqrt(1031) = sqrt(1031)
+  8) 12,21,7,sqrt(781)   = sqrt(11*71)
+  9) 15,24,16,sqrt(1441) = sqrt(11*131)
+--- PASS: TestFoxSurdPentagons (155.52s)
 */
 // One more when max=50
-// 10) 20,36,9,sqrt(2101)
+// 10) 20,36,9,sqrt(2101) = sqrt(11*191)
 // panic: test timed out after 10m0s
 
 
@@ -176,6 +176,6 @@ func TestFoxSurdDecagons(t *testing.T) {
 // NO SOLUTIONS
 
 
-func TestFoxTriangles(t *testing.T) {
-	FoxTriangles(221)
+func TestFoxTrianglesSurdExt(t *testing.T) {
+	FoxTrianglesSurdExt(31, 10)
 }
