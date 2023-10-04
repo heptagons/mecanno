@@ -1,7 +1,10 @@
 package penta
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/heptagons/meccano"
 )
 
 func Test_Type_1(t *testing.T) {
@@ -220,4 +223,83 @@ func Test_Type_2_HalfWithConjecture(t *testing.T) {
 137  a=960 b=195 c=760 d=504 e=881
 138  a=961 b=249 c=633 d=513 e=821
 139  a=987 b=350 c=594 d=588 e=811
+*/
+
+
+
+// TestPentaAsymmDiagonalSlow looks integers solutions m,n of equation:
+// for integers a,b:
+//
+//  a*b = 4*m*n
+//	a*a + b*b = m*m + 2*m*n + 5*n*n, 
+//
+func TestPentaAsymmDiagonalSlow(t *testing.T) {
+	max := 1000
+	for a := 1; a < max; a++ {
+		for b := 1; b < a; b++ { // reject already diagonals complete (a==b)
+			ab := a*b
+			if ab % 4 != 0 {
+				continue
+			}
+			for m := 1; m < 2*a; m++ {
+				for n :=1; n < 2*a; n++ {
+					if ab == 4*m*n {
+						if a*a + b*b == m*m + 2*m*n + 5*n*n {
+							eleven := a % 11 == 0
+							t.Logf("a=%d b=%d -> m=%d n=%d eleven=%t\n", a, b, m, n, eleven)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestPentaAsymmDiagonalFast(t *testing.T) {
+	max := 4000
+	sols := &meccano.Sols{}
+	for a := 1; a < max; a++ {
+		for b := 1; b < a; b++ { // reject already diagonals complete (a==b)
+			ab := a*b
+			if ab % 4 != 0 {
+				continue
+			}
+			mn := ab >> 2 // ab/4 as integer
+			for m := 1; m <= mn; m++ {
+				if mn % m == 0 {
+					n := mn / m
+					if a*a + b*b == m*m + 2*m*n + 5*n*n {
+						sols.Add(a, b, m, n)
+					}
+				}
+			}
+		}
+		if a % 100 == 0 {
+			fmt.Printf("a=%d/%d\n", a, max)
+		}
+	}
+}
+/*
+=== RUN   TestPentaAsymmDiagonalFast
+  1  a= 11 b=  8 c= 11 d=  2
+a=100/4000
+a=200/4000
+  2  a=246 b= 70 c= 41 d=105
+a=300/4000
+a=400/4000
+a=500/4000
+a=600/4000
+a=700/4000
+a=800/4000
+a=900/4000
+a=1000/4000
+a=1100/4000
+a=1200/4000
+a=1300/4000
+a=1400/4000
+a=1500/4000
+a=1600/4000
+a=1700/4000
+a=1800/4000
+panic: test timed out after 10m0s
 */

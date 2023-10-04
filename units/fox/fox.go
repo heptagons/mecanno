@@ -129,12 +129,13 @@ func FoxTrianglesSurdExt(surd Z, max N32) {
 									fmt.Printf("√%d ", g)
 								if d == 0 {
 									// triangle extension with only 4 bolts not 5
-									fmt.Printf("a=%d b=%d+%d c=%d\n", a, b,e, c)
+									fmt.Printf("a=%d b=%d+%d", a, b,e)
 								} else if e == 0 {
-									fmt.Printf("a+d=%d+%d b=%d c=%d\n", a,d, b, c)
+									fmt.Printf("a+d=%d+%d b=%d", a,d, b)
 								} else {
-									fmt.Printf("a+d=%d+%d b=%d+%d c=%d\n", a,d, b,e, c)
+									fmt.Printf("a+d=%d+%d b=%d+%d", a,d, b,e)
 								}
+								fmt.Printf(" c=%d cos=%s\n", c, cos)
 							}
 						}
 					}
