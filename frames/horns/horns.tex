@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
-\title{\textbf{Horns unit}}
-\author{https://github.com/heptagons/meccano/units/horns}
+\title{\textbf{Horns frame}}
+\author{https://github.com/heptagons/meccano/frames/horns}
 \date{}
 
 \usepackage{../../meccano}
@@ -11,9 +11,9 @@
 
 \maketitle
 \begin{abstract}
-Horns unit is a group of seven meccano\meccanoref strips intended to build polygons.
-We found the formula to calculate the internal angles then look for polygons and
-found hexagons, octagons and dodecagons. We found no pentagons.
+Horns frame is a group of seven meccano\meccanoref strips intended to build polygons.
+We found the formula to calculate the internal angles then look for polygons.
+With sofware we found hexagons, octagons and dodecagons. We found no pentagons.
 \end{abstract}
 
 \begin{figure}[h]
@@ -45,7 +45,7 @@ found hexagons, octagons and dodecagons. We found no pentagons.
  \end{scope}
 
 \end{tikzpicture}
-\caption{The \textbf{horn unit} has seven strips: Two of length $a$, two of length $b+d$,
+\caption{The \textbf{horn frame} has seven strips: Two of length $a$, two of length $b+d$,
 two of length $c$ and one of length $e$.
 We expect to build polygons with internal angle $C_1B_1B_2$
 and perimeter including segments $a,e,a$.}
@@ -432,25 +432,25 @@ segments min=1 max=40 a,b,c,d,e:
 \caption{Dodecagon of size 30.}
 \end{figure}
 
-\section{Algebra simplifications}
-If $be^2 = 4h$ then:
-\begin{align}
-\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
- &= \frac{bej}{4abh} = \frac{bej}{ab(be^2)} = \frac{j}{abe}\nonumber\\
- &= \frac{bf^2 - a^2b - h}{abe}
-\end{align}
-
-\subsection{Simple formula por octagons and dodecagons}
-If $j = 0$ then:
-\begin{align}
-\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
- &= \frac{-\sqrt{b(be^2-4h)(-4a^2bh)}}{4abh}\nonumber\\
- &= \frac{-2ab\sqrt{(be^2-4h)(-h)}}{4abh}\nonumber\\
- &= \frac{-\sqrt{h(4h-be^2)}}{2h}\\
- j &= 0 \implies h = bf^2 - a^2b
-\end{align}
-So $\cos{(F+G)}$ is in the form $\sqrt{D}/A$ and we can look for octagons and
-dodecagons since they have as cosines $\sqrt{2}/2$ and $\sqrt{3}/2$ respectivelly.
+%\section{Algebra simplifications}
+%If $be^2 = 4h$ then:
+%\begin{align}
+%\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
+% &= \frac{bej}{4abh} = \frac{bej}{ab(be^2)} = \frac{j}{abe}\nonumber\\
+% &= \frac{bf^2 - a^2b - h}{abe}
+%\end{align}
+%
+%\subsection{Simple formula por octagons and dodecagons}
+%If $j = 0$ then:
+%\begin{align}
+%\cos{(F+G)} &= \frac{bej - \sqrt{b(be^2-4h)(j^2-4a^2bh)}}{4abh}\nonumber\\
+% &= \frac{-\sqrt{b(be^2-4h)(-4a^2bh)}}{4abh}\nonumber\\
+% &= \frac{-2ab\sqrt{(be^2-4h)(-h)}}{4abh}\nonumber\\
+% &= \frac{-\sqrt{h(4h-be^2)}}{2h}\\
+% j &= 0 \implies h = bf^2 - a^2b
+%\end{align}
+%So $\cos{(F+G)}$ is in the form $\sqrt{D}/A$ and we can look for octagons and
+%dodecagons since they have as cosines $\sqrt{2}/2$ and $\sqrt{3}/2$ respectivelly.
 
 
 

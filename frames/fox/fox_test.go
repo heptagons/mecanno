@@ -177,5 +177,5 @@ func TestFoxSurdDecagons(t *testing.T) {
 
 
 func TestFoxTrianglesSurdExt(t *testing.T) {
-	FoxTrianglesSurdExt(125, 10)
+	FoxTrianglesSurdExt(41, 10)
 }

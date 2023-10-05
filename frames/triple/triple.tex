@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
-\title{\textbf{Triple unit}}
-\author{https://github.com/heptagons/meccano/units/triple}
+\title{\textbf{Triple frame}}
+\author{https://github.com/heptagons/meccano/frames/triple}
 \date{}
 
 \usepackage{../../meccano}
@@ -11,9 +11,9 @@
 
 \maketitle
 \begin{abstract}
-A \textbf{Triple unit} is a group of \textbf{five} meccano\meccanoref strips $a,b,c,d,e$
-forming \textbf{three equal angles} $\theta$ intended to build three consecutive perimeter sides
-of some regular polygons.
+\textbf{Triple frame} is a group of \textbf{five} meccano\meccanoref strips $a,b,c,d,e$
+forming \textbf{three equal angles} $\theta$ intended to build three consecutive sides
+of some regular polygons perimeter.
 We look for integer values of strip $e$ in function of integer values of sides $a,b,c,d$ and 
 a particular angle $\theta$.
 We confirm a generic equation found matches the one used to build pentagons of type 2 \footnote{
@@ -77,8 +77,8 @@ We look for octagons, decagons and dodecagons.
 
 \end{tikzpicture}
 \caption{
-At the left we have the Triple unit (three angles $\theta$) with the strips $a,b,c,d,e$.
-At the right we use two units to build a regular polygon of side $a$ extending strips $b,c,d$ to fix everthing. This construction is possible only when $a > b,c$.
+At the left we have the triple frame (three angles $\theta$) with the strips $a,b,c,d,e$.
+At the right we use two frames to build a regular polygon of side $a$ extending strips $b,c,d$ to fix everthing. This construction is possible only when $a > b,c$.
 }
 \label{fig:triple}
 \end{figure}
@@ -156,9 +156,9 @@ Pentagon & $\dfrac{3\pi}{5}$ &
 Hexagon & $\dfrac{2\pi}{3}$ &
  $-\dfrac{1}{2}$ & $-\dfrac{1}{2}$ & $1$ & 
  \rule[-2ex]{0pt}{6ex}\\ \hline
-Heptagon & $\dfrac{5\pi}{7}$ &
- $-\cos{B}$ & $\cos{C}$ & $\cos{A}$ & $\cos{A}\cos{B}\cos{C} = -\frac{1}{8} $
- \rule[-2ex]{0pt}{6ex}\\ \hline
+%Heptagon & $\dfrac{5\pi}{7}$ &
+% $-\cos{B}$ & $\cos{C}$ & $\cos{A}$ & $\cos{A}\cos{B}\cos{C} = -\frac{1}{8} $
+% \rule[-2ex]{0pt}{6ex}\\ \hline
 Octagon & $\dfrac{3\pi}{4}$ &
  $-\dfrac{\sqrt{2}}{2}$ & $0$ & $\dfrac{\sqrt{2}}{2}$ & 
  \rule[-2ex]{0pt}{6ex}\\ \hline
@@ -252,7 +252,7 @@ Next is a partial list of nice hexagons:
 112  a= 59 b=  5 c= 35 d= 54 e= 56
 --- PASS: TestHexagonsNice (0.01s)
 \end{lstlisting}
-Results from \texttt{github.com/heptagons/meccano/units/triple/triple\_test.go TestHexagonsNice}
+Results from \texttt{github.com/heptagons/meccano/frames/triple/triple\_test.go TestHexagonsNice}
 
 \subsection{Hexagons examples}
 
@@ -449,7 +449,7 @@ Figure \ref{fig:nice-hexagon} show different ways to build a nice hexagon.
 \caption{
 Variations of constructions of the nice hexagon side $a=7,b=1,e=7$.
 Cases $(d1)$ and $(e1)$ are adaptations of cases $(d)$ and $(e)$ of figure \ref{fig:nice-hexagon} where only the blue strips are displaced. Such changes mantain the internal bolts,
-red strips and perimeter the same. The original \textbf{Triple unit} $a,b,c,d,e$ irregular pentagon 
+red strips and perimeter the same. The original \textbf{triple frame} $a,b,c,d,e$ irregular pentagon 
 is replaced by an irregular hexagon clearly visible in case $(e1)$.
 }
 \label{fig:nice-hexagon-var}
@@ -535,7 +535,7 @@ e = \sqrt{a^2 +b^2 +c^2 +d^2 } \quad\Longleftrightarrow\quad a(b+c) &= (c-b)d
 
 \subsection{Octagons examples}
 
-\textbf{Conjecture}: No possible octagons formed with triple unit.
+\textbf{Conjecture}: No possible octagons formed with triple frame.
 
 \section{Equilateral decagons}
 
@@ -773,7 +773,7 @@ e \equiv 1\mod{10}
 
 With the results where $c > a$ we need to add helping rhombi to start
 building complete decagons. See figures \ref{fig:decagons-31},
-\ref{fig:decagons-71} and \ref{fig:decagons-121}. In red we have the unit, for each
+\ref{fig:decagons-71} and \ref{fig:decagons-121}. In red we have the frame, for each
 pair for the same $e$ the pairs interchage segments $a,b$ and $c,d$. The complete
 building and dispositions of helping strips and rigidity is beyond this paper.
 

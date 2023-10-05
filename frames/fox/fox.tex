@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
-\title{\textbf{Meccano fox unit}}
-\author{https://github.com/heptagons/meccano/units/fox}
+\title{\textbf{Meccano fox frame}}
+\author{https://github.com/heptagons/meccano/frames/fox}
 \date{}
 
 \usepackage{../../meccano}
@@ -11,12 +11,12 @@
 
 \maketitle
 \begin{abstract}
-Meccano fox unit is a group of five meccano\meccanoref strips intended to be a
-base to build equilateral polygons. The unit resembles a fox face with two big pointing ears.
-Originally the unit was used to build a regular pentagon\footnote{
+Meccano fox frame is a group of five meccano\meccanoref strips intended to be a
+base to build equilateral polygons. It resembles a fox face with two big pointing ears.
+The frame was used to build a regular pentagon\footnote{
 \href{https://github.com/heptagons/meccano/tree/main/penta/pentagons.pdf}{Meccano pentagons}	
 } and here we explore more polygons.
-We conjecture the fox unit permits to build a single pentagon, infinite hexagons,
+We conjecture the fox frame permits to build only a single pentagon, infinite hexagons,
 but no octagons, decagons nor dodecagons according to a brute-force search.
 \end{abstract}
 
@@ -91,7 +91,7 @@ but no octagons, decagons nor dodecagons according to a brute-force search.
 \label{fig:fox-face}
 \end{figure}
 
-Figure \ref{fig:fox-face} show the so called meccano fox unit.
+Figure \ref{fig:fox-face} show the so called meccano fox frame.
 Has five strips of three types:
 \begin{itemize}
 \item Single $\overline{AB}$ of length $a$.
@@ -136,7 +136,7 @@ We solve for $\cos{\theta}$ with the quadratic formula:
 \end{align}
 
 \subsection{Test pentagon known case}
-Meccano fox unit appears in the single solution found of the meccano regular pentagon type 1 construction.
+Meccano fox frame appears in the single solution found of the meccano regular pentagon type 1 construction.
 In this case we have $a=3$, $b=4$, $c=8$ and $d=11$. Applying these values in the last equation we have:
 \begin{align}
 \cos{\theta} &= \frac{-48 \pm \sqrt{11520}}{192} \nonumber\\
@@ -144,7 +144,7 @@ In this case we have $a=3$, $b=4$, $c=8$ and $d=11$. Applying these values in th
 \end{align}
 Since $\cos{2\pi/5} = (\sqrt{5} - 1)/4$ the equation for $\cos{\theta}$ passes the pentagon's test.
 
-\subsection{Meccano fox unit possible polygons}
+\subsection{Meccano fox frame possible polygons}
 
 \begin{table}[h]
 \centering
@@ -263,7 +263,7 @@ max-lenght=100 a,b,c,d pentagons:
 \centering
 \scalebox{0.5}{\foxface{1}{5pt}{3}{4}{8}{11} % size,factor,a,b,c,d
 }
-\caption{Meccano fox(3,4,8,11), $\theta=72^\circ$.}
+\caption{Meccano fox frame $a=3,b=4,c=8,d=11$. $\theta=72^\circ$.}
 \end{figure}
 
 
@@ -373,7 +373,7 @@ func TestFoxDodecagons(t *testing.T) {
 
 \section{Conjectures}
 
-According to the program results, we conjecture that including the \textbf{fox unit} exist:
+According to the program results, we conjecture that including the \textbf{fox frame} exist:
 A single pentagon, infinite hexagons, zero octagons, zero decagons and zero dodecagons. 
 
 \section{Fox hexagons examples}
@@ -405,7 +405,7 @@ with side $\overline{BD}$ skipping side $\overline{AB}$.
 \end{figure}
 \end{multicols}
 
-Figures \ref{fig:4-1-3-7} and \ref{fig:9-1-6-14} show the two first hexagon fox units. With 
+Figures \ref{fig:4-1-3-7} and \ref{fig:9-1-6-14} show the two first hexagon fox frames. With 
 two copies of each unit we can build a complete hexagon, so we'll have 10 strips. The second copy
 is rotated $180^\circ$ and the foxes ears get in touch, imagine that. Also, we can remove a
 red diagonal and such hexagon remains rigid.
@@ -416,7 +416,7 @@ namely a semi-unit including the blue strip, one red and one green as seen in th
 Then the semi-unit is cloned two times and rotated each $120^\circ$.
 Last figures show these reduced and reinforced constructions.
 
-\newcommand{\foxfacehexagon}[6]{ % three foxfacehex units
+\newcommand{\foxfacehexagon}[6]{ % three foxfacehex frames
  \begin{tikzpicture}
  \def\a{#3};\def\b{#4};\def\c{#5};\def\d{#6};\def\bc{#4+#5}
  \pgfmathsetmacro\max{max(#3,#4+#5)} % max(a,b+c)
@@ -461,28 +461,28 @@ Last figures show these reduced and reinforced constructions.
 \centering
 \scalebox{0.6}{\foxfacehexagon{1}{5pt}{4}{1}{3}{7}
 }
-\caption{Hexagon side 4 with three fox semi-units (4,1,3,7).}
+\caption{Hexagon side 4 with three fox semi-frames (4,1,3,7).}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \scalebox{0.4}{\foxfacehexagon{1}{5pt}{9}{1}{6}{14}
 }
-\caption{Hexagon side 9 with three fox semi-units (9,1,6,14).}
+\caption{Hexagon side 9 with three fox semi-frames (9,1,6,14).}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \scalebox{0.3}{\foxfacehexagon{1}{5pt}{11}{5}{5}{19}
 }
-\caption{Hexagon side 11 with three fox semi-units (11,5,5,19).}
+\caption{Hexagon side 11 with three fox semi-frames (11,5,5,19).}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \scalebox{0.3}{\foxfacehexagon{1}{5pt}{12}{4}{5}{19}
 }
-\caption{Hexagon side 12 with three fox semi-units (12,4,5,19).}
+\caption{Hexagon side 12 with three fox semi-frames (12,4,5,19).}
 \end{figure}
 
 \end{document}
