@@ -303,3 +303,51 @@ a=1700/4000
 a=1800/4000
 panic: test timed out after 10m0s
 */
+
+func TestPentaAsymmDiagonal2(t *testing.T) {
+	max := 2000
+	sols := &meccano.Sols{}
+	for a := 1; a < max; a++ {
+		aa := a*a
+		if aa % 4 != 0 {
+			continue
+		}
+		mn := aa >> 2 // a*a/4 as integer
+		for b := 1; b <= a/2; b++ {
+			for m := 1; m <= mn; m++ {
+				if mn % m == 0 {
+					n := mn / m
+					if b*b - a*b == m*m - 6*m*n + 5*n*n {
+						sols.Add(a, b, m, n)
+					}
+				}
+			}
+		}
+		if a % 100 == 0 {
+			fmt.Printf("a=%d/%d\n", a, max)
+		}
+	}
+}
+/*
+=== RUN   TestPentaAsymmDiagonal2
+  1  a=  4 b=  1 c=  4 d=  1
+a=100/3000
+a=200/3000
+a=300/3000
+a=400/3000
+a=500/3000
+a=600/3000
+a=700/3000
+a=800/3000
+a=900/3000
+a=1000/3000
+a=1100/3000
+a=1200/3000
+a=1300/3000
+a=1400/3000
+a=1500/3000
+a=1600/3000
+a=1700/3000
+a=1800/3000
+panic: test timed out after 10m0s
+*/
