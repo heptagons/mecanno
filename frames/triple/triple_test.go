@@ -32,11 +32,12 @@ func (t *Triples) squareRoot(radical int) (int, bool) {
 
 func (t *Triples) Pentagons(max int) {
     for a := 1; a <= max; a++ {
+        maxD := a//*2  
         for b := 1; b < a; b++ {
             for c := 0; c < a; c++ {
                 ab_ac_bc := a*b + a*c - b*c // ab + ac - bc
                 aa_bb_cc := a*a + b*b + c*c // aa + bb + cc
-                for d := 1; d < a; d++ {
+                for d := 1; d <= maxD; d++ {
                     if ab_ac_bc != (a-b+c)*d { // ab + c - bc != (a-b+c)d
                         // condition to reject sqrt{5} from ee equation
                         continue
@@ -82,17 +83,17 @@ func (t *Triples) HexagonsNice(max int) {
 
 func (t *Triples) Octagons(max int) {
     for a := 1; a <= max; a++ {
-        for b := 1; b <= max; b++ {
-            for c := 0; c <= max; c++ {
+        for b := 1; b <= a; b++ {
+            for c := 0; c <= a; c++ {
                 a_b_c := a*(b+c)
                 aa_bb_cc := a*a + b*b + c*c
                 for d := 1; d <= max; d++ {
                     if a_b_c - (c-b)*d != 0 {
                         continue // condition to reject sqrt{2} from e equation
                     }
-                    fmt.Println(a,b,c,d, math.Sqrt(float64(aa_bb_cc + d*d)))
                     if e, ok := t.squareRoot(aa_bb_cc + d*d); !ok {
-                        // radical negative or not square
+                      // radical negative or not square
+                      //fmt.Println(a,b,c,d, "sqrt=",e)
                     } else {
                         t.Add(a, b, c, d, e)
                     }
@@ -124,7 +125,7 @@ func (t *Triples) DecagonsCBA(max int) {
 
 func TestPentagons(t *testing.T) {
     tri := NewTriples()
-    tri.Pentagons(20)
+    tri.Pentagons(50)
 }
 /*
 === RUN   TestPentagons
