@@ -174,8 +174,3 @@ func TestFoxSurdDecagons(t *testing.T) {
 // max-lenght=40 a,b,c,surdD decagons:
 // --- PASS: TestFoxDsurdDecagons (157.71s)
 // NO SOLUTIONS
-
-
-func TestFoxTrianglesSurdExt(t *testing.T) {
-	FoxTrianglesSurdExt(20, 10)
-}

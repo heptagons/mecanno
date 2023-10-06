@@ -8,7 +8,7 @@ type Sols struct {
 	sols [][]int
 }
 
-func (s *Sols) Add(rods ...int) {
+func (s *Sols) add(last string, rods ...int) {
 	if len(rods) < 0 {
 		return
 	}
@@ -45,7 +45,19 @@ func (s *Sols) Add(rods ...int) {
 	for i, r := range rods {
 		fmt.Printf(" %c=%3d", RODS[i], r)
 	}
+	if last != "" {
+		fmt.Printf(" %s", last)
+	}
 	fmt.Println()
+	return
+}
+
+func (s *Sols) Add(rods ...int) {
+	s.add("", rods...)
+}
+
+func (s *Sols) Add2(last string, rods ...int) {
+	s.add(last, rods...)
 }
 
 func (s *Sols) Compare(expected [][]int ) error {
