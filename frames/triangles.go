@@ -20,10 +20,10 @@ func NewTriangles() *Triangles {
 //                              a*a + b*b - c*c 
 //       C-_            cosC = ----------------
 //      /   -_                      2*a*b
-//     /   __ B_        __   __ __   __ __     __ __
-//    A__--     -_      ED = CD*CD + CE*CE - 2*CD*CE*cosC
+//     /   __ A_        __   __ __   __ __     __ __
+//    B__--     -_      ED = CD*CD + CE*CE - 2*CD*CE*cosC
 //   /            -_
-//  D---------------E
+//  E---------------D
 //
 // results limits are a+d <= max, b+e <= max and c <= max.
 func (t *Triangles) SurdExt(surd Z, max N32) (frames []*FrameA) {

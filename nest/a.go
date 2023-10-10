@@ -29,6 +29,13 @@ type A32 struct {
 	num []Z32 // numerator parts b,c,d,e,f,g,h
 }
 
+func (a *A32) Num(pos int) (Z32, bool) {
+	if len(a.num) >= pos {
+		return a.num[pos], true
+	}
+	return 0, false
+}
+
 func newA32(den N32, num ...Z32) *A32 {
 	return &A32{
 		den: den,

@@ -270,7 +270,7 @@ func (ts *T32s) tLawOfCos(y, z N32, cosX *A32) (*A32, error) {
 	} else if y2_z2_2zycosX, err := ts.aAdd(y2_z2, _2zycosX); err != nil {
 		return nil, err
 	} else {
-		return ts.aSqrt(y2_z2_2zycosX)
+		return ts.ASqrt(y2_z2_2zycosX)
 	}
 }
 

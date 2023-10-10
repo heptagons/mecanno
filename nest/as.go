@@ -435,7 +435,7 @@ func (qs *A32s) aMul(q, r *A32) (s *A32, err error) {
 //	Square root of numbers of size 1 are returned ok.
 //	Square root of numbers of size 3 are returned ok.
 //	For other sizes a "Can't square root" error is returned
-func (qs *A32s) aSqrt(q *A32) (s *A32, err error) {
+func (qs *A32s) ASqrt(q *A32) (s *A32, err error) {
 	if q == nil {
 		return nil, nil
 	}

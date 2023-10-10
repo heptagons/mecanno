@@ -110,7 +110,7 @@ func (t *Tri3F) tri3New(tri2 int) ([]*Tri3, error) {
 			}
 			if cc, err := t.tri3CosLaw2(max, min, p.cos); err != nil {
 				return nil, err
-			} else if c, err := t.aSqrt(cc); err != nil {
+			} else if c, err := t.ASqrt(cc); err != nil {
 				return nil, err
 			} else if len(c.num) <= 1 && c.den == 1 {
 				// reject triq with three sides natural (c.num=1, c.den=1)
