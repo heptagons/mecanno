@@ -88,15 +88,19 @@ func newA32Surd(z Z32) *A32 {
 	}
 }
 
-func (a *A32) addInt(z Z32) *A32 {
+func (a *A32) AddInt(z Z) (*A32, error) {
 	if a == nil {
-		return nil
+		return nil, nil
 	}
 	if len(a.num) == 0 {
-		return nil
+		return nil, nil
 	}
-	a.num[0] += z*Z32(a.den)
-	return a
+	if sum := Z(a.num[0]) + z*Z(a.den); sum > Z32_MAX || sum < -Z32_MAX {
+		return nil, ErrOverflow
+	} else {
+		a.num[0] = Z32(sum)
+		return a, nil
+	}
 }
 
 func (q *A32) IsInteger() (Z32, bool) {
@@ -104,6 +108,10 @@ func (q *A32) IsInteger() (Z32, bool) {
 		return q.num[0], true
 	}
 	return 0, false
+}
+
+func (q *A32) IsRational() bool {
+	return q.den > 2
 }
 
 // Equal returns true it the given number is identical to this one.

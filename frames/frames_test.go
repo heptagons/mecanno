@@ -8,18 +8,73 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
-func TestFramesSurds(t *testing.T) {
-	surd := Z(31)
-	max := N32(10)
+// ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesSurds -v -count 1
+
+func TestFramesSurdsInt(t *testing.T) {
+	surd := Z(12)
+	max := N32(20)
 	n := 0
 	fmt.Printf("√%d max=%d\n", surd, max)
-	NewFrames().Surds(surd, max, func(frame *FrameSurd) {
+	NewFrames().SurdsInt(surd, max, func(frame *FrameSurd) {
 		n++
 		fmt.Fprintf(os.Stdout, "% 3d) ", n)
 		frame.WriteString(os.Stdout)
 		fmt.Println()
 	})
 }
+/*
+√7 max=10
+  1) a=1 b=1+2 c=1 cos=1/2
+  2) a+d=1+1 b=1+2 c=1 cos=1/2
+  3) a+d=1+2 b=1 c=1 cos=1/2
+  4) a+d=1+2 b=1+1 c=1 cos=1/2
+  5) a=2 b=2+1 c=2 cos=1/2
+  6) a+d=2+1 b=2 c=2 cos=1/2
+  7) a=3 b=2+2 c=2 cos=3/4
+  8) a+d=3+1 b=2+1 c=2 cos=3/4
+  9) a+d=4+2 b=4+4 c=1 cos=31/32
+ 10) a+d=4+4 b=4+2 c=1 cos=31/32
+ 11) a=7 b=5+1 c=3 cos=13/14
+ 12) a=7 b=5+2 c=3 cos=13/14
+*/
+
+
+func TestFramesSurdsRat(t *testing.T) {
+	max := N32(5)
+	n := 0
+	NewFrames().SurdsRat(max, func(d []N32, surd *A32) {
+		n++
+		fmt.Printf("% 3d) %v %v\n", n, d, surd)
+	})
+}
+/* solutions: [a b c d e] surd
+  1) [3 1 3 1 0] √141/3
+  2) [3 1 3 1 1] 2√39/3
+  3) [3 1 3 1 3] 4√15/3
+  4) [3 1 3 1 4] √309/3
+  5) [3 1 3 2 0] √219/3
+  6) [3 1 3 2 1] √231/3
+  7) [3 1 3 2 3] √309/3
+  8) [3 1 3 2 4] 5√15/3
+  9) [3 2 3 1 0] 2√33/3
+ 10) [3 2 3 1 2] 8√3/3
+ 11) [3 2 3 1 3] √249/3
+ 12) [3 2 3 2 0] √201/3
+ 13) [3 2 3 2 2] √249/3
+ 14) [3 2 3 2 3] 10√3/3
+ 15) [3 3 1 0 1] √21/3
+ 16) [3 3 1 0 2] √51/3
+ 17) [3 3 1 1 0] √21/3
+ 18) [3 3 1 1 1] 4/3
+ ...
+ 57) [4 4 5 1 1] 25/4
+ 58) [5 3 3 0 1] √69/3
+ 59) [5 3 3 0 2] 5√3/3
+*/
+
+
+
+
 
 func TestFramesAlgs(t *testing.T) {
 	NewFrames().Algs(10, func(frame *FrameAlg) {
@@ -43,26 +98,6 @@ func testFramesNests(max, n N32, f, g, h Z32) {
 		}
 	})
 }
-
-//            _A
-//        a _- |
-//        _-   |
-//       B     | b
-//   a _- -_   |
-//   _-   a -_ | 
-// C-         -D-------E
-type FrameAlg struct {
-	a   N32
-	b   N32
-	o,i Z32 // surd = √o*o*i
-}
-
-func (f *FrameAlg) String() string {
-	return fmt.Sprintf("a=% 3d b=% 3d c=%d√%d", f.a, f.b, f.o, f.i)
-}
-
-
-
 
 func TestFrame4AAB(t *testing.T) {
 	factory := NewA32s()

@@ -14,19 +14,20 @@ func NewFrames() *Frames {
 	}
 }
 
-// As create virtual strips ED of type surd outside an integer triangle.
-// Integral triangle ABC has integral extentionss D from A and E from B:
+
+// Surds returns FrameSurds with a+d, b+d and c <= max and Frame ED distance equals √surd.
+// FrameSurd consist of ABC with extentions (lenght 0 to max) D from A and E from B:
 //
-//                              a*a + b*b - c*c 
-//       C-_            cosC = ----------------
-//      /   -_                      2*a*b
-//     /   __ A_        __   __ __   __ __     __ __
-//    B__--     -_      ED = CD*CD + CE*CE - 2*CD*CE*cosC
-//   /            -_
-//  E---------------D
+//                                     a^2 + b^2 - c^2
+//        C-_  b               cosC = -----------------
+//    a  /   -_                            2*a*b
+//      /   __ A_                __            __
+//     B__--     -_              CE = a + d,   CD = b + e
+// d  /     c       -_ e
+//   /                -_         __   
+//  E                   D        ED = (a+d)^2 + (b+e)^2 - 2(a+d)(b+e)cosC
 //
-// results limits are a+d <= max, b+e <= max and c <= max.
-func (t *Frames) Surds(surd Z, max N32, frame func(a *FrameSurd)) {
+func (t *Frames) SurdsInt(surd Z, max N32, frame func(a *FrameSurd)) {
 	min := N32(1)
 	for a := min; a <= max; a++ {
 		// a > b for symmetric redundancy
@@ -50,6 +51,8 @@ func (t *Frames) Surds(surd Z, max N32, frame func(a *FrameSurd)) {
 						} else if prod, err := t.AMulN(cos, m); err != nil {
 							// silent
 						} else if f, ok := prod.IsInteger(); !ok {
+							// reject rational surds example:
+							// a=2 b=1 c=2 d=1 e=0 surd= √34/2
 							// silent
 						} else if g := a_d*a_d + b_e*b_e + Z(f); g == surd {
 							frame(&FrameSurd{
@@ -60,6 +63,46 @@ func (t *Frames) Surds(surd Z, max N32, frame func(a *FrameSurd)) {
 								e:   e,
 								cos: cos,
 							})
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func (t *Frames) SurdsRat(max N32, frame func(n []N32, s *A32)) {
+	min := N32(1)
+	for a := min; a <= max; a++ {
+		// a > b for symmetric redundancy
+		for b := min; b <= a; b++ {
+			_2ab := N(2)*N(a)*N(b)
+			aa_bb := Z(a*a) + Z(b*b)
+			for c := min; c <= max; c++ {
+				if a + b <= c || b + c <= a || c + a <= b {
+					continue // invalid triangle
+				}
+				cos, err := t.ANew1(_2ab, aa_bb - Z(c*c))
+				if err != nil {
+					continue // silent
+				}
+				for d := N32(0); d <= (max-a); d++ {
+					a_d := Z(a+d)
+					for e := N32(0); e <= (max-b); e++ {
+						if e == 0 && d == 0 {
+							continue
+						}
+						b_e := Z(b+e)
+						if m, err := t.ANew1(N(1), Z(-2)*a_d*b_e); err != nil {
+							// silent
+						} else if prod, err := t.AMulN(cos, m); err != nil {
+							// silent
+						} else if s2, err := prod.AddInt(a_d*a_d + b_e*b_e); err != nil {
+							// silent
+						} else if s, err := t.ASqrt(s2); err != nil {
+
+						} else if s.IsRational() {
+							frame([]N32{ a, b, c, d, e }, s)
 						}
 					}
 				}
