@@ -8,17 +8,40 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
-func TestTrianglesSurdExt(t *testing.T) {
-	tri := NewTriangles()
-	surd := Z(7)
+func TestFramesSurds(t *testing.T) {
+	surd := Z(31)
 	max := N32(10)
-	frames := tri.SurdExt(surd, max)
-	fmt.Printf("√%d max=%d qty=%d:\n", surd, max, len(frames))
-	for f, frame := range frames {
-		fmt.Fprintf(os.Stdout, "% 3d) ", f+1)
+	n := 0
+	fmt.Printf("√%d max=%d\n", surd, max)
+	NewFrames().Surds(surd, max, func(frame *FrameSurd) {
+		n++
+		fmt.Fprintf(os.Stdout, "% 3d) ", n)
 		frame.WriteString(os.Stdout)
 		fmt.Println()
-	}
+	})
+}
+
+func TestFramesAlgs(t *testing.T) {
+	NewFrames().Algs(10, func(frame *FrameAlg) {
+		if frame.i == 3 { // x√5
+			fmt.Println(frame)
+		}
+	})
+}
+
+func testFramesNests(max, n N32, f, g, h Z32) {
+	surd := n*n*N32(h)
+	NewFrames().Nests(max, surd, func(frame *FrameNest) {
+		nest := frame.nest
+		if H, ok := nest.Num(6); ok && H == h { // √(F + G√5)
+			F, _ := nest.Num(4)
+			G, _ := nest.Num(5)
+			if F == f && G == g {
+				fmt.Printf("a+s=%d+%d√%d, b=%d, c=%d : nest=%v\n", 
+					frame.a, n, h, frame.b, frame.c, frame.nest.String())
+			}
+		}
+	})
 }
 
 //            _A
@@ -28,29 +51,17 @@ func TestTrianglesSurdExt(t *testing.T) {
 //   a _- -_   |
 //   _-   a -_ | 
 // C-         -D-------E
-// 
-// Let strips AB = BC = DB = a
-// Let bar AD = b
-// Let bar DE = c
-// Fix angle DAE to be right
-// Then 
-// CD = sqrt((2a)^2 - b^2) = sqrt(d) when 2a > b
-// and CE = c + sqrt(d)
-func TestFrame4AABB(t *testing.T) {
-	factory := NewA32s()
-	min := N32(1)
-	max := N32(10)
-	for a := min; a <= max; a++ {
-		for b := min; b < 2*a; b++ {
-			ab := 4*Z(a)*Z(a) - Z(b)*Z(b)
-			if o, i, err := factory.ZSqrt(Z(1), ab); err != nil {
-
-			} else if i != 1 {
-				fmt.Printf("a=% 3d b=% 3d c=%d√%d\n", a, b, o, i)
-			}
-		}
-	}
+type FrameAlg struct {
+	a   N32
+	b   N32
+	o,i Z32 // surd = √o*o*i
 }
+
+func (f *FrameAlg) String() string {
+	return fmt.Sprintf("a=% 3d b=% 3d c=%d√%d", f.a, f.b, f.o, f.i)
+}
+
+
 
 
 func TestFrame4AAB(t *testing.T) {
@@ -75,78 +86,79 @@ func TestFrame4AAB(t *testing.T) {
 
 
 
+func TestFramesNestPentagonsHeight(t *testing.T) {
+	// pentagon height (decagon r)
+	for n := N32(1); n < N32(50); n++ {
+		fmt.Printf("surd=%d√5:\n", n)
+		testFramesNests(50, n, 5, 2, 5) // √(5 + 2√5)
+	}
+}
+/* Solutions
+a+surd=9+2√5, b=5, c=5 : nest=3√(5+2√5)
+a+surd=18+4√5, b=10, c=10 : nest=6√(5+2√5)
+a+surd=11+6√5, b=7, c=15 : nest=9√(5+2√5)
+a+surd=16+6√5, b=7, c=15 : nest=9√(5+2√5)
+a+surd=27+6√5, b=15, c=15 : nest=9√(5+2√5)
+a+surd=36+8√5, b=20, c=20 : nest=12√(5+2√5)
+a+surd=21+10√5, b=11, c=25 : nest=15√(5+2√5)
+a+surd=24+10√5, b=11, c=25 : nest=15√(5+2√5)
+a+surd=45+10√5, b=25, c=25 : nest=15√(5+2√5)
+a+surd=22+12√5, b=14, c=30 : nest=18√(5+2√5)
+a+surd=32+12√5, b=14, c=30 : nest=18√(5+2√5)
+a+surd=24+14√5, b=17, c=35 : nest=21√(5+2√5)
+a+surd=39+14√5, b=17, c=35 : nest=21√(5+2√5)
+a+surd=21+16√5, b=23, c=40 : nest=24√(5+2√5)
+a+surd=25+18√5, b=25, c=45 : nest=27√(5+2√5)
+a+surd=33+18√5, b=21, c=45 : nest=27√(5+2√5)
+a+surd=48+18√5, b=21, c=45 : nest=27√(5+2√5)
+a+surd=42+20√5, b=22, c=50 : nest=30√(5+2√5)
+a+surd=48+20√5, b=22, c=50 : nest=30√(5+2√5)
+*/
+
+func TestFramesNestPentagonsInradius(t *testing.T) {
+	for n := N32(1); n < N32(50); n++ {
+		fmt.Printf("surd=%d√5:\n", n)
+		testFramesNests(50, n, 25, 10, 5) // √(25 + 10√5)
+	}
+}
+/* Solutions:
+a+surd=18+5√5, b=10, c=10 : nest=3√(25+10√5)
+a+surd=15+8√5, b=7, c=16 : nest=24√(25+10√5)/5
+a+surd=10+9√5, b=10, c=18 : nest=27√(25+10√5)/5
+a+surd=36+10√5, b=20, c=20 : nest=6√(25+10√5)
+a+surd=30+11√5, b=14, c=22 : nest=33√(25+10√5)/5
+a+surd=25+12√5, b=11, c=24 : nest=36√(25+10√5)/5
+a+surd=35+12√5, b=17, c=24 : nest=36√(25+10√5)/5
+a+surd=22+15√5, b=14, c=30 : nest=9√(25+10√5)
+a+surd=32+15√5, b=14, c=30 : nest=9√(25+10√5)
+a+surd=30+16√5, b=14, c=32 : nest=48√(25+10√5)/5
+a+surd=20+18√5, b=20, c=36 : nest=54√(25+10√5)/5
+a+surd=21+20√5, b=23, c=40 : nest=12√(25+10√5)
+a+surd=50+21√5, b=22, c=42 : nest=63√(25+10√5)/5
+a+surd=45+24√5, b=21, c=48 : nest=72√(25+10√5)/5
+a+surd=50+24√5, b=22, c=48 : nest=72√(25+10√5)/5
+a+surd=42+25√5, b=22, c=50 : nest=15√(25+10√5)
+a+surd=48+25√5, b=22, c=50 : nest=15√(25+10√5)
+*/
+
+func TestFramesNestPentagonsOutradius(t *testing.T) {
+	for n := N32(1); n < N32(50); n++ {
+		fmt.Printf("surd=%d√5:\n", n)
+		testFramesNests(50, n, 50, 10, 5) // √(50 + 10√5)
+	}
+}
+// No solutions
+
+func TestFramesNestSin2Pi_5(t *testing.T) {
+	for n := N32(1); n < N32(50); n++ {
+		fmt.Printf("surd=%d√5:\n", n)
+		testFramesNests(50, n, 10, 2, 5) // √(10 + 2√5)
+	}
+}
+// No solutions
 
 
 
-
-
-//    C-_                    a^2 + b^2 - c^2
-//    |  -_           cosC = ----------------
-//  a |    -_ b                   2*a*b
-//    |      -_
-//    B---___  -_
-//    |    c ---_A
-//    |       _/
-// √n |     _/
-//    |   _/  x
-//    | _/
-//    |/
-//    N  
-//                                   _
-//   x^2 = (a + √n)^2 + b^2 - 2(a + √n)(b)cosC
-//                                       _     a^2 + b^2 - c^2
-//       = a^2 + 2a√n + n + b^2 - 2(a + √n)(b)-----------------
-//                                                  2ab
-//                                      _  a^2 + b^2 - c^2
-//       = a^2 + 2a√n + n + b^2 - (a + √n)-----------------
-//                                                a
-//                                                 a^2 + b^2 - c^2
-//       = a^2 + n + b^2 - a^2 - b^2 + c^2 + (2a - ---------------)√n
-//                                                      a
-//                     2a^2 - a^2 - b^2 + c^2  _
-//       = n + c^2 + (-----------------------)√n
-//                                a       _
-//          an + ac^2 + (a^2 - b^2 + c^2)√n
-//       = --------------------------------
-//                         a
-//
-func TestFrameX(t *testing.T) {
-
-	var f, g, h, n Z32
-
-	f, g, h, n = 5, 2, 5, 2*2*5  // √(5 + 2√5)            pentagon height (decagon r) -> a=9,b=5,c=5, d=2√5
-	//f, g, h, n = 25, 10, 5, 5*5*5  // √(25 + 10√5),  5√5  pentagon radius -> a=18,b=10,c=10, d=5√5
-	//f, g, h, n = 50, 10, 5, 20*20*5  // √(50 + 10√5), 3√5  pentagon Radius -> none
-
-	factory := NewA32s()
-	min := Z32(1)
-	max := Z32(100)
-	for a := min; a <= max; a++ {
-		for b := min; b <= max; b++ {
-			for c := min; c <= max; c++ {
-				if a + b <= c || b + c <= a || c + a <= b {
-					continue
-				}
-				B := Z(a*n) + Z(a*c*c)
-				C := Z(a*a) - Z(b*b) + Z(c*c)
-				D := Z(n)
-				if xx, err := factory.ANew3(N(a), B, C, D); err != nil {
-
-				} else if x, err := factory.ASqrt(xx); err == nil {
-					if H, ok := x.Num(6); ok && H == h { // √(F + G√5)
-						F, _ := x.Num(4)
-						G, _ := x.Num(5)
-						if F == f && G == g {
-							fmt.Printf("a=% 3d b=% 3d c=% 3d d=√%d x= %v\n", a, b, c, n, x.String())
-							return
-						}
-					}
-				}
-			}
-		}
-		fmt.Println(a)
-	}	
-} 
 
 
  
@@ -182,11 +194,14 @@ func TestFrameX(t *testing.T) {
 // g^2 = ------------------------------------------------
 //                        2be
 // 
+// Solutions for:
+//   √(10+2√5)
 func TestTri2(t *testing.T) {
 	factory := NewA32s()
 	min := N32(1)
 	max := N32(15)
 	for a := min; a <= max; a++ {
+		fmt.Println(a)
 		for b := min; b <= max; b++ {
 			for c := min; c <= max; c++ {
 				if a + b <= c || b + c <= a || c + a <= b {
@@ -210,11 +225,11 @@ func TestTri2(t *testing.T) {
 							} else if g, err := factory.ASqrt(gg); err == nil {
 
 								if H, ok := g.Num(6); ok && H == 5 { // √(F + G√5)
-									F, _ := g.Num(4)
-									G, _ := g.Num(5)
-									if F == 5 && G == 2 {
+								//	F, _ := g.Num(4)
+								//	G, _ := g.Num(5)
+								//	if F == 10 && G == 2 {
 										fmt.Printf("a=% 3d b=% 3d c=% 3d d=% 3d e=% 3d f= %3d  g=%v\n", a, b, c, d, e, f, g)
-									}
+								//	}
 								}
 							}
 						}
@@ -222,6 +237,5 @@ func TestTri2(t *testing.T) {
 				}
 			}
 		}
-		fmt.Println(a)
 	}
 }

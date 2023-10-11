@@ -6,7 +6,7 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
-// FrameA is a three strips meccano frame resembling a uppercase letter A:
+// FrameSurd is a three strips meccano frame resembling a uppercase letter A:
 //
 //          C-_  b
 //      a  /   -_
@@ -27,12 +27,12 @@ import (
 // c = distance nodes A and B >= 1
 // d = distance nodes B and E >= 0
 // e = distance nodes A and D >= 0
-type FrameA struct {
+type FrameSurd struct {
 	a,b,c,d,e N32
  	cos       *A32
 }
 
-func (f *FrameA) WriteString(w io.Writer) {
+func (f *FrameSurd) WriteString(w io.Writer) {
 	if f.d == 0 {
 		if f.e == 0 {
 			fmt.Fprintf(w, "a=%d b=%d", f.a, f.b)
@@ -48,4 +48,22 @@ func (f *FrameA) WriteString(w io.Writer) {
 	fmt.Fprintf(w, " c=%d cos=%v", f.c, f.cos.String())
 }
 
+
+//    C-_                           C-_ 
+//    |  -_                         *  -_
+//    |a   -_ b                    /|a   -_
+//    |      -_                   / |      -_
+//    B---___  -_             *--*--B---___  -_
+//    .    c ----A             \   /       ----A
+//    .       _.                \ /         _.   
+// √s .     _.                   x  √s    _.    ____
+//    .   _.  nest                \     _.     /   _
+//    . _.                         \  _.      √x+y√z
+//    N                             N         ------
+//                                               w
+type FrameNest struct {      
+	a,b,c N32
+	surd  N32
+	nest  *A32
+}
 
