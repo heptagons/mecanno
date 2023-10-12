@@ -1,6 +1,7 @@
 package frames
 
 import (
+	"fmt"
 	. "github.com/heptagons/meccano/nest"
 )
 
@@ -109,6 +110,27 @@ func (t *Frames) SurdsRat(max N32, frame func(n []N32, s *A32)) {
 			}
 		}
 	}
+}
+
+
+func (f *Frames) AlgsNotRight(surd Z, max N32) {
+	fmt.Printf("surd=%d, max=%d\n", surd, max)
+	f.SurdsInt(surd, max, func(fs *FrameSurd) {
+		fmt.Println(fs)
+		for d := fs.a; d <= max; d++ {
+			for e := N32(1); e <= max; e++ {
+				for f := N32(1); f <= max; f++ {
+					if surd != Z(d*d) + Z(e*e) - Z(f*f) {
+						continue
+					}
+					//fmt.Println(">>>")
+					if (Z(fs.a*fs.a) + Z(fs.b*fs.b) + surd)*Z(d) == 2*Z(fs.a)*surd {
+						fmt.Printf("\td=%d e=%d f=%d\n", d, e, f)
+					}
+				}
+			}
+		}
+	})
 }
 
 //            _A

@@ -10,6 +10,13 @@ import (
 
 // ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesSurds -v -count 1
 
+
+func TestFramesAlgsNotRight(t *testing.T) {
+	surd := Z(2*2*7)
+	max := N32(40)
+	NewFrames().AlgsNotRight(surd, max)
+}
+
 func TestFramesSurdsInt(t *testing.T) {
 	surd := Z(12)
 	max := N32(20)
