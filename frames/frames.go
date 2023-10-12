@@ -117,15 +117,16 @@ func (f *Frames) AlgsNotRight(surd Z, max N32) {
 	fmt.Printf("surd=%d, max=%d\n", surd, max)
 	f.SurdsInt(surd, max, func(fs *FrameSurd) {
 		fmt.Println(fs)
-		for d := fs.a; d <= max; d++ {
-			for e := N32(1); e <= max; e++ {
-				for f := N32(1); f <= max; f++ {
-					if surd != Z(d*d) + Z(e*e) - Z(f*f) {
+		ad := Z(fs.a + fs.d)
+		be := Z(fs.b + fs.e)
+		for g := fs.a + fs.d; g <= max; g++ {
+			for h := N32(1); h <= max; h++ {
+				for i := N32(1); i <= max; i++ {
+					if surd != Z(g*g) + Z(h*h) - Z(i*i) {
 						continue
 					}
-					//fmt.Println(">>>")
-					if (Z(fs.a*fs.a) + Z(fs.b*fs.b) + surd)*Z(d) == 2*Z(fs.a)*surd {
-						fmt.Printf("\td=%d e=%d f=%d\n", d, e, f)
+					if (ad*ad - be*be + surd)*Z(g) == 2*ad*surd {
+						fmt.Printf("\tg=%d h=%d i=%d\n", g, h, i)
 					}
 				}
 			}
