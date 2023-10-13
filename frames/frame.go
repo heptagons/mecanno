@@ -38,20 +38,37 @@ type FrameSurd struct {
  	cos       *A32
 }
 
+func (f *FrameSurd) RightAngles() (D, E bool) {
+	abc := Z(f.a*f.a) + Z(f.b*f.b) - Z(f.c*f.c)
+	ab := Z(f.a*f.b)
+	ad := Z(f.a + f.d)
+	be := Z(f.b + f.e)
+	D = 2*ab*be == ad*abc
+	E = 2*ab*ad == be*abc
+	return
+}
+
 func (f *FrameSurd) WriteString(w io.Writer) {
 	if f.d == 0 {
 		if f.e == 0 {
 			fmt.Fprintf(w, "a=%d b=%d", f.a, f.b)
 		} else {
 			// triangle extension with only 4 bolts not 5
-			fmt.Fprintf(w, "a=%d b=%d+%d", f.a, f.b, f.e)
+			fmt.Fprintf(w, "a=%d b+e=%d+%d", f.a, f.b, f.e)
 		}
 	} else if f.e == 0 {
 		fmt.Fprintf(w, "a+d=%d+%d b=%d", f.a, f.d, f.b)
 	} else {
-		fmt.Fprintf(w, "a+d=%d+%d b=%d+%d", f.a, f.d, f.b, f.e)
+		fmt.Fprintf(w, "a+d=%d+%d b+e=%d+%d", f.a, f.d, f.b, f.e)
 	}
 	fmt.Fprintf(w, " c=%d cos=%v", f.c, f.cos.String())
+	D, E := f.RightAngles()
+	if D {
+		fmt.Fprintf(w, " D=pi/2")
+	}
+	if E {
+		fmt.Fprintf(w, " E=pi/2")
+	}
 }
 
 
