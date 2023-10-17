@@ -17,7 +17,7 @@ func TestFramesAlgsNotRight(t *testing.T) {
 }
 
 func TestFramesSurdsInt(t *testing.T) {
-	surd := Z(4*8)
+	surd := Z(46)
 	max := N32(30)
 	n := 0
 	fmt.Printf("√%d max=%d\n", surd, max)
