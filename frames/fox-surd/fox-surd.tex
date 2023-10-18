@@ -13,8 +13,7 @@
 \begin{abstract}
 Meccano\meccanoref fox-surd frame is a generalization of fox-frame\footnote{
 \href{https://github.com/heptagons/meccano/blob/main/frames/fox/fox.pdf}{Meccano fox frame }}
-where two of the original five strips are no longer integers but surds which must be solved
-using several more strips.
+where at least one of the frame's strips size is no longer an integer but a surd.
 \end{abstract}
 
 \section{Pentagons fox-surd}
@@ -84,12 +83,12 @@ From figure \ref{fig:pentagon} the fox-surd frame has three real strips of integ
 \begin{itemize}
     \item $\overline{B_iG_i}$ of size $n$.
     \item $\overline{G_iI_n}$ of size $n-i$, where $i = 0,...,n$.
-    \item $\overline{I_nI_0}$ of size $n$.
+    \item $\overline{I_0I_n}$ of size $n$.
 \end{itemize}
 The other two strips are generic in the sense the sizes can be surds:
 \begin{itemize}
-	\item $\overline{B_iI_j}$ of size $f(n,i,j)$, where $i,j = 0,...,n$.
-	\item $\overline{I_0H_j}$ of equal size of $\overline{B_iI_j}$.
+	\item $\overline{B_iI_j}$ of size to be determined $f(n,i,j)$, where $i,j = 0,...,n$.
+	\item $\overline{H_jI_0}$ of equal size of $\overline{B_iI_j}$.
 \end{itemize}
 
 From the regular pentagon we know the main diagonal $\overline{AC}$ equals
@@ -99,44 +98,49 @@ segments of the main diagonal iterating $i = 0,...,n$:
 B_0 &\equiv A \nonumber\\
 \overline{B_0C} &= \frac{1+\sqrt{5}}{4}n \\
 \overline{B_iC} &= \frac{1+\sqrt{5}}{4}n - i \nonumber\\
- &= \frac{n-4i}{4} + \frac{\sqrt{5}}{4}, \quad i = 0, ..., n \label{eq:B_iC}
+ &= \frac{n-4i}{4} + \frac{\sqrt{5}}{4}, \quad i = 0, ..., n \nonumber\\
+ &= \frac{x_i}{4} + \frac{\sqrt{5}}{4}, \quad x_i = n - 4i \label{eq:B_iC}
 \end{align}
 
-From the regular pentagon we know the angle ${CB_iH_i}$ equals $2\pi / 5$ so we have:
+From the regular pentagon we know the angle ${B_iCH_j}$ equals $2\pi / 5$ so we have:
 \begin{align}
-\theta &\equiv \angle{CB_iH_i} \\
+\theta &\equiv \angle{B_iCH_j} \\
 \cos\theta &= \cos\frac{2\pi}{5} = \frac{\sqrt{5}-1}{4} \label{eq:cosine}
 \end{align}
 
-\subsection{Surds strips}
+\subsection{Pentagon surds sizes}
 
-Using the law of cosines we can calculate one of the frame surds $s_ij \equiv \overline{B_iH_j}$.
-We notice the value of $\overline{B_iH_i}$ equals $i$, and we'll use the values of $\overline{B_iC}$ from equation \ref{eq:B_iC}, and the cosine value from equation \ref{eq:cosine} to get:
+Using the law of cosines we can calculate one of the frame surds $s_{ij} \equiv \overline{B_iI_j}$.
+We notice the value of $\overline{CI_j}$ equals $j$, and we'll use the values of $\overline{B_iC}$ from equation \ref{eq:B_iC}, and the cosine value from equation \ref{eq:cosine} to get:
 \begin{align}
-s_i^2 &\equiv \overline{CH_i}^2 \\
- &= \overline{B_iH_i}^2 + \overline{B_iC}^2
- - 2\overline{B_iH_i}\times\overline{B_iC}\cos\theta  \nonumber\\
-  &= i^2 + \left(\frac{n-4i}{4} + \frac{\sqrt{5}}{4}\right)^2
-   - 2i\left(\frac{n-4i}{4} + \frac{\sqrt{5}}{4}\right)\left(\frac{-1+\sqrt{5}}{4}\right) \\
-  &= i^2 + \frac{1}{16}\left(n-4i + \sqrt{5}\right)^2
-   - \frac{2i}{16}\left(n-4i + \sqrt{5}\right)\left(-1+\sqrt{5}\right)
+s_{ij}^2 &\equiv \overline{B_iI_j}^2 \\
+ &= \overline{CI_j}^2 + \overline{B_iC}^2 
+ - 2\overline{CI_j}\times\overline{B_iC}\cos\theta  \nonumber\\
+ &= j^2 + \left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)^2
+ - 2j\left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)\left(\frac{-1+\sqrt{5}}{4}\right) \\
+ %
+ &= j^2 + \frac{1}{16}\left(x_i + \sqrt{5}\right)^2
+ - \frac{2i}{16}\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right)
 \end{align}   
-We multiply both sides by 16 and substitute $x = n - 4i$:   
+We multiply both sides by 16:   
 \begin{align}
-(4s_i)^2 &= 16i^2 + x^2 + 2x\sqrt{5} + 5 - 2i\left(x + \sqrt{5}\right)\left(-1+\sqrt{5}\right) \\
- &= 16i^2 + x^2 + 2x\sqrt{5} + 5 - 2i(-x + 5 + (x-1)\sqrt{5}) \\
- &= 16i^2 + x^2 + 5 + 2ix - 10i + (2x - 2ix + 2i)\sqrt{5}
+(4s_{ij})^2 &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5
+ - 2i\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right) \\
+ &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5 - 2i(-x_i + 5 + (x_i-1)\sqrt{5}) \\
+ &= 16j^2 + x_i^2 + 5 + 2ix_i - 10i + 2(x_i - ix_i + i)\sqrt{5}
 \end{align}
-We define two variables $u$ and $v$ in order to have $(4s_i)^2 = u+v\sqrt{5}$ and reduce $x$, so:
+In order to have a simpler $(4s_i)^2 = u+v\sqrt{5}$ we define two variables $u$ and $v$.
+We replace again $x_i = n - 4i$ defined in equation \ref{eq:B_iC}:
 \begin{align}
-u &\equiv 16i^2 + x^2 + 5 + 2ix - 10i \nonumber\\
- &= 16i^2 + (n - 4i)^2 + 5 + 2i(n - 4i) - 10i \nonumber\\
- &= 16i^2 + n^2 - 8in + 16i^2 + 5 - 2in - 8i^2 \nonumber\\
- &= n^2 - 10in + 25i^2 - i^2 + 5 \nonumber\\
- &= (n - 5i)^2 + 5 - i^2 \\
-v &\equiv 2x - 2ix + 2i \nonumber\\
- &= 2x(1 - i) + 2i \nonumber\\
- &= 2(n - 4i)(1 - i) + 2i
+u &\equiv 16j^2 + x_i^2 + 5 + 2ix_i - 10i \nonumber\\
+ &= 16j^2 + (n - 4i)^2 + 5 + 2i(n - 4i) - 10i \nonumber\\
+ &= 16j^2 + n^2 - 8ni + 16i^2 + 5 - 2ni - 8i^2 \nonumber\\
+ &= 16j^2 + n^2 - 10ni + 8i^2 + 5 \nonumber\\
+ &= (n - 5i)^2 + 16j^2 - 17i^2 + 5 \nonumber\\
+ &= (n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 \\
+v &\equiv 2(x_i - ix_i + i) \nonumber\\
+ &= 2(n-4i - i(n-4i) + i) \nonumber\\
+ &= 2(n-3i - ni + 4i^2) \nonumber\\
 \end{align}
 Finally we have $s_ij$ in function of $n$ the side:
 
