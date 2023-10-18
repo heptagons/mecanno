@@ -118,31 +118,47 @@ s_{ij}^2 &\equiv \overline{B_iI_j}^2 \\
  - 2\overline{CI_j}\times\overline{B_iC}\cos\theta  \nonumber\\
  &= j^2 + \left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)^2
  - 2j\left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)\left(\frac{-1+\sqrt{5}}{4}\right) \\
- %
  &= j^2 + \frac{1}{16}\left(x_i + \sqrt{5}\right)^2
- - \frac{2i}{16}\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right)
+ - \frac{2j}{16}\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right)
 \end{align}   
 We multiply both sides by 16:   
 \begin{align}
 (4s_{ij})^2 &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5
- - 2i\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right) \\
- &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5 - 2i(-x_i + 5 + (x_i-1)\sqrt{5}) \\
- &= 16j^2 + x_i^2 + 5 + 2ix_i - 10i + 2(x_i - ix_i + i)\sqrt{5}
+ - 2j\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right) \\
+ &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5 - 2j(-x_i + 5 + (x_i-1)\sqrt{5}) \\
+ &= 16j^2 + x_i^2 + 5 + 2x_ij - 10j + 2(x_i - x_ij + j)\sqrt{5}
 \end{align}
 In order to have a simpler $(4s_i)^2 = u+v\sqrt{5}$ we define two variables $u$ and $v$.
 We replace again $x_i = n - 4i$ defined in equation \ref{eq:B_iC}:
 \begin{align}
-u &\equiv 16j^2 + x_i^2 + 5 + 2ix_i - 10i \nonumber\\
- &= 16j^2 + (n - 4i)^2 + 5 + 2i(n - 4i) - 10i \nonumber\\
+u &\equiv 16j^2 + x_i^2 + 5 + 2x_ij - 10j \nonumber\\
+ &= 16j^2 + (n - 4i)^2 + 5 + 2(n - 4i)j - 10j \nonumber\\
+ %
  &= 16j^2 + n^2 - 8ni + 16i^2 + 5 - 2ni - 8i^2 \nonumber\\
  &= 16j^2 + n^2 - 10ni + 8i^2 + 5 \nonumber\\
  &= (n - 5i)^2 + 16j^2 - 17i^2 + 5 \nonumber\\
- &= (n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 \\
+ &= (n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 \label{eq:u} \\
 v &\equiv 2(x_i - ix_i + i) \nonumber\\
  &= 2(n-4i - i(n-4i) + i) \nonumber\\
  &= 2(n-3i - ni + 4i^2) \nonumber\\
+ &= 2((2i-1)^2 - (n-1)(i-1)) \label{eq:v} 
 \end{align}
 Finally we have $s_ij$ in function of $n$ the side:
+\begin{align}
+s_{ij} &= \frac{\sqrt{u+v\sqrt{5}}}{4} \nonumber\\
+ &= \frac{\sqrt{(n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 + 2((2i-1)^2 - (n-1)(i-1))\sqrt{5}}}{4}
+\end{align}
+
+\subsection{Pentagons surds simplification}
+
+If value $v$ from equation \ref{eq:v} is zero $s_{ij}$ simplifies to $\frac{\sqrt{u}}{4}$:
+\begin{align}
+v &= 0 \nonumber\\
+2((2i-1)^2 - (n-1)(i-1)) &= 0 \nonumber\\
+(2i-1)^2 &= (n-1)(i-1)
+\end{align}
+
+
 
 
 \end{document}
