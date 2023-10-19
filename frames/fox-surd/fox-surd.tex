@@ -92,19 +92,19 @@ The other two strips are generic in the sense the sizes can be surds:
 \end{itemize}
 
 From the regular pentagon we know the main diagonal $\overline{AC}$ equals
-$\frac{1+\sqrt{5}}{4}n$ where $n$ is the pentagon side size. We can calculate different
+$\frac{1+\sqrt{5}}{2}n$ where $n$ is the pentagon side size. We can calculate different
 segments of the main diagonal iterating $i = 0,...,n$:
 \begin{align}
 B_0 &\equiv A \nonumber\\
-\overline{B_0C} &= \frac{1+\sqrt{5}}{4}n \\
-\overline{B_iC} &= \frac{1+\sqrt{5}}{4}n - i \nonumber\\
- &= \frac{n-4i}{4} + \frac{\sqrt{5}}{4}, \quad i = 0, ..., n \nonumber\\
- &= \frac{x_i}{4} + \frac{\sqrt{5}}{4}, \quad x_i = n - 4i \label{eq:B_iC}
+\overline{B_0C} &= \frac{1+\sqrt{5}}{2}n \\
+\overline{B_iC} &= \frac{1+\sqrt{5}}{2}n - i \nonumber\\
+ &= \frac{n-2i}{2} + \frac{n\sqrt{5}}{2}, \quad i = 0, ..., n \nonumber\\
+ &= \frac{x_i}{2} + \frac{n\sqrt{5}}{2}, \quad x_i = n - 2i \label{eq:B_iC}
 \end{align}
 
-From the regular pentagon we know the angle ${B_iCH_j}$ equals $2\pi / 5$ so we have:
+From the regular pentagon we know the angle ${B_iCI_j}$ equals $2\pi / 5$ so we have:
 \begin{align}
-\theta &\equiv \angle{B_iCH_j} \\
+\theta &\equiv \angle{B_iCI_j} \\
 \cos\theta &= \cos\frac{2\pi}{5} = \frac{\sqrt{5}-1}{4} \label{eq:cosine}
 \end{align}
 
@@ -116,32 +116,24 @@ We notice the value of $\overline{CI_j}$ equals $j$, and we'll use the values of
 s_{ij}^2 &\equiv \overline{B_iI_j}^2 \\
  &= \overline{CI_j}^2 + \overline{B_iC}^2 
  - 2\overline{CI_j}\times\overline{B_iC}\cos\theta  \nonumber\\
- &= j^2 + \left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)^2
- - 2j\left(\frac{x_i}{4} + \frac{\sqrt{5}}{4}\right)\left(\frac{-1+\sqrt{5}}{4}\right) \\
- &= j^2 + \frac{1}{16}\left(x_i + \sqrt{5}\right)^2
- - \frac{2j}{16}\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right)
+ &= j^2 + \left(\frac{x_i}{2} + \frac{n\sqrt{5}}{2}\right)^2
+ - 2j\left(\frac{x_i}{2} + \frac{n\sqrt{5}}{2}\right)\left(\frac{\sqrt{5} - 1}{4}\right) \\
+ &= j^2 + \frac{1}{4}\left(x_i + n\sqrt{5}\right)^2
+ - \frac{j}{4}\left(x_i + n\sqrt{5}\right)\left(\sqrt{5}-1\right)
 \end{align}   
-We multiply both sides by 16:   
+
+% FIX BELOW n\sqrt{5}!!!
+We multiply both sides by 4 and simplify:   
 \begin{align}
-(4s_{ij})^2 &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5
- - 2j\left(x_i + \sqrt{5}\right)\left(-1+\sqrt{5}\right) \\
- &= 16j^2 + x_i^2 + 2x_i\sqrt{5} + 5 - 2j(-x_i + 5 + (x_i-1)\sqrt{5}) \\
- &= 16j^2 + x_i^2 + 5 + 2x_ij - 10j + 2(x_i - x_ij + j)\sqrt{5}
+(2s_{ij})^2 &= 4j^2 + (x_i + n\sqrt{5})^2 - j(x_i + n\sqrt{5})(\sqrt{5} - 1) \\
+ &= 4j^2 + x_i^2 + 2x_in\sqrt{5} + 5n^2 - j(x_i\sqrt{5} - x_i + 5n - n\sqrt{5})\\
+ &= 4j^2 + x_i^2 + 5n^2 + x_ij - 5nj + (2nx_i - x_ij + nj)\sqrt{5}
 \end{align}
 In order to have a simpler $(4s_i)^2 = u+v\sqrt{5}$ we define two variables $u$ and $v$.
 We replace again $x_i = n - 4i$ defined in equation \ref{eq:B_iC}:
 \begin{align}
-u &\equiv 16j^2 + x_i^2 + 5 + 2x_ij - 10j \nonumber\\
- &= 16j^2 + (n - 4i)^2 + 5 + 2(n - 4i)j - 10j \nonumber\\
- %
- &= 16j^2 + n^2 - 8ni + 16i^2 + 5 - 2ni - 8i^2 \nonumber\\
- &= 16j^2 + n^2 - 10ni + 8i^2 + 5 \nonumber\\
- &= (n - 5i)^2 + 16j^2 - 17i^2 + 5 \nonumber\\
- &= (n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 \label{eq:u} \\
-v &\equiv 2(x_i - ix_i + i) \nonumber\\
- &= 2(n-4i - i(n-4i) + i) \nonumber\\
- &= 2(n-3i - ni + 4i^2) \nonumber\\
- &= 2((2i-1)^2 - (n-1)(i-1)) \label{eq:v} 
+u &\equiv 4j^2 + x_i^2 + 5n^2 + x_ij - 5nj \nonumber\\
+v &\equiv 2nx_i - x_ij + nj \nonumber\\
 \end{align}
 Finally we have $s_ij$ in function of $n$ the side:
 \begin{align}
