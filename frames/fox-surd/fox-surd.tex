@@ -122,32 +122,37 @@ s_{ij}^2 &\equiv \overline{B_iI_j}^2 \\
  - \frac{j}{4}\left(x_i + n\sqrt{5}\right)\left(\sqrt{5}-1\right)
 \end{align}   
 
-% FIX BELOW n\sqrt{5}!!!
 We multiply both sides by 4 and simplify:   
 \begin{align}
 (2s_{ij})^2 &= 4j^2 + (x_i + n\sqrt{5})^2 - j(x_i + n\sqrt{5})(\sqrt{5} - 1) \\
  &= 4j^2 + x_i^2 + 2x_in\sqrt{5} + 5n^2 - j(x_i\sqrt{5} - x_i + 5n - n\sqrt{5})\\
  &= 4j^2 + x_i^2 + 5n^2 + x_ij - 5nj + (2nx_i - x_ij + nj)\sqrt{5}
 \end{align}
-In order to have a simpler $(4s_i)^2 = u+v\sqrt{5}$ we define two variables $u$ and $v$.
+In order to have a simpler $(2s_i)^2 = u+v\sqrt{5}$ we define two variables $u$ and $v$.
 We replace again $x_i = n - 4i$ defined in equation \ref{eq:B_iC}:
 \begin{align}
 u &\equiv 4j^2 + x_i^2 + 5n^2 + x_ij - 5nj \nonumber\\
+ &= 4j^2 + (n-2i)^2 + 5n^2 + (n-2i)j - 5nj \nonumber\\
+ &= 4j^2 + n^2 - 4ni + 4i^2 + 5n^2 + nj - 2ij - 5nj \nonumber\\
+ &= 6n^2 + 4i^2 + 4j^2 - 4ni - 4nj - 2ij  \label{eq:u}\\
 v &\equiv 2nx_i - x_ij + nj \nonumber\\
+ &= 2n(n-2i) - (n-2i)j + nj \nonumber\\
+ &= 2n^2 - 4ni - nj + 2ij + nj \nonumber\\
+ &= 2n^2 - 4ni + 2ij \label{eq:v}\\
 \end{align}
-Finally we have $s_ij$ in function of $n$ the side:
+Finally we have $s_{ij}$ in function of $n,i,j$ the side:
 \begin{align}
-s_{ij} &= \frac{\sqrt{u+v\sqrt{5}}}{4} \nonumber\\
- &= \frac{\sqrt{(n - 5i)^2 + 16(j^2-i^2) + 5 - i^2 + 2((2i-1)^2 - (n-1)(i-1))\sqrt{5}}}{4}
+s_{ij} &= \frac{\sqrt{u+v\sqrt{5}}}{2} \nonumber\\
+ &= \frac{\sqrt{6n^2 + 4i^2 + 4j^2 - 4ni - 4nj - 2ij + (2n^2 - 4ni + 2ij)\sqrt{5}}}{2}
 \end{align}
 
 \subsection{Pentagons surds simplification}
 
-If value $v$ from equation \ref{eq:v} is zero $s_{ij}$ simplifies to $\frac{\sqrt{u}}{4}$:
+If value $v$ from equation \ref{eq:v} is zero $s_{ij}$ simplifies to $\sqrt{u}/2$:
 \begin{align}
 v &= 0 \nonumber\\
-2((2i-1)^2 - (n-1)(i-1)) &= 0 \nonumber\\
-(2i-1)^2 &= (n-1)(i-1)
+2n^2 - 4ni + 2ij &= 0 \nonumber\\
+n^2 - 2ni + ij &= 0 \nonumber\\
 \end{align}
 
 
