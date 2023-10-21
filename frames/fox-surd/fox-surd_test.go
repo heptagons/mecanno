@@ -7,6 +7,10 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
+// TestFoxSurdPentaSimple look for solutions where surds is as simple as sqrt(s)
+// where s is a positive integer. Iterators i,j goes from min=1 to max=n
+// The group of solutions is small so we test a large number of sizes (1000).
+// We filter the solutions to prevent duplications by scaling.
 func TestFoxSurdPentaSimple(t *testing.T) {
 	sols := meccano.Sols{}
 	sols.Chars("nij")
@@ -15,14 +19,23 @@ func TestFoxSurdPentaSimple(t *testing.T) {
 	})
 }
 
+// TestFoxSurdPentaNest look for solutions where surds are complicated such as
+// sqrt(s + sqrt(t)) where s,t are positive integers.
+// Very few cases degenerate to sqrt(u) when s + sqrt(t) is a square!
+// Iteratrs i,j goes from min=1 to max=n
+// The group of solutions is big so we test a small number of sizes (10 or 20).
+// We filter the solutions to prevent duplications by scaling.
 func TestFoxSurdPentaNest(t *testing.T) {
 	sols := meccano.Sols{}
 	sols.Chars("nij")
-	foxSurdPenta(1, 13, true, func(n, i, j Z, s*A32) {
+	foxSurdPenta(1, 9, true, func(n, i, j Z, s*A32) {
 		sols.Add2(fmt.Sprintf("s=%s", s), int(n), int(i), int(j))
 	})
 }
 
+// TestFoxSurdPentaZero tests pentagons where i or j start from zero not 1.
+// We don't use meccano.Sols since 0 is not used by its GDC, so we count here
+// the solutions that may be duplicated by scaling.
 func TestFoxSurdPentaZero(t *testing.T) {
 	c := 0
 	foxSurdPenta(0, 12, false, func(n, i, j Z, s*A32) {
@@ -35,7 +48,7 @@ func foxSurdPenta(min, max Z, nest bool, sol func(n,i,j Z, s *A32)) {
 
 	factory := NewA32s()
 
-	for n := Z(1); n <= max; n++ {
+	for n := min; n <= max; n++ {
 		nn := n*n
 		for i := min; i <= n; i++ {
 			ni := n*i
