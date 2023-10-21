@@ -17,8 +17,8 @@ func TestFramesAlgsNotRight(t *testing.T) {
 }
 
 func TestFramesSurdsInt(t *testing.T) {
-	surd := Z(46)
-	max := N32(30)
+	surd := Z(7)
+	max := N32(10)
 	n := 0
 	fmt.Printf("√%d max=%d\n", surd, max)
 	NewFrames().SurdsInt(surd, max, func(frame *FrameSurd) {
@@ -30,23 +30,23 @@ func TestFramesSurdsInt(t *testing.T) {
 }
 /*
 √7 max=10
-  1) a=1 b=1+2 c=1 cos=1/2
-  2) a+d=1+1 b=1+2 c=1 cos=1/2
+  1) a=1 b+e=1+2 c=1 cos=1/2
+  2) a+d=1+1 b+e=1+2 c=1 cos=1/2
   3) a+d=1+2 b=1 c=1 cos=1/2
-  4) a+d=1+2 b=1+1 c=1 cos=1/2
-  5) a=2 b=2+1 c=2 cos=1/2
+  4) a+d=1+2 b+e=1+1 c=1 cos=1/2
+  5) a=2 b+e=2+1 c=2 cos=1/2
   6) a+d=2+1 b=2 c=2 cos=1/2
-  7) a=3 b=2+2 c=2 cos=3/4
-  8) a+d=3+1 b=2+1 c=2 cos=3/4
-  9) a+d=4+2 b=4+4 c=1 cos=31/32
- 10) a+d=4+4 b=4+2 c=1 cos=31/32
- 11) a=7 b=5+1 c=3 cos=13/14
- 12) a=7 b=5+2 c=3 cos=13/14
+  7) a=3 b+e=2+2 c=2 cos=3/4 E=pi/2
+  8) a+d=3+1 b+e=2+1 c=2 cos=3/4 D=pi/2
+  9) a+d=4+2 b+e=4+4 c=1 cos=31/32
+ 10) a+d=4+4 b+e=4+2 c=1 cos=31/32
+ 11) a=7 b+e=5+1 c=3 cos=13/14
+ 12) a=7 b+e=5+2 c=3 cos=13/14
 */
 
 
 func TestFramesSurdsRat(t *testing.T) {
-	max := N32(5)
+	max := N32(10)
 	n := 0
 	NewFrames().SurdsRat(max, func(d []N32, surd *A32) {
 		n++

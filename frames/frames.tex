@@ -15,18 +15,103 @@ Meccano frames are groups of meccano\meccanoref strips intended to be a
 base to build diverse meccano larger objects.
 \end{abstract}
 
-\section{Triangle with extensions}
+\section{Triangle frame with extensions}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.75]{frame_triangle}
-\caption{Triangle frame}
+\caption{Triangle frame. We have three strips to form the triangle $\triangle{ABC}$.
+At least we extend one of two strips $\overline{CB}$ and $\overline{CA}$ to become
+$\overline{CE}$ and $\overline{CD}$. The new nodes $D$ and $E$ are rigid and the distance
+between them can be a surd, that we can use to be part of more complicated constructions.}
 \label{fig:triangle}
 \end{figure}
 
+Figure \ref{fig:triangle} is a triangle with extentions. We'll calculate the distance
+$\overline{DE}$ to be used as a surd. First we define integer distances $a,b,c,d,e$
+and calculate the cosine of $\angle{BCA}$:
+\begin{align}
+a = \overline{CB}, \quad b = \overline{CA}  \quad c &= \overline{AB}
+ \quad d =\overline{BE}, \quad e = \overline{AD} \\
+\theta &\equiv \angle{BCA} \\
+\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab}
+\end{align}
+Then we apply the cosine to the triangle $\triangle{CED}$:
+\begin{align}
+\overline{ED}^2 &= \overline{CD}^2 + \overline{CE}^2
+ - 2\overline{CD} \times \overline{CE}\cos\theta \nonumber\\
+ &= (a+d)^2 + (b+e)^2 - 2(a+d)(b+e)\cos\theta
+\end{align}
+So we define the surd $s = \overline{DE}$ as:
+\begin{align}
+ s &= \sqrt{(a+d)^2 + (b+e)^2 - 2(a+d)(b+e)\cos\theta} \nonumber\\
+  &=  \sqrt{(a+d)^2 + (b+e)^2 - 2(a+d)(b+e)\left(\frac{a^2 + b^2 - c^2}{2ab}\right)}
+\end{align}
+
+\subsection{Software}
+
+We write a software to find all the triangles with extensions for a particular surd
+and for a maximum sides $a+d,b+w,c$.
+For example next list show all the $s = \sqrt{7}$
+for the three strips $a+d,b+e,c \leq 10$:
+\begin{lstlisting}
+sqrt{7} max=10
+  1) a=1 b+e=1+2 c=1 cos=1/2
+  2) a+d=1+1 b+e=1+2 c=1 cos=1/2
+  3) a+d=1+2 b=1 c=1 cos=1/2
+  4) a+d=1+2 b+e=1+1 c=1 cos=1/2
+  5) a=2 b+e=2+1 c=2 cos=1/2
+  6) a+d=2+1 b=2 c=2 cos=1/2
+  7) a=3 b+e=2+2 c=2 cos=3/4 E=pi/2
+  8) a+d=3+1 b+e=2+1 c=2 cos=3/4 D=pi/2
+  9) a+d=4+2 b+e=4+4 c=1 cos=31/32
+ 10) a+d=4+4 b+e=4+2 c=1 cos=31/32
+ 11) a=7 b+e=5+1 c=3 cos=13/14
+ 12) a=7 b+e=5+2 c=3 cos=13/14
+\end{lstlisting}
+The code is in file \texttt{github.com/heptagons/meccano/frames/frames.go}
+and function \texttt{func (t *Frames) SurdsInt(surd Z, max N32, frame func(a *FrameSurd))}
+
+\newcommand{\meccanoframetriangle}[5]
+{
+\begin{tikzpicture}
+\def\p {3pt}
+\def\a{#1}
+\def\b{#2}
+\def\c{#3}
+\def\d{#4}
+\def\e{#5}
+\pgfmathsetmacro{\ad}{\a + \d}
+\pgfmathsetmacro{\be}{\b + \e}
+\pgfmathsetmacro{\cosb}{(\a^2 + \c^2 - \b^2)/(2*\a*\c)}
+\pgfmathsetmacro{\cosa}{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
+\begin{scope}
+  \meccanostrip[0000cc]{\c}{1}{\p} % blue c=BA
+   \begin{scope}[rotate={acos(\cosb)},shift={(-\d,0)}]
+    \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
+    \path (0,0) ++(90:5*\p) node{$E$};
+    \path (\d,0) ++(90:5*\p) node{$B$};
+    \path (\a+\d,0) ++(90:5*\p) node{$C$};
+   \end{scope}
+   \begin{scope}[shift={(\c,0)},rotate=180-acos{\cosa},shift={(-\e,0)}]
+    \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
+    \path (\e,0) ++(-90:5*\p) node{$A$};
+    \path (0,0) ++(-90:5*\p) node{$D$};
+   \end{scope}
+\end{scope}
+\end{tikzpicture}
+}
+
+
+\begin{figure}[h]
+\centering
+\meccanoframetriangle{3}{2}{2}{1}{1}
+\caption{Solution for $\overline{DE}=\sqrt{7}$ when $a+d=3+1, b+e=2+1, c=2$.}
+\end{figure}
 
 
 \section{Algebraic distance not right}
+
 
 \begin{figure}[h]
 \centering
