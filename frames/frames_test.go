@@ -8,7 +8,20 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
-// ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesSurds -v -count 1
+// ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesTriangleSurds -v -count 1
+
+func TestFramesTriangleSurds(t *testing.T) {
+	surd := Z(13)
+	max := N32(10)
+	n := 0
+	fmt.Printf("NewFrames().TriangleSurds surd=%d max=%d\n", surd, max)
+	NewFrames().TriangleSurds(surd, max, func(frame *Triangle) {
+		n++
+		fmt.Fprintf(os.Stdout, "% 3d) ", n)
+		frame.WriteString(os.Stdout)
+		fmt.Println()
+	})
+}
 
 func TestFramesAlgsNotRight(t *testing.T) {
 	surd := Z(11)
@@ -16,18 +29,6 @@ func TestFramesAlgsNotRight(t *testing.T) {
 	NewFrames().AlgsNotRight(surd, max)
 }
 
-func TestFramesSurdsInt(t *testing.T) {
-	surd := Z(7)
-	max := N32(10)
-	n := 0
-	fmt.Printf("√%d max=%d\n", surd, max)
-	NewFrames().SurdsInt(surd, max, func(frame *FrameSurd) {
-		n++
-		fmt.Fprintf(os.Stdout, "% 3d) ", n)
-		frame.WriteString(os.Stdout)
-		fmt.Println()
-	})
-}
 /*
 √7 max=10
   1) a=1 b+e=1+2 c=1 cos=1/2

@@ -6,10 +6,10 @@ import (
 	. "github.com/heptagons/meccano/nest"
 )
 
-// FrameSurd is a three strips meccano frame resembling a uppercase letter A.
+// Triangle is a three strips meccano frame resembling a uppercase letter A.
 // The purpose is to generate a virtual distance ED of type surd
 //
-// FrameSurd consist of ABC triangle with extentions (lenght 0 to max) D from A and E from B:
+// Triangle consist of ABC triangle with extentions (lenght 0 to max) D from A and E from B:
 //
 //                                     a^2 + b^2 - c^2
 //        C-_  b               cosC = -----------------
@@ -33,12 +33,12 @@ import (
 // d = distance nodes B and E >= 0
 // e = distance nodes A and D >= 0
 // We store also the cosine at C.
-type FrameSurd struct {
+type Triangle struct {
 	a,b,c,d,e N32
  	cos       *A32
 }
 
-func (f *FrameSurd) RightAngles() (D, E bool) {
+func (f *Triangle) RightAngles() (D, E bool) {
 	abc := Z(f.a*f.a) + Z(f.b*f.b) - Z(f.c*f.c)
 	ab := Z(f.a*f.b)
 	ad := Z(f.a + f.d)
@@ -48,7 +48,7 @@ func (f *FrameSurd) RightAngles() (D, E bool) {
 	return
 }
 
-func (f *FrameSurd) WriteString(w io.Writer) {
+func (f *Triangle) WriteString(w io.Writer) {
 	if f.d == 0 {
 		if f.e == 0 {
 			fmt.Fprintf(w, "a=%d b=%d", f.a, f.b)
@@ -64,10 +64,10 @@ func (f *FrameSurd) WriteString(w io.Writer) {
 	fmt.Fprintf(w, " c=%d cos=%v", f.c, f.cos.String())
 	D, E := f.RightAngles()
 	if D {
-		fmt.Fprintf(w, " D=pi/2")
+		fmt.Fprintf(w, " CDE=pi/2")
 	}
 	if E {
-		fmt.Fprintf(w, " E=pi/2")
+		fmt.Fprintf(w, " CED=pi/2")
 	}
 }
 

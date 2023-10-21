@@ -16,8 +16,8 @@ func NewFrames() *Frames {
 }
 
 
-// Surds returns FrameSurds with a+d, b+d and c <= max and Frame ED distance equals √surd.
-// FrameSurd consist of ABC with extentions (lenght 0 to max) D from A and E from B:
+// TriangleSurds returns Triangles with a+d, b+d and c <= max and Frame ED distance equals √surd.
+// Triangle consist of ABC with extentions (lenght 0 to max) D from A and E from B:
 //
 //                                     a^2 + b^2 - c^2
 //        C-_  b               cosC = -----------------
@@ -28,7 +28,7 @@ func NewFrames() *Frames {
 //   /                -_         __   
 //  E                   D        ED = (a+d)^2 + (b+e)^2 - 2(a+d)(b+e)cosC
 //
-func (t *Frames) SurdsInt(surd Z, max N32, frame func(a *FrameSurd)) {
+func (t *Frames) TriangleSurds(surd Z, max N32, frame func(a *Triangle)) {
 	min := N32(1)
 	for a := min; a <= max; a++ {
 		// a > b for symmetric redundancy
@@ -52,11 +52,11 @@ func (t *Frames) SurdsInt(surd Z, max N32, frame func(a *FrameSurd)) {
 						} else if prod, err := t.AMulN(cos, m); err != nil {
 							// silent
 						} else if f, ok := prod.IsInteger(); !ok {
-							// reject rational surds example:
+							// reject here rational surds. Example:
 							// a=2 b=1 c=2 d=1 e=0 surd= √34/2
 							// silent
 						} else if g := a_d*a_d + b_e*b_e + Z(f); g == surd {
-							frame(&FrameSurd{
+							frame(&Triangle{
 								a:   a,
 								b:   b,
 								c:   c,
@@ -115,7 +115,7 @@ func (t *Frames) SurdsRat(max N32, frame func(n []N32, s *A32)) {
 
 func (f *Frames) AlgsNotRight(surd Z, max N32) {
 	fmt.Printf("surd=%d, max=%d\n", surd, max)
-	f.SurdsInt(surd, max, func(fs *FrameSurd) {
+	f.TriangleSurds(surd, max, func(fs *Triangle) {
 		fmt.Println(fs)
 		ad := Z(fs.a + fs.d)
 		be := Z(fs.b + fs.e)
