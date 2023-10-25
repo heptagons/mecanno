@@ -12,8 +12,6 @@
  \def\dd{#1}
  \def\ff{#2}
  \def\gg{#3}
- %\def\f{\pgfmathparse{#2}\pgfmathresult}
- %\def\g{\pgfmathparse{#3}\pgfmathresult}
  \ifthenelse{\ff=0 \OR \gg=0}{}{
   \pgfmathsetmacro{\cosf}{(#1^2 + #2^2 - #3^2)/(2*#1*#2)} % (d^2 + f^2 - g^2)/(2df)
   \begin{scope}[shift={(\dd,0)},rotate={180-acos(\cosf)}]
@@ -121,18 +119,22 @@ base to build diverse meccano larger objects.
 \caption{Triangular frame. With three strips we form the triangle $\triangle{ABC}$.
 At least we extend one of two strips $\overline{CB}$ and $\overline{CA}$ to become
 $\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ are rigid as the
-triangle and we'll calculate the distance between them.}
+triangle and we'll calculate the distance between them which most of the time is not longer an integer.}
 \label{fig:triangle}
 \end{figure}
 
-Figure \ref{fig:triangle} shows a triangular frame with strips with extentions. 
-First we define five integer distances $a,b,c,d,e$ and calculate the cosine of $\angle{BCA}$:
+Figure \ref{fig:triangle} shows the three strips triangular frame with extensions. 
+First we identify five integer distances $a,b,c,d,e$:
 \begin{align}
-a &\equiv \overline{CB}, \quad b \equiv \overline{CA}  \quad c \equiv \overline{AB} \\
-\theta &\equiv \angle{BCA} \\
-\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab} \\
+a &\equiv \overline{CB},\quad b \equiv \overline{CA},\quad c \equiv \overline{AB},\quad c < a+b\\
 d &\equiv \overline{CB} + \overline{BE} = \overline{CE} \geq a \\
 e &\equiv \overline{CA} + \overline{AD} = \overline{CD} \geq b
+\end{align}
+
+We calculate the cosine of $\angle{BCA}$:
+\begin{align}
+\theta &\equiv \angle{BCA} \\
+\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab}
 \end{align}
 Then we apply the cosine to the triangle $\triangle{CED}$ to get the
 extensions distance $\overline{DE}$:
@@ -142,19 +144,38 @@ extensions distance $\overline{DE}$:
  &= d^2 + e^2 - 2de\cos\theta \nonumber\\
  &= d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)
 \end{align}
-We expect at most a value of the form $\sqrt{s}/t$ where $s, t \in \bbb{Z}$
+We expect at most a value of the form $\sqrt{s}/t$ where $s, t \in \bbb{Z^+}$
 so we define the surd as:
 \begin{align}
- \overline{DE} &= \frac{\sqrt{s}}{t} \nonumber\\
- &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
+ \overline{DE} &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
  &= \frac{\sqrt{a^2b^2(d^2 + e^2) - abde(a^2 + b^2 - c^2)}}{ab}\nonumber\\
- &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab}
+ &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab} \nonumber\\
+ &= \frac{\sqrt{s}}{t}\\
+ t &= ab \\
+ s &= t((ad-be)(bd-ae)+c^2de)
 \end{align}
 
-\subsection{Software to construct distances $\sqrt{s}/t$}
+\subsection{Rigid distances $\sqrt{s}$ and $\sqrt{s} + f$}
 
-We write a factory to build all the triangles with a given surd
-$\sqrt{s}$ for a given maximum strips lengths.
+\begin{figure}[h]
+\centering
+\begin{center}
+\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)
+\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)\qquad
+\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)\qquad
+\meccanoframetriangle{7}{5}{3}{0}{2}{3pt}{0.6}{0}{0}(d)
+\end{center}
+\caption{Four frames with rigid distance $\overline{DE}=\sqrt{7}$ reported by
+the factory software mentioned in this section. The particular case (b),
+was reported with the angle $CED=\pi/2$ which means we can append two extra strips to make
+a pythagorean triangle $\triangle{CEF}$ where angle ${CEF}=\pi/2$, which makes
+the three vertices $D,E,F$ collinear, so the rigid distance $\overline{DF}=\sqrt{7}+4$ is an algebraic number.
+}
+\label{fig:surd7}
+\end{figure}
+
+We write a factory to report all the triangles with specific surd $\sqrt{s}$
+for a given maximum strips length.
 We reject $t \neq 1$ and $s$ as not square-free, which includes pythagorean triangles.
 Next list show all the triangles with $s = \sqrt{7}, t=1$ where
 $c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
@@ -174,22 +195,15 @@ NewFrames().TriangleSurds surd=7 max=15
  11) a=7 e=5+1 c=3 cos=13/14
  12) a=7 e=5+2 c=3 cos=13/14
 \end{lstlisting}
-The code is in folder \texttt{github.com/heptagons/meccano/frames}.
-
-\begin{figure}[h]
-\centering
-\begin{center}
-\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)\qquad
-\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)\qquad
-\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.5}{0}{0}(c)\qquad
-\meccanoframetriangle{7}{5}{3}{0}{2}{3pt}{0.6}{0}{0}(d)
-\end{center}
-\caption{Triangles with extended fixed distance $\overline{DE}=\sqrt{7}$.}
-\end{figure}
+Figure \ref{fig:surd7} show four cases of this list.
+The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
 
 
-\section{Distance $\sqrt{s} + h$}
 
+\section{More rigid distances $\sqrt{s} + h$}
+
+We explore a more complicated frame to get additional cases of distances $\sqrt{s} + h$ without
+relying in an explicit pythagorean triangle as we saw in case (b) of figure \ref{fig:surd7}.
 
 \begin{figure}[h]
 \centering
@@ -202,14 +216,13 @@ The code is in folder \texttt{github.com/heptagons/meccano/frames}.
 -- node[right]{$i$} ++(-3,6) node[above]{$H$} circle(4pt)
 -- node[above left]{$f$} ++(-3,-2) node[above left]{$C$} circle(4pt)
 -- node[above left]{$a$} ++(-3,-2) node[above left]{$B$} circle(4pt)
--- node[above left]{$d$} ++(-3,-2) node[below left]{$E$} circle(4pt);
+-- node[above left]{$d-a$} ++(-3,-2) node[below left]{$E$} circle(4pt);
 \draw[blue,fill=blue] (7,0)
--- node[right]{$e$} ++(-.25,1) node[above right]{$A$} circle(4pt)
+-- node[right]{$e-b$} ++(-.25,1) node[above right]{$A$} circle(4pt)
 -- node[right]{$b$} ++(-.75,3)
    ++(+.75,-3)
 -- node[above]{$c$} (3,2);
 \draw[black](6,-3) node{$(a)$};
-
 \end{scope}
 
 \begin{scope}[shift={(18,0)}]
@@ -233,16 +246,16 @@ between nodes $E$ and $D$ is produced by the three strips frame $a+d$, $b+e$ and
 Using the law of cosines we calculate the angle $\theta = \angle{CED}$ in terms of $\sqrt{s}$:
 
 \begin{align}
-\cos\theta &= \frac{(a+d)^2 + (\sqrt{s})^2 - (b+e)^2}{2(a+d)\sqrt{s}} \nonumber\\
- &= \frac{((a+d)^2 + s - (b+e)^2)\sqrt{s}}{2(a+d)s} \\
+\cos\theta &= \frac{d^2 + (\sqrt{s})^2 - e^2}{2d\sqrt{s}} \nonumber\\
+ &= \frac{(d^2 + s - e^2)\sqrt{s}}{2ds} \\
  &= \frac{m\sqrt{s}}{n} \label{eq:cos1}\\
- m &= (a+d)^2 + s - (b+e)^2 \\
- n &= 2(a+d)s
+ m &= d^2 + s - e^2 \\
+ n &= 2ds
 \end{align}
 
 From figure \ref{fig:alg-not-right} $(a)$ we notice two sets of points are collinear:
 $\{ E,B,C,H \}$ and $\{ E,D,G \}$. Using the law of cosines we calculate the 
-angle $\theta = \angle{HEG}$ in terms of distances $g,h,i$:
+angle $\theta = \angle{HEG}$ in terms of distances $g,\sqrt{s}+h,i$:
 
 \begin{align}
 \cos\theta &= \frac{g^2 + (\sqrt{s}+h)^2 - i^2}{2g(\sqrt{s}+h)} \nonumber\\
@@ -283,24 +296,25 @@ s &= g^2 + h^2 - i^2 \label{eq:condition1}
 For condition2, we force $m,n,p,q$ as:
 \begin{align}
 \frac{m}{n} &= \frac{p}{q} \nonumber\\
-\frac{(a+d)^2 + s - (b+e)^2}{2(a+d)s} &= \frac{s + g^2 - h^2 - i^2}{2g(s-h^2)} \nonumber\\
+\frac{d^2 + s - e^2}{2ds} &= \frac{s + g^2 - h^2 - i^2}{2g(s-h^2)} \nonumber\\
 \end{align}
 
 We replace the value of $s$ of last equation RHS with the value of equation \ref{eq:condition1}
 of condition 1:
 \begin{align}
-\frac{(a+d)^2 - (b+e)^2 + s}{(a+d)s} &= \frac{s + g^2 - h^2 - i^2}{g(s-h^2)} \nonumber\\
+\frac{d^2 - e^2 + s}{ds} &= \frac{s + g^2 - h^2 - i^2}{g(s-h^2)} \nonumber\\
  &= \frac{g^2 + h^2 - i^2 + g^2 - h^2 - i^2}{g(g^2 + h^2 - i^2-h^2)} \nonumber\\
  &= \frac{2(g^2 - i^2)}{g(g^2 - i^2)} \nonumber\\
  &= \frac{2}{g} \nonumber\\
-((a+d)^2 - (b+e)^2 + s)g &= 2(a+d)s \label{eq:condition2}
+(d^2 - e^2 + s)g &= 2ds \label{eq:condition2}
 \end{align}
 
+\boxed{TODO: Examples!!!}
 
 
 \section{Five strips frame}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 % a,b,c,d,e,p,scale, x+g, g,h,i,j,k, x,p
 \meccanoframefive{5}{6}{5}{2}{3}{3pt}{0.66} {7} {3}{4}{4}{3}{2} {3}
