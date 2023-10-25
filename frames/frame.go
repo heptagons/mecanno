@@ -54,12 +54,12 @@ func (f *Triangle) WriteString(w io.Writer) {
 			fmt.Fprintf(w, "a=%d b=%d", f.a, f.b)
 		} else {
 			// triangle extension with only 4 bolts not 5
-			fmt.Fprintf(w, "a=%d b+e=%d+%d", f.a, f.b, f.e)
+			fmt.Fprintf(w, "a=%d e=%d+%d", f.a, f.b, f.e)
 		}
 	} else if f.e == 0 {
-		fmt.Fprintf(w, "a+d=%d+%d b=%d", f.a, f.d, f.b)
+		fmt.Fprintf(w, "d=%d+%d b=%d", f.a, f.d, f.b)
 	} else {
-		fmt.Fprintf(w, "a+d=%d+%d b+e=%d+%d", f.a, f.d, f.b, f.e)
+		fmt.Fprintf(w, "d=%d+%d e=%d+%d", f.a, f.d, f.b, f.e)
 	}
 	fmt.Fprintf(w, " c=%d cos=%v", f.c, f.cos.String())
 	D, E := f.RightAngles()

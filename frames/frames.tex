@@ -6,10 +6,22 @@
 \usepackage{../meccano}
 \usepackage{tikz}
 \usetikzlibrary{calc}
+\usepackage{ifthen}
 
-\newcommand{\meccanoframetriangle}[7]{%a,b,c,d,e,p,scale
+\newcommand{\meccanoframetriangleextra}[3]{
+\def\ad{#1}
+\pgfmathsetmacro{\fg}{#2 * #3}
+\path (0,0) ++(90:10*\p) node{\fg};
+%\ifthenelse{\fg}{}{
+%\fill circle(4pt);
+%}
+}
+
+\newcommand{\meccanoframetriangle}[9]{%a,b,c,d,e,p,scale, f,g
 \begin{tikzpicture}
 \def\p{#6}
+\def\f{#8}
+\def\g{#9}
 \pgfmathsetmacro{\ad}{#1 + #4} % a+d
 \pgfmathsetmacro{\be}{#2 + #5} % b+e
 \pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
@@ -21,6 +33,7 @@
     \path (0,0) ++(180:5*\p) node{$E$};
     \path (#4,0) ++(90:5*\p) node{$B$}; %d
     \path (\ad,0) ++(90:5*\p) node{$C$};
+    \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
    \end{scope}
    \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
     \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
@@ -91,7 +104,7 @@ base to build diverse meccano larger objects.
 
 \begin{figure}[h]
 \centering
-\meccanoframetriangle{5}{4}{7}{3}{1}{3pt}{0.75}
+\meccanoframetriangle{5}{4}{7}{3}{1}{3pt}{0.75}{0}{0}
 \caption{Triangular frame. With three strips we form the triangle $\triangle{ABC}$.
 At least we extend one of two strips $\overline{CB}$ and $\overline{CA}$ to become
 $\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ are rigid as the
@@ -102,55 +115,63 @@ triangle and we'll calculate the distance between them.}
 Figure \ref{fig:triangle} shows a triangular frame with strips with extentions. 
 First we define five integer distances $a,b,c,d,e$ and calculate the cosine of $\angle{BCA}$:
 \begin{align}
-a \equiv \overline{CB}, \quad b \equiv \overline{CA}  \quad c &\equiv \overline{AB}
- \quad d \equiv \overline{BE}, \quad e \equiv \overline{AD} \\
+a &\equiv \overline{CB}, \quad b \equiv \overline{CA}  \quad c \equiv \overline{AB} \\
 \theta &\equiv \angle{BCA} \\
-\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab}
+\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab} \\
+d &\equiv \overline{CB} + \overline{BE} = \overline{CE} \geq a \\
+e &\equiv \overline{CA} + \overline{AD} = \overline{CD} \geq b
 \end{align}
 Then we apply the cosine to the triangle $\triangle{CED}$ to get the
 extensions distance $\overline{DE}$:
 \begin{align}
 \overline{DE}^2 &= \overline{CD}^2 + \overline{CE}^2
  - 2\overline{CD} \times \overline{CE}\cos\theta \nonumber\\
- &= (a+d)^2 + (b+e)^2 - 2(a+d)(b+e)\cos\theta \nonumber\\
- &= (a+d)^2 + (b+e)^2 - (a+d)(b+e)\left(\frac{a^2 + b^2 - c^2}{ab}\right)
+ &= d^2 + e^2 - 2de\cos\theta \nonumber\\
+ &= d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)
 \end{align}
 We expect at most a value of the form $\sqrt{s}/t$ where $s, t \in \bbb{Z}$
 so we define the surd as:
 \begin{align}
- \overline{DE} &= \frac{\sqrt{s}}{t}
- = \sqrt{(a+d)^2 + (b+e)^2 - (a+d)(b+e)\left(\frac{a^2 + b^2 - c^2}{ab}\right)}
+ \overline{DE} &= \frac{\sqrt{s}}{t} \nonumber\\
+ &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
+ &= \frac{\sqrt{a^2b^2(d^2 + e^2) - abde(a^2 + b^2 - c^2)}}{ab}\nonumber\\
+ &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab}
 \end{align}
 
-\subsection{Software for distance $\sqrt{s}$}
+\subsection{Software to construct distances $\sqrt{s}/t$}
 
 We write a factory to build all the triangles with a given surd
-$\sqrt{s}$ for a given maximum limit for the distances $a+d,b+e,c$.
+$\sqrt{s}$ for a given maximum strips lengths.
 We reject $t \neq 1$ and $s$ as not square-free, which includes pythagorean triangles.
-Next list show all the triangles with $s = \sqrt{7}, t=1$ where $a+d,b+e,c \leq 10$:
+Next list show all the triangles with $s = \sqrt{7}, t=1$ where
+$c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
 \begin{lstlisting}
-NewFrames().TriangleSurds surd=7 max=10
-  1) a=1 b+e=1+2 c=1 cos=1/2
-  2) a+d=1+1 b+e=1+2 c=1 cos=1/2
-  3) a+d=1+2 b=1 c=1 cos=1/2
-  4) a+d=1+2 b+e=1+1 c=1 cos=1/2
-  5) a=2 b+e=2+1 c=2 cos=1/2
-  6) a+d=2+1 b=2 c=2 cos=1/2
-  7) a=3 b+e=2+2 c=2 cos=3/4 CED=pi/2
-  8) a+d=3+1 b+e=2+1 c=2 cos=3/4 CDE=pi/2
-  9) a+d=4+2 b+e=4+4 c=1 cos=31/32
- 10) a+d=4+4 b+e=4+2 c=1 cos=31/32
- 11) a=7 b+e=5+1 c=3 cos=13/14
- 12) a=7 b+e=5+2 c=3 cos=13/14
+=== RUN   TestFramesTriangleSurds
+NewFrames().TriangleSurds surd=7 max=15
+  1) a=1 e=1+2 c=1 cos=1/2
+  2) d=1+1 e=1+2 c=1 cos=1/2
+  3) d=1+2 b=1 c=1 cos=1/2
+  4) d=1+2 e=1+1 c=1 cos=1/2
+  5) a=2 e=2+1 c=2 cos=1/2
+  6) d=2+1 b=2 c=2 cos=1/2
+  7) a=3 e=2+2 c=2 cos=3/4 CED=pi/2
+  8) d=3+1 e=2+1 c=2 cos=3/4 CDE=pi/2
+  9) d=4+2 e=4+4 c=1 cos=31/32
+ 10) d=4+4 e=4+2 c=1 cos=31/32
+ 11) a=7 e=5+1 c=3 cos=13/14
+ 12) a=7 e=5+2 c=3 cos=13/14
 \end{lstlisting}
-The code is in file \texttt{github.com/heptagons/meccano/frames/frames.go}.
-
-
+The code is in folder \texttt{github.com/heptagons/meccano/frames}.
 
 \begin{figure}[h]
 \centering
-\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{1.0}
-\caption{Triangle with $\overline{DE}=\sqrt{7}$ where $a=3, b+e=2+2, c=2, cos=\frac{3}{4}, CED=\pi/2$.}
+\begin{center}
+\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)\qquad
+\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)\qquad
+\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.5}{0}{0}(c)\qquad
+\meccanoframetriangle{7}{5}{3}{0}{2}{3pt}{0.6}{0}{0}(d)
+\end{center}
+\caption{Triangles with extended fixed distance $\overline{DE}=\sqrt{7}$.}
 \end{figure}
 
 
@@ -272,7 +293,7 @@ of condition 1:
 \meccanoframefive{5}{6}{5}{2}{3}{3pt}{0.66} {7} {3}{4}{4}{3}{2} {3}
 \caption{Five strips frame. We construct two triangles $\triangle{ABC}$ and
 $\triangle{GHI}$. Extending the strips we get four vertices $E,D,J,K$ which
-can form four rigid distances of surd type: $\overline{DJ}, \overline{DH},
+can form four rigid distances of surd type: $\overline{DJ}, \overline{DK},
 \overline{EJ}, \overline{EK}$.}
 \label{fig:5strips}
 \end{figure}
@@ -304,7 +325,7 @@ v &\equiv h^2 + i^2 - g^2\\
 y &\equiv 4h^2i^2 - v^2\\
 \cos\delta &= \frac{v}{2hi}\\
 \sin\delta &= \frac{\sqrt{y}}{2hi}\\
-K_x &= f + k\sin\delta = \frac{2fhi+ k\sqrt{y}}{2hi}\\
+K_x &= f + k\sin\delta = f + \frac{k\sqrt{y}}{2hi}\\
 K_y &= -k\cos\delta = -\frac{kv}{2hi}\\
 K_x^2 + K_y^2 &= f^2 + 2fk\sin\delta + k^2\\
  &= f^2+k^2 + \frac{fk\sqrt{y}}{hi}
@@ -315,27 +336,10 @@ We calculate the distance $\overline{DK}$:
  &= D_x^2 + 2D_xK_x + K_x^2 + D_y^2 + 2D_yK_y + K_y^2 \nonumber\\
  &= (D_x^2+D_y^2) + (K_x^2+K_y^2) + 2D_xK_x + 2D_yK_y \nonumber\\
  &= d^2 + f^2 + k^2 + \frac{fk\sqrt{y}}{hi}
-  + 2\left(\frac{d\sqrt{x}}{2bc}\right)\left(\frac{2fhi+ k\sqrt{y}}{2hi}\right)
+  + 2\left(\frac{d\sqrt{x}}{2bc}\right)\left(f + \frac{k\sqrt{y}}{2hi}\right)
   + 2\left(\frac{dt}{2bc}\right)\left(-\frac{kv}{2hi}\right) \nonumber\\
- &= d^2 + f^2 + k^2 - \frac{dtkv}{2bchi} + \frac{fk\sqrt{y}}{hi} + \frac{d\sqrt{x}(2fhi+ k\sqrt{y})}{2bchi}
-\end{align}
-
-
-
-
-
-
-We separate RHS in two parts such that $\overline{DK}^2 = m + n$. First part is $m$ without surds:
-\begin{align}
-m &\equiv d^2 + f^2 + k^2 -2dk\cos\alpha\cos\delta \nonumber\\
- &= d^2 + f^2 + k^2 -\frac{dktv}{2bchi}
-\end{align}
-Second part is $n$ with surds:
-\begin{align}
-n &\equiv 2fk\sin\delta + 2d\sin\alpha(f + k\sin\delta) \nonumber\\
- &= \frac{fk\sqrt{4h^2i^2 - v^2}}{hi}
-  + \left(\frac{d\sqrt{4b^2c^2 - t^2}}{bc}\right)\left(\frac{2fhi+k\sqrt{4h^2i^2 - v^2}}{2hi}\right) \nonumber\\
- &= \frac{2hifk\sqrt{4h^2i^2 - v^2} + (d\sqrt{4b^2c^2 - t^2})(2fhi+k\sqrt{4h^2i^2 - v^2})}{2bchi}\\
+ &= d^2 + f^2 + k^2 - \frac{dtkv}{2bchi} + \frac{fk\sqrt{y}}{hi}
+  + \frac{df\sqrt{x}}{bc} + \frac{dk\sqrt{xy}}{2bchi}
 \end{align}
 
 \end{document}

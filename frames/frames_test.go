@@ -11,7 +11,7 @@ import (
 // ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesTriangleSurds -v -count 1
 
 func TestFramesTriangleSurds(t *testing.T) {
-	surd := Z(4*8)
+	surd := Z(7)
 	max := N32(15)
 	n := 0
 	fmt.Printf("NewFrames().TriangleSurds surd=%d max=%d\n", surd, max)
