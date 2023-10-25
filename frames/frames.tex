@@ -46,12 +46,12 @@
  \begin{scope}[rotate={acos(\cosb)}]
   \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
   \path(#3,0) ++(-45:5*\p) node{$C$};
-  \path(\be,0) ++(0:5*\p) node{$D$};
+  \path(\ad,0) ++(0:5*\p) node{$D$};
  \end{scope}
  \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa}] % shift \c
   \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
   \path(0,0) ++(-90:5*\p) node{$B$};
-  \path(\ad,0) ++(0:5*\p) node{$E$};
+  \path(\be,0) ++(0:5*\p) node{$E$};
  \end{scope}
  \meccanoframefivebelow
 }
@@ -264,22 +264,78 @@ of condition 1:
 
 
 
-\section{Five strips}
+\section{Five strips frame}
 
 \begin{figure}[h]
 \centering
 % a,b,c,d,e,p,scale, x+g, g,h,i,j,k, x,p
-\meccanoframefive{5}{6}{5}{4}{3}{3pt}{0.75} {7} {3}{4}{4}{3}{2} {3}
-\caption{Five strips.}
+\meccanoframefive{5}{6}{5}{2}{3}{3pt}{0.66} {7} {3}{4}{4}{3}{2} {3}
+\caption{Five strips frame. We construct two triangles $\triangle{ABC}$ and
+$\triangle{GHI}$. Extending the strips we get four vertices $E,D,J,K$ which
+can form four rigid distances of surd type: $\overline{DJ}, \overline{DH},
+\overline{EJ}, \overline{EK}$.}
+\label{fig:5strips}
 \end{figure}
 
+Figure \ref{fig:5strips} shows a frame with five strips. The frame has eleven variables:
+\begin{align}
+a &= \overline{BC}, \quad b = \overline{AC}, \quad c = \overline{AB}\\
+d &= \overline{AD}, \quad e = \overline{AE}\\
+f &= \overline{AG}\\
+g &= \overline{HI}, \quad h = \overline{GI}, \quad i = \overline{GH}\\
+j &= \overline{HJ}, \quad k = \overline{HK}
+\end{align}
+
+Assume vertex A is at the origin.
+Let $\alpha = \angle{BAC}$, and $D_x,D_y$ the abscissa and orditate of vertex $D$ so we have:
+\begin{align}
+t &\equiv b^2 + c^2 - a^2\\
+x &\equiv 4b^2c^2 - t^2\\
+\cos\alpha &= \frac{t}{2bc}\\
+\sin\alpha &= \frac{\sqrt{x}}{2bc}\\
+D_x &= d\sin\alpha = \frac{d\sqrt{x}}{2bc}\\
+D_y &= d\cos\alpha = \frac{dt}{2bc}\\
+D_x^2 + D_y^2 &= d^2
+\end{align}
+Let $\delta = \angle{HGI}$ and $K_x,K_y$ the abscissa and ordinate of
+vertex $K$ so we have:
+\begin{align}
+v &\equiv h^2 + i^2 - g^2\\
+y &\equiv 4h^2i^2 - v^2\\
+\cos\delta &= \frac{v}{2hi}\\
+\sin\delta &= \frac{\sqrt{y}}{2hi}\\
+K_x &= f + k\sin\delta = \frac{2fhi+ k\sqrt{y}}{2hi}\\
+K_y &= -k\cos\delta = -\frac{kv}{2hi}\\
+K_x^2 + K_y^2 &= f^2 + 2fk\sin\delta + k^2\\
+ &= f^2+k^2 + \frac{fk\sqrt{y}}{hi}
+\end{align}
+We calculate the distance $\overline{DK}$:
+\begin{align}
+\overline{DK}^2 &= (D_x+K_x)^2 + (D_y+K_y)^2 \nonumber\\
+ &= D_x^2 + 2D_xK_x + K_x^2 + D_y^2 + 2D_yK_y + K_y^2 \nonumber\\
+ &= (D_x^2+D_y^2) + (K_x^2+K_y^2) + 2D_xK_x + 2D_yK_y \nonumber\\
+ &= d^2 + f^2 + k^2 + \frac{fk\sqrt{y}}{hi}
+  + 2\left(\frac{d\sqrt{x}}{2bc}\right)\left(\frac{2fhi+ k\sqrt{y}}{2hi}\right)
+  + 2\left(\frac{dt}{2bc}\right)\left(-\frac{kv}{2hi}\right) \nonumber\\
+ &= d^2 + f^2 + k^2 - \frac{dtkv}{2bchi} + \frac{fk\sqrt{y}}{hi} + \frac{d\sqrt{x}(2fhi+ k\sqrt{y})}{2bchi}
+\end{align}
 
 
 
 
 
 
-
-
+We separate RHS in two parts such that $\overline{DK}^2 = m + n$. First part is $m$ without surds:
+\begin{align}
+m &\equiv d^2 + f^2 + k^2 -2dk\cos\alpha\cos\delta \nonumber\\
+ &= d^2 + f^2 + k^2 -\frac{dktv}{2bchi}
+\end{align}
+Second part is $n$ with surds:
+\begin{align}
+n &\equiv 2fk\sin\delta + 2d\sin\alpha(f + k\sin\delta) \nonumber\\
+ &= \frac{fk\sqrt{4h^2i^2 - v^2}}{hi}
+  + \left(\frac{d\sqrt{4b^2c^2 - t^2}}{bc}\right)\left(\frac{2fhi+k\sqrt{4h^2i^2 - v^2}}{2hi}\right) \nonumber\\
+ &= \frac{2hifk\sqrt{4h^2i^2 - v^2} + (d\sqrt{4b^2c^2 - t^2})(2fhi+k\sqrt{4h^2i^2 - v^2})}{2bchi}\\
+\end{align}
 
 \end{document}
