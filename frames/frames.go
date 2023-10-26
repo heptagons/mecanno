@@ -2,6 +2,7 @@ package frames
 
 import (
 	"fmt"
+	"os"
 	. "github.com/heptagons/meccano/nest"
 )
 
@@ -72,6 +73,32 @@ func (t *Frames) TriangleSurds(surd Z, max N32, frame func(a *Triangle)) {
 	}
 }
 
+func (f *Frames) AlgsNoPythagoras(surd Z, max N32) {
+	fmt.Printf("surd=%d, max=%d\n", surd, max)
+	f.TriangleSurds(surd, max, func(t *Triangle) {
+		if d, e := t.RightAngles(); d || e {
+			return
+		}
+		t.WriteString(os.Stdout)
+		fmt.Println()
+		ad := Z(t.a + t.d)
+		be := Z(t.b + t.e)
+		for g := t.a + t.d; g <= max; g++ {
+			for h := N32(1); h <= max; h++ {
+				for i := N32(1); i <= max; i++ {
+					if surd != Z(g*g) + Z(h*h) - Z(i*i) {
+						continue
+					}
+					if (ad*ad - be*be + surd)*Z(g) == 2*ad*surd {
+						fmt.Printf("\tg=%d h=%d i=%d\n", g, h, i)
+					}
+				}
+			}
+		}
+	})
+}
+
+
 func (t *Frames) SurdsRat(max N32, frame func(n []N32, s *A32)) {
 	min := N32(1)
 	for a := min; a <= max; a++ {
@@ -113,26 +140,6 @@ func (t *Frames) SurdsRat(max N32, frame func(n []N32, s *A32)) {
 }
 
 
-func (f *Frames) AlgsNotRight(surd Z, max N32) {
-	fmt.Printf("surd=%d, max=%d\n", surd, max)
-	f.TriangleSurds(surd, max, func(fs *Triangle) {
-		fmt.Println(fs)
-		ad := Z(fs.a + fs.d)
-		be := Z(fs.b + fs.e)
-		for g := fs.a + fs.d; g <= max; g++ {
-			for h := N32(1); h <= max; h++ {
-				for i := N32(1); i <= max; i++ {
-					if surd != Z(g*g) + Z(h*h) - Z(i*i) {
-						continue
-					}
-					if (ad*ad - be*be + surd)*Z(g) == 2*ad*surd {
-						fmt.Printf("\tg=%d h=%d i=%d\n", g, h, i)
-					}
-				}
-			}
-		}
-	})
-}
 
 //            _A
 //        a _- |

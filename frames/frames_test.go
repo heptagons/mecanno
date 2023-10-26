@@ -11,7 +11,7 @@ import (
 // ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesTriangleSurds -v -count 1
 
 func TestFramesTriangleSurds(t *testing.T) {
-	surd := Z(7)
+	surd := Z(20)
 	max := N32(15)
 	n := 0
 	fmt.Printf("NewFrames().TriangleSurds surd=%d max=%d\n", surd, max)
@@ -23,27 +23,27 @@ func TestFramesTriangleSurds(t *testing.T) {
 	})
 }
 
-func TestFramesAlgsNotRight(t *testing.T) {
-	surd := Z(11)
+func TestFramesAlgsNoPythagoras(t *testing.T) {
+	surd := Z(45)
 	max := N32(30)
-	NewFrames().AlgsNotRight(surd, max)
+	NewFrames().AlgsNoPythagoras(surd, max)
 }
-
 /*
-√7 max=10
-  1) a=1 b+e=1+2 c=1 cos=1/2
-  2) a+d=1+1 b+e=1+2 c=1 cos=1/2
-  3) a+d=1+2 b=1 c=1 cos=1/2
-  4) a+d=1+2 b+e=1+1 c=1 cos=1/2
-  5) a=2 b+e=2+1 c=2 cos=1/2
-  6) a+d=2+1 b=2 c=2 cos=1/2
-  7) a=3 b+e=2+2 c=2 cos=3/4 E=pi/2
-  8) a+d=3+1 b+e=2+1 c=2 cos=3/4 D=pi/2
-  9) a+d=4+2 b+e=4+4 c=1 cos=31/32
- 10) a+d=4+4 b+e=4+2 c=1 cos=31/32
- 11) a=7 b+e=5+1 c=3 cos=13/14
- 12) a=7 b+e=5+2 c=3 cos=13/14
+=== RUN   TestFramesAlgsNoPythagoras
+surd=8, max=30
+d=3+1 b=2 c=2 cos=3/4
+d=3+1 e=2+2 c=2 cos=3/4
+	g=8 h=5 i=9
+	g=8 h=13 i=15
+a=10 e=9+3 c=2 cos=59/60
+d=10+2 e=9+1 c=2 cos=59/60
+d=10+4 e=9+6 c=2 cos=59/60
+d=10+5 e=9+5 c=2 cos=59/60
+d=20+4 e=18+6 c=3 cos=143/144
+a=24 e=21+3 c=4 cos=143/144
 */
+
+
 
 
 func TestFramesSurdsRat(t *testing.T) {

@@ -39,12 +39,19 @@
 \pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
 \begin{scope}[scale=#7]
   \meccanostrip[0000cc]{#3}{1}{\p} % blue c=BA
+  \path(#3/2,0) node[above=\p]{$c$};
    \begin{scope}[rotate={acos(\cosb)},shift={(-#4,0)}] % shift -d
     \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
-    \path (0,0) ++(180:5*\p) node{$E$};
-    \path (#4,0) ++(90:5*\p) node{$B$}; %d
-    \path (\ad,0) ++(90:5*\p) node{$C$};
+    \ifthenelse{#4>0}{
+     \path(0,0) ++(180:5*\p) node{$E$};
+     \path(#4/2,0) node[left=3*\p]{$a-d$};
+     }{}
+    \path(#4,0) node[left=3*\p]{$B$};
+    \path(#4+#1/2,0) node[right=3*\p]{$a$};
+    \path(\ad,0) ++(90:5*\p) node{$C$};
+    
     \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
+   
    \end{scope}
    \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
     \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
@@ -57,25 +64,37 @@
 
 \newcommand{\meccanoframefive}[8]{ %a,b,c,d,e, p,scale, x+g, g,h,i,j,k, x
 \begin{tikzpicture}
+\def\c{#3}
 \def\p{#6}
 \def\xg{#8}
 \pgfmathsetmacro{\ad}{#1 + #4} % a+d
 \pgfmathsetmacro{\be}{#2 + #5} % b+e
-\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
 \pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
-\pgfmathsetmacro{\x}{max(#3,\xg)} % max(c,x+g)
+\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+\pgfmathsetmacro{\x}{max(\c,\xg)} % max(c,x+g)
 \begin{scope}[scale=#7] 
  \path (0,0) ++(180:5*\p) node{$A$};
- \meccanostrip[0000cc]{\x}{1}{\p}
- \begin{scope}[rotate={acos(\cosb)}]
-  \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
-  \path(#3,0) ++(-45:5*\p) node{$C$};
-  \path(\ad,0) ++(0:5*\p) node{$D$};
- \end{scope}
- \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa}] % shift \c
-  \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
+ \meccanostrip[0000cc]{\x}{1}{\p} % blue
+ \path(\c/2,0) node[above=\p]{$c$};
+ 
+ \begin{scope}[shift={(\c,0)},rotate=180-acos{\cosb}] % shift=c rot=cosb green B,a,C,e-a,E
+  \meccanostrip[008800]{\ad}{1}{\p}
   \path(0,0) ++(-90:5*\p) node{$B$};
-  \path(\be,0) ++(0:5*\p) node{$E$};
+  \path(#1*0.5,0) node[left=\p]{$a$};
+  \path(#1,0) node[left=\p]{$C$};
+  \ifthenelse{#4>0}{
+   \path(#1 + #4*0.5, 0) node[left=\p]{$d-a$};
+   \path(\ad,0) ++(0:5*\p) node{$E$};
+  }{}
+ \end{scope}
+ 
+ \begin{scope}[rotate={acos(\cosa)}] % rot=cosa red A,b,,e-b,D
+  \meccanostrip[cc0000]{\be}{1}{\p}
+  \path (#3/2,0) node[right=\p]{$b$};
+  \ifthenelse{#5>0}{
+   \path (#3 + #5/2,0) node[right=\p]{$e-b$};
+   \path(\be,0) ++(0:5*\p) node{$D$};
+ }{}
  \end{scope}
  \meccanoframefivebelow
 }
@@ -84,18 +103,26 @@
 \def\x{#6}
 \pgfmathsetmacro{\gj}{#1 + #4} % g+j
 \pgfmathsetmacro{\hk}{#2 + #5} % h+k
-\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
-\pgfmathsetmacro{\cosg}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
- \begin{scope}[shift={(\x,0)},rotate={-acos(\cosg)}]
-  \meccanostrip[cc00cc]{\gj}{1}{\p}
-  \path (0,0) ++(180:5*\p) node{$G$};
-  \path (#3,0) ++(45:5*\p) node{$I$};
-  \path (\gj,0) ++(0:5*\p) node{$K$};
+\pgfmathsetmacro{\cosh}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
+\pgfmathsetmacro{\cosg}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+ \path(\x+#3/2,0) node[below]{$i$};
+
+ \begin{scope}[shift={(\x+#3,0)},rotate={180+acos(\cosg)}] % green H,g,I,j-g,J
+  \meccanostrip[008800]{\hk}{1}{\p}
+  \path(0,0) node[right=\p]{$H$};
+  \path(#1*0.5,0) node[left=\p]{$g$};
+  \path(#1,0) node[right=\p]{$I$};
+  \ifthenelse{#4>0}{
+   \path(#1 + #4*0.5, 0) node[left=\p]{$k-g$};
+   \path (\gj,0) ++(0:5*\p) node{$J$};
+  }{}
  \end{scope}
- \begin{scope}[shift={(\x+#3,0)},rotate={180+acos(\cosb)}]
-  \meccanostrip[cc8800]{\hk}{1}{\p}
-  \path (0,0) ++(180:5*\p) node{$H$};
-  \path (\hk,0) ++(0:5*\p) node{$J$};
+
+
+ \begin{scope}[shift={(\x,0)},rotate={-acos(\cosh)}] % red
+  \meccanostrip[cc0000]{\gj}{1}{\p}
+  \path (0,0) ++(-90:5*\p) node{$G$};
+  \path (\hk,0) ++(0:5*\p) node{$K$};
  \end{scope}
 
 \end{scope} %above
@@ -163,7 +190,7 @@ so we define the surd as:
 \meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)
 \meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)\qquad
 \meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)\qquad
-\meccanoframetriangle{7}{5}{3}{0}{2}{3pt}{0.6}{0}{0}(d)
+\meccanoframetriangle{7}{5}{3}{0}{1}{3pt}{0.6}{0}{0}(d)
 \end{center}
 \caption{Four frames with rigid distance $\overline{DE}=\sqrt{7}$ reported by
 the factory software mentioned in this section. The particular case (b),
@@ -200,7 +227,7 @@ The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
 
 
 
-\section{More rigid distances $\sqrt{s} + h$}
+\section{Another rigid distances $\sqrt{s} + h$}
 
 We explore a more complicated frame to get additional cases of distances $\sqrt{s} + h$ without
 relying in an explicit pythagorean triangle as we saw in case (b) of figure \ref{fig:surd7}.
@@ -316,8 +343,11 @@ of condition 1:
 
 \begin{figure}[H]
 \centering
+\begin{center}
 % a,b,c,d,e,p,scale, x+g, g,h,i,j,k, x,p
-\meccanoframefive{5}{6}{5}{2}{3}{3pt}{0.66} {7} {3}{4}{4}{3}{2} {3}
+\meccanoframefive{6}{5}{5}{3}{2}{3pt}{0.6} {7} {3}{4}{4}{3}{2} {3} (a)
+\meccanoframefive{6}{5}{5}{0}{2}{3pt}{0.7} {7} {3}{4}{4}{0}{2} {3} (b)
+\end{center}
 \caption{Five strips frame. We construct two triangles $\triangle{ABC}$ and
 $\triangle{GHI}$. Extending the strips we get four vertices $E,D,J,K$ which
 can form four rigid distances of surd type: $\overline{DJ}, \overline{DK},
@@ -328,7 +358,7 @@ can form four rigid distances of surd type: $\overline{DJ}, \overline{DK},
 Figure \ref{fig:5strips} shows a frame with five strips. The frame has eleven variables:
 \begin{align}
 a &= \overline{BC}, \quad b = \overline{AC}, \quad c = \overline{AB}\\
-d &= \overline{AD}, \quad e = \overline{AE}\\
+d &= \overline{AE}, \quad e = \overline{AD}\\
 f &= \overline{AG}\\
 g &= \overline{HI}, \quad h = \overline{GI}, \quad i = \overline{GH}\\
 j &= \overline{HJ}, \quad k = \overline{HK}
