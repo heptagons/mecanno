@@ -114,6 +114,24 @@ func (q *A32) IsRational() bool {
 	return q.den > 2
 }
 
+func (q *A32) IsRationalSurd(surd Z32) bool {
+	if q.den == 1 {
+		return false
+	}
+	if q.num[0] == 0 && q.num[2] == surd {
+		return true
+	}
+	return false
+}
+
+func (q *A32) IsNest(f, g Z32) bool {
+	if len(q.num) < 7 {
+		return false
+	}
+	return q.num[4] == f && q.num[5] == g
+}
+
+
 // Equal returns true it the given number is identical to this one.
 func (q *A32) Equal(r *A32) bool {
 	if q == nil || r == nil {

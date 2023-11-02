@@ -11,7 +11,7 @@ import (
 // ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesTriangleSurds -v -count 1
 
 func TestFramesTriangleSurds(t *testing.T) {
-	surd := Z(20)
+	surd := Z(19)
 	max := N32(15)
 	n := 0
 	fmt.Printf("NewFrames().TriangleSurds surd=%d max=%d\n", surd, max)
@@ -47,11 +47,14 @@ a=24 e=21+3 c=4 cos=143/144
 
 
 func TestFramesSurdsRat(t *testing.T) {
-	max := N32(10)
+	max := N32(20)
 	n := 0
-	NewFrames().SurdsRat(max, func(d []N32, surd *A32) {
-		n++
-		fmt.Printf("% 3d) %v %v\n", n, d, surd)
+	surd := Z32(19)
+	NewFrames().SurdsRat(max, func(d []N32, num *A32) {
+		if num.IsRationalSurd(surd) {
+			n++
+			fmt.Printf("% 3d) %v %v\n", n, d, num)
+		}
 	})
 }
 /* solutions: [a b c d e] surd
