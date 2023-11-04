@@ -113,7 +113,7 @@ func TestNest5Complex(t *testing.T) {
 				H := Z(5)
 				//	(B + C√D + E√(F+G√H)) / A
 				if s, err := factory.ANew7(A, B, C, D, E, F, G, H); err == nil {
-					if s.IsNest(50, 10) {
+					if s.IsNest(10,3) {
 						fmt.Printf("a=% 2d x=% 2d c=% 2d s=%v\n", a, x, c, s)
 					}
 				}
@@ -122,15 +122,17 @@ func TestNest5Complex(t *testing.T) {
 	}
 }
 /*
-=== RUN   TestNest5Complex   --> Pentagon height
+=== RUN   TestNest5Complex   --> Pentagon H -> height (r+R)
 a= 4 x= 19 c= 9 s=6√(5+2√5)
 a= 8 x= 76 c= 18 s=12√(5+2√5)
 a= 9 x= 59 c= 16 s=12√(5+2√5)
 a= 9 x= 95 c= 25 s=15√(5+2√5)
+a= 12 x= 171 c= 27 s=18√(5+2√5)
+a= 16 x= 95 c= 25 s=20√(5+2√5)
 */
 
 /*
-=== RUN   TestNest5Complex    ---> Pentagon r
+=== RUN   TestNest5Complex    ---> Pentagon r -> inradius
 a= 5 x= 19 c= 9 s=3√(25+10√5)
 a= 5 x= 19 c= 16 s=4√(25+10√5)
 a= 9 x= 95 c= 20 s=6√(25+10√5)
@@ -139,7 +141,7 @@ a= 10 x= 76 c= 32 s=8√(25+10√5)
 */
 
 /*
-=== RUN   TestNest5Complex  ---> Pentagon R!!!
+=== RUN   TestNest5Complex  ---> Pentagon R -> circumradius
 a= 1 x= 20 c= 5 s=√(50+10√5)
 a= 2 x= 80 c= 10 s=2√(50+10√5)
 a= 4 x= 95 c= 5 s=2√(50+10√5)
