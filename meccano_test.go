@@ -196,8 +196,8 @@ func TestNestSix(t *testing.T) {
 				F := Z(x*x) + Z(r)*Z(r)*H + Z(y*y) // x^2 + r^2s + y^2
 				//	(B + C√D + E√(F+G√H)) / A
 				if s, err := factory.ANew7(A, B, C, D, E, F, G, H); err == nil {
-					if s.IsNest(10,2) {
-						fmt.Printf("% 2d√%d x=% 2d y=% 2d s=%v\n", r, H, x, y, s)
+					if s.IsNest(31,10) {
+						fmt.Printf("r=% 2d√%d x=% 2d y=% 2d s=%v\n", r, H, x, y, s)
 					}
 				}
 			}
