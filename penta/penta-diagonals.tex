@@ -1,5 +1,5 @@
 \documentclass[11pt]{article}
-\title{\textbf{Meccano pentagons diagonals}}
+\title{\textbf{Meccano polygon diagonals}}
 \author{https://github.com/heptagons/meccano/penta}
 \date{}
 
@@ -9,10 +9,10 @@
 
 \maketitle
 \begin{abstract}
-We construct meccano\meccanoref regular pentagons internal diagonals.
+We construct meccano\meccanoref polygon internal diagonals.
 \end{abstract}
 
-\section{Regular polygon diagonals}
+\section{Polygon diagonals}
 
 \begin{figure}[H]
 \centering
@@ -21,8 +21,8 @@ We construct meccano\meccanoref regular pentagons internal diagonals.
 \begin{scope}
 \draw[] (0,0) circle(2pt) node[below]{$A_i$}
 -- ++(-1,0) circle(2pt)
--- node[above]{$a$} ++(-1,0) circle(2pt) node[below]{$A_2$}
--- ++(-1,0) circle(2pt) node[below]{$A_1$}
+-- ++(-1,0) circle(2pt) node[below]{$A_2$}
+-- node[above]{$a$} ++(-1,0) circle(2pt) node[below]{$A_1$}
 -- ++(-1,0) circle(2pt) node[below]{$A_0$}
 -- ++(108:1) circle(2pt) node[left]{$B_1$}
 -- node[right]{$b$} ++(108:1) circle(2pt) node[left]{$B_2$}
@@ -30,19 +30,26 @@ We construct meccano\meccanoref regular pentagons internal diagonals.
 -- node[above]{$d$} (0,0)
 -- ++(72:1) circle(2pt) node[right]{$C_1$}
 -- node[left]{$c$} ++(72:1) circle(2pt) node[right]{$C_k$}
--- node[above]{$e$} ++(-5.545,0.951); % (-4-5*cos(72M),sin(72))
+-- node[above]{$e$} ++(-5.545,0.951); % (-4-5*cos(72),sin(72))
+\draw[blue] (-3.25,0) arc (0.75:108:0.75) node[midway,above]{$\theta$};
+\draw[blue] (-1.25,0) arc (-1.25:-31:-1.25) node[midway,left]{$\alpha$};
+\draw[blue] (-0.75,0.45) arc[start angle=90+60, end angle=62, radius=0.75] node[midway,above]{$\beta$};
 \end{scope}
 \end{scope}
 \end{tikzpicture}
-\caption{Regular pentagon basic diagonals $d$ and $e$ from sides segments $a\ge\ b\ge c$.}
+\caption{Meccano polygon three consecutive sides segments $a\ge\ b\ge c$
+can form two diagonals $d$ and $e$.}
 \label{fig:diagonals}
 \end{figure}
 
-From figure \ref{fig:diagonals} we have the regular internal polygon angle $\theta$:
+\section{Regular polygon diagonals}
+
+In the regular polygon all internal angles are equal to $\theta$.
+From figure \ref{fig:diagonals} the polygon is regular if $\alpha + \beta = \theta$ so we have:
 \begin{align}
-\theta &= \angle{B_jA_0A_i} = \angle{A_0A_iC_k}\\
 \alpha &= \angle{A_0A_iB_j} \\
 \beta  &= \angle{B_jA_iC_k} \\
+\theta &= \angle{B_jA_0A_i} = \angle{A_0A_iC_k}\\
 \alpha + \beta &= \theta
 \end{align}
 
@@ -50,7 +57,7 @@ We use the cosines sum identity to express $\cos\beta$ in function of the rest o
 We define $u = \cos\theta$:
 \begin{align}
 u &\equiv \cos\theta\\
-\cos(\alpha + \beta) &= u\\
+ &= \cos(\alpha + \beta)\\
  &= \cos\alpha\cos\beta - \sin\alpha\sin\beta\\
 \sin\beta &= \frac{\cos\alpha\cos\beta - u}{\sin\alpha}\\
 \sin^2\beta &= \frac{(\cos\alpha\cos\beta - u)^2}{\sin^2\alpha}\\
@@ -61,7 +68,8 @@ We set $X = \cos\beta$ and rearrange the last equation to get:
 \begin{align}
 X^2 - 2u\cos\alpha X + u^2 - \sin^2\alpha &= 0
 \end{align}
-And solve the quadratic equation $AX^2 + BX + C = 0$ to get $\cos\beta$:
+And solve the quadratic equation $AX^2 + BX + C = 0$ to get $\cos\beta$
+in function of $u$ and $\alpha$:
 \begin{align}
 \cos\beta &= \frac{-B \pm \sqrt{B^2 - 4AC}}{2A}\nonumber\\
  &= \frac{2u\cos\alpha \pm 
@@ -69,12 +77,13 @@ And solve the quadratic equation $AX^2 + BX + C = 0$ to get $\cos\beta$:
  &= u\cos\alpha \pm \sqrt{u^2\cos^2\alpha - u^2 + \sin^2\alpha} \label{eq:cosbeta}
 \end{align}
 
-
-From the law of cosines we calculate the diagonal $d$ from integers $a,b$ which equal respectively to
-iterators $i,j$:
+Now, we need to find the values of $\cos\alpha$, $\sin\alpha$ and $\cos\beta$ which
+in turn need the value of $d$, all in terms of $a,b,c$ the segments of the polygon perimeter.
+\\\\
+For the value of $d$ we use the law of cosines:
 \begin{align}
 d &= \sqrt{a^2 + b^2 - 2ab\cos\theta} \nonumber\\
- &= \sqrt{a^2 + b^2 - 2abu} \nonumber\\
+ &= \sqrt{a^2 + b^2 - 2abu} \label{eq:d}
 \end{align}
 
 Using the law of cosines we calculate the angles $\alpha =\angle{A_0A_iB_j}$ 
@@ -113,12 +122,14 @@ f &= (ab + ac - bcu)u \pm c\sqrt{(a-bu)^2u^2 - d^2u^2 - b^2 +b^2u^2)}\nonumber\\
 \end{align}
 We define variables $m,n$ to simplify $f$, so we have:
 \begin{align}
-m &= abu + acu - bcu^2\\
-n &= a^2u^2 - 2abu^3 + b^2u^4- d^2u^2 - b^2 +b^2u^2\\
-f &= m + c\sqrt{n}  \label{eq:f}
+m &= abu + acu - bcu^2 \label{eq:m}\\
+n &= a^2u^2 - 2abu^3 + b^2u^4- d^2u^2 - b^2 +b^2u^2 \label{eq:n}\\
+f &= m + c\sqrt{n} \label{eq:f}\\
+\frac{a^2 + b^2 + c^2 - e^2}{2} &= m + c\sqrt{n}\\
+e^2 &= a^2 + b^2 + c^2 - 2m - 2c\sqrt{n}
 \end{align}
 
-\subsection{Regular pentagon diagonals}
+\section{Regular pentagon diagonals}
 
 For the regular pentagon we have $u = \cos\theta = \cos(3\pi/5)$:
 \begin{align}
@@ -127,71 +138,76 @@ u^2 &= \frac{3-\sqrt{5}}{8}\\
 u^3 &= \frac{2-\sqrt{5}}{8}\\
 u^4 &= \frac{7-3\sqrt{5}}{32}
 \end{align}
-We plug values $u,u^2,u^3,u^4$ in equation \ref{eq:f} to get:
+
+We plug the value of pentagon's $u$ in equation \ref{eq:d} to get $d^2$ for the pentagon:
 \begin{align}
-m &= ab\left(\frac{1-\sqrt{5}}{4}\right)
- + ac\left(\frac{1-\sqrt{5}}{4}\right)
- - bc\left(\frac{3-\sqrt{5}}{8}\right)\nonumber\\
- &= \frac{2ab - 2ab\sqrt{5} + 2ac - 2ac\sqrt{5} - 3bc + bc\sqrt{5}}{8}\nonumber\\
- &= \frac{2ab + 2ac - 3bc + (bc -2ab - 2ac)\sqrt{5}}{8}\\
-%
-n &= a^2\left(\frac{3-\sqrt{5}}{8}\right)
- - 2ab\left(\frac{2-\sqrt{5}}{8}\right)
- + b^2\left(\frac{7-3\sqrt{5}}{32}\right)
- - d^2\left(\frac{3-\sqrt{5}}{8}\right)
- - b^2
- + b^2\left(\frac{3-\sqrt{5}}{8}\right)\nonumber\\
- &= \frac{
- 12a^2 - 4a^2\sqrt{5}
- -16ab+8\sqrt{5}
- +7b^2-3b^2\sqrt{5}
- -12d^2+4d^2\sqrt{5}
- -32b^2
- +12b^2-4b^2\sqrt{5}
- }{32}\nonumber\\
- &= \frac{12a^2 - 16ab - 13b^2 - 12d^2 + (-4a^2 + 8 - 3b^2 + 4d^2 - 4b^2)\sqrt{5}}{32}
+d^2 &= a^2 + b^2 - 2ab\left(\frac{1-\sqrt{5}}{4}\right)\nonumber\\
+ &= \frac{4a^2 + 4b^2 - 2ab + 2ab\sqrt{5}}{4}
+\end{align}
+We define variables $d_1,d_2$ to simplify the previous equation:
+\begin{align}
+d_1 &= 4a^2 + 4b^2 - 2ab\\
+d_2 &= 2ab\\
+d^2 &= \frac{d_1 + d_2\sqrt5}4 \label{eq:d-penta}
 \end{align}
 
-%We define two integers $m, n$ to simplify last equation and obtain:
-%\begin{align}
-%m &= 4a^2 + 4b^2 - 2ab \\
-%n &= 2ab \\
-%d &= \frac{\sqrt{m + n\sqrt{5}}}{2}
-%\end{align}
 
+We plug the values of pentagon's $u,u^2,u^3,u^4$ in equations \ref{eq:m} and \ref{eq:n}
+to get pentagon's $m,n$:
+\begin{align}
+m &= ab\left(\frac{1-\sqrt5}4\right)
+ + ac\left(\frac{1-\sqrt5}4\right)
+ - bc\left(\frac{3-\sqrt5}8\right)\nonumber\\
+ &= \frac{2ab - 2ab\sqrt5 + 2ac - 2ac\sqrt5 - 3bc + bc\sqrt5}8\nonumber\\
+ &= \frac{2ab + 2ac - 3bc + (bc -2ab - 2ac)\sqrt5}8\\
+%
+n &= a^2\left(\frac{3-\sqrt5}8\right)
+ - 2ab\left(\frac{2-\sqrt5}8\right)
+ + b^2\left(\frac{7-3\sqrt5}32\right)
+ - d^2\left(\frac{3-\sqrt5}8\right)
+ - b^2
+ + b^2\left(\frac{3-\sqrt5}8\right)\nonumber\\
+ &= \frac{
+ 12a^2 - 4a^2\sqrt5 -16ab+8\sqrt5 +7b^2-3b^2\sqrt5 -12d^2+4d^2\sqrt5 -32b^2
+ +12b^2-4b^2\sqrt5
+ }{32}\nonumber\\
+ &= \frac{12a^2 - 16ab - 13b^2 - 12d^2 + (-4a^2 + 8 - 3b^2 + 4d^2 - 4b^2)\sqrt5}{32}
+\end{align}
 
-%We substitute the cosine and denominator with the surds values and move any surd to numerator:
-%\begin{align}
-%\cos\alpha &= \frac{a - b\left(\frac{1-\sqrt{5}}{4}\right)}{\frac{1}{2}\sqrt{m + n\sqrt{5}}} \\
-% &= \frac{(4a - b + b\sqrt{5})\sqrt{m + n\sqrt{5}}}{2(m + n\sqrt{5})} \nonumber\\
-% &= \frac{(4a - b + b\sqrt{5})(m - n\sqrt{5})\sqrt{m + n\sqrt{5}}}{2(m^2 - 5n^2)} \nonumber\\
-% &= \frac{\left(4am -bm - 5bn +(bn + bm -4an)\sqrt{5}\right)\sqrt{m + n\sqrt{5}}}{2(m^2 - 5n^2)}
-%\end{align}
-%We define new integers $p,q,r$ to simplify $\cos\alpha$:
-%\begin{align}
-%4p &= 4am - bm - 5bn\nonumber\\
-% &= 4a(4a^2 + 4b^2 - 2ab) - b(4a^2 + 4b^2 - 2ab) - 5b(2ab)\nonumber\\
-% &= 16a^3 + 16ab^2 - 8a^2b - 4a^2b - 4b^3 + 2ab^2 - 10ab^2\nonumber\\
-% &= 4(4a^3 - 3a^2b + 2ab^2 - b^3)\nonumber\\
-%p &= 4a^3 - 3a^2b + 2ab^2 - b^3\\
-%%
-%4q &= bn + bm - 4an\nonumber\\
-% &= b(2ab) + b(4a^2 + 4b^2 - 2ab) - 4a(2ab)\nonumber\\
-% &= 2ab^2 + 4a^2b + 4b^3 - 2ab^2 - 8a^2b\nonumber\\
-% &= -4b(a^2 - b^2)\nonumber\\
-%q &= -4(a^2 - b^2)\\
-%%
-%16r &= m^2 - 5n^2\nonumber\\
-% &= (4a^2 + 4b^2 - 2ab)^2 - 5(2ab)^2\nonumber\\
-% &= 16(a^4 - a^3b + a^2b^2 - ab^3 + b^4)\nonumber\\
-%r &= a^4 - a^3b + a^2b^2 - ab^3 + b^4\\
-%\end{align}
-%We substitute $p,q,r$:
-%\begin{align}
-%\cos\alpha &= \frac{4\left(p+q\sqrt{5}\right)\sqrt{m + n\sqrt{5}}}{32r}\nonumber\\
-% &= \frac{\sqrt{(p+q\sqrt{5})^2(m + n\sqrt{5})}}{8r}\nonumber\\
-% &= \frac{\sqrt{mp^2 + 5mq^2 + 10npq + (2mpq + np^2 + 5nq^2)\sqrt{5}}}{8r}
-%\end{align}
+We substitute $d^2$ of last equation with equation \ref{eq:d-penta} value in terms of $d_1,d_2$
+to isolate correctly $\sqrt5$ factors:
+\begin{align}
+n &= \frac{
+ 12a^2 - 16ab - 13b^2 - 3(d_1 + d_2\sqrt5)
+ + (-4a^2 + 8 - 3b^2 + (d_1 + d_2\sqrt5) - 4b^2)\sqrt5
+}{32} \nonumber\\
+ &= \frac{
+ 12a^2 - 16ab - 13b^2 - 3d_1 + 5_d2
+ + (-4a^2 + 8 - 3b^2 + d_1 - 3d_2)\sqrt5
+ }{32}
+\end{align}
+
+We define $m1,m2,n1,n2$ to simplify previous formulas of $m,n$ to obtain:
+\begin{align}
+m_1 &= 2ab + 2ac - 3bc \\
+m_2 &= bc -2ab - 2ac\\
+n_1 &= 12a^2 - 16ab - 13b^2 - 12d^2\\
+n_2 &= -4a^2 + 8 - 3b^2 + 4d^2 - 4b^2
+\end{align}
+
+\subsection{Regular pentagon height}
+
+In the regular pentagon the height $H$ is the distance from one side of length a to the opposite vertex:
+\begin{align}
+H &= \frac{\sqrt{5+2\sqrt{5}}}{2}a
+\end{align}
+For the height to occur (coincident with diagonal $e$) we need $a = b = c/2$.
+We calculate first the diagonal $d$ plugin $a=b$ in equation \ref{eq:d-penta}:
+\begin{align}
+d_{a=b} &= \frac{\sqrt{4a^2 + 4a^2 - 2a^2 + 2a^2\sqrt{5}}}{2}\nonumber\\
+ &= \frac{\sqrt{6-2\sqrt{5}}}{2}a\nonumber\\
+ &= \frac{\sqrt{5}-1}{2}a
+\end{align}
 
 
 \end{document}
