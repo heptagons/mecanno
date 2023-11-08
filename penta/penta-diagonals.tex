@@ -3,6 +3,7 @@
 \author{https://github.com/heptagons/meccano/penta}
 \date{}
 
+\usepackage{amsthm} % for \qed
 \usepackage{../meccano}
 
 \begin{document}
@@ -120,13 +121,16 @@ We plug the values of $\cos\alpha, \cos\beta, \sin^2\alpha$ in equation \ref{eq:
 f &= (ab + ac - bcu)u \pm c\sqrt{(a-bu)^2u^2 - d^2u^2 - b^2 +b^2u^2)}\nonumber\\
  &= abu + acu - bcu^2 \pm c\sqrt{a^2u^2 - 2abu^3 + b^2u^4- d^2u^2 - b^2 +b^2u^2 }
 \end{align}
+
+\subsection{Regular polygon diagonal $e$}
+
 We define variables $m,n$ to simplify $f$, so we have:
 \begin{align}
 m &= abu + acu - bcu^2 \label{eq:m}\\
 n &= a^2u^2 - 2abu^3 + b^2u^4- d^2u^2 - b^2 +b^2u^2 \label{eq:n}\\
 f &= m + c\sqrt{n} \label{eq:f}\\
 \frac{a^2 + b^2 + c^2 - e^2}{2} &= m + c\sqrt{n}\\
-e^2 &= a^2 + b^2 + c^2 - 2m - 2c\sqrt{n}
+e^2 &= a^2 + b^2 + c^2 - 2m - 2c\sqrt{n} \label{eq:e}
 \end{align}
 
 \section{Regular pentagon diagonals}
@@ -182,31 +186,71 @@ n &= \frac{
  + (-4a^2 + 8 - 3b^2 + (d_1 + d_2\sqrt5) - 4b^2)\sqrt5
 }{32} \nonumber\\
  &= \frac{
- 12a^2 - 16ab - 13b^2 - 3d_1 + 5_d2
+ 12a^2 - 16ab - 13b^2 - 3d_1 + 5d_2
  + (-4a^2 + 8 - 3b^2 + d_1 - 3d_2)\sqrt5
  }{32}
 \end{align}
 
-We define $m1,m2,n1,n2$ to simplify previous formulas of $m,n$ to obtain:
+We define $m_1,m_2,n_1,n_2$ to simplify previous formulas of $m,n$ 
+and let them to be functions of only $a,b,c$, to obtain:
 \begin{align}
 m_1 &= 2ab + 2ac - 3bc \\
 m_2 &= bc -2ab - 2ac\\
-n_1 &= 12a^2 - 16ab - 13b^2 - 12d^2\\
-n_2 &= -4a^2 + 8 - 3b^2 + 4d^2 - 4b^2
+n_1 &= 12a^2 - 16ab - 13b^2 - 3d_1 + 5d_2\nonumber\\
+ &= 12a^2 - 16ab - 13b^2 - 3(4a^2 + 4b^2 - 2ab) + 5(2ab)\nonumber\\
+ &= - 10ab - 15b^2\\
+n_2 &= -4a^2 + 8 - 3b^2 + (4a^2 + 4b^2 - 2ab) - 3(2ab)\nonumber\\
+ &= b^2 - 8ab + 8\\
+m &= \frac{m_1 + m_2\sqrt5}8\nonumber\\
+ &= \frac{2ab + 2ac - 3bc + (bc -2ab - 2ac)\sqrt5}8\\
+n &= \frac{n_1 + n_2\sqrt5}{32}\nonumber\\
+ &= \frac{- 20ab - 30b^2 + (2b^2 - 16ab + 16)\sqrt5}{64}
 \end{align}
 
-\subsection{Regular pentagon height}
+Finally we plug $m_1,m_2,n_1,n_2$ in equation \ref{eq:e} to get $e$ in function of $a,b,c$:
+\begin{align}
+e^2 &= a^2 + b^2 + c^2 - 2m - 2c\sqrt{n}\nonumber\\
+ &= a^2 + b^2 + c^2
+ - 2\left(\frac{2ab + 2ac - 3bc + (bc -2ab - 2ac)\sqrt5}8\right)
+ - 2c\sqrt{\frac{- 20ab - 30b^2 + (2b^2 - 16ab + 16)\sqrt5}{64}}\nonumber\\
+ &= a^2 + b^2 + c^2
+ - \frac{2ab + 2ac - 3bc + (bc -2ab - 2ac)\sqrt5}4
+ - \frac{c\sqrt{- 20ab - 30b^2 + (2b^2 - 16ab + 16)\sqrt5}}4 \label{eq:e-penta}
+\end{align}
+
+From the figure we know that when $c=0$ $e^2$ becomes $d^2$ so we can confirm this:
+\begin{align}
+d^2 &= e^2_{c=0}\nonumber\\
+ &= a^2 + b^2 - \frac{2ab -2ab\sqrt5}{4} \qed
+\end{align}
+\subsection{Regular pentagon width $W$}
+
+The regular pentagon width $W$ is defined as the 
+distance between two farthest separated points, which equals the diagonal length $D$
+which is given by:
+\begin{align}
+W &= D = \frac{1+\sqrt5}{2}a
+\end{align}
+In our case the width is the diagonal $d$ when $a=b$ or also de $e$ when $a=b,c=0$.
+\begin{align}
+d_W &= \frac{\sqrt{4a^2 + 4a^2 + 2a^2 + 2a^2\sqrt5}}2\nonumber\\
+ &= \frac{\sqrt{6-2\sqrt5}}{2}a\nonumber\\
+ &= \frac{\sqrt5+1}{2}a \qed
+\end{align}
+
+\subsection{Regular pentagon height $H$}
 
 In the regular pentagon the height $H$ is the distance from one side of length a to the opposite vertex:
 \begin{align}
 H &= \frac{\sqrt{5+2\sqrt{5}}}{2}a
 \end{align}
 For the height to occur (coincident with diagonal $e$) we need $a = b = c/2$.
-We calculate first the diagonal $d$ plugin $a=b$ in equation \ref{eq:d-penta}:
+We plug $b=a$ and $c=a/2$ in equation \ref{eq:e-penta}:
 \begin{align}
-d_{a=b} &= \frac{\sqrt{4a^2 + 4a^2 - 2a^2 + 2a^2\sqrt{5}}}{2}\nonumber\\
- &= \frac{\sqrt{6-2\sqrt{5}}}{2}a\nonumber\\
- &= \frac{\sqrt{5}-1}{2}a
+H^2 &= e^2\nonumber\\
+ &= a^2 + a^2 + \frac{a^2}4
+ - \frac{2a^2 + a^2 - \dfrac{3a^2}2 + \left(\dfrac{a^2}2 -2a^2 - a^2\right)\sqrt5}4
+ - \frac{\dfrac{a}{2}\sqrt{- 20a^2 - 30a^2 + (2a^2 - 16a^2 + 16)\sqrt5}}4 \label{eq:e-penta}
 \end{align}
 
 

@@ -2,6 +2,7 @@ package penta
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/heptagons/meccano"
@@ -351,3 +352,68 @@ a=1700/3000
 a=1800/3000
 panic: test timed out after 10m0s
 */
+
+// Test complicate e formula in penta-diagonals.pdf
+// in section "Regular polygon diagonal e"
+// with known pentagon height
+// 
+func TestDiagonals(t *testing.T) {
+
+	a := 1.0
+	b := a
+	c := a/2
+
+	// expected
+	expD    := a*(1+math.Sqrt(5))/2
+	expCosA := math.Cos(math.Pi/5) // 36 degrees
+	expSinA := math.Sin(math.Pi/5) // 36 degrees
+	expE    := math.Sqrt(5 + 2*math.Sqrt(5))/2 // pentagons side=1 height
+	expCosB := math.Cos(2*math.Pi/5) // 72 degrees
+	expF    := (a*a + b*b + c*c - expE*expE)/2
+
+
+	u := (1 - math.Sqrt(5))/4
+	u2 := u*u
+	u3 := u*u*u
+	u4 := u*u*u*u
+
+	// cosine from quadratic equation AX^2 + BX + C = 0 where
+	// A = 1
+	// B = -2*u*cosA
+	// C := u^2 - sin^2A
+	cosB1 := u*expCosA + math.Sqrt(u2*expCosA*expCosA - u2 + expSinA*expSinA)
+
+
+	d := math.Sqrt(a*a + b*b - 2*a*b*u)
+	d2 := d*d
+
+	cosA  := (a - b*u)/d
+	cosB2 := (a*a + b*b + c*c - expE*expE - 2*a*b*u)/(2*c*d)
+
+	m := a*b*u + a*c*u - b*c*u2
+	n := a*a*u2 - 2*a*b*u3 + b*b*u4 - d2*u2 - b*b + b*b*u2 
+	f := m + c*math.Sqrt(n)
+
+	e := math.Sqrt(a*a + b*b + c*c - f)
+
+	t.Logf("a=%f b=%f c=%f u=%+f", a, b, c, u)
+	t.Logf("   exp d = %+f", expD)
+	t.Logf("   got d = %+f", d)
+
+	t.Logf("exp cosA = %+f", expCosA)
+	t.Logf("    cosA = %+f", cosA)
+	t.Logf("exp cosB = %+f", expCosB)
+	t.Logf("exp cosB1= %+f", cosB1)
+	t.Logf("got cosB = %+f", cosB2)
+
+	t.Logf("   exp E = %+f", expE)
+
+	t.Logf("   exp F = %+f", expF)
+
+	//t.Logf("         m = %+f", m)
+	//t.Logf("         n = %+f", n)
+	//t.Logf("         f = %+f", f)
+
+	t.Logf("e=%f", e)
+
+}
