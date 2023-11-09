@@ -374,8 +374,15 @@ func TestDiagonals(t *testing.T) {
 
 	u := (1 - math.Sqrt(5))/4
 	u2 := u*u
-	u3 := u*u*u
-	u4 := u*u*u*u
+	//u3 := u*u*u
+	//u4 := u*u*u*u
+
+	d := math.Sqrt(a*a + b*b - 2*a*b*u)
+
+	t.Logf("a=%f b=%f c=%f u=%+f", a, b, c, u)
+	t.Logf("   exp d = %+f", expD)
+	t.Logf("   got d = %+f", d)
+	t.Log()
 
 	// cosine from quadratic equation AX^2 + BX + C = 0 where
 	// A = 1
@@ -384,36 +391,46 @@ func TestDiagonals(t *testing.T) {
 	cosB1 := u*expCosA + math.Sqrt(u2*expCosA*expCosA - u2 + expSinA*expSinA)
 
 
-	d := math.Sqrt(a*a + b*b - 2*a*b*u)
-	d2 := d*d
-
 	cosA  := (a - b*u)/d
 	cosB2 := (a*a + b*b + c*c - expE*expE - 2*a*b*u)/(2*c*d)
-
-	m := a*b*u + a*c*u - b*c*u2
-	n := a*a*u2 - 2*a*b*u3 + b*b*u4 - d2*u2 - b*b + b*b*u2 
-	f := m + c*math.Sqrt(n)
-
-	e := math.Sqrt(a*a + b*b + c*c - f)
-
-	t.Logf("a=%f b=%f c=%f u=%+f", a, b, c, u)
-	t.Logf("   exp d = %+f", expD)
-	t.Logf("   got d = %+f", d)
 
 	t.Logf("exp cosA = %+f", expCosA)
 	t.Logf("    cosA = %+f", cosA)
 	t.Logf("exp cosB = %+f", expCosB)
 	t.Logf("exp cosB1= %+f", cosB1)
 	t.Logf("got cosB = %+f", cosB2)
+	t.Log()
 
-	t.Logf("   exp E = %+f", expE)
+	// Section "Regular polygon diagonal e"
+	// where we define m,n to have a simpler f
+	// We find that for f when we choose positive from plus/minus
+	// we match expectedE (?)
+	m := a*(b+c)*u - b*c*u2
+	n := math.Abs(b*(1-u2))
+	f1 := m + c*n
+	f2 := m - c*n
+	e := math.Sqrt(a*a + b*b + c*c - 2*m - 2*c*n)
 
-	t.Logf("   exp F = %+f", expF)
+	f5 := (b*c + a*(b+c) + (b*c - a*(b+c))*math.Sqrt(5))/4
+
+	t.Logf("   exp f = %+f", expF)
+	t.Logf("   got f1= %+f", f1)
+	t.Logf("   got f2= %+f", f2)
+	t.Logf("   exp e = %+f", expE)
+	t.Logf("   got e = %+f", e)
+	t.Logf("   got f5= %+f", f5)
+
+
+
+
+
+
+
+
 
 	//t.Logf("         m = %+f", m)
 	//t.Logf("         n = %+f", n)
 	//t.Logf("         f = %+f", f)
 
-	t.Logf("e=%f", e)
 
 }
