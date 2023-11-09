@@ -177,13 +177,12 @@ e_5 &= \sqrt{a^2 + b^2 + c^2 - \frac{bc + a(b+c) + (bc - a(b+c))\sqrt5}2} \label
 
 \subsection {Regular pentagon diagonal $d$}
 
-From the figure we know that when $c=0$ $e$ becomes $d$ so we can confirm this:
+From the figure so far we know that when $c=0$, $e$ becomes $d$ so we can confirm this:
 \begin{align}
-d &= e \qquad \texttt{if } c=0 \nonumber\\
+d &= e \qquad \texttt{when } c=0 \nonumber\\
  &= \sqrt{a^2 + b^2 - \frac{ ab - ab\sqrt5}2}
 \end{align}
 which coincides with $d_5$ in equation \ref{eq:d5} $\qed$.
-
 
 \subsection{Regular pentagon width $W$}
 
@@ -195,7 +194,8 @@ W &= D = \frac{1+\sqrt5}{2}a
 \end{align}
 In our case the width is the diagonal $d$ when $a=b$ or also de $e$ when $a=b,c=0$.
 \begin{align}
-d_{a=b} &= \frac{\sqrt{4a^2 + 4a^2 + 2a^2 + 2a^2\sqrt5}}2\nonumber\\
+W_5 &= d \qquad \texttt{when } a=b\nonumber\\
+ &= \frac{\sqrt{4a^2 + 4a^2 + 2a^2 + 2a^2\sqrt5}}2\nonumber\\
  &= \frac{\sqrt{6-2\sqrt5}}{2}a\nonumber\\
  &= \frac{\sqrt5+1}{2}a
 \end{align}
@@ -209,8 +209,13 @@ H &= \frac{\sqrt{5+2\sqrt{5}}}{2}a
 \end{align}
 For the height to occur we apply $b = a$ and $c = a/2$ in $e_5$ equation \ref{eq:e5}:
 \begin{align}
-H &= e \qquad \texttt{if } b=a \texttt{ and } c=a/2 \nonumber\\
+H_5 &= e \qquad \texttt{when } b=a \texttt{ and } c=a/2 \nonumber\\
+ &= \sqrt{a^2 + a^2 + \frac{a^2}4
+ - \frac{\dfrac{a^2}2 + a\left(a+\dfrac{a}2\right) 
+ + \left(\dfrac{a^2}2 - a\left(a+\dfrac{a}2\right)\right)\sqrt5}2} \nonumber\\
+ &= a\sqrt{\frac{9}4 - \frac{2 - \sqrt5}{2}} \nonumber\\
+ &= a\sqrt{\frac{5+2\sqrt5}{4}}
 \end{align}
-
+which coincides with regular pentagon height $H$ $\qed$.
 
 \end{document}
