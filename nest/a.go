@@ -30,7 +30,7 @@ type A32 struct {
 }
 
 func (a *A32) Num(pos int) (Z32, bool) {
-	if len(a.num) >= pos {
+	if len(a.num) > pos {
 		return a.num[pos], true
 	}
 	return 0, false

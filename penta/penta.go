@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/heptagons/meccano"
+	"github.com/heptagons/meccano/nest"
 )
 
 func Type_1(max int) *meccano.Sols {
@@ -146,3 +147,35 @@ func Type_2_HalfWithConjecture(max int) *meccano.Sols {
 	}
 	return sols
 }
+
+type Diagonals struct {
+	*nest.A32s
+}
+
+func NewDiagonals() *Diagonals {
+	return &Diagonals{
+		nest.NewA32s(),
+	}
+}
+
+func (d *Diagonals) Get(min, max int, callback func(a, b, c int, surd *nest.A32)) {
+	for a := min; a <= max; a++ {
+		for b := 1; b <= a; b++ {
+			for c := 0; c <= b; c++ {
+				if surd, err := d.GetOne(a,b,c); err == nil {
+					callback(a, b, c, surd)
+				}
+			}
+		}
+	}
+}
+
+func (d *Diagonals) GetOne(a, b, c int) (*nest.A32, error) {
+	p := (a-b)*(a-b) + (a-c)*(a-c) + (b-c)*(b-c) + 2*a*a + 2*b*b + 2*c*c
+	q := 2*(a*b + a*c - b*c)
+	// (b + c√d + e√(f+g√h)) / a
+	F := nest.Z(p)
+	G := nest.Z(q)
+	return d.ANew7(2, 0, 0, 1, 1, F, G, 5)
+}
+

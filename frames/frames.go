@@ -10,7 +10,7 @@ type Frames struct {
 	*A32s
 }
 
-func NewFrames() *Frames {
+func New() *Frames {
 	return &Frames{
 		A32s: NewA32s(),
 	}
@@ -237,6 +237,83 @@ func (t *Frames) Nests(max, surd N32, frame func(n *FrameNest)) {
 		}
 	}	
 }
+
+//                                                                                      _________     ___________
+//                                   a^2 + b^2 - c^2    m            ____________      /     m^2     √(n^2 - m^2)
+//        B                   cosX = --------------- = ---   sinX = √ 1 - cos^2X   =  / 1 - ----- = -------------
+//       / \_                              2ab          n                            √       n^2          n
+//    a /    \_ c                                                                       _________     ___________
+//     /       \_                    d^2 + e^2 - f^2    o            ____________      /     o^2     √(p^2 - o^2)
+//    / X   b    \            cosY = --------------- = ---   sinY = √ 1 - cos^2Y   =  / 1 - ----- = -------------
+//   C------------A-------D                2de          p                            √       p^2          p
+//    \_ Y     e       _-'
+//     '\_           _-'            __
+//       '\_       _-' f      g^2 = BE = a^2 + d^2 - 2adcos(X+Y)
+//      d   '\_  _-'
+//            'E-'            
+//
+// cos(X+Y) = cosXcosY - sinXsinY
+//                        ___________    ___________
+//             m   o     √(n^2 - m^2)   √(p^2 - o^2)
+//          = ---x--- - ------------- x ------------
+//             n   p           n              p
+//                   _______________________
+//             mo - √(n^2 - m^2)(p^2 - o^2))
+//          =  -----------------------------
+//                           np
+//                               ______________________
+//                         mo - √(n^2 - m^2)(p^2 - o^2)
+// g^2 = a^2 + d^2 - (2ad)-----------------------------
+//                                   4abde
+//                               ______________________
+//       2a^2be + 2bd^2e - mo + √(n^2 - m^2)(p^2 - o^2)
+// g^2 = ------------------------------------------------
+//                        2be
+// 
+func (fr *Frames) TwoTriangles(max N32, fgh []int) {
+	min := N32(1)
+	for a := min; a <= max; a++ {
+		fmt.Printf("a=%d...\n", a)
+		for b := min; b <= max; b++ {
+			for c := min; c <= max; c++ {
+				if a + b <= c || b + c <= a || c + a <= b {
+					continue // invalid triangle
+				}
+				m, n := Z(a*a) + Z(b*b) - Z(c*c), Z(2*a*b)
+				for d := min; d <= max; d++ {
+					for e := a; e <= max; e++ {
+						for f := min; f <= max; f++ {
+							if d + e <= f || e + f <= d || f + d <= e {
+								continue // invalid triangle
+							}
+							o, p := Z(d*d) + Z(e*e) - Z(f*f), Z(2*d*e)
+							//	(B + C√D) / A
+							A := N(2*b*e)
+							B := Z(2*a*a*b*e) + Z(2*b*d*d*e) - m*o
+							C := Z(1)
+							D := (n-m)*(n+m)*(p-o)*(p+o)//(n*n - m*m) * (p*p - o*o)
+							if gg, err := fr.ANew3(A, B, C, D); err != nil {
+								// silent error
+							} else if g, err := fr.ASqrt(gg); err != nil {  // √(F + G√H)
+								// silent error
+							} else if F, ok := g.Num(4); !ok || F != Z32(fgh[0]) {
+								// doesn't match f
+							} else if G, ok := g.Num(5); !ok || G != Z32(fgh[1]) {
+								//fmt.Println("g error", fgh[1], g)
+								// doesn't match g
+							} else if H, ok := g.Num(6); !ok || H != Z32(fgh[2]) {
+								// doesn't match h
+							} else {
+								fmt.Printf("a=% 3d b=% 3d c=% 3d d=% 3d e=% 3d f= %3d  g=%v\n", a, b, c, d, e, f, g)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 
 
 

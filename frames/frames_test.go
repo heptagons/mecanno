@@ -272,7 +272,7 @@ func TestTri2(t *testing.T) {
 								if H, ok := g.Num(6); ok && H == 5 { // √(F + G√5)
 									F, _ := g.Num(4)
 									G, _ := g.Num(5)
-									if F == 15 && G == 2 {
+									if F == 5 && G == 3 {
 										fmt.Printf("a=% 3d b=% 3d c=% 3d d=% 3d e=% 3d f= %3d  g=%v\n", a, b, c, d, e, f, g)
 									}
 								}

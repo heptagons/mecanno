@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/heptagons/meccano"
+	"github.com/heptagons/meccano/nest"
+	//"github.com/heptagons/meccano/frames"
 )
 
 func Test_Type_1(t *testing.T) {
@@ -374,8 +376,6 @@ func TestDiagonals(t *testing.T) {
 
 	u := (1 - math.Sqrt(5))/4
 	u2 := u*u
-	//u3 := u*u*u
-	//u4 := u*u*u*u
 
 	d := math.Sqrt(a*a + b*b - 2*a*b*u)
 
@@ -421,16 +421,15 @@ func TestDiagonals(t *testing.T) {
 	t.Logf("   got f5= %+f", f5)
 
 
+	// test to get e = sqrt(46 + 18sqrt(5))/2
+	fmt.Println("NewDiagonals min=3 max=3")
+	// we print rows to be copied to penta-diagonals table for pentagon size=3
+	NewDiagonals().Get(3, 3, func(a, b, c int, surd *nest.A32) {
+		fmt.Printf("a=%d b=%d c=%d %s\n", a, b, c, surd.String())
+	})
 
-
-
-
-
-
-
-	//t.Logf("         m = %+f", m)
-	//t.Logf("         n = %+f", n)
-	//t.Logf("         f = %+f", f)
-
-
+	//frames := frames.New()
+	//fmt.Println("TwoTriangles")
+	//frames.TwoTriangles(15, []int{ 46, 18, 5})
 }
+

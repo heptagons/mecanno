@@ -5,6 +5,7 @@
 
 \usepackage{amsthm} % for \qed
 \usepackage{../meccano}
+\usepackage{longtable}
 
 \begin{document}
 
@@ -174,6 +175,12 @@ From the definition of $f$ in equation \ref{eq:fequiv} we have:
 a^2 + b^2 + c^2 - e^2_5 &= 2f_5 \nonumber\\
 e_5 &= \sqrt{a^2 + b^2 + c^2 - \frac{bc + a(b+c) + (bc - a(b+c))\sqrt5}2} \label{eq:e5}
 \end{align}
+We define integers $p,q$ to simplify computer algebra software to obtain $e(a,b,c)$:
+\begin{align}
+p &\equiv (a-b)^2 + (a-c)^2 + (b-c)^2 + 2a^2 + 2b^2 + 2c^2 \\
+q &\equiv 2(ab + ac - bc) \\
+e(a,b,c) &= \frac{\sqrt{p + q\sqrt5}}2
+\end{align}
 
 \subsection {Regular pentagon diagonal $d$}
 
@@ -218,4 +225,34 @@ H_5 &= e \qquad \texttt{when } b=a \texttt{ and } c=a/2 \nonumber\\
 \end{align}
 which coincides with regular pentagon height $H$ $\qed$.
 
+\subsection{Regular pentagon side $a=3$ diagonals $e$}
+
+\renewcommand*{\arraystretch}{2}
+\begin{longtable}{ | p{0.5cm}| *{15}{c|} }
+\caption{All regular pentagon diagonals $e$ for $a=3, a \ge b, b \ge c$}.
+\label{tbl:penta3}\\
+\hline
+$a$ & $b$ & $c$ & $e$ \\
+\hline\endhead
+\hline\endfoot
+ $3$ & $1$ & $0$ & $\dfrac{\sqrt{34+6\sqrt5}}2$ \\
+ $3$ & $1$ & $1$ & $\dfrac{5+\sqrt{5}}2$ \\ \hline
+ $3$ & $2$ & $0$ & $\sqrt{10+3\sqrt5}$ \\
+ $3$ & $2$ & $1$ & $\dfrac{\sqrt{34+15\sqrt5}}2$ \\
+ $3$ & $2$ & $2$ & $2+\sqrt5$ \\ [1ex] \hline
+ $3$ & $3$ & $0$ & $\dfrac{3+3\sqrt5}2$ \\
+ $3$ & $3$ & $1$ & $\dfrac{\sqrt{46+18\sqrt5}}2$ \\
+ $3$ & $3$ & $2$ & $\dfrac{\sqrt{46+18\sqrt5}}2$ \\
+ $3$ & $3$ & $3$ & $\dfrac{3+3\sqrt5}2$ \\ \hline
+\end{longtable}
+
+In table \ref{tbl:penta3} we list all the internal diagonals inside the regular
+pentagon of size $a=3$. Row data was calculated with:
+\begin{align*}
+Folder &: \texttt{github.com/heptagons/meccano/penta/}\\
+Code &: \texttt{NewDiagonals().Get(3, 3, func(a, b, c int, surd *nest.A32))}
+\end{align*}
+
+In table \ref{fig:penta3} we draw the pentagon of size 3 perimeter and the two
+diagonals for segments $e(3,3,1)$ and $e(3,3,2)$ equal to $\dfrac{\sqrt{46+18\sqrt5}}2$.
 \end{document}
