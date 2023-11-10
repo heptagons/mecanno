@@ -1,0 +1,127 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{frames}
+	[2023/11/10 v0.01]
+
+\RequirePackage{ifthen}
+
+\newcommand{\meccanoframetriangleextra}[3]{
+ \def\dd{#1}
+ \def\ff{#2}
+ \def\gg{#3}
+ \ifthenelse{\ff=0 \OR \gg=0}{}{
+  \pgfmathsetmacro{\cosf}{(#1^2 + #2^2 - #3^2)/(2*#1*#2)} % (d^2 + f^2 - g^2)/(2df)
+  \begin{scope}[shift={(\dd,0)},rotate={180-acos(\cosf)}]
+   \meccanostrip[cc0000]{\ff}{1}{\p}
+  \end{scope}
+  \pgfmathsetmacro{\cosg}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (d^2 + g^2 - f^2)/(2dg)
+  \begin{scope}[rotate={acos(\cosg)}]
+   \meccanostrip[cc0000]{\gg}{1}{\p}
+   \path (\gg,0) ++(0:5*\p) node{$F$};
+  \end{scope}
+  %\path (0,0) ++(90:10*\p) node{$\ff$};
+ }
+}
+
+\newcommand{\meccanoframetriangle}[9]{%a,b,c,d,e,p,scale, f,g
+\begin{tikzpicture}
+\def\p{#6}
+\def\f{#8}
+\def\g{#9}
+\pgfmathsetmacro{\ad}{#1 + #4} % a+d
+\pgfmathsetmacro{\be}{#2 + #5} % b+e
+\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+\pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
+\begin{scope}[scale=#7]
+  \meccanostrip[0000cc]{#3}{1}{\p} % blue c=BA
+  \path(#3/2,0) node[above=\p]{$c$};
+   \begin{scope}[rotate={acos(\cosb)},shift={(-#4,0)}] % shift -d
+    \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
+    \ifthenelse{#4>0}{
+     \path(0,0) ++(180:5*\p) node{$E$};
+     \path(#4/2,0) node[left=3*\p]{$a-d$};
+     }{}
+    \path(#4,0) node[left=3*\p]{$B$};
+    \path(#4+#1/2,0) node[right=3*\p]{$a$};
+    \path(\ad,0) ++(90:5*\p) node{$C$};
+    
+    \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
+   
+   \end{scope}
+   \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
+    \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
+    \path (#5,0) ++(-90:5*\p) node{$A$}; %e
+    \path (0,0) ++(-180:5*\p) node{$D$};
+   \end{scope}
+\end{scope}
+\end{tikzpicture}
+}
+
+\newcommand{\meccanoframefive}[8]{ %a,b,c,d,e, p,scale, x+g, g,h,i,j,k, x
+\begin{tikzpicture}
+\def\c{#3}
+\def\p{#6}
+\def\xg{#8}
+\pgfmathsetmacro{\ad}{#1 + #4} % a+d
+\pgfmathsetmacro{\be}{#2 + #5} % b+e
+\pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
+\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+\pgfmathsetmacro{\x}{max(\c,\xg)} % max(c,x+g)
+\begin{scope}[scale=#7] 
+ \path (0,0) ++(180:5*\p) node{$A$};
+ \meccanostrip[0000cc]{\x}{1}{\p} % blue
+ \path(\c/2,0) node[above=\p]{$c$};
+ 
+ \begin{scope}[shift={(\c,0)},rotate=180-acos{\cosb}] % shift=c rot=cosb green B,a,C,e-a,E
+  \meccanostrip[008800]{\ad}{1}{\p}
+  \path(0,0) ++(-90:5*\p) node{$B$};
+  \path(#1*0.5,0) node[left=\p]{$a$};
+  \path(#1,0) node[left=\p]{$C$};
+  \ifthenelse{#4>0}{
+   \path(#1 + #4*0.5, 0) node[left=\p]{$d-a$};
+   \path(\ad,0) ++(0:5*\p) node{$E$};
+  }{}
+ \end{scope}
+ 
+ \begin{scope}[rotate={acos(\cosa)}] % rot=cosa red A,b,,e-b,D
+  \meccanostrip[cc0000]{\be}{1}{\p}
+  \path (#3/2,0) node[right=\p]{$b$};
+  \ifthenelse{#5>0}{
+   \path (#3 + #5/2,0) node[right=\p]{$e-b$};
+   \path(\be,0) ++(0:5*\p) node{$D$};
+ }{}
+ \end{scope}
+ \meccanoframefivebelow
+}
+
+\newcommand{\meccanoframefivebelow}[6]{ % g,h,i,j,k, x
+\def\x{#6}
+\pgfmathsetmacro{\gj}{#1 + #4} % g+j
+\pgfmathsetmacro{\hk}{#2 + #5} % h+k
+\pgfmathsetmacro{\cosh}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
+\pgfmathsetmacro{\cosg}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+ \path(\x+#3/2,0) node[below]{$i$};
+
+ \begin{scope}[shift={(\x+#3,0)},rotate={180+acos(\cosg)}] % green H,g,I,j-g,J
+  \meccanostrip[008800]{\hk}{1}{\p}
+  \path(0,0) node[right=\p]{$H$};
+  \path(#1*0.5,0) node[left=\p]{$g$};
+  \path(#1,0) node[right=\p]{$I$};
+  \ifthenelse{#4>0}{
+   \path(#1 + #4*0.5, 0) node[left=\p]{$k-g$};
+   \path (\gj,0) ++(0:5*\p) node{$J$};
+  }{}
+ \end{scope}
+
+
+ \begin{scope}[shift={(\x,0)},rotate={-acos(\cosh)}] % red
+  \meccanostrip[cc0000]{\gj}{1}{\p}
+  \path (0,0) ++(-90:5*\p) node{$G$};
+  \path (\hk,0) ++(0:5*\p) node{$K$};
+ \end{scope}
+
+\end{scope} %above
+\end{tikzpicture} %above
+}
+
+
+

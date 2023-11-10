@@ -229,7 +229,7 @@ which coincides with regular pentagon height $H$ $\qed$.
 
 \renewcommand*{\arraystretch}{2}
 \begin{longtable}{ | p{0.5cm}| *{15}{c|} }
-\caption{All regular pentagon diagonals $e$ for $a=3, a \ge b, b \ge c$}.
+\caption{Regular pentagon diagonals $e$ when $a=3$, ($a \ge b, b \ge c$)}.
 \label{tbl:penta3}\\
 \hline
 $a$ & $b$ & $c$ & $e$ \\
@@ -246,13 +246,48 @@ $a$ & $b$ & $c$ & $e$ \\
  $3$ & $3$ & $3$ & $\dfrac{3+3\sqrt5}2$ \\ \hline
 \end{longtable}
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{scope}[scale=1]
+\begin{scope}
+\draw[] (1,0) circle(2pt) node[below]{$C_1$}
+-- ++(-1,0) circle(2pt) node[left]{$A_3$}
+-- ++(108:1) circle(2pt) node[left]{$A_2$}
+-- ++(108:1) circle(2pt) node[left]{$A_1$}
+-- ++(108:1) circle(2pt) node[left]{$A_0$}
+-- ++(36:1) circle(2pt) node[above left]{$B_1$}
+-- ++(36:1) circle(2pt) node[above left]{$B_2$}
+-- ++(36:1) circle(2pt) node[above left]{$B_3$}
+-- node[left]{$e_1$} (1,0)
+-- ++(1,0) circle(2pt) node[below]{$C_2$}
+-- ++(1,0) circle(2pt) node[below]{$C_3$}
+-- ++(72:1) circle(2pt)
+-- ++(72:1) circle(2pt)
+-- ++(72:1) circle(2pt)
+-- ++(144:1) circle(2pt)
+-- ++(144:1) circle(2pt)
+-- ++(144:1) circle(2pt)
+-- node[right]{$e_2$} (2,0);
+\end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{Regular pentagon size $a=3$ with diagonals $e_1(3,3,1)$ and $e_2(3,3,2)$.}
+\label{fig:penta3}
+\end{figure}
+
 In table \ref{tbl:penta3} we list all the internal diagonals inside the regular
-pentagon of size $a=3$. Row data was calculated with:
+pentagon of size $a=3$. Row data was calculated with code:
 \begin{align*}
 Folder &: \texttt{github.com/heptagons/meccano/penta/}\\
-Code &: \texttt{NewDiagonals().Get(3, 3, func(a, b, c int, surd *nest.A32))}
+Call &: \texttt{NewDiagonals().Get(3, 3, func(a, b, c int, surd *nest.A32))}
 \end{align*}
 
-In table \ref{fig:penta3} we draw the pentagon of size 3 perimeter and the two
+In figure \ref{fig:penta3} we draw the pentagon of size 3 perimeter and the two
 diagonals for segments $e(3,3,1)$ and $e(3,3,2)$ equal to $\dfrac{\sqrt{46+18\sqrt5}}2$.
+
+TODO:
+Refer to paper frames, call TwoTriangles function get a,b,c,d,e,f triangle's frame for surd above!!!
+
+
 \end{document}
