@@ -7,6 +7,8 @@
 \usepackage{frames}
 \usepackage{tikz}
 \usetikzlibrary{calc}
+\usepackage{lipsum}
+
 
 
 
@@ -228,9 +230,12 @@ of condition 1:
 \begin{figure}[H]
 \centering
 \begin{center}
-\meccanoframetrianglepair{2}{3}{4} {3}{5}{7} {3pt}{1.0}
+\meccanoframetrianglepair{2}{3}{4} {3}{5}{7} {3pt}{1.0}{1}
 \end{center}
-\caption{Triangle pair frame with segments $a,b,c=(2,3,4)$ and $d,e,f=(3,5,7)$.}
+\caption{Triangle pair frame.
+We join triangles $\triangle{ABC}$ and $\triangle{DEF}$ in such a way vertices $C$ and $F$ coincide
+and vertices $A,C,D,E$ be collinear. The result is a five strips frame. We are interested in the
+distance $\overline{BE}$.}
 \label{fig:tripair}
 \end{figure}
 
@@ -246,10 +251,8 @@ First we calculate the cosines:
 \end{align}
 We define integers $m,n,o,p$ to simplify cosines and get sines:
 \begin{align}
-m &\equiv a^2 + b^2 - c^2\\
-n &\equiv 2ab\\
-o &\equiv d^2 + e^2 - f^2\\
-p &\equiv 2de\\
+(m, n) &\equiv (a^2 + b^2 - c^2, 2ab) \quad | m | \le n\\
+(o, p) &\equiv (d^2 + e^2 - f^2, 2de) \quad | o | \le p\\
 \cos\alpha &= \frac{m}n\\
 \cos\beta  &= \frac{o}p\\
 \sin\alpha &= \sqrt{1-\cos^2\alpha} = \frac{\sqrt{n^2 - m^2}}n\\
@@ -285,22 +288,55 @@ g &= \frac{\sqrt{F+G\sqrt{H}}}A
 We run a program to inspect triangle pairs having a given distance $g$. The software iterates
 over the two triangles sides $(a,b,c)$ and $(d,e,f)$ up to a maximum strip length.
 \\\\
-Next example request distances of the form $\sqrt{46+18\sqrt{5}}$ up to strip length $7$:
+Next example request distances of the form $\sqrt{46+18\sqrt{5}}$ up to strip length $10$:
+
+%%----------- start
 \begin{align*}
 Folder &: \texttt{github.com/heptagons/meccano/frames}\\
-Call &: \texttt{NewFrames().TrianglePairs(7, []int\{46,18,5\})}
-\end{align*}
-
-The software call prints rows for the triangles $(a,b,c),(d,e,f)$ matching the filter $F=46,G=18,H=5$:
+Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
 \begin{align*}
-a=2, b=1, c=2 &\quad|\quad d=3, e=3, f=3 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=2, b=2, c=2 &\quad|\quad d=3, e=6, f=6 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=2, b=3, c=4 &\quad|\quad d=3, e=5, f=7 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=2, b=4, c=4 &\quad|\quad d=3, e=3, f=3 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=3, b=3, c=3 &\quad|\quad d=2, e=4, f=4 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=3, b=5, c=7 &\quad|\quad d=2, e=3, f=4 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
-a=4, b=2, c=4 &\quad|\quad d=6, e=6, f=6 &\quad g=\sqrt{46+18\sqrt5}   &
+(a,b,c) \oplus (d,e,f) &\mapsto g\\
+\hline
+%a=1...\\ 
+%a=2...\\ 
+(2,1,2) \oplus (3,3,3) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(2,1,2) \oplus (3,8,7) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(2,2,2) \oplus (3,6,6) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(2,3,4) \oplus (3,5,7) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(2,4,4) \oplus (3,8,7) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+%a=3...\\ 
+(3,3,3) \oplus (2,4,4) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+%a=4...\\ 
+(4,2,4) \oplus (6,6,6) &\mapsto \sqrt{46+18\sqrt{5}} \\
+(4,4,4) \oplus (6,7,8) &\mapsto \sqrt{46+18\sqrt{5}} \\
+%a=5...\\ 
+%a=6...\\ 
+(6,3,6) \oplus (4,4,4) &\mapsto \sqrt{46+18\sqrt{5}} \\
+(6,3,6) \oplus (9,9,9) &\mapsto \frac{3\sqrt{46+18\sqrt{5}}}{2} \\
+(6,6,6) \oplus (4,8,8) &\mapsto \sqrt{46+18\sqrt{5}} \\
+(6,7,8) \oplus (9,9,9) &\mapsto \frac{3\sqrt{46+18\sqrt{5}}}{2} \\
+%a=7...\\ 
+%a=8...\\ 
+%a=9...\\ 
+%a=10...\\ 
 \end{align*}
+%%----------- end
+
+
+\begin{figure}[H]
+\centering
+\begin{center}
+\meccanoframetrianglepair{2}{1}{2} {3}{3}{3} {3pt}{1.0}{4} % last 1 is to show vertices A,B,C,D,E,F
+\end{center}
+\caption{Triangle pair frame $(2,1,2) \oplus (3,3,3)$ makes $\overline{BE} = \dfrac{\sqrt{46+18\sqrt{5}}}{2}$.}
+\label{fig:tripair212333}
+\end{figure}
+
+
+
+
+
+
 
 \section{Two triangles with offsets}
 

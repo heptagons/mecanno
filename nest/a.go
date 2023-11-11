@@ -427,7 +427,7 @@ func (a *A32) Tex() string {
 	if den := a.den; den == 1 { // b
 		if len(a.num) == 1 {
 			return fmt.Sprintf("%d", b)
-		} else if len(a.num) == 3 {
+		} else if len(a.num) == 3 { // a,b,c,d
 			if b != 0 {
 				sb.WriteString(fmt.Sprintf("%d", b))
 			}
@@ -446,8 +446,9 @@ func (a *A32) Tex() string {
 			if c != 0 && d != 1 {
 				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
 			}
-		} else {
-			return "pending..."
+		} else { // a,b,c,d,e...
+			a.texE(&sb)
+			return sb.String()
 		}
 	} else {
 		if len(a.num) == 1 {  // b/a
@@ -493,11 +494,35 @@ func (a *A32) Tex() string {
 				sb.WriteString(fmt.Sprintf("\\sqrt{%d}", d))
 			}
 		} else {
-			return "pending..."
+			a.texE(&sb)
+			return sb.String()
 		}
 		sb.WriteString(fmt.Sprintf("}{%d}", den)) // a
 	}
 	return sb.String()
 }
 
+// Quick and dirty prints only \frac{e\sqrt{f+g\sqrt{h}}}{a}
+func (a *A32) texE(sb *strings.Builder) {
+	if len(a.num) < 7 {
+		sb.WriteString(fmt.Sprintf("Cannot print A32 den=%v num=%v", a.den, a.num))
+	} else {
+		if a.den > 1 {
+			sb.WriteString("\\frac{")
+		}
+		if e := a.num[3]; e == 0 {
+			sb.WriteString("0")
+		} else if e == -1 {
+			sb.WriteString("-")
+		} else if e == +1 {
+			sb.WriteString("")
+		} else {
+			sb.WriteString(fmt.Sprintf("%d", e))
+		}
+		sb.WriteString(fmt.Sprintf("\\sqrt{%d%+d\\sqrt{%d}}", a.num[4], a.num[5], a.num[6]))
+		if a.den > 1 {
+			sb.WriteString(fmt.Sprintf("}{%d}",a.den))
+		}
+	}
+}
 

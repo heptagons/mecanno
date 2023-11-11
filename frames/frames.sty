@@ -71,7 +71,7 @@
 %       '\_       _-' f
 %      d   '\_  _-'
 %            'E-'            
-\newcommand{\meccanoframetrianglepair}[8]{ %a,b,c,d,e,f,  p,scale
+\newcommand{\meccanoframetrianglepair}[9]{ %a,b,c,d,e,f,  p,scale,flags
  \begin{tikzpicture}
   \def\a{#1}
   \def\b{#2}
@@ -80,34 +80,48 @@
   \def\e{#5}
   \def\f{#6}
   \def\p{#7}
+  \def\flags{#9}
   \pgfmathsetmacro{\x}{max(\b,\e)}
   \pgfmathsetmacro{\cosa}{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
   \pgfmathsetmacro{\cosc}{(\a^2 + \b^2 - \c^2)/(2*\a*\b)} % angle X
   \pgfmathsetmacro{\cosd}{(\e^2 + \f^2 - \d^2)/(2*\e*\f)}
   \pgfmathsetmacro{\cosf}{(\d^2 + \e^2 - \f^2)/(2*\d*\e)} % angle Y
+  \pgfmathsetmacro{\vertices}{\flags & 1} % flag bit 1 show vertices A,B,C,D,E,F
+  \pgfmathsetmacro{\sides}{\flags & 2}    % flag bit 2 show sides a,b,c,d,e,f
+  \pgfmathsetmacro{\angles}{\flags & 4}   % flag bit 3 show angles alpha,beta
+
+ \path (10,0) node{$fvsa=$ #9 \vertices \sides \angles};
+
+
   \begin{scope}[scale=#8]
-   \path (0,0) ++(180:10*\p) node{$C=F$};
-   \path (\x,0) ++(0:5*\p) node{$D$};
-   \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\alpha$};
-   \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\beta$};
+   \ifthenelse{\vertices=1} { \path (0,0) ++(180:10*\p) node{$C=F$}; \path (\x,0) ++(0:5*\p) node{$D$}; }{}
+   \ifthenelse{\sides=1} { \path (\b/2,0) ++(90:4*\p) node{$b$}; \path (\c/2,0) ++(-90:4*\p) node{$e$}; }{}
+   \ifthenelse{\angles=1}{
+    \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\alpha$};
+    \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\beta$};
+   }{} 
    \meccanostrip[0000cc]{\x}{1}{\p} % horizontal blue strip common to segments b,e
 
    \begin{scope}[rotate=acos{\cosc}]
-    \path (\a,0) ++(0:5*\p) node{$B$};
+    \ifthenelse{\vertices=1} { \path (\a,0) ++(0:5*\p) node{$B$}; }{} 
+    \ifthenelse{\sides=1} { \path (\a/2,0) ++(90:5*\p) node{$a$}; }{}
     \meccanostrip[880000]{\a}{1}{\p} % above left strip a red
    \end{scope}
 
    \begin{scope}[shift={(\b,0)},rotate=180-acos{\cosa}] % move b to the right
-    \path (0,0) ++(-90:5*\p) node{$A$};
+    \ifthenelse{\vertices=1} { \path (0,0) ++(-90:5*\p) node{$A$}; }{} 
+    \ifthenelse{\sides=1} { \path (\c/2,0) ++(-90:5*\p) node{$c$}; }{}
     \meccanostrip[008800]{\c}{1}{\p} % above right strip c green
    \end{scope}
 
    \begin{scope}[rotate=-acos{\cosf}] 
-    \path (\d,0) ++(0:5*\p) node{$E$};
+    \ifthenelse{\vertices=1} { \path (\d,0) ++(0:5*\p) node{$E$}; }{} 
+    \ifthenelse{\sides=1} { \path (\d/2,0) ++(-90:5*\p) node{$d$}; }{}
     \meccanostrip[880088]{\d}{1}{\p} % below left strip d magenta
    \end{scope}
 
    \begin{scope}[shift={(\e,0)},rotate=180+acos{\cosd}] % move e to the right
+    \ifthenelse{\sides=1} { \path (\f/2,0) ++(90:5*\p) node{$f$}; }{}
     \meccanostrip[884400]{\f}{1}{\p} % below right strip f orange
    \end{scope}
 

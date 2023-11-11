@@ -314,19 +314,24 @@ func (fr *Frames) TrianglePairsOld(max N32, fgh []int) {
 	}
 }
 
-// TrianglePairs uses factory.ANew7 algebraic number to be simplified.
-// TODO reduce redundancy to speed up the results.
-func (fr *Frames) TrianglePairs(max N32, fgh []int) {
-	if fgh != nil {
-		fmt.Printf("TrianglePairs max=%d filter=√%d%+d√%d\n", max, fgh[0], fgh[1], fgh[2])
-	}
+// TrianglePairsTex uses factory.ANew7 algebraic number to be simplified.
+// Prints Tex rows to be pasted in latex documents.
+func (fr *Frames) TrianglePairsTex(max N32, fgh []int) {
+	fmt.Println("%%----------- start")
+	fmt.Println("\\begin{align*}")
+	fmt.Println("Folder &: \\texttt{github.com/heptagons/meccano/frames}\\\\")
+	fmt.Printf("Call &: \\texttt{NewFrames().TrianglePairsTex(%d, %v)}", max, fgh)
+	fmt.Println("\\end{align*}")
+	fmt.Println("\\begin{align*}")
+	fmt.Printf("(a,b,c) \\oplus (d,e,f) &\\mapsto g\\\\\n")
+	fmt.Println("\\hline")
 	B := Z(0)
 	C := Z(0)
 	D := Z(1)
 	E := Z(1)
 	min := N32(1)
 	for a := min; a <= max; a++ {
-		fmt.Printf("a=%d...\n", a)
+		fmt.Printf("%%a=%d...\\\\ \n", a) // just to notify console user for large a's
 		for b := min; b <= max; b++ {
 			for c := min; c <= max; c++ {
 				if a + b <= c || b + c <= a || c + a <= b {
@@ -335,7 +340,7 @@ func (fr *Frames) TrianglePairs(max N32, fgh []int) {
 				m, n := Z(a*a) + Z(b*b) - Z(c*c), Z(2*a*b)
 				nn_mm := (n-m)*(n+m)
 				for d := min; d <= max; d++ {
-					for e := a; e <= max; e++ {
+					for e := b; e <= max; e++ { // e should be at least equal to b to reject duplications
 						for f := min; f <= max; f++ {
 							if d + e <= f || e + f <= d || f + d <= e {
 								continue // invalid triangle
@@ -350,7 +355,7 @@ func (fr *Frames) TrianglePairs(max N32, fgh []int) {
 							if g, err := fr.ANew7(N(A), B, C, D, E, F, G, H); err != nil {
 								// silent error
 							} else if fgh == nil { // no filter
-								fmt.Printf("a=%d b=%d c=%d | d=%d e=%d f=%d | g=%v\n", a, b, c, d, e, f, g)
+								fmt.Printf("%d,%d,%d | %d,%d,%d | %v\n", a, b, c, d, e, f, g)
 							} else if F, ok := g.Num(4); !ok || F != Z32(fgh[0]) {
 								// f doesn't match
 							} else if G, ok := g.Num(5); !ok || G != Z32(fgh[1]) {
@@ -358,7 +363,7 @@ func (fr *Frames) TrianglePairs(max N32, fgh []int) {
 							} else if H, ok := g.Num(6); !ok || H != Z32(fgh[2]) {
 								// h doesn't match
 							} else {
-								fmt.Printf("a=%d b=%d c=%d | d=%d e=%d f=%d | g=%v\n", a, b, c, d, e, f, g)
+								fmt.Printf("(%d,%d,%d) \\oplus (%d,%d,%d) &\\mapsto %v \\\\\n", a, b, c, d, e, f, g.Tex())
 							}
 						}
 					}
@@ -366,6 +371,8 @@ func (fr *Frames) TrianglePairs(max N32, fgh []int) {
 			}
 		}
 	}
+	fmt.Println("\\end{align*}")
+	fmt.Println("%%----------- end")
 }
 
 
