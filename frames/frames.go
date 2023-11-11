@@ -10,14 +10,14 @@ type Frames struct {
 	*A32s
 }
 
-func New() *Frames {
+func NewFrames() *Frames {
 	return &Frames{
 		A32s: NewA32s(),
 	}
 }
 
 
-// TriangleSurds returns Triangles with a+d, b+d and c <= max and Frame ED distance equals √surd.
+// Triangles returns Triangles with a+d, b+d and c <= max and Frame ED distance equals √surd.
 // Triangle consist of ABC with extentions (lenght 0 to max) D from A and E from B:
 //
 //                                     a^2 + b^2 - c^2
@@ -29,7 +29,7 @@ func New() *Frames {
 //   /                -_         __   
 //  E                   D        ED = (a+d)^2 + (b+e)^2 - 2(a+d)(b+e)cosC
 //
-func (t *Frames) TriangleSurds(surd Z, max N32, frame func(a *Triangle)) {
+func (t *Frames) Triangles(surd Z, max N32, frame func(a *Triangle)) {
 	min := N32(1)
 	for a := min; a <= max; a++ {
 		// a > b for symmetric redundancy
@@ -75,7 +75,7 @@ func (t *Frames) TriangleSurds(surd Z, max N32, frame func(a *Triangle)) {
 
 func (f *Frames) AlgsNoPythagoras(surd Z, max N32) {
 	fmt.Printf("surd=%d, max=%d\n", surd, max)
-	f.TriangleSurds(surd, max, func(t *Triangle) {
+	f.Triangles(surd, max, func(t *Triangle) {
 		if d, e := t.RightAngles(); d || e {
 			return
 		}
@@ -270,7 +270,7 @@ func (t *Frames) Nests(max, surd N32, frame func(n *FrameNest)) {
 // g^2 = ------------------------------------------------
 //                        2be
 // 
-func (fr *Frames) TwoTriangles(max N32, fgh []int) {
+func (fr *Frames) TrianglePairsOld(max N32, fgh []int) {
 	min := N32(1)
 	for a := min; a <= max; a++ {
 		fmt.Printf("a=%d...\n", a)
@@ -304,7 +304,7 @@ func (fr *Frames) TwoTriangles(max N32, fgh []int) {
 							} else if H, ok := g.Num(6); !ok || H != Z32(fgh[2]) {
 								// doesn't match h
 							} else {
-								fmt.Printf("a=% 3d b=% 3d c=% 3d d=% 3d e=% 3d f= %3d  g=%v\n", a, b, c, d, e, f, g)
+								fmt.Printf("a=%3d b=%3d c=%3d | d=%3d e=%3d f=%3d | g=%v\n", a, b, c, d, e, f, g)
 							}
 						}
 					}
@@ -314,6 +314,57 @@ func (fr *Frames) TwoTriangles(max N32, fgh []int) {
 	}
 }
 
+func (fr *Frames) TrianglePairs(max N32, fgh []int) {
+	if fgh != nil {
+		fmt.Printf("TrianglePairs max=%d filter=√%d%+d√%d\n", max, fgh[0], fgh[1], fgh[2])
+	}
+	B := Z(0)
+	C := Z(0)
+	D := Z(1)
+	E := Z(1)
+	min := N32(1)
+	for a := min; a <= max; a++ {
+		fmt.Printf("a=%d...\n", a)
+		for b := min; b <= max; b++ {
+			for c := min; c <= max; c++ {
+				if a + b <= c || b + c <= a || c + a <= b {
+					continue // invalid triangle
+				}
+				m, n := Z(a*a) + Z(b*b) - Z(c*c), Z(2*a*b)
+				nn_mm := (n-m)*(n+m)
+				for d := min; d <= max; d++ {
+					for e := a; e <= max; e++ {
+						for f := min; f <= max; f++ {
+							if d + e <= f || e + f <= d || f + d <= e {
+								continue // invalid triangle
+							}
+							o, p := Z(d*d) + Z(e*e) - Z(f*f), Z(2*d*e)
+							pp_oo := (p-o)*(p+o)
+							//	(B + C√D + E√(F + G√H)) / A
+							A := Z(2*b*e)
+							F := A*A*Z(a*a + d*d) - A*m*o
+							G := A
+							H := nn_mm * pp_oo
+							if g, err := fr.ANew7(N(A), B, C, D, E, F, G, H); err != nil {
+								// silent error
+							} else if fgh == nil { // no filter
+								fmt.Printf("a=%d b=%d c=%d | d=%d e=%d f=%d | g=%v\n", a, b, c, d, e, f, g)
+							} else if F, ok := g.Num(4); !ok || F != Z32(fgh[0]) {
+								// f doesn't match
+							} else if G, ok := g.Num(5); !ok || G != Z32(fgh[1]) {
+								// g doesn't match
+							} else if H, ok := g.Num(6); !ok || H != Z32(fgh[2]) {
+								// h doesn't match
+							} else {
+								fmt.Printf("a=%d b=%d c=%d | d=%d e=%d f=%d | g=%v\n", a, b, c, d, e, f, g)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 
 

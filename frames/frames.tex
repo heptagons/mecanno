@@ -31,9 +31,8 @@ base to build diverse meccano larger objects.
 Figure \ref{fig:triangle} shows a triangular frame. 
 We three strips we form the triangle $\triangle{ABC}$.
 At least we extend one of the two strips $\overline{CB}$ and $\overline{CA}$ to become
-$\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ distance is rigid as the
-triangle and we'll calculate the distance between them which is of the form 
-$\dfrac{q\sqrt{r}}p$, where $p,q,r$ are integers.
+$\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ distance is rigid
+of the form $\dfrac{p\sqrt{s}}q$, where $p,q,s \in \bbb{Z^+}$.
 
 First we identify five integer distances $a,b,c,d,e$:
 \begin{align}
@@ -55,40 +54,19 @@ extensions distance $\overline{DE}$:
  &= d^2 + e^2 - 2de\cos\theta \nonumber\\
  &= d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)
 \end{align}
-We expect at most a value of the form $\sqrt{s}/t$ where $s, t \in \bbb{Z^+}$
-so we define the surd as:
+We extract the square root:
 \begin{align}
  \overline{DE} &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
  &= \frac{\sqrt{a^2b^2(d^2 + e^2) - abde(a^2 + b^2 - c^2)}}{ab}\nonumber\\
- &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab} \nonumber\\
- &= \frac{\sqrt{s}}{t}\\
- t &= ab \\
- s &= t((ad-be)(bd-ae)+c^2de)
+ &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab}
 \end{align}
 
-\subsection{Rigid distances $\sqrt{s}$ and $\sqrt{s} + f$}
+\subsection{Software}
 
-\begin{figure}[h]
-\centering
-\begin{center}
-\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)
-\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)\qquad
-\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)\qquad
-\meccanoframetriangle{7}{5}{3}{0}{1}{3pt}{0.6}{0}{0}(d)
-\end{center}
-\caption{Four frames with rigid distance $\overline{DE}=\sqrt{7}$ reported by
-the factory software mentioned in this section. The particular case (b),
-was reported with the angle $CED=\pi/2$ which means we can append two extra strips to make
-a pythagorean triangle $\triangle{CEF}$ where angle ${CEF}=\pi/2$, which makes
-the three vertices $D,E,F$ collinear, so the rigid distance $\overline{DF}=\sqrt{7}+4$ is an algebraic number.
-}
-\label{fig:surd7}
-\end{figure}
-
-We write a factory to report all the triangles with specific surd $\sqrt{s}$
+We write a software to report all the triangle frames with specific surd $\sqrt{s}$
 for a given maximum strips length.
-We reject $t \neq 1$ and $s$ as not square-free, which includes pythagorean triangles.
-Next list show all the triangles with $s = \sqrt{7}, t=1$ where
+We can reject cases $q \neq 1$ and $s$ not square-free.
+Next list show all the triangles with $q=1$ and $s=\sqrt{7}$ where
 $c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
 \begin{lstlisting}
 === RUN   TestFramesTriangleSurds
@@ -106,9 +84,29 @@ NewFrames().TriangleSurds surd=7 max=15
  11) a=7 e=5+1 c=3 cos=13/14
  12) a=7 e=5+2 c=3 cos=13/14
 \end{lstlisting}
+
+\begin{figure}[h]
+\centering
+\begin{center}
+\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)
+\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)
+\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)
+\meccanoframetriangle{7}{5}{3}{0}{1}{3pt}{0.6}{0}{0}(d)
+\end{center}
+\caption{Some triangular frames with rigid distance $\overline{DE}=\sqrt{7}$ found by the software.
+}
+\label{fig:surd7}
+\end{figure}
+
 Figure \ref{fig:surd7} show four cases of this list.
 The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
 
+\subsection{Triangular distance of the form $\sqrt{s} + f$}
+
+In the figure \ref{fig:surd7}, the particular case (b),
+was reported with the angle $CED=\pi/2$ which means we can append two extra strips to make
+a pythagorean triangle $\triangle{CEF}$ where angle ${CEF}=\pi/2$, which makes
+the three vertices $D,E,F$ collinear, so the rigid distance $\overline{DF}=\sqrt{7}+4$ is an algebraic number.
 
 
 \subsection{Another rigid distances $\sqrt{s} + h$}
@@ -224,16 +222,80 @@ of condition 1:
 
 
 
-\section{Two triangles frame}
+\section{Triangle pair frame}
 
-Two triangles frame consist of two triangles sharing a side which contains four of the vertices.
-The remaining two vertices are separated by distances of the form $\dfrac{b + c\sqrt{d} + e\sqrt{f}}2$
-or $\dfrac{e\sqrt{f+g\sqrt{h}}}2$. With only five strips they result smaller and useful as diagonals
-inside rigid polygons.
+\begin{figure}[H]
+\centering
+\begin{center}
+\end{center}
+\caption{Triangle pair frame}
+\label{fig:tripair}
+\end{figure}
 
+Figure \ref{tripair} shows a triangle pair frame. The triangles share a strip which contains four of the vertices.
+The remaining two vertices are separated by distances of the form $\dfrac{\sqrt{F+G\sqrt{H}}}A$. With only five strips this frame is small and useful to make up the diagonals inside polygons we want to be rigid.
 
+\subsection{Triangle pair algebra}
 
+First we calculate the cosines:
+\begin{align}
+\cos\alpha &= \frac{a^2 + b^2 - c^2}{2ab}\nonumber\\
+\cos\beta  &= \frac{d^2 + e^2 - f^2}{2de}\nonumber
+\end{align}
+We define integers $m,n,o,p$ to simplify cosines and get sines:
+\begin{align}
+m &\equiv a^2 + b^2 - c^2\\
+n &\equiv 2ab\\
+o &\equiv d^2 + e^2 - f^2\\
+p &\equiv 2de\\
+\cos\alpha &= \frac{m}n\\
+\cos\beta  &= \frac{o}p\\
+\sin\alpha &= \sqrt{1-\cos^2\alpha} = \frac{\sqrt{n^2 - m^2}}n\\
+\sin\beta  &= \sqrt{1-\cos^2\beta} = \frac{\sqrt{p^2 - o^2}}p
+\end{align}
+Then, we use the cosines sum identity:
+\begin{align}
+\cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+ &= \left(\frac{m}n\right)\left(\frac{o}p\right)
+  - \left(\frac{\sqrt{n^2 - m^2}}n\right)\left(\frac{\sqrt{p^2 - o^2}}p\right) \nonumber\\
+ &= \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
+\end{align}
+Finally we can calculate the distance $g \equiv \overline{BE}$ using the law of cosines:
+\begin{align}
+g &\equiv \overline{BE}\nonumber\\
+ &= \sqrt{a^2 + d^2 - 2ad\cos(\alpha+\beta)}\nonumber\\
+ &= \sqrt{a^2 + d^2 - 2ad\left(\frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\right)}\nonumber\\
+ &= \sqrt{a^2 + d^2 - 2ad\left(\frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{4abde}\right)}\nonumber\\
+ &= \sqrt{a^2 + d^2 - \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{2be}}\nonumber\\
+ &= \frac{\sqrt{4b^2e^2(a^2 + d^2) - 2bemo + 2be\sqrt{(n^2 - m^2)(p^2 - o^2)}}}{2be}
+\end{align}
+For the software we can calculate integers $A,F,H$ to calculate and simplify $g$:
+\begin{align}
+A &= 2be\\
+F &= A^2(a^2+d^2) - Amo\\
+H &= (n^2-m^2)(p^2-o^2)\\
+g &= \frac{\sqrt{F+A\sqrt{H}}}A
+\end{align}
 
+\subsection{Triangle pairs software}
+
+We run a program to inspect which triangle pairs have a given distance $g$. The software iterates
+over the two triangles sides $(a,b,c)$ and $(d,e,f)$
+\begin{align*}
+Folder &: \texttt{github.com/heptagons/meccano/frames}\\
+Call &: \texttt{NewFrames().TrianglePairs(7, []int\{46,18,5\})}
+\end{align*}
+
+The software call prints rows for the triangles $(a,b,c),(d,e,f)$ matching the filter $F=46,G=18,H=5$:
+\begin{align*}
+a=2, b=1, c=2 &\quad|\quad d=3, e=3, f=3 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=2, b=2, c=2 &\quad|\quad d=3, e=6, f=6 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=2, b=3, c=4 &\quad|\quad d=3, e=5, f=7 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=2, b=4, c=4 &\quad|\quad d=3, e=3, f=3 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=3, b=3, c=3 &\quad|\quad d=2, e=4, f=4 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=3, b=5, c=7 &\quad|\quad d=2, e=3, f=4 &\quad g=\frac{\sqrt{46+18\sqrt5}}2 &\\
+a=4, b=2, c=4 &\quad|\quad d=6, e=6, f=6 &\quad g=\sqrt{46+18\sqrt5}   &
+\end{align*}
 
 \section{Two triangles with offsets}
 

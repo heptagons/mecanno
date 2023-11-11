@@ -4,24 +4,6 @@
 
 \RequirePackage{ifthen}
 
-\newcommand{\meccanoframetriangleextra}[3]{
- \def\dd{#1}
- \def\ff{#2}
- \def\gg{#3}
- \ifthenelse{\ff=0 \OR \gg=0}{}{
-  \pgfmathsetmacro{\cosf}{(#1^2 + #2^2 - #3^2)/(2*#1*#2)} % (d^2 + f^2 - g^2)/(2df)
-  \begin{scope}[shift={(\dd,0)},rotate={180-acos(\cosf)}]
-   \meccanostrip[cc0000]{\ff}{1}{\p}
-  \end{scope}
-  \pgfmathsetmacro{\cosg}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (d^2 + g^2 - f^2)/(2dg)
-  \begin{scope}[rotate={acos(\cosg)}]
-   \meccanostrip[cc0000]{\gg}{1}{\p}
-   \path (\gg,0) ++(0:5*\p) node{$F$};
-  \end{scope}
-  %\path (0,0) ++(90:10*\p) node{$\ff$};
- }
-}
-
 \newcommand{\meccanoframetriangle}[9]{%a,b,c,d,e,p,scale, f,g
 \begin{tikzpicture}
 \def\p{#6}
@@ -55,6 +37,25 @@
 \end{scope}
 \end{tikzpicture}
 }
+
+\newcommand{\meccanoframetriangleextra}[3]{
+ \def\dd{#1}
+ \def\ff{#2}
+ \def\gg{#3}
+ \ifthenelse{\ff=0 \OR \gg=0}{}{
+  \pgfmathsetmacro{\cosf}{(#1^2 + #2^2 - #3^2)/(2*#1*#2)} % (d^2 + f^2 - g^2)/(2df)
+  \begin{scope}[shift={(\dd,0)},rotate={180-acos(\cosf)}]
+   \meccanostrip[cc0000]{\ff}{1}{\p}
+  \end{scope}
+  \pgfmathsetmacro{\cosg}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (d^2 + g^2 - f^2)/(2dg)
+  \begin{scope}[rotate={acos(\cosg)}]
+   \meccanostrip[cc0000]{\gg}{1}{\p}
+   \path (\gg,0) ++(0:5*\p) node{$F$};
+  \end{scope}
+  %\path (0,0) ++(90:10*\p) node{$\ff$};
+ }
+}
+
 
 \newcommand{\meccanoframefive}[8]{ %a,b,c,d,e, p,scale, x+g, g,h,i,j,k, x
 \begin{tikzpicture}

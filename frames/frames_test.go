@@ -10,18 +10,25 @@ import (
 
 // ~/github.com/heptagons/meccano$ go test ./frames/. -run TestFramesTriangleSurds -v -count 1
 
-func TestFramesTriangleSurds(t *testing.T) {
+
+func TestTriangles(t *testing.T) {
 	surd := Z(51)
 	max := N32(15)
 	n := 0
-	fmt.Printf("NewFrames().TriangleSurds surd=%d max=%d\n", surd, max)
-	NewFrames().TriangleSurds(surd, max, func(frame *Triangle) {
+	fmt.Printf("NewFrames().Triangles surd=%d max=%d\n", surd, max)
+	NewFrames().Triangles(surd, max, func(frame *Triangle) {
 		n++
 		fmt.Fprintf(os.Stdout, "% 3d) ", n)
 		frame.WriteString(os.Stdout)
 		fmt.Println()
 	})
 }
+
+func TestTrianglePairs(t *testing.T) {
+	NewFrames().TrianglePairs(7, []int{46,18,5})
+}
+
+
 
 func TestFramesAlgsNoPythagoras(t *testing.T) {
 	surd := Z(45)
