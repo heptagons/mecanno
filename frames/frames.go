@@ -314,6 +314,8 @@ func (fr *Frames) TrianglePairsOld(max N32, fgh []int) {
 	}
 }
 
+// TrianglePairs uses factory.ANew7 algebraic number to be simplified.
+// TODO reduce redundancy to speed up the results.
 func (fr *Frames) TrianglePairs(max N32, fgh []int) {
 	if fgh != nil {
 		fmt.Printf("TrianglePairs max=%d filter=√%d%+d√%d\n", max, fgh[0], fgh[1], fgh[2])

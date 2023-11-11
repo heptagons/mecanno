@@ -38,6 +38,9 @@
 \end{tikzpicture}
 }
 
+
+
+
 \newcommand{\meccanoframetriangleextra}[3]{
  \def\dd{#1}
  \def\ff{#2}
@@ -54,6 +57,62 @@
   \end{scope}
   %\path (0,0) ++(90:10*\p) node{$\ff$};
  }
+}
+
+
+%/        B
+%       / \_
+%    a /    \_ c
+%     /       \_ 
+%    / X   b    \ 
+%   C------------A-------D
+%    \_ Y     e       _-'
+%     '\_           _-'
+%       '\_       _-' f
+%      d   '\_  _-'
+%            'E-'            
+\newcommand{\meccanoframetrianglepair}[8]{ %a,b,c,d,e,f,  p,scale
+ \begin{tikzpicture}
+  \def\a{#1}
+  \def\b{#2}
+  \def\c{#3}
+  \def\d{#4}
+  \def\e{#5}
+  \def\f{#6}
+  \def\p{#7}
+  \pgfmathsetmacro{\x}{max(\b,\e)}
+  \pgfmathsetmacro{\cosa}{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
+  \pgfmathsetmacro{\cosc}{(\a^2 + \b^2 - \c^2)/(2*\a*\b)} % angle X
+  \pgfmathsetmacro{\cosd}{(\e^2 + \f^2 - \d^2)/(2*\e*\f)}
+  \pgfmathsetmacro{\cosf}{(\d^2 + \e^2 - \f^2)/(2*\d*\e)} % angle Y
+  \begin{scope}[scale=#8]
+   \path (0,0) ++(180:10*\p) node{$C=F$};
+   \path (\x,0) ++(0:5*\p) node{$D$};
+   \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\alpha$};
+   \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\beta$};
+   \meccanostrip[0000cc]{\x}{1}{\p} % horizontal blue strip common to segments b,e
+
+   \begin{scope}[rotate=acos{\cosc}]
+    \path (\a,0) ++(0:5*\p) node{$B$};
+    \meccanostrip[880000]{\a}{1}{\p} % above left strip a red
+   \end{scope}
+
+   \begin{scope}[shift={(\b,0)},rotate=180-acos{\cosa}] % move b to the right
+    \path (0,0) ++(-90:5*\p) node{$A$};
+    \meccanostrip[008800]{\c}{1}{\p} % above right strip c green
+   \end{scope}
+
+   \begin{scope}[rotate=-acos{\cosf}] 
+    \path (\d,0) ++(0:5*\p) node{$E$};
+    \meccanostrip[880088]{\d}{1}{\p} % below left strip d magenta
+   \end{scope}
+
+   \begin{scope}[shift={(\e,0)},rotate=180+acos{\cosd}] % move e to the right
+    \meccanostrip[884400]{\f}{1}{\p} % below right strip f orange
+   \end{scope}
+
+  \end{scope}
+ \end{tikzpicture}
 }
 
 

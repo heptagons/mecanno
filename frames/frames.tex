@@ -15,8 +15,9 @@
 
 \maketitle
 \begin{abstract}
-Meccano frames are groups of meccano\meccanoref strips intended to be a
-base to build diverse meccano larger objects.
+Meccano frames are groups of rigid meccano\meccanoref strips. Can be used as internal
+diagonals of polygons to be rigid. The lengths of such diagonals are algebraic 
+numbers of the form $B + \frac{C\sqrt{D}}A$ or $\frac{\sqrt{F+H\sqrt{G}}}A$.
 \end{abstract}
 
 \section{Triangular frame}
@@ -29,7 +30,7 @@ base to build diverse meccano larger objects.
 \end{figure}
 
 Figure \ref{fig:triangle} shows a triangular frame. 
-We three strips we form the triangle $\triangle{ABC}$.
+With three strips we form the triangle $\triangle{ABC}$.
 At least we extend one of the two strips $\overline{CB}$ and $\overline{CA}$ to become
 $\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ distance is rigid
 of the form $\dfrac{p\sqrt{s}}q$, where $p,q,s \in \bbb{Z^+}$.
@@ -227,12 +228,13 @@ of condition 1:
 \begin{figure}[H]
 \centering
 \begin{center}
+\meccanoframetrianglepair{2}{3}{4} {3}{5}{7} {3pt}{1.0}
 \end{center}
-\caption{Triangle pair frame}
+\caption{Triangle pair frame with segments $a,b,c=(2,3,4)$ and $d,e,f=(3,5,7)$.}
 \label{fig:tripair}
 \end{figure}
 
-Figure \ref{tripair} shows a triangle pair frame. The triangles share a strip which contains four of the vertices.
+Figure \ref{fig:tripair} shows a triangle pair frame. The triangles share a strip which contains four of the vertices.
 The remaining two vertices are separated by distances of the form $\dfrac{\sqrt{F+G\sqrt{H}}}A$. With only five strips this frame is small and useful to make up the diagonals inside polygons we want to be rigid.
 
 \subsection{Triangle pair algebra}
@@ -269,18 +271,21 @@ g &\equiv \overline{BE}\nonumber\\
  &= \sqrt{a^2 + d^2 - \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{2be}}\nonumber\\
  &= \frac{\sqrt{4b^2e^2(a^2 + d^2) - 2bemo + 2be\sqrt{(n^2 - m^2)(p^2 - o^2)}}}{2be}
 \end{align}
-For the software we can calculate integers $A,F,H$ to calculate and simplify $g$:
+For the software we can define integers $A,F,G,H$ to calculate and reduce $g$:
 \begin{align}
-A &= 2be\\
-F &= A^2(a^2+d^2) - Amo\\
-H &= (n^2-m^2)(p^2-o^2)\\
-g &= \frac{\sqrt{F+A\sqrt{H}}}A
+A &\equiv 2be\\
+F &\equiv A^2(a^2+d^2) - Amo\\
+G &\equiv A\\
+H &\equiv (n^2-m^2)(p^2-o^2)\\
+g &= \frac{\sqrt{F+G\sqrt{H}}}A
 \end{align}
 
 \subsection{Triangle pairs software}
 
-We run a program to inspect which triangle pairs have a given distance $g$. The software iterates
-over the two triangles sides $(a,b,c)$ and $(d,e,f)$
+We run a program to inspect triangle pairs having a given distance $g$. The software iterates
+over the two triangles sides $(a,b,c)$ and $(d,e,f)$ up to a maximum strip length.
+\\\\
+Next example request distances of the form $\sqrt{46+18\sqrt{5}}$ up to strip length $7$:
 \begin{align*}
 Folder &: \texttt{github.com/heptagons/meccano/frames}\\
 Call &: \texttt{NewFrames().TrianglePairs(7, []int\{46,18,5\})}
