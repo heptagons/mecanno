@@ -59,18 +59,17 @@
  }
 }
 
-
-%/        B
-%       / \_
-%    a /    \_ c
-%     /       \_ 
-%    / X   b    \ 
-%   C------------A-------D
-%    \_ Y     e       _-'
-%     '\_           _-'
-%       '\_       _-' f
-%      d   '\_  _-'
-%            'E-'            
+%/         B
+%         / \_
+%      a /    \_ c
+%       /       \_ 
+%      / X   b    \ 
+%   F=C------------A-------D
+%      \_ Y     e       _-'
+%       '\_           _-'
+%         '\_       _-' f
+%        d   '\_  _-'
+%              'E-'            
 \newcommand{\meccanoframetrianglepair}[9]{ %a,b,c,d,e,f,  p,scale,flags
  \begin{tikzpicture}
   \def\a{#1}
@@ -80,18 +79,18 @@
   \def\e{#5}
   \def\f{#6}
   \def\p{#7}
+  \pgfmathsetmacro\vertices{int(mod(#9,2))} % flag bit 1 show vertices A,B,C,D,E,F
+  \pgfmathsetmacro\sides{int(mod(#9/2,2))}  % flag bit 2 show sides a,b,c,d,e,f
+  \pgfmathsetmacro\angles{int(mod(#9/4,2))} % flag bit 3 show angles alpha,beta
   \pgfmathsetmacro\x{max(\b,\e)}
   \pgfmathsetmacro\cosa{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
   \pgfmathsetmacro\cosc{(\a^2 + \b^2 - \c^2)/(2*\a*\b)} % angle X
   \pgfmathsetmacro\cosd{(\e^2 + \f^2 - \d^2)/(2*\e*\f)}
   \pgfmathsetmacro\cosf{(\d^2 + \e^2 - \f^2)/(2*\d*\e)} % angle Y
-  \pgfmathsetmacro\vertices{int(mod(#9,2))} % flag bit 1 show vertices A,B,C,D,E,F
-  \pgfmathsetmacro\sides{int(mod(#9/2,2))}  % flag bit 2 show sides a,b,c,d,e,f
-  \pgfmathsetmacro\angles{int(mod(#9/4,2))} % flag bit 3 show angles alpha,beta
 
   \begin{scope}[scale=#8]
    \ifthenelse{\vertices>0} { \path (0,0) ++(180:10*\p) node{$C=F$}; \path (\x,0) ++(0:5*\p) node{$D$}; }{}
-   \ifthenelse{\sides>0} { \path (\b/2,0) ++(90:4*\p) node{$b$}; \path (\c/2,0) ++(-90:4*\p) node{$e$}; }{}
+   \ifthenelse{\sides>0} { \path (\b/2,0) ++(90:4*\p) node{$b$}; \path (\e/2,0) ++(-90:4*\p) node{$e$}; }{}
    \ifthenelse{\angles>0}{
     \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\alpha$};
     \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\beta$};
@@ -99,7 +98,7 @@
    \meccanostrip[0000cc]{\x}{1}{\p} % horizontal blue strip common to segments b,e
 
    \begin{scope}[rotate=acos{\cosc}]
-    \ifthenelse{\vertices>0} { \path (\a,0) ++(0:5*\p) node{$B$}; }{} 
+    \ifthenelse{\vertices>0} { \path (\a,0) ++(90:5*\p) node{$B$}; }{} 
     \ifthenelse{\sides>0} { \path (\a/2,0) ++(90:5*\p) node{$a$}; }{}
     \meccanostrip[FF0000]{\a}{1}{\p} % above left strip a red
    \end{scope}
@@ -111,7 +110,7 @@
    \end{scope}
 
    \begin{scope}[rotate=-acos{\cosf}] 
-    \ifthenelse{\vertices>0} { \path (\d,0) ++(0:5*\p) node{$E$}; }{} 
+    \ifthenelse{\vertices>0} { \path (\d,0) ++(-90:5*\p) node{$E$}; }{} 
     \ifthenelse{\sides>0} { \path (\d/2,0) ++(-90:5*\p) node{$d$}; }{}
     \meccanostrip[880088]{\d}{1}{\p} % below left strip d magenta
    \end{scope}
@@ -123,6 +122,34 @@
 
   \end{scope}
  \end{tikzpicture}
+}
+
+\newcommand{\meccanoframetrianglex}[7]{ %down,a,b,c,m,n, p
+ \def\down{#1}
+ \def\a{#2}
+ \def\b{#3}
+ \def\c{#4}
+ \def\m{#5}
+ \def\n{#6}
+ \def\p{#7}
+ \pgfmathsetmacro\x{max(\b,\m)}
+ \pgfmathsetmacro\cosc{(\a^2 + \b^2 - \c^2)/(2*\a*\b)}
+ \pgfmathsetmacro\cosa{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
+ \pgfmathsetmacro\an{ \n > 0 ? \a + \n : \a }
+ \pgfmathsetmacro\cn{ \n < 0 ? \c - \n : \c }
+ \pgfmathsetmacro\as{ \down ? \m : 0 }
+ \pgfmathsetmacro\aa{ \down ? 180+acos{\cosa} : 180-acos{\cosa}}
+ \pgfmathsetmacro\cs{ \down ? \m+\b : \b }
+ \pgfmathsetmacro\ca{ \down ? -acos{\cosc} : acos{\cosc}}
+ \ifthenelse{\down=0} {  % horizontal blue strip common to segments max(b,m)
+  \meccanostrip[0000cc]{\x}{1}{\p}
+ }{}
+ \begin{scope}[shift={(\as,0)},rotate=\ca] % red strip at left
+  \meccanostrip[cc0000]{\an}{1}{\p}
+ \end{scope}
+ \begin{scope}[shift={(\cs,0)},rotate=\aa] % green strip at right
+  \meccanostrip[00cc00]{\cn}{1}{\p}
+ \end{scope}
 }
 
 

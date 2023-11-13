@@ -25,7 +25,8 @@ func TestTriangles(t *testing.T) {
 }
 
 func TestTrianglePairsTex(t *testing.T) {
-	NewFrames().TrianglePairsTex(10, []int{46,18,5}) // Pentagon size=3 internal diagonal e(3,3,1)
+	NewFrames().TrianglePairsTex(5,nil)
+	//NewFrames().TrianglePairsTex(10, []int{46,18,5}) // Pentagon size=3 internal diagonal e(3,3,1)
 	//NewFrames().TrianglePairsTex(15, []int{106,30,5}) // Pentagon size=5 internal diagonal e(3,5,0)
 	//NewFrames().TrianglePairsTex(15, []int{24,5,5}) // Pentagon size=5 internal diagonal e(2,5,0)
 	//NewFrames().TrianglePairsTex(15, []int{64,21,5}) // Pentagon size=7 internal diagonal e(6,7,0)
