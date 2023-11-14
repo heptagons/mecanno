@@ -124,6 +124,7 @@
  \end{tikzpicture}
 }
 
+% draw triangle up or down. call twice to print both
 \newcommand{\meccanoframetrianglex}[7]{ %down,a,b,c,m,n, p
  \def\down{#1}
  \def\a{#2}
@@ -141,13 +142,34 @@
  \pgfmathsetmacro\aa{ \down ? 180+acos{\cosa} : 180-acos{\cosa}}
  \pgfmathsetmacro\cs{ \down ? \m+\b : \b }
  \pgfmathsetmacro\ca{ \down ? -acos{\cosc} : acos{\cosc}}
- \ifthenelse{\down=0} {  % horizontal blue strip common to segments max(b,m)
-  \meccanostrip[0000cc]{\x}{1}{\p}
- }{}
+
+ % blue strip common to segments max(b,m)
+ \ifthenelse{\down=0}
+ { \meccanostrip[0000cc]{\x}{1}{\p} }{}
+ 
  \begin{scope}[shift={(\as,0)},rotate=\ca] % red strip at left
+  \ifthenelse{ \down=0 }
+  { \path (\an/2,0) ++(+90:7*\p) node{$a'$}; }
+  { \path (\an/2,0) ++(-90:7*\p) node{$d'$}; }
+  \ifthenelse{\n < 0} {}{
+   \ifthenelse{ \down=0 }
+   { \path (\an,0) ++(0:7*\p) node{$B'$}; }
+   { \path (\an,0) ++(0:7*\p) node{$E'$}; }
+  }
   \meccanostrip[cc0000]{\an}{1}{\p}
  \end{scope}
+
  \begin{scope}[shift={(\cs,0)},rotate=\aa] % green strip at right
+  \ifthenelse{ \down=0 }
+  { \path (\cn/2,0) ++(-90:7*\p) node{$c'$}; }
+  { \path (\cn/2,0) ++(+90:7*\p) node{$f'$}; }
+  \ifthenelse{\n < 0} 
+  { \ifthenelse{ \down=0 }
+   { \path (\cn,0) ++(0:7*\p) node{$B'$}; }
+   { \path (\cn,0) ++(0:7*\p) node{$E'$}; } 
+  }
+  {}
+
   \meccanostrip[00cc00]{\cn}{1}{\p}
  \end{scope}
 }
