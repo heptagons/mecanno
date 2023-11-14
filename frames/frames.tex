@@ -343,17 +343,17 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
     \meccanoframetrianglex{1}{3}{3}{2} {0}{0}{3pt}
     \draw (2.5,-5) node{$(a)$};
    \end{scope}
-   \begin{scope}[shift={(7,0)}]
+   \begin{scope}[shift={(8,0)}]
     \meccanoframetrianglex{0}{4}{5}{6} {7}{0}{3pt}
     \meccanoframetrianglex{1}{3}{3}{2} {4}{0}{3pt}
     \draw (3.5,-5) node{$(b)$};
    \end{scope}
-   \begin{scope}[shift={(16,0)}]
+   \begin{scope}[shift={(18,0)}]
     \meccanoframetrianglex{0}{4}{5}{6} {7}{1}{3pt}
     \meccanoframetrianglex{1}{3}{3}{2} {4}{1}{3pt}
     \draw (3.5,-5) node{$(c)$};
    \end{scope}
-   \begin{scope}[shift={(25,0)}]
+   \begin{scope}[shift={(28,0)}]
     \meccanoframetrianglex{0}{4}{5}{6} {7}{-3}{3pt}
     \meccanoframetrianglex{1}{3}{3}{2} {4}{-2}{3pt}
     \draw (3.5,-5) node{$(d)$};
@@ -361,17 +361,82 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
   \end{scope}
  \end{tikzpicture}
  \caption{Triangle pair extended frame. Is like previous triangle pair frame except
- we can extend strips $a$ or $c$, $d$ or $f$, and we can separate vertices $C$ and $F$.
- Vertices $C,A,D,F$ remain collinear and we are interested in the distance $\overline{B'E'}$.
+ we can extend strips $a$ or $c$, $d$ or $f$, and we can separate vertices $C$ and $F'$.
+ Vertices $A,C,D',F'$ remain collinear and we are interested in the distance $\overline{B'E'}$.
  We show four examples: (a) is the original triangle pair,
- (b) has moved the $\triangle{DEF}$ to the right,
+ (b) has moved the $\triangle{D'E'F'}$ to the right,
  (c) also extends strips $a$ and $d$ and (d) extends strips $c$ and $f$.
  }
  \label{fig:tripairext}
 \end{figure}
 
+The triangle pair extended frame is shown in figure \ref{fig:tripairext}.
+As with figure \ref{fig:tripair} we also have two triangles with five strips,
+but we can do up to three transformations: 
+1) Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$, 2) extends strip $a$ or strip $c$ but not both and 3) extend strip $d$ or strip $f$ but not both.
+We define three integers $x, y_1, y_2$ to do the transformations:
+\begin{align}
+x &= \left \{ \begin{array}{rl}
+ 0       &  C,F \mbox{ vertices remain joined}\\
+ \geq  0 &  \triangle{DEF} \mbox{ is moved to the right a distance equal to } x \\
+ \end{array}\right. \\
+y_1 &= \left \{ \begin{array}{rl}
+ 0   & a' = a,\quad c' = c \\
+ > 0 & a' = a + y_1,\quad c' = c \\
+ < 0 & a' = a,\quad c' = c - y_1 \\
+ \end{array}\right. \\ 
+y_2 &= \left \{ \begin{array}{rl}
+ 0   & d' = d,\quad f' = f \\
+ > 0 & d' = d + y_2,\quad f' = f \\
+ < 0 & d' = d,\quad f' = f - y_2 \\
+ \end{array}\right. 
+\end{align}
 
+Let define $M(a,b,c)$ the triangle above, $N(d,e,f)$ the triangle below and $T(x,y_1,y_2)$ the transformations.
+Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as:
+\begin{align*}
+(a) &: M(4,5,6) \oplus N(4,4,2) \oplus T(0,0,0) \\
+(b) &: M(4,5,6) \oplus N(4,4,2) \oplus T(4,0,0) \\
+(c) &: M(4,5,6) \oplus N(4,4,2) \oplus T(4,+2,+1) \\
+(d) &: M(4,5,6) \oplus N(4,4,2) \oplus T(4,-3,-2)
+\end{align*}
 
+\subsection{Triangle pair extended frame algebra}
+
+We are going to calculate the distance $\overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
+$(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
+\\\\
+For the triangle above $M(a,b,c)$ we have:
+\begin{align}
+\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc}\\
+\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab}\\
+B_x(a,b,c,y_1) &= \left \{ \begin{array}{rl}
+  y_1 \geq 0 & (a+y_1)\cos{C}\\
+  y_1 < 0    & b - (c-y1)\cos{A}
+ \end{array}\right. \\
+B_y(a,b,c,y_1) &= \left \{ \begin{array}{rl}
+ y_1 \geq 0 & (a+y_1)\sin{C}\\
+ y_1 < 0    & (c-y_1)\sin{A}
+ \end{array}\right. 
+\end{align}
+
+For the triangle below $N(d,e,f)$ we have:
+\begin{align}
+\cos{D} &= \frac{e^2 + f^2 - d^2}{2ef}\\
+\cos{F} &= \frac{d^2 + e^2 - f^2}{2de}\\
+E_x(d,e,f,x,y_2) &= \left \{ \begin{array}{rl}
+ y_2 \geq 0 & x + (d+y_2)\cos{F}\\
+ y_2 < 0    & x + e - (f-y_2)\cos{D} 
+ \end{array}\right. \\
+E_y(d,e,f,y_2) &= \left \{ \begin{array}{rl}
+ y_2 \geq 0 & -(d+y_2)\sin{F} \\
+ y_2 < 0    & -(f-y_2)\sin{D}
+ \end{array}\right. 
+\end{align}
+With the four components $B_x, B_y, E_x, E_y$ we can have the distance:
+\begin{align}
+\overline{B'E'} = \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2}
+\end{align}
 
 
 %\section{Two triangles with offsets}
