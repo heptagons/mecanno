@@ -361,11 +361,11 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
   \end{scope}
  \end{tikzpicture}
  \caption{Triangle pair extended frame. Is like previous triangle pair frame except
- we can extend strips $a$ or $c$, $d$ or $f$, and we can separate vertices $C$ and $F'$.
+ we can extend strips $\alpha$ or $\gamma$, $\delta$ or $\zeta$, and we can separate vertices $C$ and $F'$.
  Vertices $A,C,D',F'$ remain collinear and we are interested in the distance $\overline{B'E'}$.
  We show four examples: (a) is the original triangle pair,
  (b) has moved the $\triangle{D'E'F'}$ to the right,
- (c) also extends strips $a$ and $d$ and (d) extends strips $c$ and $f$.
+ (c) also extends strips $\alpha$ and $\delta$ and (d) extends strips $\gamma$ and $\zeta$.
  }
  \label{fig:tripairext}
 \end{figure}
@@ -373,7 +373,12 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
 The triangle pair extended frame is shown in figure \ref{fig:tripairext}.
 As with figure \ref{fig:tripair} we also have two triangles with five strips,
 but we can do up to three transformations: 
-1) Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$, 2) extends strip $a$ or strip $c$ but not both and 3) extend strip $d$ or strip $f$ but not both.
+\begin{enumerate}
+ \item Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$.
+ \item Extends strip $a \rightarrow \alpha$ or strip $c \rightarrow \gamma$ but not both.
+ \item Extend strip $d \rightarrow \delta$ or strip $f \rightarrow \zeta$ but not both.
+\end{enumerate}
+
 We define three integers $x, y_1, y_2$ to do the transformations:
 \begin{align}
 x &= \left \{ \begin{array}{rl}
@@ -381,19 +386,19 @@ x &= \left \{ \begin{array}{rl}
  \geq  0 &  \triangle{DEF} \mbox{ is moved to the right a distance equal to } x \\
  \end{array}\right. \\
 y_1 &= \left \{ \begin{array}{rl}
- 0   & a' = a,\quad c' = c \\
- > 0 & a' = a + y_1,\quad c' = c \\
- < 0 & a' = a,\quad c' = c - y_1 \\
+ 0   & \alpha = a,\quad \gamma = c \\
+ > 0 & \alpha = a + y_1,\quad \gamma = c \\
+ < 0 & \alpha = a,\quad \gamma = c + |y_1| \\
  \end{array}\right. \\ 
 y_2 &= \left \{ \begin{array}{rl}
- 0   & d' = d,\quad f' = f \\
- > 0 & d' = d + y_2,\quad f' = f \\
- < 0 & d' = d,\quad f' = f - y_2 \\
+ 0   & \delta = d,\quad \zeta = f \\
+ > 0 & \delta = d + y_2,\quad \zeta = f \\
+ < 0 & \delta = d,\quad \zeta = f + |y_2| \\
  \end{array}\right. 
 \end{align}
 
 Let define $M(a,b,c)$ the triangle above, $N(d,e,f)$ the triangle below and $T(x,y_1,y_2)$ the transformations.
-Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as:
+Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as operations:
 \begin{align*}
 (a) &: M(4,5,6) \oplus N(4,4,2) \oplus T(0,0,0) \\
 (b) &: M(4,5,6) \oplus N(4,4,2) \oplus T(4,0,0) \\
@@ -406,37 +411,75 @@ Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as:
 We are going to calculate the distance $\overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
 $(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
 \\\\
-For the triangle above $M(a,b,c)$ we have:
+For the triangle above $M(a,b,c)$ we make $m = |y_1|$ and obtain $(B_x, B_y)$:
 \begin{align}
-\cos{A} &= \frac{b^2 + c^2 - a^2}{2bc}\\
-\cos{C} &= \frac{a^2 + b^2 - c^2}{2ab}\\
-B_x(a,b,c,y_1) &= \left \{ \begin{array}{rl}
-  y_1 \geq 0 & (a+y_1)\cos{C}\\
-  y_1 < 0    & b - (c-y1)\cos{A}
+a_1 &\equiv b^2 + c^2 - a^2, \quad a_2 \equiv 2bc, \quad \mbox{ iff } |a_1| \leq a_2\\
+c_1 &\equiv a^2 + b^2 - c^2, \quad c_2 \equiv 2ab, \quad \mbox{ iff } |c_1| \leq c_2\\
+\cos{A} &= \frac{a_1}{a_2}, \quad\sin{A} = \frac{\sqrt{a_2^2 - a_1^2}}{a_2}\\
+\cos{C} &= \frac{c_1}{c_2}, \quad\sin{C} = \frac{\sqrt{c_2^2 - c_1^2}}{c_2}\\
+\alpha &= a + m\\
+\gamma &= c + m\\
+B_x &= \left \{ \begin{array}{rl}
+  y_1 \geq 0 & \alpha\cos{C}\\
+  y_1 < 0    & b - \gamma\cos{A}
  \end{array}\right. \\
-B_y(a,b,c,y_1) &= \left \{ \begin{array}{rl}
- y_1 \geq 0 & (a+y_1)\sin{C}\\
- y_1 < 0    & (c-y_1)\sin{A}
- \end{array}\right. 
+B_y &= \left \{ \begin{array}{rl}
+ y_1 \geq 0 & \alpha\sin{C}\\
+ y_1 < 0    & \gamma\sin{A}
+ \end{array}\right.
 \end{align}
 
-For the triangle below $N(d,e,f)$ we have:
+For the triangle below $N(d,e,f)$ we make $n = |y_2|$ and obtain $(E_x,E_y)$:
 \begin{align}
-\cos{D} &= \frac{e^2 + f^2 - d^2}{2ef}\\
-\cos{F} &= \frac{d^2 + e^2 - f^2}{2de}\\
-E_x(d,e,f,x,y_2) &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & x + (d+y_2)\cos{F}\\
- y_2 < 0    & x + e - (f-y_2)\cos{D} 
+d_1 &\equiv e^2 + f^2 - d^2, \quad d_2 \equiv 2ef\\
+f_1 &\equiv d^2 + e^2 - f^2, \quad f_2 \equiv 2de\\ 
+\cos{D} &= \frac{d_1}{d_2}, \quad\sin{D} = \frac{\sqrt{d_2^2 - d_1^2}}{d_2}\\
+\cos{F} &= \frac{f_1}{f_2}, \quad\sin{F} = \frac{\sqrt{f_2^2 - f_1^2}}{f_2}\\
+\delta &= d + n\\
+\zeta  &= f + n\\
+E_x &= \left \{ \begin{array}{rl}
+ y_2 \geq 0 & x + \delta\cos{F}\\
+ y_2 < 0    & x + e - \zeta\cos{D} 
  \end{array}\right. \\
-E_y(d,e,f,y_2) &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & -(d+y_2)\sin{F} \\
- y_2 < 0    & -(f-y_2)\sin{D}
- \end{array}\right. 
+E_y &= \left \{ \begin{array}{rl}
+ y_2 \geq 0 & -\delta\sin{F} \\
+ y_2 < 0    & -\zeta\sin{D}
+ \end{array}\right.
 \end{align}
-With the four components $B_x, B_y, E_x, E_y$ we can have the distance:
+
+With the four components $B_x, B_y, E_x, E_y$ we can calculate $\overline{B'E'}$:
 \begin{align}
-\overline{B'E'} = \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2}
+\overline{B'E'} &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
+ &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y}
 \end{align}
+
+For $y_1 \geq 0$ and $y_2 \geq 0$ we have $m=y_1, n=y_2$:
+\begin{align}
+\alpha &= a + m, \qquad \delta = d + n\\
+B_x^2 + B_y^2 &= \alpha^2\cos^2{C} + \alpha^2\sin^2{C} \nonumber\\
+ &= \alpha^2\\
+E_x^2 + E_y^2 &= (x + \delta\cos{F})^2 + (-\delta\sin{F})^2 \nonumber\\
+ &= x^2 + 2x\delta\cos{F} + \delta^2\cos^2{F} + \delta^2\sin^2{F} \nonumber\\
+ &= x^2 + 2x\delta\cos{F} + \delta^2 \nonumber\\
+ &= \frac{f_2x^2 + 2x\delta f_1 + f_2\delta^2}{f_2}\\
+B_xE_x &= (\alpha\cos{C})(x + \delta\cos{F}) \nonumber\\
+ &= \frac{\alpha c_1(f_2x + \delta f_1)}{c_2f_2} \\
+B_yE_y &= (\alpha\sin{C})(-\delta\sin{F})\nonumber\\
+ &= -\frac{\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}}{c_2f_2}\\
+\overline{B'E'} &= \sqrt{
+\alpha^2
++ \frac{f_2x^2 + 2x\delta f_1 + f_2\delta^2}{f_2}
++ \frac{2\alpha c_1(f_2x + \delta f_1)}{c_2f_2}
+- \frac{2\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}}{c_2f_2}
+}\nonumber\\
+ &= \sqrt{\frac{
+c_2f_2\alpha^2  
++ c_2(f_2x^2 + 2x\delta f_1 + f_2\delta^2)
++ 2\alpha c_1(f_2x + \delta f_1)
+- 2\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}
+}{c_2f_2}}\nonumber\\
+\end{align}
+
 
 
 %\section{Two triangles with offsets}
