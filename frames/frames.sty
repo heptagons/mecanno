@@ -92,8 +92,8 @@
    \ifthenelse{\vertices>0} { \path (0,0) ++(180:10*\p) node{$C=F$}; \path (\x,0) ++(0:5*\p) node{$D$}; }{}
    \ifthenelse{\sides>0} { \path (\b/2,0) ++(90:4*\p) node{$b$}; \path (\e/2,0) ++(-90:4*\p) node{$e$}; }{}
    \ifthenelse{\angles>0}{
-    \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\alpha$};
-    \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\beta$};
+    \draw (7*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=7*\p] node[midway,above]{$\theta$};
+    \draw (5*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=6*\p] node[midway,below]{$\phi$};
    }{} 
    \meccanostrip[0000cc]{\x}{1}{\p} % horizontal blue strip common to segments b,e
 
@@ -150,8 +150,16 @@
  
  \begin{scope}[shift={(\as,0)},rotate=\ca] % red strip at left
   \ifthenelse{ \down=0 }
-  { \path (\an/2,0) ++(+90:7*\p) node{$\alpha$}; \path (0,0) ++(60:7*\p) node{$C$}; }
-  { \path (\an/2,0) ++(-90:7*\p) node{$\delta$}; \path (0,0) ++(-90:7*\p) node{$F'$}; }
+  { 
+   \path (\an/2,0) ++(+90:7*\p) node{$\alpha$};
+   \path (0,0) ++(60:7*\p) node{$C$};
+   \draw (12*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=12*\p] node[midway,above,right]{$\theta$};
+  }
+  {
+   \path (\an/2,0) ++(-90:7*\p) node{$\delta$};
+   \path (0,0) ++(-90:7*\p) node{$F'$};
+   \draw (12*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=12*\p] node[midway,above,right]{$\phi$};
+  }
   \ifthenelse{\n < 0} {}{
    \ifthenelse{ \down=0 }
    { \path (\an,0) ++(0:7*\p) node{$B'$}; }

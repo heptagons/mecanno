@@ -244,23 +244,22 @@ The remaining two vertices are separated by distances of the form $\dfrac{\sqrt{
 
 \subsection{Triangle pair algebra}
 
-First we calculate the cosines:
+First we calculate the angle $\theta = \angle{ACB}$ defining variables $m,n$:
 \begin{align}
-\cos\alpha &= \frac{a^2 + b^2 - c^2}{2ab}\nonumber\\
-\cos\beta  &= \frac{d^2 + e^2 - f^2}{2de}\nonumber
+(m, n) &\equiv (a^2 + b^2 - c^2, 2ab) \quad | m | \le n \label{eq:mn}\\
+\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab} = \frac{m}n \\
+\sin\theta &= \sqrt{1-\cos^2\theta} = \frac{\sqrt{n^2 - m^2}}n
 \end{align}
-We define integers $m,n,o,p$ to simplify cosines and get sines:
+
+Then we calculate the angle $\phi = \angle{DFE}$ defining variable $o,p$:
 \begin{align}
-(m, n) &\equiv (a^2 + b^2 - c^2, 2ab) \quad | m | \le n\\
-(o, p) &\equiv (d^2 + e^2 - f^2, 2de) \quad | o | \le p\\
-\cos\alpha &= \frac{m}n\\
-\cos\beta  &= \frac{o}p\\
-\sin\alpha &= \sqrt{1-\cos^2\alpha} = \frac{\sqrt{n^2 - m^2}}n\\
-\sin\beta  &= \sqrt{1-\cos^2\beta} = \frac{\sqrt{p^2 - o^2}}p
+(o, p) &\equiv (d^2 + e^2 - f^2, 2de) \quad | o | \le p \label{eq:op}\\
+\cos\phi   &= \frac{d^2 + e^2 - f^2}{2de} = \frac{o}p \\
+\sin\phi   &= \sqrt{1-\cos^2\phi} = \frac{\sqrt{p^2 - o^2}}p
 \end{align}
 Then, we use the cosines sum identity:
 \begin{align}
-\cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos(\theta+\phi) &= \cos\theta\cos\phi - \sin\theta\sin\phi \nonumber\\
  &= \left(\frac{m}n\right)\left(\frac{o}p\right)
   - \left(\frac{\sqrt{n^2 - m^2}}n\right)\left(\frac{\sqrt{p^2 - o^2}}p\right) \nonumber\\
  &= \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
@@ -410,21 +409,20 @@ Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as opera
 
 We are going to calculate the distance $\overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
 $(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
-\\\\
-For the triangle above $M(a,b,c)$ we make $m = |y_1|$ and obtain $(B_x, B_y)$:
+
+\subsubsection{$(B_x, B_y)$}
+We use the triangle above $M(a,b,c)$ and make the extension $u = |y_1|$ and obtain $(B_x, B_y)$. We already calculated angle $\theta=\angle{ACB}$ for the original triangle pair using the variables $m,n$ of equation \ref{eq:mn}.
 \begin{align}
 a_1 &\equiv b^2 + c^2 - a^2, \quad a_2 \equiv 2bc, \quad \mbox{ iff } |a_1| \leq a_2\\
-c_1 &\equiv a^2 + b^2 - c^2, \quad c_2 \equiv 2ab, \quad \mbox{ iff } |c_1| \leq c_2\\
 \cos{A} &= \frac{a_1}{a_2}, \quad\sin{A} = \frac{\sqrt{a_2^2 - a_1^2}}{a_2}\\
-\cos{C} &= \frac{c_1}{c_2}, \quad\sin{C} = \frac{\sqrt{c_2^2 - c_1^2}}{c_2}\\
-\alpha &= a + m\\
-\gamma &= c + m\\
+\alpha &= a + u\\
+\gamma &= c + u\\
 B_x &= \left \{ \begin{array}{rl}
-  y_1 \geq 0 & \alpha\cos{C}\\
+  y_1 \geq 0 & \alpha\cos\theta\\
   y_1 < 0    & b - \gamma\cos{A}
  \end{array}\right. \\
 B_y &= \left \{ \begin{array}{rl}
- y_1 \geq 0 & \alpha\sin{C}\\
+ y_1 \geq 0 & \alpha\sin\theta\\
  y_1 < 0    & \gamma\sin{A}
  \end{array}\right.
 \end{align}
@@ -466,7 +464,8 @@ B_xE_x &= (\alpha\cos{C})(x + \delta\cos{F}) \nonumber\\
  &= \frac{\alpha c_1(f_2x + \delta f_1)}{c_2f_2} \\
 B_yE_y &= (\alpha\sin{C})(-\delta\sin{F})\nonumber\\
  &= -\frac{\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}}{c_2f_2}\\
-\overline{B'E'} &= \sqrt{
+g &= \overline{B'E'}\nonumber\\
+ &= \sqrt{
 \alpha^2
 + \frac{f_2x^2 + 2x\delta f_1 + f_2\delta^2}{f_2}
 + \frac{2\alpha c_1(f_2x + \delta f_1)}{c_2f_2}
