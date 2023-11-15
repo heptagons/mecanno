@@ -19,7 +19,7 @@
 \begin{abstract}
 Meccano frames are groups of rigid meccano\meccanoref strips. Can be used as internal
 diagonals of polygons to be rigid. The lengths of such diagonals are algebraic 
-numbers of the form $B + \frac{C\sqrt{D}}A$ or $\frac{\sqrt{F+H\sqrt{G}}}A$.
+numbers of the form $\frac{B+C\sqrt{D}}A$ or $\frac{E\sqrt{F+H\sqrt{G}}}A$.
 \end{abstract}
 
 \section{Triangular frame}
@@ -232,31 +232,26 @@ of condition 1:
 \begin{center}
 \meccanoframetrianglepair{2}{3}{4} {3}{5}{7} {3pt}{1.0}{7}
 \end{center}
-\caption{Triangle pair frame.
-We join triangles $\triangle{ABC}$ and $\triangle{DEF}$ in such a way vertices $C$ and $F$ coincide
-and vertices $A,C,D,E$ be collinear. The result is a five strips frame. We are interested in the
-distance $\overline{BE}$.}
+\caption{Triangle pair frame.}
 \label{fig:tripair}
 \end{figure}
 
-Figure \ref{fig:tripair} shows a triangle pair frame. The triangles share a strip which contains four of the vertices.
-The remaining two vertices are separated by distances of the form $\dfrac{\sqrt{F+G\sqrt{H}}}A$. With only five strips this frame is small and useful to make up the diagonals inside polygons we want to be rigid.
+Figure \ref{fig:tripair} shows a triangle pair frame.
+The pair joins triangles $\triangle{ABC}$ and $\triangle{DEF}$ in such a way vertices $C$ and $F$ coincide and vertices $A,C,D,F$ be collinear. With only five strips this frame is small and useful to make up the rigid polygons diagonals of the form
+$\overline{BE} = \dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}, z_i \in \bbb{Z}$.
 
 \subsection{Triangle pair algebra}
 
-First we calculate the angle $\theta = \angle{ACB}$ defining variables $m,n$:
+Using the law of cosines we calculate the angle $\theta = \angle{ACB}$ with defined variables $m,n$ and the angle $\phi = \angle{DFE}$ with defined variables $o,p$:
 \begin{align}
-(m, n) &\equiv (a^2 + b^2 - c^2, 2ab) \quad | m | \le n \label{eq:mn}\\
-\cos\theta &= \frac{a^2 + b^2 - c^2}{2ab} = \frac{m}n \\
-\sin\theta &= \sqrt{1-\cos^2\theta} = \frac{\sqrt{n^2 - m^2}}n
-\end{align}
-
-Then we calculate the angle $\phi = \angle{DFE}$ defining variable $o,p$:
-\begin{align}
-(o, p) &\equiv (d^2 + e^2 - f^2, 2de) \quad | o | \le p \label{eq:op}\\
-\cos\phi   &= \frac{d^2 + e^2 - f^2}{2de} = \frac{o}p \\
+(m, n) &\equiv (a^2 + b^2 - c^2, 2ab), \quad | m | \le n, \quad m,n \in \bbb{Z} \label{eq:mn}\\
+\cos\theta &= \frac{m}n \\
+\sin\theta &= \sqrt{1-\cos^2\theta} = \frac{\sqrt{n^2 - m^2}}n \\
+(o, p) &\equiv (d^2 + e^2 - f^2, 2de), \quad | o | \le p, \quad o,p \in \bbb{Z} \label{eq:op}\\
+\cos\phi   &= \frac{o}p \\
 \sin\phi   &= \sqrt{1-\cos^2\phi} = \frac{\sqrt{p^2 - o^2}}p
 \end{align}
+
 Then, we use the cosines sum identity:
 \begin{align}
 \cos(\theta+\phi) &= \cos\theta\cos\phi - \sin\theta\sin\phi \nonumber\\
@@ -264,31 +259,37 @@ Then, we use the cosines sum identity:
   - \left(\frac{\sqrt{n^2 - m^2}}n\right)\left(\frac{\sqrt{p^2 - o^2}}p\right) \nonumber\\
  &= \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
 \end{align}
+
 Finally we can calculate the distance $g \equiv \overline{BE}$ using the law of cosines:
 \begin{align}
 g &\equiv \overline{BE}\nonumber\\
- &= \sqrt{a^2 + d^2 - 2ad\cos(\alpha+\beta)}\nonumber\\
+ &= \sqrt{a^2 + d^2 - 2ad\cos(\theta+\phi)}\nonumber\\
  &= \sqrt{a^2 + d^2 - 2ad\left(\frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\right)}\nonumber\\
  &= \sqrt{a^2 + d^2 - 2ad\left(\frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{4abde}\right)}\nonumber\\
  &= \sqrt{a^2 + d^2 - \frac{mo - \sqrt{(n^2 - m^2)(p^2 - o^2)}}{2be}}\nonumber\\
  &= \frac{\sqrt{4b^2e^2(a^2 + d^2) - 2bemo + 2be\sqrt{(n^2 - m^2)(p^2 - o^2)}}}{2be}
 \end{align}
-For the software we can define integers $A,F,G,H$ to calculate and reduce $g$:
-\begin{align}
-A &\equiv 2be\\
-F &\equiv A^2(a^2+d^2) - Amo\\
-G &\equiv A\\
-H &\equiv (n^2-m^2)(p^2-o^2)\\
-g &= \frac{\sqrt{F+G\sqrt{H}}}A
-\end{align}
 
 \subsection{Triangle pairs software}
 
-We run a program to inspect triangle pairs having a given distance $g$. The software iterates
-over the two triangles sides $(a,b,c)$ and $(d,e,f)$ up to a maximum strip length.
-\\\\
-Next example request distances of the form $\sqrt{46+18\sqrt{5}}$ up to strip length $10$:
+From the last equation of $g$ we identify three \texttt{input} integers $i_1,i_2,i_3$ which are used to get $g(i)$. Then the nested radicals sofware returns \texttt{output} integers $z_1,z_2,z_3,z_4,z_5$ as $g(z)$:
+\begin{align}
+i_1 &\equiv 2be\\
+i_2 &\equiv i_1^2(a^2+d^2) - i_1mo\\
+i_3 &\equiv (n^2-m^2)(p^2-o^2)\\
+g(i) &= \frac{\sqrt{i_2 + i_1\sqrt{i_3}}}{i_1}\\
+g(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
+\end{align}
 
+We run a program to print a list of triangle pairs with sides $1 < a,b,c,d,e,f \leq max$ having a given distance $\overline{BE}=g$ or particular $z3,z4,z5$. Next example request a pairs list with $g = z_2\sqrt{46+18\sqrt{5}}/z_1$ up to strip length $10$ so we set as limits $max=10, z_3=46, z_4=18, z_5=5$ to get next report (text in blue):
+
+\newenvironment{MyColorPar}[1]{
+    \leavevmode\color{#1}\ignorespaces
+}{
+}
+
+
+\begin{MyColorPar}{blue}
 %%----------- start
 \begin{align*}
 Folder &: \texttt{github.com/heptagons/meccano/frames}\\
@@ -320,7 +321,7 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
 %a=10...\\ 
 \end{align*}
 %%----------- end
-
+\end{MyColorPar}
 
 \begin{figure}[H]
 \centering
@@ -330,6 +331,8 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
 \caption{Triangle pair frame $(2,1,2) \oplus (3,3,3)$ makes $\overline{BE} = \dfrac{\sqrt{46+18\sqrt{5}}}{2}$.}
 \label{fig:tripair212333}
 \end{figure}
+
+In figure \ref{fig:tripair212333} we build a triangular pair following one of the last report results, when $abc=(2,1,2)$ and $def=(3,3,3)$.
 
 \section{Triangle pair extended frame}
 
