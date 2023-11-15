@@ -288,7 +288,6 @@ We run a program to print a list of triangle pairs with sides $1 < a,b,c,d,e,f \
 }{
 }
 
-
 \begin{MyColorPar}{blue}
 %%----------- start
 \begin{align*}
@@ -334,6 +333,8 @@ Call &: \texttt{NewFrames().TrianglePairsTex(10, [46 18 5])}\end{align*}
 
 In figure \ref{fig:tripair212333} we build a triangular pair following one of the last report results, when $abc=(2,1,2)$ and $def=(3,3,3)$.
 
+%%%%%%%%%
+
 \section{Triangle pair extended frame}
 
 \begin{figure}[H]
@@ -372,16 +373,16 @@ In figure \ref{fig:tripair212333} we build a triangular pair following one of th
  \label{fig:tripairext}
 \end{figure}
 
-The triangle pair extended frame is shown in figure \ref{fig:tripairext}.
+Some triangle pair extended frames are shown in figure \ref{fig:tripairext}.
 As with figure \ref{fig:tripair} we also have two triangles with five strips,
-but we can do up to three transformations: 
+but we can perform one, two or three transformations on the frame: 
 \begin{enumerate}
  \item Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$.
  \item Extends strip $a \rightarrow \alpha$ or strip $c \rightarrow \gamma$ but not both.
  \item Extend strip $d \rightarrow \delta$ or strip $f \rightarrow \zeta$ but not both.
 \end{enumerate}
 
-We define three integers $x, y_1, y_2$ to do the transformations:
+For each transformation we define three integers $x, y_1, y_2$:
 \begin{align}
 x &= \left \{ \begin{array}{rl}
  0       &  C,F \mbox{ vertices remain joined}\\
@@ -413,44 +414,48 @@ Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as opera
 We are going to calculate the distance $\overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
 $(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
 
-\subsubsection{$(B_x, B_y)$}
-We use the triangle above $M(a,b,c)$ and make the extension $u = |y_1|$ and obtain $(B_x, B_y)$. We already calculated angle $\theta=\angle{ACB}$ for the original triangle pair using the variables $m,n$ of equation \ref{eq:mn}.
+For the triangle above we have two cases: $y_1 \geq 0$ and $y_1 < 0$.
+In the not-extended triangle pair we already calculated $\theta=\angle{ACB}, \cos\theta, \sin\theta$ based in $m,n$ of equation \ref{eq:mn}.
+For the case $y_1 < 0$ here we calculate also $\omega=\angle{BAC},\cos\omega,\sin\omega$ using two variables $p,q$. For both cases we define $u = |y_1|$ and finally we get $(B_x, B_y)$:
 \begin{align}
-a_1 &\equiv b^2 + c^2 - a^2, \quad a_2 \equiv 2bc, \quad \mbox{ iff } |a_1| \leq a_2\\
-\cos{A} &= \frac{a_1}{a_2}, \quad\sin{A} = \frac{\sqrt{a_2^2 - a_1^2}}{a_2}\\
+(\omega, p, q) &\equiv (\angle{BAC}, b^2 + c^2 - a^2, 2bc), \quad | p | \le q, \quad p,q \in \bbb{Z} \label{eq:pq}\\
+\cos\omega &= \frac{p}q \\
+\sin\omega &= \sqrt{1-\cos^2\omega} = \frac{\sqrt{q^2 - p^2}}q \\
 \alpha &= a + u\\
 \gamma &= c + u\\
 B_x &= \left \{ \begin{array}{rl}
   y_1 \geq 0 & \alpha\cos\theta\\
-  y_1 < 0    & b - \gamma\cos{A}
+  y_1 < 0    & b - \gamma\cos\omega
  \end{array}\right. \\
 B_y &= \left \{ \begin{array}{rl}
  y_1 \geq 0 & \alpha\sin\theta\\
- y_1 < 0    & \gamma\sin{A}
+ y_1 < 0    & \gamma\sin\omega
  \end{array}\right.
 \end{align}
 
-For the triangle below $N(d,e,f)$ we make $n = |y_2|$ and obtain $(E_x,E_y)$:
+For the triangle below $N(d,e,f)$ we have two cases: $y_2 \geq 0$ and $y_2 < 0$. In both cases we will use $x \geq 0$ always for simplicity.
+In the not-extended triangle pair we already calculated $\phi=\angle{DFE}, \cos\phi, \sin\phi$
+defining $o,p$ in equation \ref{eq:op}.
+For the case $y_2 < 0$ here we calculate also $D=\angle{EDF}, \cos{D}, \sin{D}$ using two variables $r,s$. For both cases we define $v = |y_2|$ and finally we get $(E_x,E_y)$:
 \begin{align}
-d_1 &\equiv e^2 + f^2 - d^2, \quad d_2 \equiv 2ef\\
-f_1 &\equiv d^2 + e^2 - f^2, \quad f_2 \equiv 2de\\ 
-\cos{D} &= \frac{d_1}{d_2}, \quad\sin{D} = \frac{\sqrt{d_2^2 - d_1^2}}{d_2}\\
-\cos{F} &= \frac{f_1}{f_2}, \quad\sin{F} = \frac{\sqrt{f_2^2 - f_1^2}}{f_2}\\
-\delta &= d + n\\
-\zeta  &= f + n\\
+(r, s) &\equiv (d^2 + f^2 - e^2, 2df), \quad | r | \le s, \quad r,s \in \bbb{Z} \label{eq:rs}\\
+\cos{D} &= \frac{r}s \\
+\sin{D} &= \sqrt{1-\cos^2{D}} = \frac{\sqrt{s^2 - r^2}}s \\
+\delta &= d + v\\
+\zeta  &= f + v\\
 E_x &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & x + \delta\cos{F}\\
+ y_2 \geq 0 & x + \delta\cos\phi\\
  y_2 < 0    & x + e - \zeta\cos{D} 
  \end{array}\right. \\
 E_y &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & -\delta\sin{F} \\
+ y_2 \geq 0 & -\delta\sin\phi \\
  y_2 < 0    & -\zeta\sin{D}
  \end{array}\right.
 \end{align}
 
-With the four components $B_x, B_y, E_x, E_y$ we can calculate $\overline{B'E'}$:
+With the four components $B_x, B_y, E_x, E_y$ we can calculate $g = \overline{B'E'}$:
 \begin{align}
-\overline{B'E'} &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
+g &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
  &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y}
 \end{align}
 
