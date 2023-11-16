@@ -9,17 +9,18 @@
 \usetikzlibrary{calc}
 \usepackage{lipsum}
 
-
-
-
+\newenvironment{MyColorPar}[1]{
+    \leavevmode\color{#1}\ignorespaces
+}{
+}
 
 \begin{document}
 
 \maketitle
 \begin{abstract}
 Meccano frames are groups of rigid meccano\meccanoref strips. Can be used as internal
-diagonals of polygons to be rigid. The lengths of such diagonals are algebraic 
-numbers of the form $\frac{B+C\sqrt{D}}A$ or $\frac{E\sqrt{F+H\sqrt{G}}}A$.
+diagonals of polygons we want to be rigid. The lengths of such diagonals are algebraic 
+numbers of the form $\dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}$ which in some cases can be denested as $\dfrac{z_2+z_3\sqrt{z_4}}{z_1}$ where $z_i \in \bbb{Z}$.
 \end{abstract}
 
 \section{Triangular frame}
@@ -35,7 +36,7 @@ Figure \ref{fig:triangle} shows a triangular frame.
 With three strips we form the triangle $\triangle{ABC}$.
 At least we extend one of the two strips $\overline{CB}$ and $\overline{CA}$ to become
 $\overline{CE}$ and $\overline{CD}$. The new vertices $D$ and $E$ distance is rigid
-of the form $\dfrac{p\sqrt{s}}q$, where $p,q,s \in \bbb{Z^+}$.
+as the triangle with the form $\dfrac{z_2\sqrt{z_3}}{z_1}$, where $z_i \in \bbb{Z^+}$.
 
 First we identify five integer distances $a,b,c,d,e$:
 \begin{align}
@@ -49,28 +50,36 @@ We calculate the cosine of $\angle{BCA}$:
 \theta &\equiv \angle{BCA} \\
 \cos\theta &= \frac{a^2 + b^2 - c^2}{2ab}
 \end{align}
-Then we apply the cosine to the triangle $\triangle{CED}$ to get the
-extensions distance $\overline{DE}$:
+
+We define $g \equiv \overline{DE}$ the triangular frame main diagonal.
+We calculate the diagonal with the law of cosines:
 \begin{align}
-\overline{DE}^2 &= \overline{CD}^2 + \overline{CE}^2
+g^2 &= \overline{DE}^2 \nonumber\\
+ &= \overline{CD}^2 + \overline{CE}^2
  - 2\overline{CD} \times \overline{CE}\cos\theta \nonumber\\
  &= d^2 + e^2 - 2de\cos\theta \nonumber\\
- &= d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)
-\end{align}
-We extract the square root:
-\begin{align}
- \overline{DE} &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
+ &= d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right) \nonumber\\
+g &= \sqrt{d^2 + e^2 - de\left(\frac{a^2 + b^2 - c^2}{ab}\right)}\nonumber\\
  &= \frac{\sqrt{a^2b^2(d^2 + e^2) - abde(a^2 + b^2 - c^2)}}{ab}\nonumber\\
  &= \frac{\sqrt{ab((ad-be)(bd-ae)+c^2de)}}{ab}
 \end{align}
 
-\subsection{Software}
+\subsection{Triangular frame software}
 
-We write a software to report all the triangle frames with specific surd $\sqrt{s}$
-for a given maximum strips length.
-We can reject cases $q \neq 1$ and $s$ not square-free.
-Next list show all the triangles with $q=1$ and $s=\sqrt{7}$ where
-$c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
+From the last equation of diagonal $g$ we identify two \texttt{input} integers $i_1,i_2$ which are used to get $g(i)$. Then the nested radicals software will return square-free \texttt{output} integers $z_1,z_2,z_3$ as $g(z)$:
+\begin{align}
+i_1 &= ab \\
+i_2 &= ab((ad-be)(bd-ae)+c^2de) \\
+g(i) &= \frac{\sqrt{i_2}}{i_1} \\
+g(z) &= \frac{z_2\sqrt{z_3}}{z_1}
+\end{align}
+
+We request a software report for all the triangle frames with specific distance $\sqrt{z_3}$
+for a given maximum strips length. The report reject the triangles where $z_1 > 1$ and when $z_3$ is not a square-free. Next example report list all the triangles $z_3 = 7, max=15$ so the software filters are $c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
+
+\boxed{TODO: Write a report in tex format to paste here!!!}
+
+\begin{MyColorPar}{blue}
 \begin{lstlisting}
 === RUN   TestFramesTriangleSurds
 NewFrames().TriangleSurds surd=7 max=15
@@ -87,6 +96,7 @@ NewFrames().TriangleSurds surd=7 max=15
  11) a=7 e=5+1 c=3 cos=13/14
  12) a=7 e=5+2 c=3 cos=13/14
 \end{lstlisting}
+\end{MyColorPar}
 
 \begin{figure}[h]
 \centering
@@ -96,23 +106,26 @@ NewFrames().TriangleSurds surd=7 max=15
 \meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)
 \meccanoframetriangle{7}{5}{3}{0}{1}{3pt}{0.6}{0}{0}(d)
 \end{center}
-\caption{Some triangular frames with rigid distance $\overline{DE}=\sqrt{7}$ found by the software.
+\caption{Some triangular frames with distances $g = \overline{DE}=\sqrt{7}$ found by the software.
 }
 \label{fig:surd7}
 \end{figure}
 
-Figure \ref{fig:surd7} show four cases of this list.
+Figure \ref{fig:surd7} show four triangles reported.
+
 The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
 
-\subsection{Triangular distance of the form $\sqrt{s} + f$}
+\subsection{Triangular frame distance of the form $\sqrt{z_3} + z_4$}
 
-In the figure \ref{fig:surd7}, the particular case (b),
-was reported with the angle $CED=\pi/2$ which means we can append two extra strips to make
-a pythagorean triangle $\triangle{CEF}$ where angle ${CEF}=\pi/2$, which makes
-the three vertices $D,E,F$ collinear, so the rigid distance $\overline{DF}=\sqrt{7}+4$ is an algebraic number.
+In the figure \ref{fig:surd7}, the particular triangle at (b) was reported with the angle $\angle{CED}=\pi/2$. For such triangle, if we add a triangle $\triangle{CBF}$ where angle $\angle{CBF} = \pi/2$ also, then we'll have vertices $D,E,F$ collinear. With two extra strips we can form a pythagorean triangle sharing the strip $a$. The figure (b) shows the pythagorean triangle with sides $3,4,5$. This five-strips frame has a new distance:
+\begin{align*}
+h &= \overline{DF}\\
+ &= \overline{DB} + \overline{BF} \\
+ & = \sqrt{7} + 4.
+\end{align*}
 
 
-\subsection{Another rigid distances $\sqrt{s} + h$}
+\subsection{Another rigid distances $\sqrt{z_3} + z_4$}
 
 We explore a more complicated frame to get additional cases of distances $\sqrt{s} + h$ without
 relying in an explicit pythagorean triangle as we saw in case (b) of figure \ref{fig:surd7}.
@@ -244,10 +257,10 @@ $\overline{BE} = \dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}, z_i \in \bbb{Z}$.
 
 Using the law of cosines we calculate the angle $\theta = \angle{ACB}$ with defined variables $m,n$ and the angle $\phi = \angle{DFE}$ with defined variables $o,p$:
 \begin{align}
-(m, n) &\equiv (a^2 + b^2 - c^2, 2ab), \quad | m | \le n, \quad m,n \in \bbb{Z} \label{eq:mn}\\
+(\theta, m, n) &\equiv (\angle{ACB}, a^2 + b^2 - c^2, 2ab), \quad | m | \le n, \quad m,n \in \bbb{Z} \label{eq:mn}\\
 \cos\theta &= \frac{m}n \\
 \sin\theta &= \sqrt{1-\cos^2\theta} = \frac{\sqrt{n^2 - m^2}}n \\
-(o, p) &\equiv (d^2 + e^2 - f^2, 2de), \quad | o | \le p, \quad o,p \in \bbb{Z} \label{eq:op}\\
+(\phi, o, p) &\equiv (\angle{DFE}, d^2 + e^2 - f^2, 2de), \quad | o | \le p, \quad o,p \in \bbb{Z} \label{eq:op}\\
 \cos\phi   &= \frac{o}p \\
 \sin\phi   &= \sqrt{1-\cos^2\phi} = \frac{\sqrt{p^2 - o^2}}p
 \end{align}
@@ -272,7 +285,7 @@ g &\equiv \overline{BE}\nonumber\\
 
 \subsection{Triangle pairs software}
 
-From the last equation of $g$ we identify three \texttt{input} integers $i_1,i_2,i_3$ which are used to get $g(i)$. Then the nested radicals sofware returns \texttt{output} integers $z_1,z_2,z_3,z_4,z_5$ as $g(z)$:
+From the last equation of $g$ we identify three \texttt{input} integers $i_1,i_2,i_3$ which are used to get $g(i)$. Then the nested radicals sofware will return square-free \texttt{output} integers $z_1,z_2,z_3,z_4,z_5$ as $g(z)$:
 \begin{align}
 i_1 &\equiv 2be\\
 i_2 &\equiv i_1^2(a^2+d^2) - i_1mo\\
@@ -282,11 +295,6 @@ g(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
 \end{align}
 
 We run a program to print a list of triangle pairs with sides $1 < a,b,c,d,e,f \leq max$ having a given distance $\overline{BE}=g$ or particular $z3,z4,z5$. Next example request a pairs list with $g = z_2\sqrt{46+18\sqrt{5}}/z_1$ up to strip length $10$ so we set as limits $max=10, z_3=46, z_4=18, z_5=5$ to get next report (text in blue):
-
-\newenvironment{MyColorPar}[1]{
-    \leavevmode\color{#1}\ignorespaces
-}{
-}
 
 \begin{MyColorPar}{blue}
 %%----------- start
@@ -436,20 +444,20 @@ B_y &= \left \{ \begin{array}{rl}
 For the triangle below $N(d,e,f)$ we have two cases: $y_2 \geq 0$ and $y_2 < 0$. In both cases we will use $x \geq 0$ always for simplicity.
 In the not-extended triangle pair we already calculated $\phi=\angle{DFE}, \cos\phi, \sin\phi$
 defining $o,p$ in equation \ref{eq:op}.
-For the case $y_2 < 0$ here we calculate also $D=\angle{EDF}, \cos{D}, \sin{D}$ using two variables $r,s$. For both cases we define $v = |y_2|$ and finally we get $(E_x,E_y)$:
+For the case $y_2 < 0$ here we calculate also $\psi=\angle{EDF}, \cos\psi, \sin\psi$ using two variables $r,s$. For both cases we define $v = |y_2|$ and finally we get $(E_x,E_y)$:
 \begin{align}
-(r, s) &\equiv (d^2 + f^2 - e^2, 2df), \quad | r | \le s, \quad r,s \in \bbb{Z} \label{eq:rs}\\
-\cos{D} &= \frac{r}s \\
-\sin{D} &= \sqrt{1-\cos^2{D}} = \frac{\sqrt{s^2 - r^2}}s \\
+(\psi, r, s) &\equiv (\angle{EDF}, e^2 + f^2 - d^2, 2ef), \quad | r | \le s, \quad r,s \in \bbb{Z} \label{eq:rs}\\
+\cos\psi &= \frac{r}s \\
+\sin\psi &= \sqrt{1-\cos^2\psi} = \frac{\sqrt{s^2 - r^2}}s \\
 \delta &= d + v\\
 \zeta  &= f + v\\
 E_x &= \left \{ \begin{array}{rl}
  y_2 \geq 0 & x + \delta\cos\phi\\
- y_2 < 0    & x + e - \zeta\cos{D} 
+ y_2 < 0    & x + e - \zeta\cos\psi 
  \end{array}\right. \\
 E_y &= \left \{ \begin{array}{rl}
  y_2 \geq 0 & -\delta\sin\phi \\
- y_2 < 0    & -\zeta\sin{D}
+ y_2 < 0    & -\zeta\sin\psi
  \end{array}\right.
 \end{align}
 
@@ -459,32 +467,32 @@ g &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
  &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y}
 \end{align}
 
-For $y_1 \geq 0$ and $y_2 \geq 0$ we have $m=y_1, n=y_2$:
+For $y_1 \geq 0$ and $y_2 \geq 0$:
 \begin{align}
-\alpha &= a + m, \qquad \delta = d + n\\
-B_x^2 + B_y^2 &= \alpha^2\cos^2{C} + \alpha^2\sin^2{C} \nonumber\\
+\alpha &= a + u, \qquad \delta = d + v\\
+B_x^2 + B_y^2 &= \alpha^2\cos^2\theta + \alpha^2\sin^2\theta \nonumber\\
  &= \alpha^2\\
-E_x^2 + E_y^2 &= (x + \delta\cos{F})^2 + (-\delta\sin{F})^2 \nonumber\\
- &= x^2 + 2x\delta\cos{F} + \delta^2\cos^2{F} + \delta^2\sin^2{F} \nonumber\\
- &= x^2 + 2x\delta\cos{F} + \delta^2 \nonumber\\
- &= \frac{f_2x^2 + 2x\delta f_1 + f_2\delta^2}{f_2}\\
-B_xE_x &= (\alpha\cos{C})(x + \delta\cos{F}) \nonumber\\
- &= \frac{\alpha c_1(f_2x + \delta f_1)}{c_2f_2} \\
-B_yE_y &= (\alpha\sin{C})(-\delta\sin{F})\nonumber\\
- &= -\frac{\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}}{c_2f_2}\\
+E_x^2 + E_y^2 &= (x + \delta\cos\phi)^2 + (-\delta\sin\phi)^2 \nonumber\\
+ &= x^2 + 2x\delta\cos\phi + \delta^2\cos^2\phi + \delta^2\sin^2\phi \nonumber\\
+ &= x^2 + 2x\delta\cos\phi + \delta^2 \nonumber\\
+ &= \frac{px^2 + 2x\delta o + p\delta^2}{p}\\
+B_xE_x &= (\alpha\cos\theta)(x + \delta\cos\phi) \nonumber\\
+ &= \frac{\alpha m(px + \delta o)}{np} \\
+B_yE_y &= (\alpha\sin\theta)(-\delta\sin\phi)\nonumber\\
+ &= -\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\\
 g &= \overline{B'E'}\nonumber\\
  &= \sqrt{
 \alpha^2
-+ \frac{f_2x^2 + 2x\delta f_1 + f_2\delta^2}{f_2}
-+ \frac{2\alpha c_1(f_2x + \delta f_1)}{c_2f_2}
-- \frac{2\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}}{c_2f_2}
++ \frac{px^2 + 2x\delta o + p\delta^2}p
++ \frac{2\alpha m(px + \delta o)}{np}
+- \frac{2\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
 }\nonumber\\
  &= \sqrt{\frac{
-c_2f_2\alpha^2  
-+ c_2(f_2x^2 + 2x\delta f_1 + f_2\delta^2)
-+ 2\alpha c_1(f_2x + \delta f_1)
-- 2\alpha \delta\sqrt{(c_2^2 - c_1^2)(f_2^2 - f_1^2)}
-}{c_2f_2}}\nonumber\\
+np\alpha^2  
++ n(px^2 + 2x\delta o + p\delta^2)
++ 2\alpha m(px + \delta o)
+- 2\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}
+}{np}}\nonumber\\
 \end{align}
 
 

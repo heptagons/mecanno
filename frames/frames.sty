@@ -14,25 +14,29 @@
 \pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
 \pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
 \begin{scope}[scale=#7]
-  \meccanostrip[0000cc]{#3}{1}{\p} % blue c=BA
-  \path(#3/2,0) node[above=\p]{$c$};
+  % blue c=BA
+  \meccanostrip[0000cc]{#3}{1}{\p}
+  \path(#3/2,0) ++(-90:5*\p) node{$c$};
+
+  % red a+d=CB+BE
    \begin{scope}[rotate={acos(\cosb)},shift={(-#4,0)}] % shift -d
-    \meccanostrip[cc0000]{\ad}{1}{\p} % red a+d=CB+BE
+    \meccanostrip[cc0000]{\ad}{1}{\p}
+    \path(0,0)    ++(180:5*\p) node{$E$};
     \ifthenelse{#4>0}{
-     \path(0,0) ++(180:5*\p) node{$E$};
-     \path(#4/2,0) node[left=3*\p]{$a-d$};
+     \path(#4/2,0) ++(0,7*\p)   node{$a-d$};
      }{}
-    \path(#4,0) node[left=3*\p]{$B$};
-    \path(#4+#1/2,0) node[right=3*\p]{$a$};
-    \path(\ad,0) ++(90:5*\p) node{$C$};
+    \path(#4,0)      ++(90:5*\p) node{$B$};
+    \path(#4+#1/2,0) ++(0,4*\p)  node{$a$};
+    \path(\ad,0)     ++(90:5*\p) node{$C$};
     
     \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
-   
    \end{scope}
+   % green b+e=CA+AD
    \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
-    \meccanostrip[008800]{\be}{1}{\p} % green b+e=CA+AD
-    \path (#5,0) ++(-90:5*\p) node{$A$}; %e
-    \path (0,0) ++(-180:5*\p) node{$D$};
+    \meccanostrip[008800]{\be}{1}{\p}
+    \path (#5+#2/2,0) ++(-90:5*\p)  node{$b$};
+    \path (#5,0)      ++(-90:5*\p)  node{$A$}; %e
+    \path (0,0)       ++(-180:5*\p) node{$D$};
    \end{scope}
 \end{scope}
 \end{tikzpicture}
