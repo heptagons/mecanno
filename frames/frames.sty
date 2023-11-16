@@ -4,24 +4,26 @@
 
 \RequirePackage{ifthen}
 
-\newcommand{\meccanoframetriangle}[9]{%a,b,c,d,e,p,scale, f,g
-\begin{tikzpicture}
-\def\p{#6}
-\def\f{#8}
-\def\g{#9}
-\pgfmathsetmacro{\ad}{#1 + #4} % a+d
-\pgfmathsetmacro{\be}{#2 + #5} % b+e
-\pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
-\pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
-\begin{scope}[scale=#7]
+%      _/\
+%    _/   \
+%  _/------\
+% /         '
+\newcommand{\meccanoframetriangle}[8]{%a,b,c,d,e,p, f,g
+ \def\p{#6}
+ \def\f{#7}
+ \def\g{#8}
+ \pgfmathsetmacro{\ad}{#1 + #4} % a+d
+ \pgfmathsetmacro{\be}{#2 + #5} % b+e
+ \pgfmathsetmacro{\cosb}{(#1^2 + #3^2 - #2^2)/(2*#1*#3)} % (a^2 + c^2 - b^2)/(2ac)
+ \pgfmathsetmacro{\cosa}{(#2^2 + #3^2 - #1^2)/(2*#2*#3)} % (b^2 + c^2 - a^2)/(2bc)
   % blue c=BA
-  \meccanostrip[0000cc]{#3}{1}{\p}
-  \path(#3/2,0) ++(-90:5*\p) node{$c$};
+ \meccanostrip[0000cc]{#3}{1}{\p}
+ \path(#3/2,0) ++(-90:5*\p) node{$c$};
 
-  % red a+d=CB+BE
-   \begin{scope}[rotate={acos(\cosb)},shift={(-#4,0)}] % shift -d
-    \meccanostrip[cc0000]{\ad}{1}{\p}
-    \path(0,0)    ++(180:5*\p) node{$E$};
+ % red a+d=CB+BE
+ \begin{scope}[rotate={acos(\cosb)},shift={(-#4,0)}] % shift -d
+  \meccanostrip[cc0000]{\ad}{1}{\p}
+   \path(0,0)    ++(180:5*\p) node{$E$};
     \ifthenelse{#4>0}{
      \path(#4/2,0) ++(0,7*\p)   node{$a-d$};
      }{}
@@ -29,17 +31,15 @@
     \path(#4+#1/2,0) ++(0,4*\p)  node{$a$};
     \path(\ad,0)     ++(90:5*\p) node{$C$};
     
-    \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
-   \end{scope}
-   % green b+e=CA+AD
-   \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
-    \meccanostrip[008800]{\be}{1}{\p}
-    \path (#5+#2/2,0) ++(-90:5*\p)  node{$b$};
-    \path (#5,0)      ++(-90:5*\p)  node{$A$}; %e
-    \path (0,0)       ++(-180:5*\p) node{$D$};
-   \end{scope}
-\end{scope}
-\end{tikzpicture}
+  \meccanoframetriangleextra{\ad}{\f}{\g} % d,f,g
+ \end{scope}
+ % green b+e=CA+AD
+ \begin{scope}[shift={(#3,0)},rotate=180-acos{\cosa},shift={(-#5,0)}] % shift c, shift -e
+  \meccanostrip[008800]{\be}{1}{\p}
+  \path (#5+#2/2,0) ++(-90:5*\p)  node{$b$};
+  \path (#5,0)      ++(-90:5*\p)  node{$A$}; %e
+  \path (0,0)       ++(-180:5*\p) node{$D$};
+ \end{scope}
 }
 
 

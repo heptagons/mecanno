@@ -26,8 +26,14 @@ numbers of the form $\dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}$ which in some cas
 \section{Triangular frame}
 
 \begin{figure}[h]
-\centering
-\meccanoframetriangle{5}{4}{7}{3}{1}{3pt}{0.75}{0}{0}
+ \centering
+ \begin{tikzpicture}
+  \begin{scope}[scale=0.7]
+   %\begin{scope}[shift={(0,0)}]
+    \meccanoframetriangle{5}{4}{7}{3}{1}{3pt} {0}{0}
+   %\end{scope}
+  \end{scope}
+ \end{tikzpicture}
 \caption{Triangular frame. }
 \label{fig:triangle}
 \end{figure}
@@ -75,9 +81,7 @@ g(z) &= \frac{z_2\sqrt{z_3}}{z_1}
 \end{align}
 
 We request a software report for all the triangle frames with specific distance $\sqrt{z_3}$
-for a given maximum strips length. The report reject the triangles where $z_1 > 1$ and when $z_3$ is not a square-free. Next example report list all the triangles $z_3 = 7, max=15$ so the software filters are $c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
-
-\boxed{TODO: Write a report in tex format to paste here!!!}
+for a given maximum strips length. This report reject the triangles where $z_1,z_2 \neq 1$. Next example report list all the triangles $z_3 = 7, max=15$ so the software filters are $c < a+b$, $a\leq d\leq max$, $b\leq e\leq max$, $c\leq max$:
 
 \begin{MyColorPar}{blue}
 \begin{lstlisting}
@@ -96,24 +100,41 @@ NewFrames().TriangleSurds surd=7 max=15
  11) a=7 e=5+1 c=3 cos=13/14
  12) a=7 e=5+2 c=3 cos=13/14
 \end{lstlisting}
+
+The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
+\\
 \end{MyColorPar}
 
 \begin{figure}[h]
-\centering
-\begin{center}
-\meccanoframetriangle{1}{1}{1}{0}{2}{3pt}{1.0}{0}{0}(a)
-\meccanoframetriangle{3}{2}{2}{0}{2}{3pt}{0.7}{5}{4}(b)
-\meccanoframetriangle{4}{4}{1}{2}{4}{3pt}{0.6}{0}{0}(c)
-\meccanoframetriangle{7}{5}{3}{0}{1}{3pt}{0.6}{0}{0}(d)
-\end{center}
+ \centering
+ \begin{tikzpicture}
+  \begin{scope}[shift={(0,0)}]
+   \begin{scope}[scale=0.7]
+    \meccanoframetriangle{1}{1}{1}{0}{2}{3pt} {0}{0}
+   \end{scope} \draw (0.5,-2.7) node{$(a)$};  
+  \end{scope}
+  \begin{scope}[shift={(4,0)}]
+   \begin{scope}[scale=0.7]
+     \meccanoframetriangle{3}{2}{2}{0}{2}{3pt} {5}{4}
+   \end{scope} \draw (0.5,-2.7) node{$(b)$};
+  \end{scope}
+  \begin{scope}[shift={(8,1)}]
+   \begin{scope}[scale=0.7]
+    \meccanoframetriangle{4}{4}{1}{2}{4}{3pt} {0}{0}
+   \end{scope} \draw (0.5,-3.7) node{$(c)$};
+  \end{scope}
+  \begin{scope}[shift={(11,0)}]
+   \begin{scope}[scale=0.7]
+    \meccanoframetriangle{7}{5}{3}{0}{1}{3pt} {0}{0}
+   \end{scope} \draw (0.5,-2.7) node{$(d)$};
+  \end{scope}
+ \end{tikzpicture}
 \caption{Some triangular frames with distances $g = \overline{DE}=\sqrt{7}$ found by the software.
 }
 \label{fig:surd7}
 \end{figure}
 
-Figure \ref{fig:surd7} show four triangles reported.
-
-The code is in the folder \texttt{github.com/heptagons/meccano/frames}.
+Figure \ref{fig:surd7} show four triangles from the mentioned report.
 
 \subsection{Triangular frame distance of the form $\sqrt{z_3} + z_4$}
 
