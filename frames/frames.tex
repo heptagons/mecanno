@@ -272,7 +272,7 @@ of condition 1:
 
 Figure \ref{fig:tripair} shows a triangle pair frame.
 The pair joins triangles $\triangle{ABC}$ and $\triangle{DEF}$ in such a way vertices $C$ and $F$ coincide and vertices $A,C,D,F$ be collinear. With only five strips this frame is small and useful to make up the rigid polygons diagonals of the form
-$\overline{BE} = \dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}, z_i \in \bbb{Z}$.
+$g = \overline{BE} = \dfrac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}, z_i \in \bbb{Z}$. In some cases the diagonal can be denested to the form $g = \dfrac{z_2 + z_3\sqrt{z_4}}{z_1}$.
 
 \subsection{Triangle pair algebra}
 
@@ -392,19 +392,17 @@ In figure \ref{fig:tripair212333} we build a triangular pair following one of th
    \end{scope}
   \end{scope}
  \end{tikzpicture}
- \caption{Triangle pair extended frame. Is like previous triangle pair frame except
+ \caption{Triangle pair extended frame. Starts like previous triangle pair frame except
  we can extend strips $\alpha$ or $\gamma$, $\delta$ or $\zeta$, and we can separate vertices $C$ and $F'$.
- Vertices $A,C,D',F'$ remain collinear and we are interested in the distance $\overline{B'E'}$.
- We show four examples: (a) is the original triangle pair,
+ Vertices $A,C,D',F'$ remain collinear and we are interested in the distance $g \equiv \overline{B'E'}$. We show four examples: (a) is the original triangle pair,
  (b) has moved the $\triangle{D'E'F'}$ to the right,
  (c) also extends strips $\alpha$ and $\delta$ and (d) extends strips $\gamma$ and $\zeta$.
  }
  \label{fig:tripairext}
 \end{figure}
 
-Some triangle pair extended frames are shown in figure \ref{fig:tripairext}.
-As with figure \ref{fig:tripair} we also have two triangles with five strips,
-but we can perform one, two or three transformations on the frame: 
+We show some triangle pair extended frames in figure \ref{fig:tripairext}.
+As with not-extended triangle pair of figure \ref{fig:tripair} we also have two triangles with five strips, but we can perform one, two or three transformations on the frame: 
 \begin{enumerate}
  \item Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$.
  \item Extends strip $a \rightarrow \alpha$ or strip $c \rightarrow \gamma$ but not both.
@@ -440,12 +438,12 @@ Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as opera
 
 \subsection{Triangle pair extended frame algebra}
 
-We are going to calculate the distance $\overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
+We are going to calculate the diagonal $g \equiv \overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
 $(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
 
-For the triangle above we have two cases: $y_1 \geq 0$ and $y_1 < 0$.
+For the triangle above $M(a,b,c)$ we have two cases: $T(0,y_1 \geq 0,0)$ and $T(0,y_1 < 0,0)$.
 In the not-extended triangle pair we already calculated $\theta=\angle{ACB}, \cos\theta, \sin\theta$ based in $m,n$ of equation \ref{eq:mn}.
-For the case $y_1 < 0$ here we calculate also $\omega=\angle{BAC},\cos\omega,\sin\omega$ using two variables $p,q$. For both cases we define $u = |y_1|$ and finally we get $(B_x, B_y)$:
+For the case $y_1 < 0$ here, we calculate also $\omega=\angle{BAC},\cos\omega,\sin\omega$ using two variables $p,q$. For both cases we define $u = |y_1|$ and finally we get $(B_x, B_y)$:
 \begin{align}
 (\omega, p, q) &\equiv (\angle{BAC}, b^2 + c^2 - a^2, 2bc), \quad | p | \le q, \quad p,q \in \bbb{Z} \label{eq:pq}\\
 \cos\omega &= \frac{p}q \\
@@ -462,7 +460,7 @@ B_y &= \left \{ \begin{array}{rl}
  \end{array}\right.
 \end{align}
 
-For the triangle below $N(d,e,f)$ we have two cases: $y_2 \geq 0$ and $y_2 < 0$. In both cases we will use $x \geq 0$ always for simplicity.
+For the triangle below $N(d,e,f)$ we have two cases: $T(x,0,y_2 \geq 0)$ and $T(x,0,y_2 < 0)$. In both cases we will use $x \geq 0$ always for simplicity.
 In the not-extended triangle pair we already calculated $\phi=\angle{DFE}, \cos\phi, \sin\phi$
 defining $o,p$ in equation \ref{eq:op}.
 For the case $y_2 < 0$ here we calculate also $\psi=\angle{EDF}, \cos\psi, \sin\psi$ using two variables $r,s$. For both cases we define $v = |y_2|$ and finally we get $(E_x,E_y)$:
@@ -485,35 +483,62 @@ E_y &= \left \{ \begin{array}{rl}
 With the four components $B_x, B_y, E_x, E_y$ we can calculate $g = \overline{B'E'}$:
 \begin{align}
 g &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
- &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y}
+ &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y} \label{eq:tpeg}
 \end{align}
 
-For $y_1 \geq 0$ and $y_2 \geq 0$:
+We need to calculate separated four types of diagonals $g^{++},g^{+-},g^{-+},g^{--}$ according the signs of $y_1$ and $y_2$ as described in the next table:
+\begin{center}
+\begin{tabular}{| c c c |}
+\hline
+$g$ & $y_1$ & $y_2$ \\ [0.5ex]
+\hline
+$g^{++}$ & $\geq 0$ & $\geq 0$ \\
+$g^{+-}$ & $\geq 0$ & $< 0$ \\
+$g^{-+}$ & $< 0$ & $\geq 0$ \\
+$g^{--}$ & $< 0$ & $< 0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Triangle pair extended case $g^{++}$ ($y_1\geq 0$ and $y_2\geq 0$)}
+
+For $g^{++}$ we calculate sums and products of $Bx,By,Ex,Ey$ when $y_1 \geq 0$ and $y_2 \geq 0$:
 \begin{align}
 \alpha &= a + u, \qquad \delta = d + v\\
-B_x^2 + B_y^2 &= \alpha^2\cos^2\theta + \alpha^2\sin^2\theta \nonumber\\
+(B_x^2 + B_y^2)^{++} &= \alpha^2\cos^2\theta + \alpha^2\sin^2\theta \nonumber\\
  &= \alpha^2\\
-E_x^2 + E_y^2 &= (x + \delta\cos\phi)^2 + (-\delta\sin\phi)^2 \nonumber\\
+(E_x^2 + E_y^2)^{++} &= (x + \delta\cos\phi)^2 + (-\delta\sin\phi)^2 \nonumber\\
  &= x^2 + 2x\delta\cos\phi + \delta^2\cos^2\phi + \delta^2\sin^2\phi \nonumber\\
  &= x^2 + 2x\delta\cos\phi + \delta^2 \nonumber\\
  &= \frac{px^2 + 2x\delta o + p\delta^2}{p}\\
-B_xE_x &= (\alpha\cos\theta)(x + \delta\cos\phi) \nonumber\\
+(B_xE_x)^{++} &= (\alpha\cos\theta)(x + \delta\cos\phi) \nonumber\\
  &= \frac{\alpha m(px + \delta o)}{np} \\
-B_yE_y &= (\alpha\sin\theta)(-\delta\sin\phi)\nonumber\\
- &= -\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\\
-g &= \overline{B'E'}\nonumber\\
+(B_yE_y)^{++} &= (\alpha\sin\theta)(-\delta\sin\phi)\nonumber\\
+ &= -\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
+\end{align}
+We subsitute the products in equation \ref{eq:tpeg}:
+\begin{align}
+g^{++} &= \sqrt{(B_x^2 + B_y^2)^{++} + (E_x^2 + E_y^2)^{++} + 2(B_xE_x)^{++} + 2(B_yE_y)^{++}}\nonumber\\
  &= \sqrt{
 \alpha^2
 + \frac{px^2 + 2x\delta o + p\delta^2}p
 + \frac{2\alpha m(px + \delta o)}{np}
 - \frac{2\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
 }\nonumber\\
- &= \sqrt{\frac{
-np\alpha^2  
-+ n(px^2 + 2x\delta o + p\delta^2)
-+ 2\alpha m(px + \delta o)
-- 2\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}
-}{np}}\nonumber\\
+ &= \frac{\sqrt{
+n^2p^2\alpha^2 + n^2p(px^2 + 2x\delta o + p\delta^2)
++ 2\alpha mnp(px + \delta o) - 2\alpha\delta np\sqrt{(n^2 - m^2)(p^2 - o^2)}
+}}{np}
+\end{align}
+
+From the last equation we identify four \texttt{input} integer variables to calculate software $g^{++}(i)$ which will be reduced or even denested $g^{++}(z)$:
+\begin{align}
+i_1 &= np \\
+i_2 &= i_1^2\alpha^2 + i_1n(px^2 + 2x\delta o + p\delta^2) + 2\alpha mi_1(px + \delta o)\\
+i_3 &= - 2\alpha\delta i_1 \nonumber\\
+i_4 &= (n^2 - m^2)(p^2 - o^2)\\
+g^{++}(i) &= \frac{\sqrt{i_2 + i_3\sqrt{i_4}}}{i_1}\\
+g^{++}(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
 \end{align}
 
 
