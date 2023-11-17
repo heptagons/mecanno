@@ -155,12 +155,12 @@
  \begin{scope}[shift={(\as,0)},rotate=\ca] % red strip at left
   \ifthenelse{ \down=0 }
   { 
-   \path (\an/2,0) ++(+90:7*\p) node{$\alpha$};
+   \path (\an/2,0) ++(+90:7*\p) node{$a'$};
    \path (0,0) ++(60:7*\p) node{$C$};
    \draw (12*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=12*\p] node[midway,above,right]{$\theta$};
   }
   {
-   \path (\an/2,0) ++(-90:7*\p) node{$\delta$};
+   \path (\an/2,0) ++(-90:7*\p) node{$d'$};
    \path (0,0) ++(-90:7*\p) node{$F'$};
    \draw (12*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=12*\p] node[midway,above,right]{$\phi$};
   }
@@ -174,8 +174,8 @@
 
  \begin{scope}[shift={(\cs,0)},rotate=\aa] % green strip at right
   \ifthenelse{ \down=0 }
-  { \path (\cn/2,0) ++(-90:7*\p) node{$\gamma$}; \path (0,0) ++(-90:7*\p) node{$A$}; }
-  { \path (\cn/2,0) ++(+90:7*\p) node{$\zeta$}; \path (0,0) ++(180:7*\p) node{$D'$}; }
+  { \path (\cn/2,0) ++(-90:7*\p) node{$c'$}; \path (0,0) ++(-90:7*\p) node{$A$}; }
+  { \path (\cn/2,0) ++(+90:7*\p) node{$f'$}; \path (0,0) ++(180:7*\p) node{$D'$}; }
   \ifthenelse{\n < 0} 
   { \ifthenelse{ \down=0 }
    { \path (\cn,0) ++(0:7*\p) node{$B'$}; }

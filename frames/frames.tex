@@ -393,10 +393,10 @@ In figure \ref{fig:tripair212333} we build a triangular pair following one of th
   \end{scope}
  \end{tikzpicture}
  \caption{Triangle pair extended frame. Starts like previous triangle pair frame except
- we can extend strips $\alpha$ or $\gamma$, $\delta$ or $\zeta$, and we can separate vertices $C$ and $F'$.
+ we can extend strips $a'$ or $c'$, $d'$ or $f'$, and we can separate vertices $C$ and $F'$.
  Vertices $A,C,D',F'$ remain collinear and we are interested in the distance $g \equiv \overline{B'E'}$. We show four examples: (a) is the original triangle pair,
  (b) has moved the $\triangle{D'E'F'}$ to the right,
- (c) also extends strips $\alpha$ and $\delta$ and (d) extends strips $\gamma$ and $\zeta$.
+ (c) also extends strips $a'$ and $d'$ and (d) extends strips $c'$ and $f'$.
  }
  \label{fig:tripairext}
 \end{figure}
@@ -405,25 +405,23 @@ We show some triangle pair extended frames in figure \ref{fig:tripairext}.
 As with not-extended triangle pair of figure \ref{fig:tripair} we also have two triangles with five strips, but we can perform one, two or three transformations on the frame: 
 \begin{enumerate}
  \item Separate nodes $C$ and $F$ which moves $\triangle{D'E'F'}$.
- \item Extends strip $a \rightarrow \alpha$ or strip $c \rightarrow \gamma$ but not both.
- \item Extend strip $d \rightarrow \delta$ or strip $f \rightarrow \zeta$ but not both.
+ \item Extends strip $a'$ or strip $c'$ but not both.
+ \item Extend strip $d'$ or strip $f'$ but not both.
 \end{enumerate}
 
 For each transformation we define three integers $x, y_1, y_2$:
 \begin{align}
 x &= \left \{ \begin{array}{rl}
- 0       &  C,F \mbox{ vertices remain joined}\\
- \geq  0 &  \triangle{DEF} \mbox{ is moved to the right a distance equal to } x \\
+ 0       & C,F \mbox{ vertices remain joined}\\
+ \geq  0 & \triangle{DEF} \mbox{ is moved to the right a distance equal to } x \\
  \end{array}\right. \\
-y_1 &= \left \{ \begin{array}{rl}
- 0   & \alpha = a,\quad \gamma = c \\
- > 0 & \alpha = a + y_1,\quad \gamma = c \\
- < 0 & \alpha = a,\quad \gamma = c + |y_1| \\
+y_1 &= \left \{ \begin{array}{rll}
+ \geq 0 & a' = a + y_1 & c' = c \\
+ < 0 & a' = a          & c' = c + |y_1| \\
  \end{array}\right. \\ 
-y_2 &= \left \{ \begin{array}{rl}
- 0   & \delta = d,\quad \zeta = f \\
- > 0 & \delta = d + y_2,\quad \zeta = f \\
- < 0 & \delta = d,\quad \zeta = f + |y_2| \\
+y_2 &= \left \{ \begin{array}{rll}
+ \geq 0 & d' = d + y_2 & f' = f \\
+ < 0 & d' = d          & f' = f + |y_2| \\
  \end{array}\right. 
 \end{align}
 
@@ -440,47 +438,47 @@ Then we can describe the cases $(a)-(d)$ of figure \ref{fig:tripairext} as opera
 
 We are going to calculate the diagonal $g \equiv \overline{B'E'}$ of the triangle pair extended using the $M,N,T$ values. We start setting the vertex $C$ at the origin of the standard two-dimensional graph and defining $(B_x, By)$ the abscissa and ordinate of vertex $B'$ and
 $(E_x, E_y)$ the abscissa and ordinate of vertex $E'$.
-
-For the triangle above $M(a,b,c)$ we have two cases: $T(0,y_1 \geq 0,0)$ and $T(0,y_1 < 0,0)$.
+\\\\
+For the triangle above $M(a,b,c)$ we have two cases: $y_1 \geq 0$ and $y_1 < 0$.
 In the not-extended triangle pair we already calculated $\theta=\angle{ACB}, \cos\theta, \sin\theta$ based in $m,n$ of equation \ref{eq:mn}.
-For the case $y_1 < 0$ here, we calculate also $\omega=\angle{BAC},\cos\omega,\sin\omega$ using two variables $p,q$. For both cases we define $u = |y_1|$ and finally we get $(B_x, B_y)$:
+For the case $y_1 < 0$ here, we calculate also $\omega=\angle{BAC},\cos\omega,\sin\omega$ using two variables $p,q$ and finally we get $(B_x, B_y)$:
 \begin{align}
 (\omega, p, q) &\equiv (\angle{BAC}, b^2 + c^2 - a^2, 2bc), \quad | p | \le q, \quad p,q \in \bbb{Z} \label{eq:pq}\\
 \cos\omega &= \frac{p}q \\
 \sin\omega &= \sqrt{1-\cos^2\omega} = \frac{\sqrt{q^2 - p^2}}q \\
-\alpha &= a + u\\
-\gamma &= c + u\\
+a' &= a + |y_1|\\
+c' &= c + |y_1|\\
 B_x &= \left \{ \begin{array}{rl}
-  y_1 \geq 0 & \alpha\cos\theta\\
-  y_1 < 0    & b - \gamma\cos\omega
+  y_1 \geq 0 & a'\cos\theta\\
+  y_1 < 0    & b - c'\cos\omega
  \end{array}\right. \\
 B_y &= \left \{ \begin{array}{rl}
- y_1 \geq 0 & \alpha\sin\theta\\
- y_1 < 0    & \gamma\sin\omega
+ y_1 \geq 0 & a'\sin\theta\\
+ y_1 < 0    & c'\sin\omega
  \end{array}\right.
 \end{align}
 
-For the triangle below $N(d,e,f)$ we have two cases: $T(x,0,y_2 \geq 0)$ and $T(x,0,y_2 < 0)$. In both cases we will use $x \geq 0$ always for simplicity.
+For the triangle below $N(d,e,f)$ we have two cases: $y_2 \geq 0$ and $y_2 < 0$. In both cases we will use $x \geq 0$ always for simplicity.
 In the not-extended triangle pair we already calculated $\phi=\angle{DFE}, \cos\phi, \sin\phi$
 defining $o,p$ in equation \ref{eq:op}.
-For the case $y_2 < 0$ here we calculate also $\psi=\angle{EDF}, \cos\psi, \sin\psi$ using two variables $r,s$. For both cases we define $v = |y_2|$ and finally we get $(E_x,E_y)$:
+For the case $y_2 < 0$ here we calculate also $\psi=\angle{EDF}, \cos\psi, \sin\psi$ using two variables $r,s$ and finally we get $(E_x,E_y)$:
 \begin{align}
 (\psi, r, s) &\equiv (\angle{EDF}, e^2 + f^2 - d^2, 2ef), \quad | r | \le s, \quad r,s \in \bbb{Z} \label{eq:rs}\\
 \cos\psi &= \frac{r}s \\
 \sin\psi &= \sqrt{1-\cos^2\psi} = \frac{\sqrt{s^2 - r^2}}s \\
-\delta &= d + v\\
-\zeta  &= f + v\\
+d' &= d + |y_2|\\
+f' &= f + |y_2|\\
 E_x &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & x + \delta\cos\phi\\
- y_2 < 0    & x + e - \zeta\cos\psi 
+ y_2 \geq 0 & x + d'\cos\phi\\
+ y_2 < 0    & x + e - f'\cos\psi 
  \end{array}\right. \\
 E_y &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & \delta\sin\phi \\
- y_2 < 0    & \zeta\sin\psi
+ y_2 \geq 0 & d'\sin\phi \\
+ y_2 < 0    & f'\sin\psi
  \end{array}\right.
 \end{align}
 
-With the four components $B_x, B_y, E_x, E_y$ we can calculate $g = \overline{B'E'}$:
+With the four components $B_x, B_y, E_x, E_y$ we can calculate $g = \overline{B'E'}$. For the abscissas we compute a difference $B_x - E_x$ since they both grow to the same direction: to the right. For the ordinates we compute an addition $B_y + E_y$ since they grow in opposite directions: above and below.
 \begin{align}
 g &= \sqrt{(B_x - E_x)^2 + (B_y + E_y)^2} \\
  &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) - 2B_xE_x + 2B_yE_y} \label{eq:tpeg}
@@ -488,14 +486,14 @@ g &= \sqrt{(B_x - E_x)^2 + (B_y + E_y)^2} \\
 
 We need to calculate separated four types of diagonals $g^{++},g^{+-},g^{-+},g^{--}$ according the signs of $y_1$ and $y_2$ as described in the next table:
 \begin{center}
-\begin{tabular}{| c c |}
+\begin{tabular}{| c c c |}
 \hline
-$g$ & $T(x,y_1,y_2)$ \\ [0.5ex]
+$g$ & $y_1$ & $y_2$ \\ [0.5ex]
 \hline
-$g^{++}$ & $T(x, y_1 \geq 0, y_2 \geq 0)$ \\
-$g^{+-}$ & $T(x, y_1 \geq 0, y_2 < 0)$ \\
-$g^{-+}$ & $T(x, y_1 < 0, y_2 \geq 0)$ \\
-$g^{--}$ & $T(x, y_1< 0, y_2 < 0)$ \\
+$g^{++}$ & $\geq 0$ & $\geq 0$ \\
+$g^{+-}$ & $\geq 0$ & $<    0$ \\
+$g^{-+}$ & $   < 0$ & $\geq 0$ \\
+$g^{--}$ & $   < 0$ & $   < 0$ \\
 \hline
 \end{tabular}
 \end{center}
@@ -504,17 +502,17 @@ $g^{--}$ & $T(x, y_1< 0, y_2 < 0)$ \\
 
 For $g^{++}$ we calculate sums and products of $Bx,By,Ex,Ey$ when $y_1 \geq 0$ and $y_2 \geq 0$:
 \begin{align}
-\alpha &= a + u, \qquad \delta = d + v\\
-(B_x^2 + B_y^2)^{++} &= \alpha^2\cos^2\theta + \alpha^2\sin^2\theta \nonumber\\
- &= \alpha^2\\
-(E_x^2 + E_y^2)^{++} &= (x + \delta\cos\phi)^2 + (\delta\sin\phi)^2 \nonumber\\
- &= x^2 + 2x\delta\cos\phi + \delta^2\cos^2\phi + \delta^2\sin^2\phi \nonumber\\
- &= x^2 + 2x\delta\cos\phi + \delta^2 \nonumber\\
- &= x^2 + \delta^2 + \frac{2x\delta o}p\\
-(B_xE_x)^{++} &= (\alpha\cos\theta)(x + \delta\cos\phi) \nonumber\\
- &= \frac{\alpha mx}{n} + \frac{\alpha m\delta o}{np}\\
-(B_yE_y)^{++} &= (\alpha\sin\theta)(\delta\sin\phi)\nonumber\\
- &= \frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
+a' &= a + u, \qquad d' = d + v\\
+(B_x^2 + B_y^2)^{++} &= a'^2\cos^2\theta + a'^2\sin^2\theta \nonumber\\
+ &= a'^2\\
+(E_x^2 + E_y^2)^{++} &= (x + d'\cos\phi)^2 + (d'\sin\phi)^2 \nonumber\\
+ &= x^2 + 2xd'\cos\phi + d'^2\cos^2\phi + d'^2\sin^2\phi \nonumber\\
+ &= x^2 + 2xd'\cos\phi + d'^2 \nonumber\\
+ &= x^2 + d'^2 + \frac{2xd'o}p\\
+(B_xE_x)^{++} &= (a'\cos\theta)(x + d'\cos\phi) \nonumber\\
+ &= \frac{a'mx}{n} + \frac{a'md'o}{np}\\
+(B_yE_y)^{++} &= (a'\sin\theta)(d'\sin\phi)\nonumber\\
+ &= \frac{a'd'\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
 \end{align}
 
 We subsitute the products in equation \ref{eq:tpeg}:
@@ -522,40 +520,40 @@ We subsitute the products in equation \ref{eq:tpeg}:
 g^{++} &= \sqrt{(B_x^2 + B_y^2)^{++} + (E_x^2 + E_y^2)^{++}
  - 2(B_xE_x)^{++} + 2(B_yE_y)^{++}}\nonumber\\
 & = \sqrt{
-\alpha^2
-+ \left(x^2 + \delta^2 + \frac{2x\delta o}p\right)
-- 2\left(\frac{\alpha mx}{n} + \frac{\alpha m\delta o}{np}\right)
-+ 2\left(\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\right)
+a'^2
++ \left(x^2 + d'^2 + \frac{2xd'o}p\right)
+- 2\left(\frac{a'mx}{n} + \frac{a'md'o}{np}\right)
++ 2\left(\frac{a'd'\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\right)
 }\nonumber\\
 %
  &= \sqrt{
-\alpha^2 + x^2 + \delta^2 + \frac{2x\delta o}p - \frac{2\alpha mx}n - \frac{2\alpha m\delta o}{np}
-+ \frac{2\alpha\delta\sqrt{(n^2-m^2)(p^2-o^2)}}{np}
+a'^2 + x^2 + d'^2 + \frac{2xd'o}p - \frac{2a'mx}n - \frac{2a'md'o}{np}
++ \frac{2a'd'\sqrt{(n^2-m^2)(p^2-o^2)}}{np}
 }\nonumber\\
 %
  &= \frac{\sqrt{
-n^2p^2(\alpha^2 + x^2 + \delta^2) + 2x\delta on^2p - 2\alpha mxnp^2 - 2\alpha m\delta onp
-+ 2\alpha\delta np\sqrt{(n^2-m^2)(p^2-o^2)}
+n^2p^2(a'^2 + x^2 + d'^2) + 2xd'on^2p - 2a'mxnp^2 - 2a'md'onp
++ 2a'd'np\sqrt{(n^2-m^2)(p^2-o^2)}
 }}{np} \nonumber\\
 %
  &= \frac{\sqrt{
-n^2p^2(\alpha^2 + x^2 + \delta^2) + 2np(x\delta on - \alpha mxp - \alpha m\delta o)
-+ 2np\alpha\delta\sqrt{(n^2-m^2)(p^2-o^2)}
+n^2p^2(a'^2 + x^2 + d'^2) + 2np(xd'on - a'mxp - a'md'o) + 2npa'd'\sqrt{(n^2-m^2)(p^2-o^2)}
 }}{np}
 \end{align}
 
-From the last equation we identify four \texttt{input} integer variables to calculate software $g^{++}(i)$ which will be reduced or even denested $g^{++}(z)$:
+\subsection{Triangle pair extended $g^{++}$ software}
+
+From the last equation of $g^{++}$ we identify four \texttt{input} integer variables to calculate software $g^{++}(i)$ which will be reduced or even denested as $g^{++}(z)$:
 \begin{align}
 i_1 &= np \\
-i_2 &= i_1^2(\alpha^2 + x^2 + \delta^2) + 2i_1(x\delta on - \alpha mxp - \alpha m\delta o)\\
-i_3 &= 2i_1\alpha\delta \nonumber\\
+i_2 &= i_1^2(a'^2 + x^2 + d'^2) + 2i_1(xd'on - a'mxp - a'md'o)\\
+i_3 &= 2i_1a'd' \nonumber\\
 i_4 &= (n^2 - m^2)(p^2 - o^2)\\
 g^{++}(i) &= \frac{\sqrt{i_2 + i_3\sqrt{i_4}}}{i_1}\\
 g^{++}(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
  \texttt{ or } \frac{z_2 + \sqrt{z_3}}{z_1}
 \end{align}
 
-\subsection{Triangle pair extended $g^{++}$ software}
 
 
 %\section{Two triangles with offsets}
