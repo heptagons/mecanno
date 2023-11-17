@@ -314,30 +314,102 @@ func (fr *Frames) TrianglePairsOld(max N32, fgh []int) {
 	}
 }
 
+func (fr *Frames) cosineC(a, b, c N) (Z, Z, error) {
+	if a + b <= c || b + c <= a || c + a <= b {
+		return 0, 0, ErrInvalid // invalid triangle
+	}
+	if den, num, err := fr.ZTriangleCosineC(a, b, c); err != nil {
+		return 0, 0, err
+	} else {
+		return Z(num), Z(den), nil
+	}
+}
+
 func (fr *Frames) trianglePairExtPlusPlus(a, b, c, d, e, f N, x, y1, y2 Z) (*A32, error) {
-	if _n, _m, err := fr.ZTriangleCosineC(a, b, c); err != nil {
+	if m, n, err := fr.cosineC(a, b, c); err != nil {
 		return nil, err
-	} else if _p, _o, err := fr.ZTriangleCosineC(d, e, f); err != nil {
+	} else if o, p, err := fr.cosineC(d, e, f); err != nil {
 		return nil, err 
 	} else if y1 >= 0 {
-		alpha := Z(a) + y1
+		a2 := Z(a) + y1
 		if y2 >= 0 {
-			m, n := Z(_m), Z(_n)
-			o, p := Z(_o), Z(_p)
-			delta := Z(d) + y2
+			d2 := Z(d) + y2
+			// Formulas from frames.pdf "Triangle pair extended g++ software"
 			i1 := n*p // A
-			i2 := i1*i1*(alpha*alpha + x*x + delta*delta) +
-				2*i1*(x*delta*o*n - alpha*m*x*p - alpha*m*delta*o) // F
-			i3 := 2*i1*alpha*delta // G
+			i2 := i1*i1*(a2*a2 + x*x + d2*d2) +
+				2*i1*(x*d2*o*n - a2*m*x*p - a2*m*d2*o) // F
+			i3 := 2*i1*a2*d2 // G
 			i4 := (n*n - m*m)*(p*p - o*o) // H
 			B := Z(0)
 			C := Z(0)
 			D := Z(0)
 			E := Z(1)
-			return fr.ANew7(N(_n*_p), B, C, D, E, Z(i2), Z(i3), Z(i4))
+			return fr.ANew7(N(n*p), B, C, D, E, Z(i2), Z(i3), Z(i4))
 		}
 	}
 	return nil, fmt.Errorf("Only y1>0, y2>0")
+}
+
+func (fr *Frames) TrianglePairsExtPlusPlusTex(max N, fgh []int) {
+	fmt.Println("%%----------- start")
+	fmt.Println("\\begin{align*}")
+	fmt.Println("Folder &: \\texttt{github.com/heptagons/meccano/frames}\\\\")
+	fmt.Printf("Call &: \\texttt{NewFrames().TrianglePairsExtPlusPlusTex(%d, %v)}", max, fgh)
+	fmt.Println("\\end{align*}")
+	fmt.Println("\\begin{align*}")
+	fmt.Printf("M(a,b,c) \\oplus N(d,e,f) \\oplus T(x,y1,y2) &\\mapsto g\\\\\n")
+	fmt.Println("\\hline")
+	min := N(1)
+	B, C, D, E := Z(0), Z(0), Z(0), Z(1)
+	for a := min; a <= max; a++ {
+		fmt.Printf("%%a=%d...\\\\ \n", a) // just to notify console user for large a's
+		for b := min; b <= max; b++ {
+			for c := min; c <= max; c++ {
+				m, n, err := fr.cosineC(a, b, c)
+				if err != nil {
+					continue
+				}
+				for d := min; d <= max; d++ {
+					for e := min; e <= max; e++ {
+						for f := min; f <= max; f++ {
+							o, p, err := fr.cosineC(d, e, f)
+							if err != nil {
+								continue
+							}
+							for a2 := Z(a); a2 <= Z(max); a2++ { // a2 = a, a+1, ... max
+								for d2 := Z(d); d2 <= Z(max); d2++ { // d2 = d, d+1, ... max
+									for x := Z(0); x + Z(e) <= Z(max); x++ {
+										// Formulas from frames.pdf "Triangle pair extended g++ software"
+										i1 := n*p // A
+										i2 := i1*i1*(a2*a2 + x*x + d2*d2) +
+											2*i1*(x*d2*o*n - a2*m*x*p - a2*m*d2*o) // F
+										i3 := 2*i1*a2*d2 // G
+										i4 := (n*n - m*m)*(p*p - o*o) // H
+										if g, err := fr.ANew7(N(n*p), B, C, D, E, Z(i2), Z(i3), Z(i4)); err != nil {
+											// silent error
+										} else if fgh == nil { // no filter
+											fmt.Printf("%d,%d,%d | %d,%d,%d | %d,%d,%d | %v\n", a, b, c, d, e, f, x, a2-Z(a), d2-Z(d), g)
+										} else if F, ok := g.Num(4); !ok || F != Z32(fgh[0]) {
+											// f doesn't match
+										} else if G, ok := g.Num(5); !ok || G != Z32(fgh[1]) {
+											// g doesn't match
+										} else if H, ok := g.Num(6); !ok || H != Z32(fgh[2]) {
+											// h doesn't match
+										} else {
+											fmt.Printf("(%d,%d,%d) \\oplus (%d,%d,%d) \\oplus (%d,%d,%d) &\\mapsto %v \\\\\n",
+												a, b, c, d, e, f, x, a2-Z(a), d2-Z(d), g.Tex())
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	fmt.Println("\\end{align*}")
+	fmt.Println("%%----------- end")
 }
 
 // TrianglePairsTex uses factory.ANew7 algebraic number to be simplified.

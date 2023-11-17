@@ -34,6 +34,7 @@ func TestTrianglePairsTex(t *testing.T) {
 
 func TestTrianglePairsExt(t *testing.T) {
 	frames := NewFrames()
+	/*
 	// a,b,c  d,e,f  x,y1,y2
 	s, err := frames.trianglePairExtPlusPlus(2,1,2, 3,3,3,  0, 0, 0) //-> ok √(46+18√5)/2 (original)
 	fmt.Println(s, err)
@@ -41,6 +42,8 @@ func TestTrianglePairsExt(t *testing.T) {
 	fmt.Println(s, err)
 	s, err = frames.trianglePairExtPlusPlus(1,1,1, 1,2,2,  0, 1, 2) //-> √(46+18√5)/2 reduced
 	fmt.Println(s, err)
+	*/
+	frames.TrianglePairsExtPlusPlusTex(3, []int{46,18,5})
 }
 
 

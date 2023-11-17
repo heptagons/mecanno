@@ -554,6 +554,32 @@ g^{++}(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
  \texttt{ or } \frac{z_2 + \sqrt{z_3}}{z_1}
 \end{align}
 
+We run a program to print a list of triangle pairs extended with sides $1 < a',b,c,d',e,f \leq max$ having a given distance $g = \overline{B'E'}$ for particular $z_3,z_4,z_5$. Next example request a pairs list with $g=z_2\sqrt{46+18\sqrt{5}}/z_1$ up to strip length $3$, but we show just a few (text in blue):
+
+\begin{MyColorPar}{blue}
+%%----------- start
+\begin{align*}
+Folder &: \texttt{github.com/heptagons/meccano/frames}\\
+Call &: \texttt{NewFrames().TrianglePairsExtPlusPlusTex(3, [46 18 5])}\end{align*}
+\begin{align*}
+M(a,b,c) \oplus N(d,e,f) \oplus T(x,y1,y2) &\mapsto g\\
+\hline
+%a=1...\\ 
+(1,1,1) \oplus (1,2,2) \oplus (0,1,2) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,1,1) \oplus (1,2,2) \oplus (0,2,1) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,1,1) \oplus (2,1,2) \oplus (0,1,1) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,1,1) \oplus (2,1,2) \oplus (0,2,0) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,1,1) \oplus (2,1,2) \oplus (2,2,0) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,2,2) \oplus (1,1,1) \oplus (0,1,2) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,2,2) \oplus (1,1,1) \oplus (0,2,1) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,2,2) \oplus (2,2,2) \oplus (0,1,1) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,2,2) \oplus (2,2,2) \oplus (0,2,0) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+(1,2,2) \oplus (3,3,3) \oplus (0,1,0) &\mapsto \frac{\sqrt{46+18\sqrt{5}}}{2} \\
+\hline
+\end{align*}
+%%----------- end
+\end{MyColorPar}
+
 
 
 %\section{Two triangles with offsets}
