@@ -151,6 +151,12 @@ func (z *N32s) zFracN(den N, nums ...Z) (den32 N32, n32s []Z32, err error) {
 	return N32(den), n32s, nil
 }
 
+func (z *Z32s) ZTriangleCosineC(a, b, c N) (den32 N32, n32 Z32, err error) {
+	num := Z(a)*Z(a) + Z(b)*Z(b) - Z(c)*Z(c)
+	den := 2*a*b
+	return z.zFrac(den, num) 
+}
+
 // ZSqrt reduce the number o√i 
 // Example zSqrt(3,8) return 6,2,nil:
 //    _     _

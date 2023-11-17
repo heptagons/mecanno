@@ -475,72 +475,87 @@ E_x &= \left \{ \begin{array}{rl}
  y_2 < 0    & x + e - \zeta\cos\psi 
  \end{array}\right. \\
 E_y &= \left \{ \begin{array}{rl}
- y_2 \geq 0 & -\delta\sin\phi \\
- y_2 < 0    & -\zeta\sin\psi
+ y_2 \geq 0 & \delta\sin\phi \\
+ y_2 < 0    & \zeta\sin\psi
  \end{array}\right.
 \end{align}
 
 With the four components $B_x, B_y, E_x, E_y$ we can calculate $g = \overline{B'E'}$:
 \begin{align}
-g &= \sqrt{(B_x + E_x)^2 + (B_y + E_y)^2} \\
- &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) + 2B_xE_x + 2B_yE_y} \label{eq:tpeg}
+g &= \sqrt{(B_x - E_x)^2 + (B_y + E_y)^2} \\
+ &= \sqrt{(B_x^2 + B_y^2) + (E_x^2 + E_y^2) - 2B_xE_x + 2B_yE_y} \label{eq:tpeg}
 \end{align}
 
 We need to calculate separated four types of diagonals $g^{++},g^{+-},g^{-+},g^{--}$ according the signs of $y_1$ and $y_2$ as described in the next table:
 \begin{center}
-\begin{tabular}{| c c c |}
+\begin{tabular}{| c c |}
 \hline
-$g$ & $y_1$ & $y_2$ \\ [0.5ex]
+$g$ & $T(x,y_1,y_2)$ \\ [0.5ex]
 \hline
-$g^{++}$ & $\geq 0$ & $\geq 0$ \\
-$g^{+-}$ & $\geq 0$ & $< 0$ \\
-$g^{-+}$ & $< 0$ & $\geq 0$ \\
-$g^{--}$ & $< 0$ & $< 0$ \\
+$g^{++}$ & $T(x, y_1 \geq 0, y_2 \geq 0)$ \\
+$g^{+-}$ & $T(x, y_1 \geq 0, y_2 < 0)$ \\
+$g^{-+}$ & $T(x, y_1 < 0, y_2 \geq 0)$ \\
+$g^{--}$ & $T(x, y_1< 0, y_2 < 0)$ \\
 \hline
 \end{tabular}
 \end{center}
 
-\subsection{Triangle pair extended case $g^{++}$ ($y_1\geq 0$ and $y_2\geq 0$)}
+\subsection{Triangle pair extended $g^{++}$ ($y_1\geq 0$ and $y_2\geq 0$)}
 
 For $g^{++}$ we calculate sums and products of $Bx,By,Ex,Ey$ when $y_1 \geq 0$ and $y_2 \geq 0$:
 \begin{align}
 \alpha &= a + u, \qquad \delta = d + v\\
 (B_x^2 + B_y^2)^{++} &= \alpha^2\cos^2\theta + \alpha^2\sin^2\theta \nonumber\\
  &= \alpha^2\\
-(E_x^2 + E_y^2)^{++} &= (x + \delta\cos\phi)^2 + (-\delta\sin\phi)^2 \nonumber\\
+(E_x^2 + E_y^2)^{++} &= (x + \delta\cos\phi)^2 + (\delta\sin\phi)^2 \nonumber\\
  &= x^2 + 2x\delta\cos\phi + \delta^2\cos^2\phi + \delta^2\sin^2\phi \nonumber\\
  &= x^2 + 2x\delta\cos\phi + \delta^2 \nonumber\\
- &= \frac{px^2 + 2x\delta o + p\delta^2}{p}\\
+ &= x^2 + \delta^2 + \frac{2x\delta o}p\\
 (B_xE_x)^{++} &= (\alpha\cos\theta)(x + \delta\cos\phi) \nonumber\\
- &= \frac{\alpha m(px + \delta o)}{np} \\
-(B_yE_y)^{++} &= (\alpha\sin\theta)(-\delta\sin\phi)\nonumber\\
- &= -\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
+ &= \frac{\alpha mx}{n} + \frac{\alpha m\delta o}{np}\\
+(B_yE_y)^{++} &= (\alpha\sin\theta)(\delta\sin\phi)\nonumber\\
+ &= \frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
 \end{align}
+
 We subsitute the products in equation \ref{eq:tpeg}:
 \begin{align}
-g^{++} &= \sqrt{(B_x^2 + B_y^2)^{++} + (E_x^2 + E_y^2)^{++} + 2(B_xE_x)^{++} + 2(B_yE_y)^{++}}\nonumber\\
- &= \sqrt{
+g^{++} &= \sqrt{(B_x^2 + B_y^2)^{++} + (E_x^2 + E_y^2)^{++}
+ - 2(B_xE_x)^{++} + 2(B_yE_y)^{++}}\nonumber\\
+& = \sqrt{
 \alpha^2
-+ \frac{px^2 + 2x\delta o + p\delta^2}p
-+ \frac{2\alpha m(px + \delta o)}{np}
-- \frac{2\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}
++ \left(x^2 + \delta^2 + \frac{2x\delta o}p\right)
+- 2\left(\frac{\alpha mx}{n} + \frac{\alpha m\delta o}{np}\right)
++ 2\left(\frac{\alpha \delta\sqrt{(n^2 - m^2)(p^2 - o^2)}}{np}\right)
 }\nonumber\\
+%
+ &= \sqrt{
+\alpha^2 + x^2 + \delta^2 + \frac{2x\delta o}p - \frac{2\alpha mx}n - \frac{2\alpha m\delta o}{np}
++ \frac{2\alpha\delta\sqrt{(n^2-m^2)(p^2-o^2)}}{np}
+}\nonumber\\
+%
  &= \frac{\sqrt{
-n^2p^2\alpha^2 + n^2p(px^2 + 2x\delta o + p\delta^2)
-+ 2\alpha mnp(px + \delta o) - 2\alpha\delta np\sqrt{(n^2 - m^2)(p^2 - o^2)}
+n^2p^2(\alpha^2 + x^2 + \delta^2) + 2x\delta on^2p - 2\alpha mxnp^2 - 2\alpha m\delta onp
++ 2\alpha\delta np\sqrt{(n^2-m^2)(p^2-o^2)}
+}}{np} \nonumber\\
+%
+ &= \frac{\sqrt{
+n^2p^2(\alpha^2 + x^2 + \delta^2) + 2np(x\delta on - \alpha mxp - \alpha m\delta o)
++ 2np\alpha\delta\sqrt{(n^2-m^2)(p^2-o^2)}
 }}{np}
 \end{align}
 
 From the last equation we identify four \texttt{input} integer variables to calculate software $g^{++}(i)$ which will be reduced or even denested $g^{++}(z)$:
 \begin{align}
 i_1 &= np \\
-i_2 &= i_1^2\alpha^2 + i_1n(px^2 + 2x\delta o + p\delta^2) + 2\alpha mi_1(px + \delta o)\\
-i_3 &= - 2\alpha\delta i_1 \nonumber\\
+i_2 &= i_1^2(\alpha^2 + x^2 + \delta^2) + 2i_1(x\delta on - \alpha mxp - \alpha m\delta o)\\
+i_3 &= 2i_1\alpha\delta \nonumber\\
 i_4 &= (n^2 - m^2)(p^2 - o^2)\\
 g^{++}(i) &= \frac{\sqrt{i_2 + i_3\sqrt{i_4}}}{i_1}\\
 g^{++}(z) &= \frac{z_2\sqrt{z_3 + z_4\sqrt{z_5}}}{z_1}
+ \texttt{ or } \frac{z_2 + \sqrt{z_3}}{z_1}
 \end{align}
 
+\subsection{Triangle pair extended $g^{++}$ software}
 
 
 %\section{Two triangles with offsets}

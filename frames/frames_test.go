@@ -32,6 +32,14 @@ func TestTrianglePairsTex(t *testing.T) {
 	//NewFrames().TrianglePairsTex(15, []int{64,21,5}) // Pentagon size=7 internal diagonal e(6,7,0)
 }
 
+func TestTrianglePairsExt(t *testing.T) {
+	frames := NewFrames()
+	x := Z(0)
+	y1 := Z(0)
+	y2 := Z(0)
+	s, err := frames.trianglePairExtPlusPlus(2,1,2, 3,3,3, x, y1, y2)
+	fmt.Println(s, err)
+}
 
 
 func TestFramesAlgsNoPythagoras(t *testing.T) {

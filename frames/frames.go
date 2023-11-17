@@ -314,6 +314,32 @@ func (fr *Frames) TrianglePairsOld(max N32, fgh []int) {
 	}
 }
 
+func (fr *Frames) trianglePairExtPlusPlus(a, b, c, d, e, f N, x, y1, y2 Z) (*A32, error) {
+	if _n, _m, err := fr.ZTriangleCosineC(a, b, c); err != nil {
+		return nil, err
+	} else if _p, _o, err := fr.ZTriangleCosineC(d, e, f); err != nil {
+		return nil, err 
+	} else if y1 >= 0 {
+		alpha := Z(a) + y1
+		if y2 >= 0 {
+			m, n := Z(_m), Z(_n)
+			o, p := Z(_o), Z(_p)
+			delta := Z(d) + y2
+			i1 := n*p // A
+			i2 := i1*i1*(alpha*alpha + x*x + delta*delta) +
+				2*i1*(x*delta*o*n - alpha*m*x*p - alpha*m*delta*o) // F
+			i3 := 2*i1*alpha*delta // G
+			i4 := (n*n - m*m)*(p*p - o*o) // H
+			B := Z(0)
+			C := Z(0)
+			D := Z(0)
+			E := Z(1)
+			return fr.ANew7(N(_n*_p), B, C, D, E, Z(i2), Z(i3), Z(i4))
+		}
+	}
+	return nil, fmt.Errorf("Only y1>0, y2>0")
+}
+
 // TrianglePairsTex uses factory.ANew7 algebraic number to be simplified.
 // Prints Tex rows to be pasted in latex documents.
 func (fr *Frames) TrianglePairsTex(max N32, fgh []int) {
