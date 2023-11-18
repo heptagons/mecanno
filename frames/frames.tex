@@ -621,25 +621,35 @@ Figure \ref{fig:tripairextexamples} show some pairs from the last report.
  \begin{tikzpicture}
   \begin{scope}[scale=1]
    \begin{scope}[shift={(0,0)}]
-    \meccanopentagon{880088}{3}{3pt} %color,length,p
+    \meccanopentagon{880088}{3}{2.5pt} %color,length,p
     \draw (1,0) node[below=4pt]{$A$} -- ++(+0.5,4.616); % 3*Math.sqrt(5+2*Math.sqrt(5))/2
     \draw (2,0) node[below=4pt]{$B$} -- ++(-0.5,4.616) node[above=4pt]{$C$};
     \draw (1.5,-1) node{$(a)$};
    \end{scope}
    \begin{scope}[shift={(7,0)}]
-    \meccanopentagon{880088}{3}{3pt} %color,length,p
+    \meccanopentagon{880088}{3}{2.5pt} %color,length,p
     % first we move case(c) around point A just and stimated 6 degrees to touch point C
     % then is shifted x=0.5
-    \begin{scope}[rotate around={6.1:(1,0)},shift={(0.5,sqrt(-0.25+4)}]
-     \meccanoframetrianglex{0}{1}{1}{1} {1}{+2}{3pt}{0}
-     \meccanoframetrianglex{1}{2}{1}{2} {0}{+0}{3pt}{0}
+    \pgfmathsetmacro\sina{asin(0.5/(sqrt(46+18*sqrt(5))/2))} % around 6.18 degrees
+    \begin{scope}[rotate around={\sina:(1,0)},shift={(0.5,sqrt(4-1/4)}]
+     \meccanoframetrianglex{0}{1}{1}{1} {1}{+2}{2.5pt}{0}
+     \meccanoframetrianglex{1}{2}{1}{2} {0}{+0}{2.5pt}{0}
     \end{scope}
-
+    %
+	\begin{scope}[rotate around={183+\sina:(2,0)},shift={(1,-sqrt(3))}]
+     \meccanoframetrianglex{0}{1}{1}{1} {1}{+1}{2.5pt}{0}
+     \meccanoframetrianglex{1}{2}{1}{2} {0}{+1}{2.5pt}{0}
+	\end{scope}    
     \draw (1.5,-1) node{$(b)$};
    \end{scope}
   \end{scope}
  \end{tikzpicture}
- \caption{Regular pentagon made rigid with two triangle pairs extended as diagonals.}
+ \caption{Regular pentagon made rigid with two triangle pairs extended frames as diagonals.
+ In (a) we calculate the distances $\overline{AC}=\overline{BC}=\frac{\sqrt{46+18\sqrt{5}}}2$.
+ In (b) we replace the distances with two frames shown in figure \ref{fig:tripairextexamples}. The pentagon is rigid since triangle ABC is rigid.}
+ \label{fig:tripairpentagon}
 \end{figure}
 
+In figure \ref{fig:tripairpentagon} we show a pentagon made rigid using the frames found so far.
+In (a) we show the pentagon of size $3$ and two diagonals $\overline{AB} = \overline{BC}$. We know every regular pentagon height is $H=t\frac{\sqrt{5+2\sqrt{5}}}2$ where $t$ is the pentagon's side, in our case $t=3$. Then $\overline{AB} = \sqrt{H^2 + (\frac{1}2)^2} = \frac{\sqrt{46+18\sqrt{5}}}2$. This is exactly the value of the diagonals we were looking for above. In (b) we place two diagonals formed with triangles pairs small and narrow enough to fit inside the pentagon preventing collapsing strips or bolts.
 \end{document}
