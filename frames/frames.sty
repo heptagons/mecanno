@@ -128,8 +128,24 @@
  \end{tikzpicture}
 }
 
+\newcommand{\meccanopentagon}[3]{ %color,length,p
+  \meccanostrip[#1]{#2}{1}{#3}
+  \begin{scope}[shift={(#2,0)},rotate=72]
+   \meccanostrip[#1]{#2}{1}{#3}
+   \begin{scope}[shift={(#2,0)},rotate=72]
+    \meccanostrip[#1]{#2}{1}{#3}
+    \begin{scope}[shift={(#2,0)},rotate=72]
+     \meccanostrip[#1]{#2}{1}{#3}
+     \begin{scope}[shift={(#2,0)},rotate=72]
+      \meccanostrip[#1]{#2}{1}{#3}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+}
+
 % draw triangle up or down. call twice to print both
-\newcommand{\meccanoframetrianglex}[7]{ %down,a,b,c,m,n, p
+\newcommand{\meccanoframetrianglex}[8]{ %down,a,b,c,m,n, p, labels
  \def\down{#1}
  \def\a{#2}
  \def\b{#3}
@@ -137,6 +153,7 @@
  \def\m{#5}
  \def\n{#6}
  \def\p{#7}
+ \def\labels{#8}
  \pgfmathsetmacro\x{max(\b,\m)}
  \pgfmathsetmacro\cosc{(\a^2 + \b^2 - \c^2)/(2*\a*\b)}
  \pgfmathsetmacro\cosa{(\b^2 + \c^2 - \a^2)/(2*\b*\c)}
@@ -153,36 +170,44 @@
  }{}
  
  \begin{scope}[shift={(\as,0)},rotate=\ca] % red strip at left
-  \ifthenelse{ \down=0 }
-  { 
-   \path (\an/2,0) ++(+90:7*\p) node{$a'$};
-   \path (0,0) ++(60:7*\p) node{$C$};
-   \draw (12*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=12*\p] node[midway,above,right]{$\theta$};
-  }
-  {
-   \path (\an/2,0) ++(-90:7*\p) node{$d'$};
-   \path (0,0) ++(-90:7*\p) node{$F'$};
-   \draw (12*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=12*\p] node[midway,above,right]{$\phi$};
-  }
-  \ifthenelse{\n < 0} {}{
+  \ifthenelse{ \labels>0 }{
    \ifthenelse{ \down=0 }
-   { \path (\an,0) ++(0:7*\p) node{$B'$}; }
-   { \path (\an,0) ++(0:7*\p) node{$E'$}; }
-  }
+   { 
+    \path (\an/2,0) ++(+90:7*\p) node{$a'$};
+    \path (0,0) ++(60:7*\p) node{$C$};
+    \draw (12*\p,0) arc[start angle=0, end angle=-acos{\cosc}, radius=12*\p] node[midway,above,right]{$\theta$};
+   }
+   {
+    \path (\an/2,0) ++(-90:7*\p) node{$d'$};
+    \path (0,0) ++(-90:7*\p) node{$F'$};
+    \draw (12*\p,0) arc[start angle=0, end angle=acos{\cosc}, radius=12*\p] node[midway,above,right]{$\phi$};
+   }
+   \ifthenelse{\n < 0} {}{
+    \ifthenelse{ \down=0 }
+    { \path (\an,0) ++(0:7*\p) node{$B'$}; }
+    { \path (\an,0) ++(0:7*\p) node{$E'$}; }
+   }
+  }{}
   \meccanostrip[cc0000]{\an}{1}{\p}
  \end{scope}
 
  \begin{scope}[shift={(\cs,0)},rotate=\aa] % green strip at right
-  \ifthenelse{ \down=0 }
-  { \path (\cn/2,0) ++(-90:7*\p) node{$c'$}; \path (0,0) ++(-90:7*\p) node{$A$}; }
-  { \path (\cn/2,0) ++(+90:7*\p) node{$f'$}; \path (0,0) ++(180:7*\p) node{$D'$}; }
-  \ifthenelse{\n < 0} 
-  { \ifthenelse{ \down=0 }
-   { \path (\cn,0) ++(0:7*\p) node{$B'$}; }
-   { \path (\cn,0) ++(0:7*\p) node{$E'$}; } 
-  }
-  {}
-
+  \ifthenelse{ \labels>0 }{
+   \ifthenelse{ \down=0 }
+   {
+    \path (\cn/2,0) ++(-90:7*\p) node{$c'$};
+    \path (0,0) ++(-90:7*\p) node{$A$};
+   }
+   {
+    \path (\cn/2,0) ++(+90:7*\p) node{$f'$};
+    \path (0,0) ++(180:7*\p) node{$D'$};
+   }
+   \ifthenelse{\n < 0}{
+    \ifthenelse{ \down=0 }
+    { \path (\cn,0) ++(0:7*\p) node{$B'$}; }
+    { \path (\cn,0) ++(0:7*\p) node{$E'$}; } 
+   }{}
+  }{}
   \meccanostrip[00cc00]{\cn}{1}{\p}
  \end{scope}
 }
