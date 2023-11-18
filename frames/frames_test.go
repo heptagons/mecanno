@@ -32,6 +32,11 @@ func TestTrianglePairsTex(t *testing.T) {
 	//NewFrames().TrianglePairsTex(15, []int{64,21,5}) // Pentagon size=7 internal diagonal e(6,7,0)
 }
 
+func TestTrianglePairsCosine(t *testing.T) {
+	//NewFrames().TrianglePairsCosine(10, []int{7,3,5}) // many...
+	NewFrames().TrianglePairsCosine(30, []int{1,-1,5}) // NONE
+}
+
 func TestTrianglePairsExt(t *testing.T) {
 	frames := NewFrames()
 	/*
@@ -43,7 +48,8 @@ func TestTrianglePairsExt(t *testing.T) {
 	s, err = frames.trianglePairExtPlusPlus(1,1,1, 1,2,2,  0, 1, 2) //-> √(46+18√5)/2 reduced
 	fmt.Println(s, err)
 	*/
-	frames.TrianglePairsExtPlusPlusTex(3, []int{46,18,5})
+	//frames.TrianglePairsExtPlusPlusTex(3, []int{46,18,5})
+	frames.TrianglePairsExtPlusPlusTex(7, []int{10,3,5})
 }
 
 

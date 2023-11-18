@@ -412,6 +412,52 @@ func (fr *Frames) TrianglePairsExtPlusPlusTex(max N, fgh []int) {
 	fmt.Println("%%----------- end")
 }
 
+func (fr *Frames) TrianglePairsCosine(max N32, bcd []int) {
+	min := N32(1)
+	C := Z(1)
+	for a := min; a <= max; a++ {
+		fmt.Printf("%%a=%d...\\\\ \n", a) // just to notify console user for large a's
+		for b := min; b <= max; b++ {
+			for c := min; c <= max; c++ {
+				if a + b <= c || b + c <= a || c + a <= b {
+					continue // invalid triangle
+				}
+				m, n := Z(a*a) + Z(b*b) - Z(c*c), Z(2*a*b)
+				nn_mm := (n-m)*(n+m)
+				for d := min; d <= max; d++ {
+					for e := b; e <= max; e++ { // e should be at least equal to b to reject duplications
+						for f := min; f <= max; f++ {
+							if d + e <= f || e + f <= d || f + d <= e {
+								continue // invalid triangle
+							}
+							o, p := Z(d*d) + Z(e*e) - Z(f*f), Z(2*d*e)
+							pp_oo := (p-o)*(p+o)
+							A := N(n*p)
+							B := m*o
+							D := nn_mm * pp_oo
+							if g, err := fr.ANew3(A, B, C, D); err != nil {
+								// silent error
+							} else if bcd == nil { // no filter
+								fmt.Printf("a,b,c=%d,%d,%d d,e,f=%d,%d,%d g=%v\n",
+									a,b,c, d, e, f, g)
+							} else if B, ok := g.Num(0); !ok || B != Z32(bcd[0]) {
+								// f doesn't match
+							} else if C, ok := g.Num(1); !ok || C != Z32(bcd[1]) {
+								// g doesn't match
+							} else if D, ok := g.Num(2); !ok || D != Z32(bcd[2]) {
+								// h doesn't match
+							} else {
+								fmt.Printf("a,b,c=%d,%d,%d d,e,f=%d,%d,%d g=%v\n",
+									a,b,c, d, e, f, g)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 // TrianglePairsTex uses factory.ANew7 algebraic number to be simplified.
 // Prints Tex rows to be pasted in latex documents.
 func (fr *Frames) TrianglePairsTex(max N32, fgh []int) {
