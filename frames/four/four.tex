@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+\title{\textbf{Meccano four frame}}
+\author{https://github.com/heptagons/meccano/frames/four}
+\date{}
+
+\usepackage{../../meccano}
+\usepackage{../frames}
+%\usepackage{tikz}
+%\usetikzlibrary{calc}
+%\usepackage{lipsum}
+
+%\newenvironment{MyColorPar}[1]{
+%    \leavevmode\color{#1}\ignorespaces
+%}{
+%}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+Four frame is a group of four rigid meccano\meccanoref strips.
+\end{abstract}
+
+\section{Four frame}
+
+\begin{figure}[H]
+ \centering
+ \begin{tikzpicture}
+  \begin{scope}[scale=1]
+   \meccanoframefour{4}{2}{3}{2}{3}{3pt}
+  \end{scope}
+ \end{tikzpicture}
+ \caption{Four frame.}
+\end{figure}
+
+\end{document}

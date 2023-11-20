@@ -43,6 +43,39 @@
 }
 
 
+\newcommand{\meccanoframefour}[6]{ % a,b,c,d,e, p
+ \def\a{#1}
+ \def\b{#2}
+ \def\c{#3}
+ \def\d{#4}
+ \def\e{#5}
+ \def\p{#6}
+ \pgfmathsetmacro{\ac}{\a + \c}
+ \pgfmathsetmacro{\cosa}{(\b^2 + \c^2 - \a^2)/(2*\b*\c)} 
+ \pgfmathsetmacro{\cosb}{(\c^2 + \a^2 - \b^2)/(2*\c*\a)}
+ \pgfmathsetmacro{\cosc}{(\a^2 + \b^2 - \c^2)/(2*\a*\b)}
+ \pgfmathsetmacro{\sina}{sqrt(1-\cosa^2)}
+ \pgfmathsetmacro{\sinb}{sqrt(1-\cosb^2)}
+ \pgfmathsetmacro{\sinc}{sqrt(1-\cosc^2)}
+ %\coordinate (PC1) (\a*\cosa, -\a*\sina);
+ %\coordinate (PA2) (-\c*\cosb, +\c*\sinb);
+
+ \node[above=2*\p] at (0,0) {$B$};
+ \node[right=2*\p] at (\c,0) {$A_1$};
+ \node[left=2*\p]  at (-\a,0) {$C_2$};
+ \node[above=2*\p] at (-\c*\cosb,\c*\sinb) {$A_2$};
+ %\node[left=1]  at (PC2) {$C_2$};
+ %\node[right=1] at (PC1) {$C_1$};
+ %\node[left=1]  at (PA2) {$A_2$};
+ %\draw[black] (PC2) -- (PA1);
+
+ \begin{scope}[shift={(-\a,0)}]
+  \meccanostrip[cc0000]{\ac}{1}{\p}
+ \end{scope}
+ \begin{scope}[rotate around={-acos(\cosb):(0,0)},shift={(-\c,0)}]
+  \meccanostrip[00cc00]{\ac}{1}{\p}
+ \end{scope}
+}
 
 
 \newcommand{\meccanoframetriangleextra}[3]{
