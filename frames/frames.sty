@@ -51,32 +51,49 @@
  \def\e{#5}
  \def\p{#6}
  \pgfmathsetmacro{\ac}{\a + \c}
+ \pgfmathsetmacro{\bd}{\b + \d}
+ \pgfmathsetmacro{\be}{\b + \e}
  \pgfmathsetmacro{\cosa}{(\b^2 + \c^2 - \a^2)/(2*\b*\c)} 
  \pgfmathsetmacro{\cosb}{(\c^2 + \a^2 - \b^2)/(2*\c*\a)}
  \pgfmathsetmacro{\cosc}{(\a^2 + \b^2 - \c^2)/(2*\a*\b)}
  \pgfmathsetmacro{\sina}{sqrt(1-\cosa^2)}
  \pgfmathsetmacro{\sinb}{sqrt(1-\cosb^2)}
  \pgfmathsetmacro{\sinc}{sqrt(1-\cosc^2)}
- %\coordinate (PC1) (\a*\cosa, -\a*\sina);
- %\coordinate (PA2) (-\c*\cosb, +\c*\sinb);
+
+ \begin{scope}[shift={(-\a,0)}] % red horizontal
+  \meccanostrip[cc0000]{\ac}{1}{\p}
+  \node[above=2*\p] at (\a/2,0) {$a$};
+  \node[above=2*\p] at (\a + \c/2,0) {$c$};
+ \end{scope}
+ \begin{scope}[rotate around={-acos(\cosb):(0,0)},shift={(-\c,0)}] % green 
+  \meccanostrip[00cc00]{\ac}{1}{\p}
+  \node[above=2*\p] at (\c/2,0) {$c$};
+  \node[above=2*\p] at (\c + \a/2,0) {$a$};
+ \end{scope}
+ \begin{scope}[rotate around={180+acos(\cosa):(\c,0)},shift={(\c,0)}] % blue right
+  \meccanostrip[0000cc]{\bd}{1}{\p}
+  \node[right=2*\p] at (\b/2, 0) {$b$};
+  \node[right=2*\p] at (\b + \d/2, 0) {$d$};
+ \end{scope}
+ \begin{scope}[rotate around={180+acos(\cosc):(-\c*\cosb,+\c*\sinb)},shift={(-\c*\cosb,+\c*\sinb)}] % magenta left
+  \meccanostrip[cc00cc]{\be}{1}{\p}
+  \node[left=2*\p] at (\b/2,0) {$b$};
+  \node[left=2*\p] at (\b + \e/2,0) {$e$};
+ \end{scope}
+
+ \draw (+\a*\cosb,-\a*\sinb)
+  -- node[above]{$f_0$} (-\a,0)
+  -- node[above]{$f_1$} (+\c-\bd*\cosa,-\bd*\sina)
+  -- node[above]{$f_2$} (-\a-\e*\cosc,-\e*\sinc);
 
  \node[above=2*\p] at (0,0) {$B$};
  \node[right=2*\p] at (\c,0) {$A_1$};
  \node[left=2*\p]  at (-\a,0) {$C_2$};
- \node[above=2*\p] at (-\c*\cosb,\c*\sinb) {$A_2$};
- %\node[left=1]  at (PC2) {$C_2$};
- %\node[right=1] at (PC1) {$C_1$};
- %\node[left=1]  at (PA2) {$A_2$};
- %\draw[black] (PC2) -- (PA1);
-
- \begin{scope}[shift={(-\a,0)}]
-  \meccanostrip[cc0000]{\ac}{1}{\p}
- \end{scope}
- \begin{scope}[rotate around={-acos(\cosb):(0,0)},shift={(-\c,0)}]
-  \meccanostrip[00cc00]{\ac}{1}{\p}
- \end{scope}
+ \node[above=2*\p] at (-\c*\cosb,+\c*\sinb) {$A_2$};
+ \node[right=2*\p] at (+\a*\cosb,-\a*\sinb) {$C_1$};
+ \node[right=2*\p] at (+\c-\bd*\cosa,-\bd*\sina) {$D$};
+ \node[left=2*\p]  at (-\a-\e*\cosc,-\e*\sinc) {$E$};
 }
-
 
 \newcommand{\meccanoframetriangleextra}[3]{
  \def\dd{#1}
