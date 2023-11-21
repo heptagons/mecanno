@@ -31,6 +31,50 @@ Four frame is a group of four rigid meccano\meccanoref strips.
   \end{scope}
  \end{tikzpicture}
  \caption{Four frame.}
+ \label{fig:four}
 \end{figure}
+
+Figure \ref{fig:four} show the four-strips frame. First we calculate $f_0$ with the law of cosines:
+\begin{align}
+\beta &\equiv \angle{A_1BC_1}\\
+\cos\beta &= \frac{a^2 + c^2 - b^2}{2ac}\\
+\pi - \beta &= \angle{C_1BC_2}\\
+f_0^2 &= a^2 + a^2 - 2aa\cos(\pi-\beta)\\
+ &= 2a^2(1 + \cos\beta)\nonumber\\
+ &= 2a^2\frac{2ac + a^2 + c^2 - b^2}{2ac} = \frac{a(2ac + a^2 + c^2 - b^2)}c\nonumber\\
+ &= \frac{a((a + c)^2 - b^2)}c = \frac{a(a + c + b)(a + c - b)}c \nonumber\\
+f_0 &= \frac{\sqrt{ac(a+b+c)(a-b+c)}}c
+\end{align}
+To simplify we define $m = c(a+c+b)(a+c-b)$ so we have:
+\begin{align}
+m &\equiv c(a+b+c)(a-b+c)\\
+f_0 &= \frac{\sqrt{am}}c
+\end{align}
+
+We first found $\cos\theta$ in function of $f_0$ also with the law of cosines:
+\begin{align}
+\theta &\equiv \angle{A_1C_1C_2}\\
+\cos\theta &= \frac{b^2 + f_0^2 - (a+c)^2}{2bf_0}\\
+ &= \frac{f_0^2 + (b^2 - (a+c)^2)}{2bf_0}\nonumber\\
+ &= \frac{f_0^2 + (b+a+c)(b-a-c)}{2bf_0}\nonumber\\
+ &= \frac{f_0^2 - (a+b+c)(a-b+c)}{2bf_0}\nonumber\\
+ &= \frac{f_0^2 - \dfrac{m}c}{2bf_0}\nonumber\\
+ &= \frac{f_0^2 - \dfrac{f_0^2c^2}{ac}}{2bf_0}\nonumber\\
+ &= \frac{f_0 - \dfrac{f_0c}{a}}{2b}\nonumber\\
+ &= \frac{(a-c)f_0}{2ab}
+\end{align}
+
+Now we calculate $f_1$:
+\begin{align}
+\pi - \theta &\equiv \angle{C_1C_2D}\\
+f_1^2 &= f_0^2 + d^2 - 2f_0d\cos(\pi-\theta)\nonumber\\
+ &= f_0^2 + d^2 + 2f_0d\cos\theta\nonumber\\
+ &= f_0^2 + d^2 + 2f_0d\frac{(a-c)f_0}{2ab}\nonumber\\
+ &= f_0^2 + d^2 + \frac{d(a-c)}{ab}f_0^2\nonumber\\
+ &= d^2 + \frac{ab + d(a-c)}{ab}f_0^2\nonumber\\
+ &= d^2 + \frac{ab + d(a-c)}{ab}\left(\frac{am}{c^2}\right)\nonumber\\
+ &= d^2 + \frac{m(ab + d(a-c))}{bc^2}\nonumber\\
+f_1 &= \frac{\sqrt{b^2c^2d^2 + bm(ab + d(a-c))}}{bc}
+\end{align}
 
 \end{document}
