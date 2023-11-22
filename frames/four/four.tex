@@ -41,6 +41,12 @@ From the figure we define $\alpha \equiv \angle{BA_1C_1}$ and define integers $m
 \cos\alpha &= \frac{m}n\\
 \sin\alpha &= \frac{\sqrt{n^2-m^2}}n
 \end{align}
+From the figure \ref{fig:four} we define $\gamma \equiv \angle{BA_2C_2}$ and define integers $s=a^2 + b^2 - c^2$ and $t=2ab$ and calculate $\cos\gamma$ and $\sin\gamma$:
+\begin{align}
+(\gamma,s,t) &\equiv (\angle{BA_2C_2}, a^2 + b^2 - c^2, 2ab) \label{eq:st}\\
+\cos\gamma &= \frac{s}{t}\\
+\sin\gamma &= \frac{\sqrt{t^2-s^2}}{t}
+\end{align}
 
 We calculate the distance $f = \overline{C_2D}$ with the law of cosines using angle $\alpha$
 and defining integers $x = a+c$ and $y = b+d$:
@@ -70,13 +76,6 @@ We define angle $\theta \equiv \angle{A_1C_2D}$ and calculate $\cos\theta$ and $
 \sin\theta &= \frac{y\sqrt{n^2 - m^2}}{\sqrt{z}}
 \end{align}
 
-From the figure \ref{fig:four} we define $\gamma \equiv \angle{BA_2C_2}$ and define integers $s=a^2 + b^2 - c^2$ and $t=2ab$ and calculate $\cos\gamma$ and $\sin\gamma$:
-\begin{align}
-(\gamma,s,t) &\equiv (\angle{BA_2C_2}, a^2 + b^2 - c^2, 2ab) \label{eq:st}\\
-\cos\gamma &= \frac{s}{t}\\
-\sin\gamma &= \frac{\sqrt{t^2-s^2}}{t}
-\end{align}
-
 We define angle $\phi \equiv \angle{A_2C_2D}$ and we note is the sum of angles $\theta + \gamma$ and we calculate $\cos\phi$:
 \begin{align}
 \phi &\equiv \angle{A_2C_2D}\\
@@ -84,7 +83,24 @@ We define angle $\phi \equiv \angle{A_2C_2D}$ and we note is the sum of angles $
 \cos\phi &= \cos(\theta + \gamma)\\
  &= \cos\theta\cos\gamma - \sin\theta\sin\gamma\nonumber\\
  &= \frac{(nx - my)s}{\sqrt{z}t} - \frac{(y\sqrt{n^2 - m^2})\sqrt{t^2-s^2}}{\sqrt{z}t}\nonumber\\
- &= \frac{(nx - my)s - y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t}
+ &= \frac{(nx - my)s - y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t} \label{eq:complex}
+\end{align}
+
+We simplify $\sqrt{(n^2-m^2)(t^2-s^2)}$:
+\begin{align}
+(n^2-m^2)(t^2-s^2) &= (n-m)(n+m)(t-s)(t+s)\nonumber\\
+ &= (2bc-(b^2+c^2-a^2))(2bc+b^2+c^2-a^2)(2ab-(a^2+b^2-c^2))(2ab+a^2+b^2-c^2)\nonumber\\
+ &= (a^2-(b-c)^2) ((b+c)^2-a^2) (c^2-(a-b)^2) ((a+b)^2-c^2)\nonumber\\
+ &= (a+b-c)(a-b+c) (b+c+a)(b+c-a) (c+a-b)(c-a+b) (a+b+c)(a+b-c)\nonumber\\
+ &= (a+b+c)^2(a+b-c)^2(a-b+c)^2(-a+b+c)^2\nonumber\\
+\sqrt{(n^2-m^2)(t^2-s^2)} &= (a+b+c)(a+b-c)(a-b+c)(-a+b+c)\nonumber\\
+ &= ((a+b)^2-c^2)(c^2-(a-b)^2)\nonumber\\
+ &= (s+t)(m+n) \label{eq:simple}
+\end{align}
+
+We substitute equation \ref{eq:simple} into equation \ref{eq:complex} and we get:
+\begin{align}
+\cos\phi &= \frac{(nx - my)s - y(m+n)(s+t)}{\sqrt{z}t}
 \end{align}
 
 From the figure we define angle $\psi \equiv \angle{DC_2E}$ and we note equals angle $\pi - \phi$, so we have:
@@ -93,35 +109,40 @@ From the figure we define angle $\psi \equiv \angle{DC_2E}$ and we note equals a
  &= \pi - \phi\\
 \cos\psi &= \cos(\pi - \phi)\\
  &= -\cos\phi\nonumber\\
- &= \frac{-(nx - my)s + y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t}
+ &= \frac{-(nx - my)s + y(m+n)(s+t)}{\sqrt{z}t}
 \end{align}
 
 Finally with $\cos\psi$, $e$ and $f$ we can calculate distance $g = \overline{ED}$:
 \begin{align}
 g^2 &= e^2 + f^2 - 2ef\cos\psi\\
  &= e^2 + x^2 + y^2 - \frac{2mxy}{n} 
- - 2e\left(\frac{\sqrt{z}}n\right)\left(\frac{-(nx - my)s + y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t}\right)\\
+ - 2e\left(\frac{\sqrt{z}}n\right)\left(\frac{-(nx - my)s + y(m+n)(s+t)}{\sqrt{z}t}\right)\\
  &= e^2 + x^2 + y^2 - \frac{2mxy}{n} 
- - 2e\left(\frac{-(nx - my)s + y\sqrt{(n^2 - m^2)(t^2-s^2)}}{nt}\right)\\
+ + 2e\frac{(nx - my)s - y(m+n)(s+t)}{nt}\\
  &= \frac{
-  (e^2 + x^2 + y^2)nt - 2mxyt + 2es(nx - my) - 2ey\sqrt{(n^2 - m^2)(t^2-s^2)}
+  (e^2 + x^2 + y^2)nt - 2mxyt + 2es(nx - my) - 2ey(m+n)(s+t)
  }{nt}\nonumber\\
 g &= \frac{\sqrt{
-(e^2 + x^2 + y^2)n^2t^2 - 2mnxyt^2 + 2esnt(nx - my) - 2eynt\sqrt{(n^2 - m^2)(t^2-s^2)}
+(e^2 + x^2 + y^2)n^2t^2 - 2mnxyt^2 + 2esnt(nx - my) - 2eynt(m+n)(s+t)
 }}{nt}
 \end{align}
 
 \subsection{Antisymmetric four frame software}
 
-From the last equation of $g$ we identify three \texttt{input} integers $i_1,i_2,i_3$ which are used to get $g(i)$. Then the nested radicals software will return square-free \texttt{output} integers $z_1,z_2,z_3,z_4,z_5$ as $g(z)$:
-\begin{align}
-i_1 &= nt\\
-i_2 &= (e^2 + x^2 + y^2)i_1^2 - 2mxyti_1 + 2esi_1(nx - my)\\
-i_3 &= - 2eyi_1\\
-i_4 &= (n^2 - m^2)(t^2-s^2)\\
-g(i) &= \frac{\sqrt{i_2+i_3\sqrt{i_4}}}{i_1}\\
-g(z) &= \frac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}
-\end{align}
-where $m,n$ are calculated with equations \ref{eq:mn}, $x,y$ are calculated with equations \ref{eq:xy} and $s,t$ are calculated with equations \ref{eq:st}.
+
+
+% DON'T CLEAR will be used for asymmetric four-strips 
+%\subsection{Antisymmetric four frame software}
+%
+%From the last equation of $g$ we identify three \texttt{input} integers $i_1,i_2,i_3$ which are used to get $g(i)$. Then the nested radicals software will return square-free \texttt{output} integers $z_1,z_2,z_3,z_4,z_5$ as $g(z)$:
+%\begin{align}
+%i_1 &= nt\\
+%i_2 &= i_1^2(e^2 + x^2 + y^2) - 2i_1mxyt + 2i_1es(nx - my)\\
+%i_3 &= - 2i_1ey\\
+%i_4 &= (n^2 - m^2)(t^2-s^2)\\
+%g(i) &= \frac{\sqrt{i_2+i_3\sqrt{i_4}}}{i_1}\\
+%g(z) &= \frac{z_2\sqrt{z_3+z_4\sqrt{z_5}}}{z_1}
+%\end{align}
+%where $m,n$ are calculated with equations \ref{eq:mn}, $x,y$ are calculated with equations \ref{eq:xy} and $s,t$ are calculated with equations \ref{eq:st}.
 
 \end{document}

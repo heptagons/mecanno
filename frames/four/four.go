@@ -65,9 +65,8 @@ func (s *Fours) G(f *Four, d, e N32) (*A32, error) {
 	i1 := f.n * f.t
 	x, y := f.xy(d)
 	ee := Z(e*e)
-	_2ei1 := 2*Z(e)*i1
-	i2 := (ee + x*x + y*y)*i1*i1 -2*f.m*x*y*f.t*i1 + _2ei1*(f.n*x - f.m*y)
-	i3 := _2ei1*y
+	i2 := i1*i1*(ee + x*x + y*y) -2*i1*f.m*x*y*f.t + 2*i1*Z(e)*f.s*(f.n*x - f.m*y)
+	i3 := -2*i1*Z(e)*y
 	i4 := (f.n - f.m)*(f.n + f.m)*(f.t - f.s)*(f.t + f.s)
 	A := N(i1)
 	B := Z(0)

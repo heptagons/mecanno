@@ -7,8 +7,8 @@ import (
 
 func TestFour(t *testing.T) {
 	factory := NewFours()
-	a,b,c := N(4),N(2),N(3)
-	d,e   := N32(2),N32(3)
+	a,b,c := N(5),N(6),N(7)
+	d,e   := N32(1),N32(1)
 	four := NewFour(a, b, c)
 	t.Logf("abc=(%d,%d,%d)", four.a, four.b, four.c)
 	if f, err := factory.F(four, d); err == nil {
