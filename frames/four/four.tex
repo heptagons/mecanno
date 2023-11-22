@@ -83,7 +83,7 @@ We define angle $\phi \equiv \angle{A_2C_2D}$ and we note is the sum of angles $
 \cos\phi &= \cos(\theta + \gamma)\\
  &= \cos\theta\cos\gamma - \sin\theta\sin\gamma\nonumber\\
  &= \frac{(nx - my)s}{\sqrt{z}t} - \frac{(y\sqrt{n^2 - m^2})\sqrt{t^2-s^2}}{\sqrt{z}t}\nonumber\\
- &= \frac{(nx - my)s - y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t} \label{eq:complex}
+ &= \frac{s(nx - my) - y\sqrt{(n^2 - m^2)(t^2-s^2)}}{\sqrt{z}t} \label{eq:complex}
 \end{align}
 
 We simplify $\sqrt{(n^2-m^2)(t^2-s^2)}$:
@@ -95,12 +95,13 @@ We simplify $\sqrt{(n^2-m^2)(t^2-s^2)}$:
  &= (a+b+c)^2(a+b-c)^2(a-b+c)^2(-a+b+c)^2\nonumber\\
 \sqrt{(n^2-m^2)(t^2-s^2)} &= (a+b+c)(a+b-c)(a-b+c)(-a+b+c)\nonumber\\
  &= ((a+b)^2-c^2)(c^2-(a-b)^2)\nonumber\\
- &= (s+t)(m+n) \label{eq:simple}
+ &= (s+t)(t-s)\nonumber\\ 
+ &= (t^2-s^2) \label{eq:simple}
 \end{align}
 
 We substitute equation \ref{eq:simple} into equation \ref{eq:complex} and we get:
 \begin{align}
-\cos\phi &= \frac{(nx - my)s - y(m+n)(s+t)}{\sqrt{z}t}
+\cos\phi &= \frac{s(nx - my) - y(t^2-s^2)}{\sqrt{z}t}
 \end{align}
 
 From the figure we define angle $\psi \equiv \angle{DC_2E}$ and we note equals angle $\pi - \phi$, so we have:
@@ -109,25 +110,35 @@ From the figure we define angle $\psi \equiv \angle{DC_2E}$ and we note equals a
  &= \pi - \phi\\
 \cos\psi &= \cos(\pi - \phi)\\
  &= -\cos\phi\nonumber\\
- &= \frac{-(nx - my)s + y(m+n)(s+t)}{\sqrt{z}t}
+ &= \frac{-s(nx - my) + y(t^2-s^2)}{\sqrt{z}t}
 \end{align}
 
 Finally with $\cos\psi$, $e$ and $f$ we can calculate distance $g = \overline{ED}$:
 \begin{align}
 g^2 &= e^2 + f^2 - 2ef\cos\psi\\
  &= e^2 + x^2 + y^2 - \frac{2mxy}{n} 
- - 2e\left(\frac{\sqrt{z}}n\right)\left(\frac{-(nx - my)s + y(m+n)(s+t)}{\sqrt{z}t}\right)\\
- &= e^2 + x^2 + y^2 - \frac{2mxy}{n} 
- + 2e\frac{(nx - my)s - y(m+n)(s+t)}{nt}\\
- &= \frac{
-  (e^2 + x^2 + y^2)nt - 2mxyt + 2es(nx - my) - 2ey(m+n)(s+t)
- }{nt}\nonumber\\
-g &= \frac{\sqrt{
-(e^2 + x^2 + y^2)n^2t^2 - 2mnxyt^2 + 2esnt(nx - my) - 2eynt(m+n)(s+t)
-}}{nt}
+ - 2e\left(\frac{\sqrt{z}}n\right)\left(\frac{-s(nx - my) + y(t^2-s^2)}{\sqrt{z}t}\right)\\
+ &= e^2 + x^2 + y^2 - \frac{2mxy}{n} + 2e\frac{s(nx - my) - y(t^2-s^2)}{nt}\\
+ &= e^2 + x^2 + y^2 - \frac{2mxy}{2bc} + 2e\frac{s(nx - my) - y(t^2-s^2)}{4ab^2c}\\
+ &= \frac{4a^2b^2c^2(e^2 + x^2 + y^2) - (2a^2bc)(2mxy) + 2aces(nx - my) - 2acey(t^2-s^2)}{4a^2b^2c^2}\nonumber\\
+ &= \frac{2ac(2ab^2c(e^2 + x^2 + y^2) - 2abmxy + es(nx - my) - ey(t^2-s^2))}{4a^2b^2c^2}\nonumber\\
+g &= \frac{\sqrt{2ac(2ab^2c(e^2 + x^2 + y^2) - 2abmxy + es(nx - my) - ey(t^2-s^2))}}{2abc}
+%
+%|g &= \frac{\sqrt{|n^2t^2(e^2 + x^2 + y^2) + 2nt(es(nx - my) - mxyt - ey(t^2-s^2))}}{nt}
 \end{align}
 
 \subsection{Antisymmetric four frame software}
+
+From the last equation of $g$ we identify two \texttt{input} integers $i_1,i_2$ which are used to get $g(i)$. Then the nested radicals software will return square-free \texttt{output} integers $z_1,z_2,z_3$ as $g(z)$:
+\begin{align}
+%i_1 &= nt\\
+%i_2 &= i_1^2(e^2 + x^2 + y^2) + 2i_1(es(nx - my) - mxyt - ey(t^2-s^2))\\
+i_1 &= 2abc\\
+i_2 &= 2ac(2ab^2c(e^2 + x^2 + y^2) - 2abmxy + es(nx - my) - ey(t^2-s^2))\\
+g(i) &= \frac{\sqrt{i_2}}{i_1}\\
+g(z) &= \frac{z_2\sqrt{z_3}}{z_1}
+\end{align}
+where $m,n$ are calculated with equations \ref{eq:mn}, $x,y$ are calculated with equations \ref{eq:xy} and $s,t$ are calculated with equations \ref{eq:st}.
 
 
 
