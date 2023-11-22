@@ -16,7 +16,7 @@ func NewFour(a, b, c N) *Four {
 		a: N32(a),
 		b: N32(b),
 		c: N32(c),
-		m: N32(c)*N32(a + b + c)*N32(a - b + c),
+		m: N32(a + b + c)*N32(a - b + c),
 	}
 }
 
@@ -36,7 +36,7 @@ func (s *Fours) F0(f *Four) (*A32, error) {
 	A := N(f.c)
 	B := Z(0)
 	C := Z(1)
-	D := Z(f.a * f.m)
+	D := Z(f.a * f.c * f.m)
 	return s.ANew3(A, B, C, D)
 }
 
@@ -50,7 +50,7 @@ func (s *Fours) F1(f *Four, d N32) (*A32, error) {
 	A := N(f.b)*N(f.c)
 	B := Z(0)
 	C := Z(1)
-	D := b*b*c*c*Z(d)*Z(d) + b*m*(a*b + Z(d)*(a-c))
+	D := b*b*c*c*Z(d)*Z(d) + b*c*m*(a*b + Z(d)*(a-c))
 	return s.ANew3(A, B, C, D)
 }
 

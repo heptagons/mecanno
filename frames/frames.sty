@@ -81,10 +81,11 @@
   \node[left=2*\p] at (\b + \e/2,0) {$e$};
  \end{scope}
 
- \draw (+\a*\cosb,-\a*\sinb)
-  -- node[above]{$f_0$} (-\a,0)
-  -- node[above]{$f_1$} (+\c-\bd*\cosa,-\bd*\sina)
-  -- node[above]{$f_2$} (-\a-\e*\cosc,-\e*\sinc);
+ \draw %(+\a*\cosb,-\a*\sinb)
+  %-- node[above]{$f_0$} 
+  (-\a,0)
+  -- node[above]{$f$} (+\c-\bd*\cosa,-\bd*\sina)
+  -- node[above]{$g$} (-\a-\e*\cosc,-\e*\sinc);
 
  \node[above=2*\p] at (0,0) {$B$};
  \node[right=2*\p] at (\c,0) {$A_1$};

@@ -30,51 +30,90 @@ Four frame is a group of four rigid meccano\meccanoref strips.
    \meccanoframefour{4}{2}{3}{2}{3}{3pt}
   \end{scope}
  \end{tikzpicture}
- \caption{Four frame.}
+ \caption{Antisymmetric four frame.}
  \label{fig:four}
 \end{figure}
 
-Figure \ref{fig:four} show the four-strips frame. First we calculate $f_0$ with the law of cosines:
+Figure \ref{fig:four} show the antisymmetric four-strips frame.
+From the figure we define $\alpha \equiv \angle{BA_1C_1}$ and define integers $m=b^2 + c^2 - a^2$ and $n=2bc$ using the law of cosines, then we calculate $\cos\alpha$ and $\sin\alpha$:
 \begin{align}
-\beta &\equiv \angle{A_1BC_1}\\
-\cos\beta &= \frac{a^2 + c^2 - b^2}{2ac}\\
-\pi - \beta &= \angle{C_1BC_2}\\
-f_0^2 &= a^2 + a^2 - 2aa\cos(\pi-\beta)\\
- &= 2a^2(1 + \cos\beta)\nonumber\\
- &= 2a^2\frac{2ac + a^2 + c^2 - b^2}{2ac} = \frac{a(2ac + a^2 + c^2 - b^2)}c\nonumber\\
- &= \frac{a((a + c)^2 - b^2)}c = \frac{a(a + c + b)(a + c - b)}c \nonumber\\
-f_0 &= \frac{\sqrt{ac(a+b+c)(a-b+c)}}c
-\end{align}
-To simplify we define $m = c(a+c+b)(a+c-b)$ so we have:
-\begin{align}
-m &\equiv c(a+b+c)(a-b+c)\\
-f_0 &= \frac{\sqrt{am}}c
+(\alpha,m,n) &\equiv (\angle{BA_1C_1},b^2 + c^2 - a^2, 2bc)\\
+\cos\alpha &= \frac{m}n\\
+\sin\alpha &= \frac{\sqrt{n^2-m^2}}n
 \end{align}
 
-We first found $\cos\theta$ in function of $f_0$ also with the law of cosines:
+We calculate the distance $f = \overline{C_2D}$ with the law of cosines using angle $\alpha$
+and defining integers $x = a+c$ and $y = b+d$:
 \begin{align}
-\theta &\equiv \angle{A_1C_1C_2}\\
-\cos\theta &= \frac{b^2 + f_0^2 - (a+c)^2}{2bf_0}\\
- &= \frac{f_0^2 + (b^2 - (a+c)^2)}{2bf_0}\nonumber\\
- &= \frac{f_0^2 + (b+a+c)(b-a-c)}{2bf_0}\nonumber\\
- &= \frac{f_0^2 - (a+b+c)(a-b+c)}{2bf_0}\nonumber\\
- &= \frac{f_0^2 - \dfrac{m}c}{2bf_0}\nonumber\\
- &= \frac{f_0^2 - \dfrac{f_0^2c^2}{ac}}{2bf_0}\nonumber\\
- &= \frac{f_0 - \dfrac{f_0c}{a}}{2b}\nonumber\\
- &= \frac{(a-c)f_0}{2ab}
+x &\equiv a + c\\
+y &\equiv b + d\\
+f^2 &= (a+c)^2 + (b+d)^2 - 2(a+c)(b+d)\cos\alpha\\
+ &= x^2 + y^2 - \frac{2mxy}{n}\\
+f &= \frac{\sqrt{n^2x^2 + n^2y^2 - 2mnxy}}{n}
 \end{align}
 
-Now we calculate $f_1$:
-\begin{align}
-\pi - \theta &\equiv \angle{C_1C_2D}\\
-f_1^2 &= f_0^2 + d^2 - 2f_0d\cos(\pi-\theta)\nonumber\\
- &= f_0^2 + d^2 + 2f_0d\cos\theta\nonumber\\
- &= f_0^2 + d^2 + 2f_0d\frac{(a-c)f_0}{2ab}\nonumber\\
- &= f_0^2 + d^2 + \frac{d(a-c)}{ab}f_0^2\nonumber\\
- &= d^2 + \frac{ab + d(a-c)}{ab}f_0^2\nonumber\\
- &= d^2 + \frac{ab + d(a-c)}{ab}\left(\frac{am}{c^2}\right)\nonumber\\
- &= d^2 + \frac{m(ab + d(a-c))}{bc^2}\nonumber\\
-f_1 &= \frac{\sqrt{b^2c^2d^2 + bm(ab + d(a-c))}}{bc}
-\end{align}
+
+%\subsection{Using $beta$}
+%
+%From the figure we define $\beta \equiv \angle{A_1BC_1}$ and define integers $m=a^2 + c^2 - b^2$ and $n=2ac$ using the law of cosines, then we calculate $\cos\beta$ and $\sin\beta$:
+%\begin{align}
+%(\beta,m,n) &\equiv (\angle{A_1BC_1},a^2 + c^2 - b^2, 2ac)\\
+%\cos\beta &= \frac{m}n\\
+%\sin\beta &= \frac{\sqrt{n^2-m^2}}n
+%\end{align}
+%
+%We calculate distance $f_0 = \overline{C_1C_2}$ with the law of cosines using angle $\pi - \beta$:
+%\begin{align}
+%\pi - \beta &= \angle{C_1BC_2}\\
+%f_0^2 &= a^2 + a^2 - 2aa\cos(\pi-\beta)\\
+% &= 2a^2(1 + \cos\beta)\nonumber\\
+% &= \frac{2a^2(m+n)}n\nonumber\\
+%f_0 &= \frac{a\sqrt{2n(m+n)}}{n}, \qquad m + n = \frac{f_0^2n}{2a^2}
+%\end{align}
+%
+%From the figure we define $\theta \equiv \angle{A_1C_1C_2}$ and calculate $\cos\theta$ in function of $f_0$ using the law of cosines:
+%\begin{align}
+%\theta &\equiv \angle{A_1C_1C_2}\\
+%\cos\theta &= \frac{b^2 + f_0^2 - (a+c)^2}{2bf_0}\\
+% &= \frac{f_0^2 - (a^2 + 2ac + c^2 - b^2)}{2bf_0}\nonumber\\
+% &= \frac{f_0^2 - (m + n)}{2bf_0}\nonumber\\
+% &= \frac{f_0^2 - \dfrac{f_0^2n}{2a^2}}{2bf_0}\nonumber\\
+% &= \frac{(2a^2 - n)f_0}{4a^2b}\nonumber\\
+% &= \frac{(a - c)f_0}{2ab}
+%\end{align}
+%
+%Now we calculate distance $f_1$ with the law of cosines using angle $\pi-\theta$:
+%\begin{align}
+%\pi - \theta &\equiv \angle{C_1C_2D}\\
+%f_1^2 &= f_0^2 + d^2 - 2f_0d\cos(\pi-\theta)\\
+% &= f_0^2 + d^2 + 2f_0d\cos\theta\nonumber\\
+% &= f_0^2 + d^2 + 2f_0d\frac{(a - c)f_0}{2ab}\nonumber\\
+% &= f_0^2 + d^2 + \frac{ad - cd}{ab}f_0^2\nonumber\\
+% &= \frac{ab + ad - cd}{ab}f_0^2 + d^2\nonumber\\
+% &= \frac{ab + ad - cd}{ab}\left(\frac{2a^2(m+n)}n\right) + d^2\nonumber\\
+% &= \frac{2a(m+n)(ab + ad - cd)}{bn} + d^2\nonumber\\
+% &= \frac{(m+n)(ab + ad - cd)}{bc} + d^2\nonumber\\
+% &= \frac{\sqrt{bc(m+n)(ab + ad - cd) + b^2c^2d^2}}{bc}
+%\end{align}
+%
+%From the figure \ref{fig:four} we define $\delta \equiv \angle{A_1C_2D}$ and calculate $\cos\delta$ and $\sin\delta$:
+%\begin{align}
+%\delta &\equiv \angle{A_1C_2D}\\
+%\cos\delta &= \frac{(a+c)^2 + f_1^2 - (b+d)^2}{2(a+c)f_1}\nonumber\\
+% &= \frac{a^2 + 2ac + c^2 - b^2 + f_1^2 - 2bd - d^2}{2(a+c)f_1}\nonumber\\
+% &= \frac{m + n + f_1^2 - 2bd - d^2}{2(a+c)f_1}\nonumber\\
+%\end{align}
+%
+%From the figure \ref{fig:four} we define $\gamma \equiv \angle{BA_2C_2}$ and calculate $\cos\gamma$ and $\sin\gamma$:
+%\begin{align}
+%\gamma &\equiv \angle{BA_2C_2}\\
+%\cos\gamma &= \frac{a^2 + b^2 - c^2}{2ab}\\
+%\sin\gamma &= \frac{\sqrt{4a^2b^2 -(a^2 + b^2 - c^2)^2}}{2ab}
+%\end{align}
+%
+%%We notice that $\gamma \equiv \angle{A_2C_2A1}$, $\gamma + \delta = \angle{A_2C_2D}$
+%%and $\epsilon \equiv \angle{DC_2E} = \pi - (\gamma + \delta)$:
+
+
 
 \end{document}
