@@ -48,10 +48,61 @@ and defining integers $x = a+c$ and $y = b+d$:
 x &\equiv a + c\\
 y &\equiv b + d\\
 f^2 &= (a+c)^2 + (b+d)^2 - 2(a+c)(b+d)\cos\alpha\\
- &= x^2 + y^2 - \frac{2mxy}{n}\\
-f &= \frac{\sqrt{n^2x^2 + n^2y^2 - 2mnxy}}{n}
+ &= x^2 + y^2 - \frac{2mxy}n\\
+f &= \frac{\sqrt{n^2(x^2 + y^2) - 2mnxy}}n
 \end{align}
 
+We define a new integer $z \equiv n^2(x^2 + y^2) - 2mnxy$ so we have:
+\begin{align}
+z &\equiv n^2(x^2 + y^2) - 2mnxy\\
+f &= \frac{\sqrt{z}}n
+\end{align}
+
+We define angle $\theta \equiv \angle{A_1C_2D}$ and calculate $\cos\theta$ and $\sin\theta$:
+\begin{align}
+\theta &\equiv \angle{A_1C2D}\\
+\cos\theta &= \frac{(a+c)^2 + f^2 - (b+d)^2}{2(a+c)f}\nonumber\\
+ &= \frac{x^2 + f^2 - y^2}{2xf}\nonumber\\
+ &= \frac{x^2 + x^2 + y^2 - \dfrac{2mxy}{n} - y^2}{2x\dfrac{\sqrt{z}}{n}}\nonumber\\
+ &= \frac{nx - my}{\sqrt{z}} \equiv \frac{o}p\\
+\sin\theta &= \frac{\sqrt{p^2 - o^2}}p\nonumber\\
+ &= \frac{\sqrt{n^2(x^2 + y^2) - 2mnxy - (nx-my)^2}}p\nonumber\\
+ &= \frac{\sqrt{n^2(x^2 + y^2) - 2mnxy - n^2x^2 +2nxmy - m^2y^2}}p\nonumber\\
+ &= \frac{\sqrt{n^2y^2 - m^2y^2}}p \equiv \frac{q}{p}
+\end{align}
+
+From the figure \ref{fig:four} we define $\gamma \equiv \angle{BA_2C_2}$ and define integers $s=a^2 + b^2 - c^2$ and $t=2ab$ and calculate $\cos\gamma$ and $\sin\gamma$:
+\begin{align}
+(\gamma,s,t) &\equiv (\angle{BA_2C_2}, a^2 + b^2 - c^2, 2ab)\\
+\cos\gamma &= \frac{s}{t}\\
+\sin\gamma &= \frac{\sqrt{t^2-s^2}}{t}
+\end{align}
+
+We define angle $\phi \equiv \angle{A_2C_2D}$ and we note is the sum of angles $\theta + \gamma$ and we calculate $\cos\phi$:
+\begin{align}
+\phi &\equiv \angle{A_2C_2D}\\
+ &= \theta + \gamma\\
+\cos\phi &= \cos(\theta + \gamma)\\
+ &= \cos\theta\cos\gamma - \sin\theta\sin\gamma\nonumber\\
+ &= \frac{os}{pt} - \frac{q\sqrt{t^2-s^2}}{pt}\nonumber\\
+ &= \frac{os - q\sqrt{t^2-s^2}}{pt}
+\end{align}
+
+From the figure we define angle $\psi \equiv \angle{DC_2E}$ and we note equals angle $\pi - \phi$, so we have:
+\begin{align}
+\psi &\equiv \angle{DC_2E}\\
+ &= \pi - \phi\\
+\cos\psi &= \cos(\pi - \phi)\\
+ &= -\cos\phi\nonumber\\
+ &= \frac{q\sqrt{t^2-s^2} - os}{pt}
+\end{align}
+
+Finally with $\cos\psi$, $e$ and $f$ we can calculate distance $g = \overline{ED}$:
+\begin{align}
+g^2 &= e^2 + f^2 - 2ef\cos\psi\\
+ &= e^2 + x^2 + y^2 - \frac{2mxy}{n} 
+ - 2e\left(\frac{\sqrt{z}}{n}\right)\left(\frac{q\sqrt{t^2-s^2} - os}{\sqrt{z}t}\right)\\
+\end{align}
 
 %\subsection{Using $beta$}
 %
@@ -104,12 +155,6 @@ f &= \frac{\sqrt{n^2x^2 + n^2y^2 - 2mnxy}}{n}
 % &= \frac{m + n + f_1^2 - 2bd - d^2}{2(a+c)f_1}\nonumber\\
 %\end{align}
 %
-%From the figure \ref{fig:four} we define $\gamma \equiv \angle{BA_2C_2}$ and calculate $\cos\gamma$ and $\sin\gamma$:
-%\begin{align}
-%\gamma &\equiv \angle{BA_2C_2}\\
-%\cos\gamma &= \frac{a^2 + b^2 - c^2}{2ab}\\
-%\sin\gamma &= \frac{\sqrt{4a^2b^2 -(a^2 + b^2 - c^2)^2}}{2ab}
-%\end{align}
 %
 %%We notice that $\gamma \equiv \angle{A_2C_2A1}$, $\gamma + \delta = \angle{A_2C_2D}$
 %%and $\epsilon \equiv \angle{DC_2E} = \pi - (\gamma + \delta)$:
