@@ -1,0 +1,48 @@
+%\PassOptionsToPackage{svgnames}{xcolor}
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+\usepackage{../../meccano}
+\usepackage{penta}
+
+\begin{document}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+   \pgfmathsetmacro\s{12}
+   \def\p{3pt}
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
+   % AB
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %BC
+    \begin{scope}[rotate=30] % TODO
+     \meccanostrip[AA00AA]{11}{1}{\p}
+     \path (11,0) ++(0:10*\p) node{$F$};
+    \end{scope}
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %CD
+     \begin{scope}[shift={(3,0)},rotate=72]
+      \meccanostrip[008800]{9}{1}{\p}
+      \path (0,0) ++(180:10*\p) node{$G$};
+      \path (9,0) ++(0:10*\p) node{$H$};
+     \end{scope}
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %DE
+      \begin{scope}[shift={(9,0)},rotate=108]
+       \meccanostrip[008800]{9}{1}{\p}
+       \path (0,0) ++(180:10*\p) node{$I$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
+       %EA
+       \begin{scope}[shift={(\s,0)},rotate=180-30] % TODO
+        \meccanostrip[AA00AA]{11}{1}{\p}
+        \path (11,0) ++(0:10*\p) node{$J$};
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

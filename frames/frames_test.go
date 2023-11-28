@@ -25,11 +25,13 @@ func TestTriangles(t *testing.T) {
 }
 
 func TestTrianglePairsTex(t *testing.T) {
-	NewFrames().TrianglePairsTex(5,nil)
+	//NewFrames().TrianglePairsTex(5,nil)
 	//NewFrames().TrianglePairsTex(10, []int{46,18,5}) // Pentagon size=3 internal diagonal e(3,3,1)
 	//NewFrames().TrianglePairsTex(15, []int{106,30,5}) // Pentagon size=5 internal diagonal e(3,5,0)
 	//NewFrames().TrianglePairsTex(15, []int{24,5,5}) // Pentagon size=5 internal diagonal e(2,5,0)
 	//NewFrames().TrianglePairsTex(15, []int{64,21,5}) // Pentagon size=7 internal diagonal e(6,7,0)
+	//NewFrames().TrianglePairsTex(20, []int{4,1,5}) // angle 108 1:2 found
+	NewFrames().TrianglePairsTex(20, []int{10,3,5}) // angle 108:1:3 found
 }
 
 func TestTrianglePairsCosine(t *testing.T) {
@@ -49,7 +51,9 @@ func TestTrianglePairsExt(t *testing.T) {
 	fmt.Println(s, err)
 	*/
 	//frames.TrianglePairsExtPlusPlusTex(3, []int{46,18,5})
-	frames.TrianglePairsExtPlusPlusTex(7, []int{10,3,5})
+	//frames.TrianglePairsExtPlusPlusTex(13, []int{10,3,5}) // some
+	//frames.TrianglePairsExtPlusPlusTex(13, []int{4,1,5})
+	frames.TrianglePairsExtPlusPlusTex(13, []int{85,28,5})
 }
 
 
