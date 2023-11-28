@@ -11,15 +11,22 @@
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
    \pgfmathsetmacro\s{12}
+   \pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
+   \pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
+   \pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
    \def\p{3pt}
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
+   \begin{scope}[shift={(0,0)},rotate=\angle]
+    \meccanostrip[AA00AA]{11}{1}{\p}
+    \path (11,0) ++(0:10*\p) node{$J$};
+   \end{scope}
+   \begin{scope}[shift={(\s,0)},rotate=180-\angle] % TODO
+    \meccanostrip[AA00AA]{11}{1}{\p}
+    \path (11,0) ++(0:10*\p) node{$J$};
+   \end{scope}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
-    \begin{scope}[rotate=30] % TODO
-     \meccanostrip[AA00AA]{11}{1}{\p}
-     \path (11,0) ++(0:10*\p) node{$F$};
-    \end{scope}
     \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
      \begin{scope}[shift={(3,0)},rotate=72]
@@ -35,10 +42,6 @@
       \end{scope}
       \begin{scope}[shift={(\s,0)},rotate=72]
        %EA
-       \begin{scope}[shift={(\s,0)},rotate=180-30] % TODO
-        \meccanostrip[AA00AA]{11}{1}{\p}
-        \path (11,0) ++(0:10*\p) node{$J$};
-       \end{scope}
       \end{scope}
      \end{scope}
     \end{scope}
