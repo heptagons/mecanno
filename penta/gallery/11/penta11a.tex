@@ -1,0 +1,78 @@
+\documentclass[tikz, border=1cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+\usepackage{../../../meccano}
+\usepackage{../penta}
+
+\newcommand{\meccanofivesurd}[8]{ %x,y,z, p, color1,c2,c3,c4,c5
+ \pgfmathsetmacro\x{#1}
+ \pgfmathsetmacro\xa{abs(#1)}
+ \pgfmathsetmacro\y{#2}
+ \pgfmathsetmacro\yy{2*\y}
+ \pgfmathsetmacro\z{#3}
+ \pgfmathsetmacro\aa{-asin(\x/\yy)}
+ \pgfmathsetmacro\ab{-acos(\x/\yy)}
+ \begin{scope}[rotate=90+\aa]
+  \meccanostrip[#5]{\yy}{1}{#4} 
+  \begin{scope}[shift={(\y,0)},rotate=-2*\aa]
+   \meccanostrip[#6]{\y}{1}{#4}
+  \end{scope}
+  \begin{scope}[shift={(\yy,0)},rotate=\ab]
+   \meccanostrip[#7]{\xa}{1}{#4}
+   \begin{scope}[shift={(\xa,0)},rotate=90]
+    \meccanostrip[#8]{\z}{1}{#4}
+   \end{scope}
+   \begin{scope}[shift={(\xa-4,0)},rotate=atan(3/4)]
+    \meccanostrip[888888]{5}{1}{#4} %pythagoras 3-4-5 diagonal
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+   \pgfmathsetmacro\s{11}
+   %\pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
+   %\pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
+   %\pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
+   \def\p{3pt}
+   \meccanopentagon{FF4400}{\s}{3pt}{A}{B}{C}{D}{E}
+   % AB
+   \begin{scope}[shift={(3,0)},rotate=-10]%TODO
+    \meccanofivesurd{-4}{3}{11}{3pt}{0000FF}{008800}{880088}{FF4400}
+   \end{scope}
+   %\begin{scope}[shift={(0,0)},rotate=\angle]
+   % \meccanostrip[AA00AA]{11}{1}{\p}
+   % \path (11,0) ++(0:10*\p) node{$J$};
+   %\end{scope}
+   %\begin{scope}[shift={(\s,0)},rotate=180-\angle]
+   % \meccanostrip[AA00AA]{11}{1}{\p}
+   % \path (11,0) ++(0:10*\p) node{$F$};
+   %\end{scope}
+   %\begin{scope}[shift={(\s,0)},rotate=72]
+    %BC
+    %\begin{scope}[shift={(\s,0)},rotate=72]
+     %CD
+     %\begin{scope}[shift={(3,0)},rotate=72]
+      %\meccanostrip[008800]{9}{1}{\p}
+      %\path (0,0) ++(180:10*\p) node{$G$};
+      %\path (9,0) ++(0:10*\p) node{$H$};
+     %\end{scope}
+     %\begin{scope}[shift={(\s,0)},rotate=72]
+      %DE
+      %\begin{scope}[shift={(9,0)},rotate=108]
+      % \meccanostrip[008800]{9}{1}{\p}
+      % \path (0,0) ++(180:10*\p) node{$I$};
+      %\end{scope}
+      %\begin{scope}[shift={(\s,0)},rotate=72]
+       %EA
+      %\end{scope}
+     %\end{scope}
+    %\end{scope}
+   %\end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
