@@ -115,5 +115,21 @@ The program found the next pentagon of this type is a lot bigger: $\overline{BC}
 
 \section{Pentagon of size 10}
 
+\begin{figure}[h]
+ \centering
+ \includegraphics[scale=1]{10/penta10a}
+ \caption{Pentagon size 10.}
+ \label{fig:penta10a}
+\end{figure}
+
+Figure \ref{fig:penta10a} show a rigid regular pentagon $A,B,C,D,E$ of size 10. We calculate a diagonal joining to consecutive sides relative primes to have something exclusive to the size 10, we choose $\overline{BF}:\overline{BC} = 7:10$. With the law of cosines we calculate $\overline{CF}$:
+\begin{align}
+\overline{CF}^2 &= \overline{BC}^2 + \overline{BF}^2
+ - 2(\overline{BC})(\overline{BF})\cos\left(\frac{3\pi}5\right)\nonumber\\
+ &= 10^2 + 7^2 - 2(10)(7)\left(\frac{1-\sqrt5}4\right) = 114 + 35\sqrt5\\
+\overline{CF} &= \sqrt{114 + 35\sqrt5} 
+\end{align}
+
+Number $\sqrt{114 + 35\sqrt5}$ cannot be denested so we need to solve this with a cluster of strips. A program found a lot of solutions for this distance using five strips, so we choose one narrow enough to fit inside the decagon.
 
 \end{document}
