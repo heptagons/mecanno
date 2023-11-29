@@ -16,8 +16,11 @@
  \pgfmathsetmacro\ab{-acos(\x/\yy)}
  \begin{scope}[rotate=90+\aa]
   \meccanostrip[#5]{\yy}{1}{#4} 
+  \path (\y,0) ++(90:20+#4) node{$H$};
+  \path (\yy,0) ++(0:20+#4) node{$I$};
   \begin{scope}[shift={(\y,0)},rotate=-2*\aa]
    \meccanostrip[#6]{\y}{1}{#4}
+   \path (\y,0) ++(-60:20+#4) node{$J$};
   \end{scope}
   \begin{scope}[shift={(\yy,0)},rotate=\ab]
    \meccanostrip[#7]{\xa}{1}{#4}
@@ -26,6 +29,7 @@
    \end{scope}
    \begin{scope}[shift={(\xa-4,0)},rotate=atan(3/4)]
     \meccanostrip[888888]{5}{1}{#4} %pythagoras 3-4-5 diagonal
+    \path (5,0) ++(-30:20+#4) node{$K$};
    \end{scope}
   \end{scope}
  \end{scope}
@@ -38,41 +42,29 @@
    %\pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
    %\pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
    %\pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
-   \def\p{3pt}
-   \meccanopentagon{FF4400}{\s}{3pt}{A}{B}{C}{D}{E}
+   \def\p{5pt}
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
-   \begin{scope}[shift={(3,0)},rotate=-10]%TODO
-    \meccanofivesurd{-4}{3}{11}{3pt}{0000FF}{008800}{880088}{FF4400}
+   \begin{scope}[shift={(3,0)},rotate=-47.5]%TODO
+    \meccanofivesurd{-4}{3}{11}{\p}{0000FF}{008800}{880088}{FF4400}
+    \path (0,0) ++(-30:20+\p) node{$F$};
    \end{scope}
-   %\begin{scope}[shift={(0,0)},rotate=\angle]
-   % \meccanostrip[AA00AA]{11}{1}{\p}
-   % \path (11,0) ++(0:10*\p) node{$J$};
-   %\end{scope}
-   %\begin{scope}[shift={(\s,0)},rotate=180-\angle]
-   % \meccanostrip[AA00AA]{11}{1}{\p}
-   % \path (11,0) ++(0:10*\p) node{$F$};
-   %\end{scope}
-   %\begin{scope}[shift={(\s,0)},rotate=72]
+   \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
-    %\begin{scope}[shift={(\s,0)},rotate=72]
+    \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
-     %\begin{scope}[shift={(3,0)},rotate=72]
-      %\meccanostrip[008800]{9}{1}{\p}
-      %\path (0,0) ++(180:10*\p) node{$G$};
-      %\path (9,0) ++(0:10*\p) node{$H$};
-     %\end{scope}
-     %\begin{scope}[shift={(\s,0)},rotate=72]
+     \begin{scope}[shift={(\s,0)},rotate=72]
       %DE
-      %\begin{scope}[shift={(9,0)},rotate=108]
-      % \meccanostrip[008800]{9}{1}{\p}
-      % \path (0,0) ++(180:10*\p) node{$I$};
-      %\end{scope}
-      %\begin{scope}[shift={(\s,0)},rotate=72]
+      \begin{scope}[shift={(3,0)},rotate=-47.5]%TODO
+       \meccanofivesurd{-4}{3}{11}{\p}{0000FF}{008800}{880088}{FF4400}
+       \path (0,0) ++(-30:20+\p) node{$G$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
        %EA
-      %\end{scope}
-     %\end{scope}
-    %\end{scope}
-   %\end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
   \end{scope}
  \end{tikzpicture}
 \end{document}

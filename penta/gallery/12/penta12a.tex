@@ -13,16 +13,16 @@
    \pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
    \pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
    \pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
-   \def\p{3pt}
+   \def\p{5pt}
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
    \begin{scope}[shift={(0,0)},rotate=\angle]
     \meccanostrip[AA00AA]{11}{1}{\p}
-    \path (11,0) ++(0:10*\p) node{$J$};
+    \path (11,0) ++(0:20+\p) node{$J$};
    \end{scope}
    \begin{scope}[shift={(\s,0)},rotate=180-\angle]
     \meccanostrip[AA00AA]{11}{1}{\p}
-    \path (11,0) ++(0:10*\p) node{$F$};
+    \path (11,0) ++(0:20+\p) node{$F$};
    \end{scope}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
@@ -30,14 +30,14 @@
      %CD
      \begin{scope}[shift={(3,0)},rotate=72]
       \meccanostrip[008800]{9}{1}{\p}
-      \path (0,0) ++(180:10*\p) node{$G$};
-      \path (9,0) ++(0:10*\p) node{$H$};
+      \path (0,0) ++(180:20+\p) node{$G$};
+      \path (9,0) ++(0:20+\p) node{$H$};
      \end{scope}
      \begin{scope}[shift={(\s,0)},rotate=72]
       %DE
       \begin{scope}[shift={(9,0)},rotate=108]
        \meccanostrip[008800]{9}{1}{\p}
-       \path (0,0) ++(180:10*\p) node{$I$};
+       \path (0,0) ++(180:20+\p) node{$I$};
       \end{scope}
       \begin{scope}[shift={(\s,0)},rotate=72]
        %EA
