@@ -1,11 +1,10 @@
-%\PassOptionsToPackage{svgnames}{xcolor}
 \documentclass[tikz, border=1cm]{standalone}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{math}
-\usepackage{../../meccano}
-\usepackage{penta}
+\usepackage{../../../meccano}
+\usepackage{../penta}
 
 \begin{document}
  \begin{tikzpicture}
@@ -21,9 +20,9 @@
     \meccanostrip[AA00AA]{11}{1}{\p}
     \path (11,0) ++(0:10*\p) node{$J$};
    \end{scope}
-   \begin{scope}[shift={(\s,0)},rotate=180-\angle] % TODO
+   \begin{scope}[shift={(\s,0)},rotate=180-\angle]
     \meccanostrip[AA00AA]{11}{1}{\p}
-    \path (11,0) ++(0:10*\p) node{$J$};
+    \path (11,0) ++(0:10*\p) node{$F$};
    \end{scope}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
