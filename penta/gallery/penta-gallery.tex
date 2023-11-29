@@ -95,16 +95,25 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
  \label{fig:penta11a}
 \end{figure}
 
-Figure \ref{fig:penta11a} show a rigid regular pentagon $A,B,C,D,E$ of size 11. A program found this is the smallest pentagon having a consecutive sides diagonal of the form $\dfrac{z_2 + z_3\sqrt5}{z_1}$ instead of the nested form $\dfrac{z_2\sqrt{z_3+z_4\sqrt5}}{z_1}$ where $z_i$ are integers (next pentagon of this type has side $246$). The mentioned diagonal is the distance $\overline{CF}$ in the figure which can be calculated with the law of cosines knowing angle $\angle{CBF} = \dfrac{3\pi}5$ and denesting the result:
+Figure \ref{fig:penta11a} show a rigid regular pentagon $A,B,C,D,E$ of size 11. A program found this is the smallest pentagon having a consecutive sides diagonal of the form $\dfrac{z_2 + z_3\sqrt5}{z_1}$ instead of the nested form $\dfrac{z_2\sqrt{z_3+z_4\sqrt5}}{z_1}$ where $z_i$ are integers. The mentioned diagonal is the distance $\overline{CF}$ in the figure which can be calculated with the law of cosines knowing angle $\angle{CBF} = \dfrac{3\pi}5$ and denesting the result. We calculate the angle $\angle{CFB}$ for the drawing:
 \begin{align}
 \overline{CF}^2 &= \overline{BC}^2 + \overline{BF}^2 
  - 2(\overline{BC})(\overline{BF})\cos\left(\dfrac{3\pi}5\right)\\
  &= 11^2 + 8^2 - 2(11)(8)\left(\frac{1-\sqrt5}4\right) = 141 + 44\sqrt5\nonumber\\
-\overline{CF} &= \sqrt{141 + 44\sqrt5} = 11 + 2\sqrt5
+\overline{CF} &= \sqrt{141 + 44\sqrt5} = 11 + 2\sqrt5\\
+\cos(\angle{CFB}) &= \frac{\overline{CF}^2 + \overline{BF}^2 - \overline{BC}^2}
+ {2(\overline{CF})(\overline{BF})}\nonumber\\
+ &= \frac{141+44\sqrt5 + 8^2 - 11^2}{2(11+2\sqrt5)(8)}
+  = \frac{21+11\sqrt5}{44+8\sqrt5} = \frac{121+79\sqrt5}{404}
 \end{align}
 
-\subsection{Five strips builds distance $a+b\sqrt{c}$}
+\subsection{Five strips build distance $a+b\sqrt{c}$}
 
 A five strips cluster can create a rigid distance like $11 + 2\sqrt{5}$. In the figure, three strips $\overline{FI} = 2\overline{HJ}, \overline{FI} > \overline{IJ}$ builds a right angle $\angle{FJI} = \pi$, since triangle $\triangle{IJH}$ is isosceles ($\overline{FH} = \overline{HI} = \overline{JH}$). These three strips also build a distance $\overline{FJ} = \sqrt{\overline{FI}^2 - \overline{IJ}^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Now we attach strip $\overline{CJ}$ making a second right triangle $\angle{CJI} = \pi$ using strip $\overline{IK}=5$ as pythagorean diagonal ($\overline{JK}=3, \overline{IJ}=4$). We have two right triangles at vertice $J$ so vertices $F,J,C$ are collinear, so we can calculate the distance $\overline{FC} = \overline{CJ} + \overline{JF} = 11 + 2\sqrt5$. We repeat the five-strips cluster between vertices $A,G$ preventing overlaps of any strips. Since the clusters are rigid we formed two rigid triangles $\triangle{ABC}, \triangle{DEA}$ so the pentagon is rigid.
+\\\\
+The program found the next pentagon of this type is a lot bigger: $\overline{BC}=246, \overline{BF}=70, \overline{CF}=41+105\sqrt5$.
+
+\section{Pentagon of size 10}
+
 
 \end{document}

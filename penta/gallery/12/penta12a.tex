@@ -1,9 +1,5 @@
-\documentclass[tikz, border=1cm]{standalone}
+\documentclass[]{standalone}
 
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\usetikzlibrary{math}
-\usepackage{../../../meccano}
 \usepackage{../penta}
 
 \begin{document}
@@ -31,7 +27,7 @@
      \begin{scope}[shift={(3,0)},rotate=72]
       \meccanostrip[008800]{9}{1}{\p}
       \path (0,0) ++(180:20+\p) node{$G$};
-      \path (9,0) ++(0:20+\p) node{$H$};
+      \path (9,0) ++(60:20+\p) node{$H$};
      \end{scope}
      \begin{scope}[shift={(\s,0)},rotate=72]
       %DE

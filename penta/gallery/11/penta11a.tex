@@ -1,9 +1,5 @@
-\documentclass[tikz, border=1cm]{standalone}
+\documentclass[]{standalone}
 
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\usetikzlibrary{math}
-\usepackage{../../../meccano}
 \usepackage{../penta}
 
 \newcommand{\meccanofivesurd}[8]{ %x,y,z, p, color1,c2,c3,c4,c5
@@ -36,16 +32,14 @@
 }
 
 \begin{document}
+ \pgfmathsetmacro\s{11}
+ \pgfmathsetmacro\angle{acos((121+79*sqrt(5))/404))}
+ \def\p{5pt}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
-   \pgfmathsetmacro\s{11}
-   %\pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
-   %\pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
-   %\pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
-   \def\p{5pt}
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
-   \begin{scope}[shift={(3,0)},rotate=-47.5]%TODO
+   \begin{scope}[shift={(3,0)},rotate=-90+\angle]%47.5
     \meccanofivesurd{-4}{3}{11}{\p}{0000FF}{008800}{880088}{FF4400}
     \path (0,0) ++(-30:20+\p) node{$F$};
    \end{scope}
@@ -55,7 +49,7 @@
      %CD
      \begin{scope}[shift={(\s,0)},rotate=72]
       %DE
-      \begin{scope}[shift={(3,0)},rotate=-47.5]%TODO
+      \begin{scope}[shift={(3,0)},rotate=-90+\angle]
        \meccanofivesurd{-4}{3}{11}{\p}{0000FF}{008800}{880088}{FF4400}
        \path (0,0) ++(-30:20+\p) node{$G$};
       \end{scope}
