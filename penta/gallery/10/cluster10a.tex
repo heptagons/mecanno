@@ -8,17 +8,23 @@
  \begin{scope}[scale={0.5}]
   \begin{scope}[rotate=90]
    \meccanostrip[000000]{2}{1}{\p}
-   \path (0,0) ++(180:20+\p) node{$O$};
+   \path (0,0) ++(180:20+\p) node{$K$};
   \end{scope}
   \begin{scope}[rotate=atan(1/8)]
    \meccanostrip[000000]{8}{1}{\p}
   \end{scope}
+  \begin{scope}[rotate=180-atan(1/6)]
+   \meccanostrip[000000]{6}{1}{\p}
+    \path (3,0) ++(-90:20+\p) node{$H$};
+    \path (4,0) ++(-90:20+\p) node{$F$};
+    \path (6,0) ++(-90:20+\p) node{$H_1$};
+  \end{scope}
   \begin{scope}[shift={(0,1)}]
    \begin{scope}[rotate=atan(1/8)]
     \meccanostrip[000000]{4}{1}{\p}
-    \path (0,0) ++(210:25+\p) node{$J$};
+    \path (0,0) ++(130:20+\p) node{$J$};
    \end{scope}
-   \begin{scope}[rotate=180-atan(1/6)]
+   \begin{scope}[rotate=180+atan(1/6)]
     \meccanostrip[000000]{3}{1}{\p}
    \end{scope}
   \end{scope}
@@ -26,16 +32,10 @@
    \begin{scope}[rotate=-atan(1/8)]
     \meccanostrip[000000]{16}{1}{\p}
     \path (0,0) ++(90:20+\p) node{$I$};
-    \path (4,0) ++(90:20+\p) node{$K$};
-    \path (8,0) ++(90:20+\p) node{$K_1$};
+    \path (4,0) ++(90:20+\p) node{$L$};
+    \path (8,0) ++(90:20+\p) node{$L_1$};
     \path (10,0) ++(90:20+\p) node{$C$};
-    \path (16,0) ++(90:20+\p) node{$K_2$};
-   \end{scope}
-   \begin{scope}[rotate=180+atan(1/6)]
-    \meccanostrip[000000]{6}{1}{\p}
-    \path (3,0) ++(-90:20+\p) node{$H$};
-    \path (4,0) ++(-90:20+\p) node{$F$};
-    \path (6,0) ++(-90:20+\p) node{$H_1$};
+    \path (16,0) ++(90:20+\p) node{$L_2$};
    \end{scope}
   \end{scope}
  \end{scope}

@@ -107,7 +107,7 @@ Figure \ref{fig:penta11a} show a rigid regular pentagon $A,B,C,D,E$ of size 11. 
   = \frac{21+11\sqrt5}{44+8\sqrt5} = \frac{121+79\sqrt5}{404}
 \end{align}
 
-\subsection{Five strips build distance $11+2\sqrt{5}$}
+\subsection{Construction of distance $11+2\sqrt{5}$}
 
 A five strips cluster can create a rigid distance like $11 + 2\sqrt{5}$. In the figure, three strips $\overline{FI} = 2\overline{HJ}, \overline{FI} > \overline{IJ}$ builds a right angle $\angle{FJI} = \pi$, since triangle $\triangle{IJH}$ is isosceles ($\overline{FH} = \overline{HI} = \overline{JH}$). These three strips also build a distance $\overline{FJ} = \sqrt{\overline{FI}^2 - \overline{IJ}^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Now we attach strip $\overline{CJ}$ making a second right triangle $\angle{CJI} = \pi$ using strip $\overline{IK}=5$ as pythagorean diagonal ($\overline{JK}=3, \overline{IJ}=4$). We have two right triangles at vertice $J$ so vertices $F,J,C$ are collinear, so we can calculate the distance $\overline{FC} = \overline{CJ} + \overline{JF} = 11 + 2\sqrt5$. We repeat the five-strips cluster between vertices $A,G$ preventing overlaps of any strips. Since the clusters are rigid we formed two rigid triangles $\triangle{ABC}, \triangle{DEA}$ so the pentagon is rigid.
 \\\\
@@ -135,36 +135,40 @@ We calculate the angle $\angle{CFB}$ for the drawing:
   = \frac{9+5\sqrt5}{2\sqrt{114+35\sqrt5}}
 \end{align}
 
-\subsection{Five strips for distance $\sqrt{114+35\sqrt5}$}
+\subsection{Construction of distance $\sqrt{114+35\sqrt5}$}
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1.3]{11/cluster11a}
- \caption{Five strips cluster for distance $\overline{CF} = \sqrt{114+35\sqrt5}$}
- \label{fig:cluster11a}
+ \includegraphics[scale=1.3]{10/cluster10a}
+ \caption{Strips construction for distance $\overline{CF} = \sqrt{114+35\sqrt5}$}
+ \label{fig:cluster10a}
 \end{figure}
 
 Number $\sqrt{114 + 35\sqrt5}$ cannot be denested so we need to solve this with a cluster of strips. A program found a lot of solutions for this distance using five strips, so we choose one narrow enough to fit inside the decagon.
 \\\\
-Figure \ref{fig:cluster11a} shows how to prove the cluster distance is correct. In the figure we have two isoscelles triangles $\triangle{IJH}$ and $\triangle{IOK_1}$. The sides $IH$ and $IK_1$ are extended to double the original size so we have two vertices $H_1$ and $K_2$ so we have to right angles $\angle{IJH_1}$ and $\angle{IOK_2}$.
+Figure \ref{fig:cluster10a} shows how to prove the cluster selected is correct. In the figure we have two isoscelles triangles $\triangle{IKL_1}$ and $\triangle{JKH}$. The sides $IL_1$ and $KH$ are extended to double the original size to the vertices $L_2$ and $H_1$ building two right angles $\angle{IKL_2}$ and $\angle{KJH_1}$. The right triangles permit the calculation of the abscissas and ordinates of vertices $C$ and $F$ to calculate their distance.
 \\\\
-According to the figure $\overline{OM_1}=1$ and $\overline{OM_2}=6$ so $\overline{M_1M_2} = \sqrt{(\overline{OM_2})^2 + (\overline{OM_1})^2} = \sqrt{6^2-1^2} = \sqrt{35}$.
-
-Also  $\overline{ON_1}=2$ and $\overline{N_1N_2}=16$ so $\overline{ON_2} = \sqrt{(\overline{N_1N_2})^2 - (\overline{ON_1})^2} = \sqrt{16^2 - 2^2} = 6\sqrt{7}$.
-
-Then we calculate the abscissas $M_x,N_x$ and ordinates $M_y,N_y$ of vertices $M,N$ noting $M$ is located at fraction $\frac{4}{6}$ of distance of vertices $O,M_2$ and $N$ is located at fraction $\frac{10}{16}$ of distance of vertices $N1,N2$. Assuming vertice $O$ is located at the origin we have:
+From the figure we calculate $\overline{KL_2}$ and $\overline{JH_1}$ from their respective right triangles:
 \begin{align}
-M_x &= \frac{4}{6}\overline{OM_1} = \frac{2}{3}(1) = \frac{2}3\\
-M_y &= \frac{4}{6}\overline{M_1M_2} = \frac{2}{3}\sqrt{35}\\
-N_x &= \overline{ON_1} - \frac{10}{16}\overline{ON_1} = 2 - \frac{5}{8}(2) = \frac{3}4\\
-N_y &= -\frac{10}{16}\overline{ON_2} = -\frac{5}{8}\left(6\sqrt7\right) = -\frac{15}{4}\sqrt{7}
+\overline{KL_2} = \sqrt{(\overline{IL_2})^2 - (IK)^2} = \sqrt{16^2 - 2^2} = 6\sqrt7\\
+\overline{JH_1} = \sqrt{(\overline{KH_1})^2 - (KJ)^2} = \sqrt{6^2 - 1^2} = \sqrt{35}
 \end{align}
-Finally we calculate the distance $\overline{MN}$:
+
+Assuming vertice $K$ is at the origin we can calculate the abscissas $C_x,F_x$ and ordinates $C_y,F_y$ of vertices $C$ and $F$ using as factors $c = \dfrac{\overline{IC}}{\overline{IL_2}} = \dfrac{10}{16} = \dfrac{5}8$ and $f = \dfrac{\overline{KF}}{\overline{KH1}}=\dfrac{4}6 = \dfrac{2}3$:
 \begin{align}
-\overline{MN} &= \sqrt{(M_x - N_x)^2 + (M_y - N_y)^2}\\
- &= \sqrt{\left(\dfrac{2}3 - \dfrac{3}4\right)^2 
- + \left(\dfrac{2}{3}\sqrt{35} + \dfrac{15}{4}\sqrt{7}\right)^2}\nonumber\\
- &= \sqrt{\dfrac{1}{144} + \dfrac{140}9 + 35\sqrt5 + \dfrac{1575}{16}} = \sqrt{114+35\sqrt5}
+C_x &= +c(\overline{KL_2}) = \frac{5}{8}(6\sqrt7) = \frac{15}{4}\sqrt7\\
+F_x &= -f(\overline{JH_1}) = -\frac{2}{3}\sqrt{35}\\
+C_y &= +(\overline{KI}) - c(\overline{KI}) = 2 - \frac{5}{8}(2) = \frac{3}4\\
+F_y &= +f(\overline{KJ}) = \frac{2}{3}(1) = \frac{2}3
 \end{align}
+
+Finally we calculate the distance $\overline{CF}$:
+\begin{align}
+\overline{CF} &= \sqrt{(C_x - F_x)^2 + (C_y - F_y)^2}\nonumber\\
+ &= \sqrt{\left(\frac{15}{4}\sqrt7 + \frac{2}{3}\sqrt{35}\right)^2
+ + \left(\frac{3}4 - \frac{2}3\right)^2}\nonumber\\
+ &= \sqrt{\dfrac{1575}{16} + 35\sqrt5 + \dfrac{140}9 + \dfrac{1}{144}} = \sqrt{114+35\sqrt5}
+\end{align}
+A minimal part with five strips of the construction of figure \ref{fig:cluster10a} including only vertices $F,H,I,J,K,L,C$ is used twice to make rigid the pentagon of side 10 as show in figure \ref{fig:penta10a}.
 
 \end{document}
