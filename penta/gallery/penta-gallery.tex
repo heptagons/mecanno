@@ -19,7 +19,7 @@ A program found that side 12 is the smallest pentagon that can be made rigid wit
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{12/penta12a}
- \caption{Pentagon size 12 (case a).}
+ \caption{Pentagon size 12 (case a). Is regular and rigid with four internal strips.}
  \label{fig:penta12a}
 \end{figure}
 
@@ -55,7 +55,7 @@ Finally we calculate the distance $\overline{AJ}$ which coincides with strip siz
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{12/penta12b}
- \caption{Pentagon size 12 case (b).}
+ \caption{Pentagon size 12 case (b). Is regular and rigid with four internal strips.}
  \label{fig:penta12b}
 \end{figure}
 
@@ -91,7 +91,7 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{11/penta11a}
- \caption{Pentagon size 11.}
+ \caption{Pentagon size 11 regular and rigid with two internal clusters of five strips each.}
  \label{fig:penta11a}
 \end{figure}
 
@@ -118,11 +118,11 @@ The program found the next pentagon of this type is a lot bigger: $\overline{BC}
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{10/penta10a}
- \caption{Pentagon size 10.}
+ \caption{Pentagon size 10 regular and rigid with two internal clusters of five strips each.}
  \label{fig:penta10a}
 \end{figure}
 
-Figure \ref{fig:penta10a} show a rigid regular pentagon $A,B,C,D,E$ of size 10. We calculate a diagonal joining to consecutive sides relative primes to have something exclusive to the size 10, we choose $\overline{BF}:\overline{BC} = 7:10$. With the law of cosines we calculate $\overline{CF}$.
+Figure \ref{fig:penta10a} show a rigid regular pentagon $A,B,C,D,E$ of size 10. We calculate a diagonal joining two consecutive sides relative primes to have something exclusive to the size 10, we choose $\overline{BF}:\overline{BC} = 7:10$. With the law of cosines we calculate $\overline{CF}$.
 We calculate the angle $\angle{CFB}$ for the drawing:
 \begin{align}
 \overline{CF}^2 &= \overline{BC}^2 + \overline{BF}^2
@@ -176,9 +176,51 @@ A minimal part with five strips of the construction of figure \ref{fig:cluster10
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{9/penta9a}
- \caption{Pentagon size 9.}
+ \caption{Pentagon size 9 (case a). Is regular and rigid with only six extra internal strips.}
  \label{fig:penta9a}
 \end{figure}
 
+Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. The regular pentagon distance $\overline{CE}$ is called width and equals $\dfrac{1+\sqrt5}{2}\overline{AB}$. Is easy to note the distance $\overline{FG}$ equals the width of smaller pentagons size $9-1=8$ plus $1$. So we have:
+\begin{align}
+\overline{FG} &= \frac{1+\sqrt5}{2}(\overline{BC}-\overline{FC}) + \overline{FC}\nonumber\\
+ &= \frac{1+\sqrt5}{2}(9-1) + 1 = 5 + 4\sqrt5
+\end{align}
+
+From the figure we see two right angles. Angle $\angle{GJK}=\pi$ because we have a Pythagorean triangle $\triangle{HJK}$. Angle $\angle{FJM}=\pi$ because we have an isosceles triangle $\triangle{FLM}$. The two right angles share vertice $J$ so vertices $G,J,F$ are collinear. First we calculate the distance $\overline{JF} = \sqrt{(LF)^2 - (LJ)^2} = \sqrt{9^2-1^2} = 4\sqrt5$ and finally the distance $\overline{GF} = \overline{GJ} + \overline{JF} = 5 + 4\sqrt5$ which matches the value in last equation above. To make rigid the pentagon we add strip $\overline{IN}$ parallel to side $\overline{GA}$.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=1]{9/penta9b}
+ \caption{Pentagon size 9 (case b). Is regular and rigid with two internal clusters of five strips each.}
+ \label{fig:penta9b}
+\end{figure}
+
+Figure \ref{fig:penta9b} show a regular pentagon $A,B,C,D,E$ of size $9$ made it rigid with the help of clusters fixing the distances $\overline{CF}$ and $\overline{EF}$. Pentagon size $9$ is the smaller one with diagonals where consecutive side segments fractions are $\overline{BF} / \overline{BC} =\dfrac{4}9$ and $\overline{AF} / \overline{AE} = \dfrac{5}9$. We calculate the diagonals $\overline{CF}$, $\overline{EF}$ and the angles to side $\overline{AB}$ using the law of cosines and the internal pentagon angle $\theta=\angle{FBC}=\angle{FAE}=\dfrac{3\pi}5$ where $\cos\theta = \dfrac{1-\sqrt5}4$:
+\begin{align}
+\overline{CF} &= \sqrt{
+ \overline{BC}^2 + \overline{BF}^2 - 2(\overline{BC})(\overline{BF})\cos\theta } 
+ = \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}\\
+%
+\cos(\angle{CFB}) &= 
+ \frac{\overline{CF}^2 + \overline{BF}^2 - \overline{BC}^2}{2(\overline{CF})(\overline{BF})}
+ = \frac{79 + 18\sqrt5 + 4^2 - 9^2}{2(\sqrt{79 + 18\sqrt5})(4)}
+ = \frac{7 + 9\sqrt5}{4\sqrt{79 + 18\sqrt5}} \\
+%
+\overline{EF} &= \sqrt{
+ \overline{AE}^2 + \overline{AF}^2 - 2(\overline{AE})(\overline{AF})\cos\theta} 
+ = \sqrt{9^2 + 5^2 - 2(9)(5)\left(\frac{1-\sqrt5}4\right)} = \frac{\sqrt{334 + 90\sqrt5}}2\\
+%
+\cos(\angle{EFA}) &=
+ \frac{\overline{EF}^2 + \overline{AF}^2 - \overline{EA}^2}{2(\overline{EF})(\overline{AF})}
+ = \frac{\dfrac{334 + 90\sqrt5}4 + 5^2 - 9^2 }{2\left(\dfrac{\sqrt{334 + 90\sqrt5}}2\right)(5)}
+ = \frac{11 + 9\sqrt5}{2\sqrt{334 + 90\sqrt5}}
+\end{align}
+
+Our software found several options with five strips to build distances $\sqrt{79 + 18\sqrt5}$
+and $\dfrac{\sqrt{334 + 90\sqrt5}}2$.
+
+\subsection{Construction of distance $\sqrt{79 + 18\sqrt5}$}
+
+\subsection{Construction of distance $\dfrac{\sqrt{334 + 90\sqrt5}}2$}
 
 \end{document}
