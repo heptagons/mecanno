@@ -41,7 +41,7 @@
 }
 
 \begin{document}
- \pgfmathsetmacro\s{10}
+ \pgfmathsetmacro\s{9}
  \def\p{5pt}
  \pgfmathsetmacro\dxPenta{3}
  \pgfmathsetmacro\rotPenta{acos((9 + 5*sqrt(5))/(2*sqrt(114 + 35*sqrt(5))))}
@@ -49,16 +49,16 @@
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
-   \path (3,0) ++(-90:20+\p) node{$F$};
-   \cluster{5pt}{\dxPenta}{0}{\rotPenta}
+   %\path (3,0) ++(-90:20+\p) node{$F$};
+   %\cluster{5pt}{\dxPenta}{0}{\rotPenta}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
     \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
      \begin{scope}[shift={(\s,0)},rotate=72]
       %DE
-      \path (3,0) ++(-90:20+\p) node{$G$};
-      \cluster{5pt}{\dxPenta}{0}{\rotPenta}
+      %\path (3,0) ++(-90:20+\p) node{$G$};
+      %\cluster{5pt}{\dxPenta}{0}{\rotPenta}
      \end{scope}
     \end{scope}
    \end{scope}
