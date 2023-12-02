@@ -5,7 +5,7 @@
 \begin{document}
 \def\p{4pt}
 \begin{tikzpicture}
- \begin{scope}[xscale=-0.5,yscale=0.5]
+ \begin{scope}[xscale=0.5,yscale=-0.5]
   \begin{scope}[rotate=90]
    \meccanostrip[000000]{5}{1}{\p}
    \path (0,0) ++(180:20+\p) node{$J$};
@@ -21,13 +21,13 @@
   
   \begin{scope}[shift={(0,2)},rotate=-asin(1/4)]
    \meccanostrip[000000]{8}{1}{\p}
-   \path (8,0) ++(45:20+\p) node{$F$};
+   \path (8,0) ++(45:20+\p) node{$Z$};
   \end{scope}
   
   \begin{scope}[shift={(0,2)},rotate=90+60]
    \meccanostrip[000000]{3}{1}{\p}
    \path (1,0) ++(60:20+\p) node{$L$};
-   \path (3,0) ++(30:20+\p) node{$C$};
+   \path (3,0) ++(30:20+\p) node{$O$};
   \end{scope}
   
   \begin{scope}[shift={(0,3)}, rotate=-90-60]
@@ -41,9 +41,9 @@
   \pgfmathsetmacro\cx{sqrt(3^2 - 1.5^2)}
   \pgfmathsetmacro\fx{sqrt(8^2 - 2^2)}
   \draw[color=gray] (-\cx,3.5)
-   -- (\fx,3.5) node[above]{$F_1$}
+   -- (\fx,3.5) node[below]{$X$}
    -- (\fx,0)
-   -- (-\cx,0) node[below]{$O$}
+   -- (-\cx,0) node[above]{$Y$}
    -- cycle;
 
  \end{scope}

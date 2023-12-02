@@ -2,40 +2,31 @@
 
 \usepackage{../penta}
 
-\newcommand{\cluster}[4]{%p,dx,dy,rot
- \pgfmathsetmacro\cxfx{15*sqrt(7)/4 + 2*sqrt(35)/3} % 13.865
- \pgfmathsetmacro\cyfy{3/4 - 2/3} % 0.083
- \pgfmathsetmacro\rotCluster{\cyfy/\cxfx}
- \pgfmathsetmacro\dxCluster{2*sqrt(35)/3}
- \pgfmathsetmacro\dyCluster{-2/3}
+\newcommand{\clusterFC}[4]{%p,dx,dy,rot
+ \pgfmathsetmacro\ox{3*sqrt(3)/2 + 2*sqrt(15)}
+ \pgfmathsetmacro\oy{7/2}
+ \pgfmathsetmacro\rot{atan(\oy/\ox)}
  \def\p{#1}
- \begin{scope}[yscale=-1,xscale=1,shift={(#2,#3)},rotate=-(#4)]
-  \begin{scope}[rotate=-atan(\cyfy/\cxfx),shift={(\dxCluster,\dyCluster)}]
-   \begin{scope}[rotate=90]
-    \meccanostrip[FF0000]{2}{1}{\p}
-    \path (0,0) ++(180:20+\p) node{$K$};
-   \end{scope}
-   \begin{scope}[rotate=180-atan(1/6)]
-    \meccanostrip[00AA00]{4}{1}{\p}
-   \end{scope}
-
-   \begin{scope}[shift={(0,1)}]
-    \begin{scope}[rotate=atan(1/8)]
-     \meccanostrip[0088FF]{4}{1}{\p}
-     \path (0,0) ++(135:25+\p) node{$J$};
+ \begin{scope}[shift={(#2,#3)},rotate=-\rot+(#4)]
+  \begin{scope}[shift={(0,0)},rotate=30]
+    \meccanostrip[0088DFF]{3}{1}{\p}
+    \path (3,0) ++(120:20+\p) node{$I$};
+    \begin{scope}[shift={(2,0)},rotate=-60]
+     \meccanostrip[FF0000]{1}{1}{\p}
+     \path (0,0) ++(180:20+\p) node{$L$};
+     \path (1,0) ++(0:20+\p) node{$H$};
+     \begin{scope}[shift={(1,0)},rotate=120]
+      \meccanostrip[0088FF]{3}{1}{\p}
+      \begin{scope}[shift={(1,0)},rotate=-90+asin(1/4)]
+       \meccanostrip[008800]{8}{1}{\p}  
+      \end{scope}
+      \begin{scope}[shift={(3,0)},rotate=-90-asin(1/4)]
+       \meccanostrip[880088]{4}{1}{\p}
+       \path (0,0) ++(90:20+\p) node{$J$};
+       \path (4,0) ++(110:20+\p) node{$K$};
+      \end{scope}
+     \end{scope}
     \end{scope}
-    \begin{scope}[rotate=180+atan(1/6)]
-     \meccanostrip[880088]{3}{1}{\p}
-     \path (3,0) ++(90:20+\p) node{$H$};
-    \end{scope}
-   \end{scope}
-   \begin{scope}[shift={(0,2)}]
-    \begin{scope}[rotate=-atan(1/8)]
-     \meccanostrip[FF4400]{10}{1}{\p}
-     \path (0,0) ++(90:20+\p) node{$I$};
-     \path (4,0) ++(90:20+\p) node{$L$};
-    \end{scope}
-   \end{scope}
   \end{scope}
  \end{scope}
 }
@@ -43,14 +34,14 @@
 \begin{document}
  \pgfmathsetmacro\s{9}
  \def\p{5pt}
- \pgfmathsetmacro\dxPenta{3}
- \pgfmathsetmacro\rotPenta{acos((9 + 5*sqrt(5))/(2*sqrt(114 + 35*sqrt(5))))}
+ \pgfmathsetmacro\dxFC{5}
+ \pgfmathsetmacro\rotFC{acos((7+9*sqrt(5))/(4*sqrt(79+18*sqrt(5))))}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
    \path (5,0) ++(-90:20+\p) node{$F$};
-   %\cluster{5pt}{\dxPenta}{0}{\rotPenta}
+   \clusterFC{5pt}{\dxFC}{0}{\rotFC}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
     \begin{scope}[shift={(\s,0)},rotate=72]
