@@ -19,7 +19,7 @@ A program found that side 12 is the smallest pentagon that can be made rigid wit
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{12/penta12a}
- \caption{Pentagon size 12 (case a). Is regular and rigid with four internal strips.}
+ \caption{Regular pentagon size 12 (case a) made rigid with only four internal strips.}
  \label{fig:penta12a}
 \end{figure}
 
@@ -55,7 +55,7 @@ Finally we calculate the distance $\overline{AJ}$ which coincides with strip siz
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{12/penta12b}
- \caption{Pentagon size 12 case (b). Is regular and rigid with four internal strips.}
+ \caption{Regular pentagon size 12 case (b) made rigid with only four internal strips.}
  \label{fig:penta12b}
 \end{figure}
 
@@ -91,7 +91,7 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{11/penta11a}
- \caption{Pentagon size 11 regular and rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 11 made rigid with two internal clusters of five strips each.}
  \label{fig:penta11a}
 \end{figure}
 
@@ -118,7 +118,7 @@ The program found the next pentagon of this type is a lot bigger: $\overline{BC}
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{10/penta10a}
- \caption{Pentagon size 10 regular and rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 10 made rigid with two internal clusters of five strips each.}
  \label{fig:penta10a}
 \end{figure}
 
@@ -140,7 +140,7 @@ We calculate the angle $\angle{CFB}$ for the drawing:
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1.3]{10/cluster10a}
- \caption{Strips construction for distance $\overline{CF} = \sqrt{114+35\sqrt5}$}
+ \caption{Construction of distance $\overline{CF} = \sqrt{114+35\sqrt5}$}
  \label{fig:cluster10a}
 \end{figure}
 
@@ -176,7 +176,7 @@ A minimal part with five strips of the construction of figure \ref{fig:cluster10
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{9/penta9a}
- \caption{Pentagon size 9 (case a). Is regular and rigid with only six extra internal strips.}
+ \caption{Regular pentagon size 9 (case a) made rigid with only six extra internal strips.}
  \label{fig:penta9a}
 \end{figure}
 
@@ -191,7 +191,7 @@ From the figure we see two right angles. Angle $\angle{GJK}=\pi$ because we have
 \begin{figure}[H]
  \centering
  \includegraphics[scale=1]{9/penta9b}
- \caption{Pentagon size 9 (case b). Is regular and rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 9 (case b) made rigid with two internal clusters of five strips each.}
  \label{fig:penta9b}
 \end{figure}
 
@@ -224,29 +224,51 @@ and $\dfrac{\sqrt{334 + 90\sqrt5}}2$.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{9/cluster9b1}
-\caption{Construction of distance $\overline{CF}=\sqrt{79 + 18\sqrt5}$}
+\caption{Construction of distance $\overline{OZ}=\sqrt{79 + 18\sqrt5}$}
 \label{fig:cluster9b1}
 \end{figure}
 
 Figure \ref{fig:cluster9b1} show one of several ways to build the distance $\sqrt{79 + 18\sqrt5}$. 
-Equilateral triangle $\triangle{CIH_2}$ and isosceles $\triangle{IJK}$ share vertice $I$ and the base $\overline{JH_2}$ which help to form rectangle $OCF_1F$ with base $\overline{OF}$ and height $\overline{OC}$ useful to calculate the diagonal $\overline{CF}$:
+Equilateral triangle $\triangle{OIH_2}$ and isosceles $\triangle{IJK}$ share vertice $I$ and the base $\overline{JH_2}$ which help to form rectangle $OXZY$ with base $\overline{OX}$ and height $\overline{OY}$ useful to calculate the diagonal $\overline{OZ}$:
 \begin{align}
-\overline{OF} &= \overline{OJ} + \overline{JF}\nonumber\\
- &= \sqrt{\overline{CH_2}^2 - \left(\frac{\overline{IH_2}}2\right)^2}
-  + \sqrt{\overline{IF}^2 - \overline{JI}^2}
-  = \sqrt{3^2 - \left(\frac{3}2\right)^2}
-  + \sqrt{8^2 - 2^2} 
+\overline{OX} &= \overline{YJ} + \overline{JZ}\nonumber\\
+ &= \sqrt{\overline{OH_2}^2 - \left(\frac{\overline{IH_2}}2\right)^2}
+  + \sqrt{\overline{IZ}^2 - \overline{IJ}^2}
+  = \sqrt{3^2 - \left(\frac{3}2\right)^2} + \sqrt{8^2 - 2^2} 
   = \frac{3\sqrt3}2 + 2\sqrt{15} \nonumber\\
-\overline{OC} &= \overline{JI} + \frac{\overline{IH_2}}2
+\overline{OY} &= \overline{JI} + \frac{\overline{IH_2}}2
   = 2 + \frac{3}2 = \frac{7}2 \nonumber\\
-\overline{CF} &= \sqrt{\overline{OF}^2 + \overline{OC}^2}
+\overline{OZ} &= \sqrt{\overline{OX}^2 + \overline{OY}^2}
  = \sqrt{\left(\frac{3\sqrt3}2 + 2\sqrt{15}\right)^2 + \left(\frac{7}2\right)^2}
  = \sqrt{79 + 18\sqrt5}
 \end{align}
 
-We use a smaller part of this construction, the five strips $\overline{FI},\overline{KJ},\overline{JH},\overline{HL},\overline{IC}$, as a cluster to made rigid the consecutive strips $\overline{AB},\overline{BC}$ of the pentagon of side $9$ of figure \ref{fig:penta9b}.
+We use a smaller part of this construction, the five strips $\overline{OI},\overline{KJ},\overline{JH},\overline{HL},\overline{IZ}$, as a cluster to made rigid the consecutive strips $\overline{AB},\overline{BC}$ of the pentagon of side $9$ of figure \ref{fig:penta9b}.
 
 
 \subsection{Construction of distance $\dfrac{\sqrt{334 + 90\sqrt5}}2$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{9/cluster9b2}
+\caption{Construction of distance $\overline{EF}=\dfrac{\sqrt{334 + 90\sqrt5}}2$}
+\label{fig:cluster9b2}
+\end{figure}
+
+Figure \ref{fig:cluster9b2} show equilateral triangle $\triangle{FLY}$ and isoscelles triangle $\triangle{NXW}$ sharing strip $\overline{LY}$ which helps to calculate abscissas and ordinates of vertices $E,F$. Consider vertice $Y$ located at the origin:
+\begin{align}
+E_x &= - \left(\frac{\overline{NE}}{\overline{NX}}\right)\overline{XX_0}
+ = -\frac{3}6\sqrt{\overline{NX}^2 - \overline{NX_0}^2}
+ = -\frac{1}{2}\sqrt{6^2 - \left(\frac{3}2\right)^2} = -\frac{3\sqrt{15}}4 \\
+E_y &= \overline{YN} - \left(\frac{\overline{NE}}{\overline{NX}}\right)\overline{NX_0}
+ = 6 - \left(\frac{3}6\right)\left(\frac{3}2\right) = \frac{21}4\\
+F_x &= \overline{F_0F} = \sqrt{\overline{YF}^2 - \overline{YF_0}^2}
+ = \sqrt{10^2 - 5^2} = 5\sqrt3\\
+F_y &= \overline{YF_0} = 5\\
+\overline{EF} &= \sqrt{(E_x - F_x)^2 + (E_y - F_y)^2}
+ = \sqrt{\left(-\frac{3\sqrt{15}}{4} -5\sqrt3 \right)^2 + \left(\frac{21}4 - 5\right)^2}
+ = \frac{\sqrt{334+90\sqrt5}}2
+\end{align}
+We form a cluster from the last construction to be applied in the pentagon of side $9$. We choose the five strips with vertices $E,N,M,L,O,F$. Is easy to prove strip $\overline{EM}$ is correct in the cluster comparing equal cosines at vertice $Y$ for triangles $\triangle{YVW},\triangle{YEN},\triangle{YEM}$ using the law of cosines for each triangle.
 
 \end{document}

@@ -1,0 +1,62 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\begin{document}
+\def\p{2pt}
+\def\r{15+\p}
+\begin{tikzpicture}
+ \pgfmathsetmacro\angleA{acos(5.5/8)}
+ \pgfmathsetmacro\angleB{acos(1/4)}
+ \begin{scope}[scale=0.66]
+
+  \begin{scope}[rotate=150]
+   \meccanostrip[000000]{10}{1}{\p}
+   \path (0,0) ++(-90:\r) node{$F$};
+   \path (6,0) ++(-90:\r) node{$O$};
+   \path (10,0) ++(-90:\r) node{$L$};
+   \begin{scope}[shift={(10,0)},rotate=120]
+    \meccanostrip[000000]{10}{1}{\p}
+    \path (2,0) ++(90:\r) node{$M$};
+    \path (4,0) ++(60:\r) node{$N$};
+    \path (5,0) ++(90:\r) node{$F_0$};
+    \path (5.5,0) ++(-90:\r) node{$X_0$};
+    \path (7,0) ++(120:\r) node{$W$};
+    \path (10,0) ++(-90:\r) node{$Y$};
+    \begin{scope}[rotate=-\angleA]
+     \meccanostrip[00000000]{8}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(2,0)},rotate=-\angleA]
+     \meccanostrip[00000000]{4}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(4,0)},rotate=-\angleB]
+     \meccanostrip[00000000]{6}{1}{\p}
+     \path (3,0) ++(-60:\r) node{$E$};
+     \path (6,0) ++(0:\r) node{$X$};
+    \end{scope}
+    \begin{scope}[shift={(4,0)},rotate=120]
+     \meccanostrip[00000000]{4}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(7,0)},rotate=-180+\angleB]
+     \meccanostrip[00000000]{6}{1}{\p}
+     \path (2,0) ++(60:\r) node{$V$};
+    \end{scope}
+    \begin{scope}[shift={(7,0)},rotate=60]
+     \meccanostrip[00000000]{3}{1}{\p}
+     \path (3,0) ++(0:\r) node{$Z$};
+    \end{scope}
+    
+    \begin{scope}[shift={(10,0)},rotate=180+acos(7/8)]
+     \meccanostrip[00000000]{6}{1}{\p}
+    \end{scope}
+    
+   \end{scope}
+
+  \end{scope}
+  \begin{scope}[rotate=-150]
+   \meccanostrip[000000]{10}{1}{\p}
+  \end{scope}
+ 
+ \end{scope}
+\end{tikzpicture}
+\end{document}

@@ -8,12 +8,12 @@
  \pgfmathsetmacro\rot{atan(\oy/\ox)}
  \def\p{#1}
  \begin{scope}[shift={(#2,#3)},rotate=-\rot+(#4)]
-  \begin{scope}[shift={(0,0)},rotate=30]
+  \begin{scope}[rotate=30]
     \meccanostrip[0088DFF]{3}{1}{\p}
     \path (3,0) ++(120:20+\p) node{$I$};
     \begin{scope}[shift={(2,0)},rotate=-60]
      \meccanostrip[FF0000]{1}{1}{\p}
-     \path (0,0) ++(180:20+\p) node{$L$};
+     \path (0,0) ++(-60:20+\p) node{$G$};
      \path (1,0) ++(0:20+\p) node{$H$};
      \begin{scope}[shift={(1,0)},rotate=120]
       \meccanostrip[0088FF]{3}{1}{\p}
@@ -31,28 +31,50 @@
  \end{scope}
 }
 
+\newcommand{\clusterFE}[4]{%p,dx,dy,rot
+ \pgfmathsetmacro\dx{3*sqrt(5)/4 + 5*sqrt(3)}
+ \pgfmathsetmacro\dy{1/4}
+ \pgfmathsetmacro\rot{atan(\dy/\dx)}
+ \pgfmathsetmacro\angleA{acos(5.5/8)}
+ \pgfmathsetmacro\angleB{acos(1/4)}
+ \def\p{#1}
+ \begin{scope}[shift={(#2,#3)},rotate=\rot+(#4)]
+  \begin{scope}[rotate=150]
+   \meccanostrip[0000FF]{10}{1}{\p}
+   \path (6,0) ++(-90:20+\p) node{$O$};
+   \path (10,0) ++(-90:20+\p) node{$L$};
+   \begin{scope}[shift={(6,0)},rotate=60]
+    \meccanostrip[880088]{4}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(10,0)},rotate=120]
+    \meccanostrip[880088]{4}{1}{\p}
+    \path (2,0) ++(90:20+\p) node{$M$};
+    \path (4,0) ++(60:20+\p) node{$N$};
+    \begin{scope}[shift={(2,0)},rotate=-\angleA]
+     \meccanostrip[880088]{4}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(4,0)},rotate=-\angleB]
+     \meccanostrip[0088FF]{3}{1}{\p}
+    \end{scope}     
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+
 \begin{document}
  \pgfmathsetmacro\s{9}
  \def\p{5pt}
- \pgfmathsetmacro\dxFC{5}
- \pgfmathsetmacro\rotFC{acos((7+9*sqrt(5))/(4*sqrt(79+18*sqrt(5))))}
+ \pgfmathsetmacro\fDx{5}
+ \pgfmathsetmacro\fcRot{acos((7+9*sqrt(5))/(4*sqrt(79+18*sqrt(5))))}
+ \pgfmathsetmacro\feRot{acos((11+9*sqrt(5))/(2*sqrt(334+90*sqrt(5))))}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
    % AB
    \path (5,0) ++(-90:20+\p) node{$F$};
-   \clusterFC{5pt}{\dxFC}{0}{\rotFC}
-   \begin{scope}[shift={(\s,0)},rotate=72]
-    %BC
-    \begin{scope}[shift={(\s,0)},rotate=72]
-     %CD
-     \begin{scope}[shift={(\s,0)},rotate=72]
-      %DE
-      %\path (3,0) ++(-90:20+\p) node{$G$};
-      %\cluster{5pt}{\dxPenta}{0}{\rotPenta}
-     \end{scope}
-    \end{scope}
-   \end{scope}
+   \clusterFC{5pt}{\fDx}{0}{\fcRot}
+   \clusterFE{5pt}{\fDx}{0}{-\feRot}
   \end{scope}
  \end{tikzpicture}
 \end{document}
