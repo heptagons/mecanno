@@ -188,7 +188,7 @@ A minimal part with five strips of the construction of figure \ref{fig:cluster10
  \label{fig:penta9a}
 \end{figure}
 
-Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. The regular pentagon distance $\overline{CE}$ is called width and equals $\dfrac{1+\sqrt5}{2}\overline{AB}$. Is easy to note the distance $\overline{FG}$ equals the width of smaller pentagons size $9-1=8$ plus $1$. So we have:
+Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. The regular pentagon distance $\overline{CE}$ is called width and equals $\dfrac{1+\sqrt5}{2}\overline{AB}$. Is easy to note the distance $\overline{FG}$ equals the width of smaller pentagon size $9-1=8$ plus $1$. So we have:
 \begin{align}
 \overline{FG} &= \frac{1+\sqrt5}{2}(\overline{BC}-\overline{FC}) + \overline{FC}\nonumber\\
  &= \frac{1+\sqrt5}{2}(9-1) + 1 = 5 + 4\sqrt5
@@ -205,6 +205,22 @@ From the figure we see two right angles. Angle $\angle{GJK}=\pi$ because we have
  \label{fig:penta9-8a}
 \end{figure}
 
+Figure \ref{fig:penta9-8a} show a rigid regular pentagon $A,A',B',C,B$ of size $9$. First we calculate the distance $\overline{FI}$ using the abscissas and ordinates following the vertices $F,A,B,D,I$ for a regular pentagon angles $\alpha=\dfrac{3\pi}5, \beta=\dfrac{\pi}5$:
+\begin{align}
+FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -3 + (9)\frac{1-\sqrt5}4 + (3+5)\frac{\sqrt5+1}4 = \frac{5-\sqrt5}4\\
+FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
+ &= (9)\frac{\sqrt{10+2\sqrt5}}4 + (3-5)\frac{\sqrt{10-2\sqrt5}}4
+ = \frac{9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4\\
+\overline{FI} &= \sqrt{(FI_x)^2 + (FI_y)^2}\nonumber\\
+ &= \frac{\sqrt{(5-\sqrt5)^2 + (9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5})^2}}4
+ = \frac{\sqrt{880}}4 = \sqrt{55}
+\end{align}
+Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\pi$ so: \begin{align}
+\overline{FI} &= \sqrt{(\overline{FH})^2 - (\overline{HI})^2}\nonumber\\
+ &= \sqrt{8^2 - 3^2} = \sqrt{55}
+\end{align}
+
 
 
 \subsection{With 10 internal strips}
@@ -220,7 +236,7 @@ Figure \ref{fig:penta9b} show a regular pentagon $A,B,C,D,E$ of size $9$ made it
 \begin{align}
 \overline{CF} &= \sqrt{
  \overline{BC}^2 + \overline{BF}^2 - 2(\overline{BC})(\overline{BF})\cos\theta } 
- = \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}\\
+ = \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}
 %
 \cos(\angle{CFB}) &= 
  \frac{\overline{CF}^2 + \overline{BF}^2 - \overline{BC}^2}{2(\overline{CF})(\overline{BF})}

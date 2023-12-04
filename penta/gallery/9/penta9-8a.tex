@@ -2,6 +2,25 @@
 
 \usepackage{../penta}
 
+\newcommand{\cluster}[7]{
+ \def\p{#1}
+  \begin{scope}[shift={(#2,#3)},rotate=#4]
+ \begin{scope}[yscale=#5]
+   \begin{scope}[rotate=asin(3/8)]
+    \meccanostrip[0000FF]{8}{1}{\p}
+    \path (4,0) ++(90:20+\p) node{$#6$};
+    \begin{scope}[shift={(4,0)},rotate=-2*asin(3/8)]
+     \meccanostrip[0088FF]{4}{1}{\p}
+    \end{scope}
+    \path (8,0) ++(90:20+\p) node{$#7$};
+    \begin{scope}[shift={(8,0)},rotate=-90-asin(3/8)]
+     \meccanostrip[880088]{3}{1}{\p}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
 \begin{document}
  \pgfmathsetmacro\s{9}
  \def\p{5pt}
@@ -9,7 +28,9 @@
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
    \path (3,0) ++(-90:20+\p) node{$F$};
+   \cluster{5pt}{3}{0}{85}{1}{G}{H} % TODO aprox 85 degrees
    \path (6,0) ++(-90:20+\p) node{$F'$};
+   \cluster{5pt}{6}{0}{180-85}{-1}{G'}{H'}
    % AA'
    \begin{scope}[shift={(\s,0)},rotate=72]
     %A'B'
@@ -18,7 +39,7 @@
      \begin{scope}[shift={(3,0)},rotate=72]
       \meccanostrip[00CC00]{6}{1}{\p}
       \path (0,0) ++(180:20+\p) node{$D'$};
-      \path (5,0) ++(-120:20+\p) node{$I'$};
+      \path (5,0) ++(-100:20+\p) node{$I'$};
       \path (6,0) ++(54:20+\p) node{$E$};
      \end{scope}
      \begin{scope}[shift={(\s,0)},rotate=72]
@@ -26,7 +47,7 @@
       \begin{scope}[shift={(6,0)},rotate=108]
        \meccanostrip[00CC00]{6}{1}{\p}
        \path (0,0) ++(180:20+\p) node{$D$};
-      \path (5,0) ++(120:20+\p) node{$I$};
+      \path (5,0) ++(100:20+\p) node{$I$};
       \end{scope}
       \begin{scope}[shift={(\s,0)},rotate=72]
        %BA
