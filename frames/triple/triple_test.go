@@ -170,7 +170,7 @@ func TestPentagonsIntE(t *testing.T) {
 
 func TestPentagonsSurdE(t *testing.T) {
     tri := NewTriples()
-    tri.Pentagons(12, true)
+    tri.Pentagons(40, true)
 }
 /*
 === RUN   TestPentagonsSurdE

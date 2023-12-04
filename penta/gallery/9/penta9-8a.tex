@@ -1,0 +1,40 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\begin{document}
+ \pgfmathsetmacro\s{9}
+ \def\p{5pt}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+   \path (3,0) ++(-90:20+\p) node{$F$};
+   \path (6,0) ++(-90:20+\p) node{$F'$};
+   % AA'
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %A'B'
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %B'C
+     \begin{scope}[shift={(3,0)},rotate=72]
+      \meccanostrip[00CC00]{6}{1}{\p}
+      \path (0,0) ++(180:20+\p) node{$D'$};
+      \path (5,0) ++(-120:20+\p) node{$I'$};
+      \path (6,0) ++(54:20+\p) node{$E$};
+     \end{scope}
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %CB
+      \begin{scope}[shift={(6,0)},rotate=108]
+       \meccanostrip[00CC00]{6}{1}{\p}
+       \path (0,0) ++(180:20+\p) node{$D$};
+      \path (5,0) ++(120:20+\p) node{$I$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
+       %BA
+       %\path (1,0) ++(-90:20+\p) node{$G$};
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

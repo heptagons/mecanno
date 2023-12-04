@@ -12,8 +12,8 @@ import (
 
 
 func TestTriangles(t *testing.T) {
-	surd := Z(51)
-	max := N32(15)
+	surd := Z(55)
+	max := N32(10)
 	n := 0
 	fmt.Printf("NewFrames().Triangles surd=%d max=%d\n", surd, max)
 	NewFrames().Triangles(surd, max, func(frame *Triangle) {
