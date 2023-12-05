@@ -23,14 +23,17 @@
 
 \begin{document}
  \pgfmathsetmacro\s{9}
+ \pgfmathsetmacro\fix{(5-sqrt(5))/4}
+ \pgfmathsetmacro\fiy{(9*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
+ \pgfmathsetmacro\fia{atan(\fiy/\fix)} % aprox 85 degrees
  \def\p{5pt}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
    \path (3,0) ++(-90:20+\p) node{$F$};
-   \cluster{5pt}{3}{0}{85}{1}{G}{H} % TODO aprox 85 degrees
    \path (6,0) ++(-90:20+\p) node{$F'$};
-   \cluster{5pt}{6}{0}{180-85}{-1}{G'}{H'}
+   \cluster{5pt}{3}{0}{\fia}{1}{G}{H}
+   \cluster{5pt}{6}{0}{180-\fia}{-1}{G'}{H'}
    % AA'
    \begin{scope}[shift={(\s,0)},rotate=72]
     %A'B'

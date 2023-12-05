@@ -1,0 +1,112 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\newcommand{\clusterII}[7]{ % p,x,y,rot,mirror,P1,P2
+ \def\p{#1}
+ \pgfmathsetmacro\rot{acos((61+64-1)/(2*sqrt(61)*8))}
+ \begin{scope}[shift={(#2,#3)},rotate=(\rot*#5)+#4] % displace,rotate
+  \begin{scope}[yscale=#5] % mirror
+   \meccanostrip[0000FF]{8}{1}{\p}
+   \path (8,0) ++(40:20+\p) node{$#6$};
+   \begin{scope}[shift={(8,0)},rotate=180+acos(1/4)]
+    \meccanostrip[0088FF]{1}{1}{\p}
+    \begin{scope}[shift={(1,0)},rotate=180+acos(1/4)]
+     \meccanostrip[0000FF]{2}{1}{\p}
+     \path (2,0) ++(90:20+\p) node{$#7$};
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+
+\newcommand{\clusterIII}[7]{ % p,x,y,rot,mirror,P1,P2
+ \def\p{#1}
+ \pgfmathsetmacro\rot{acos((61+64-1)/(2*sqrt(61)*8))}
+ \begin{scope}[shift={(#2,#3)},rotate=(\rot*#5)+#4] % displace,rotate
+  \begin{scope}[yscale=#5] % mirror
+   \meccanostrip[0000FF]{8}{1}{\p}
+   \path (8,0) ++(0:20+\p) node{$#6$};
+   \begin{scope}[shift={(8,0)},rotate=180+acos(1/4)]
+    \meccanostrip[0088FF]{4}{1}{\p}
+    \path (4,0) ++(40:20+\p) node{$#7$};
+    \begin{scope}[shift={(4,0)},rotate=180+acos(1/4)]
+     \meccanostrip[0000FF]{8}{1}{\p}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \pgfmathsetmacro\s{9}
+ %\pgfmathsetmacro\fix{(5-sqrt(5))/4}
+ %\pgfmathsetmacro\fiy{(9*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
+ %\pgfmathsetmacro\fia{atan(\fiy/\fix)} % aprox 85 degrees
+ \pgfmathsetmacro\fia{109} % aprox 109 degrees
+ \def\p{5pt}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+
+   \begin{scope}[shift={(0,0)}] % left pentagon
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+    \path (3,0) ++(-90:20+\p) node{$F$};
+    \path (6,0) ++(-90:20+\p) node{$F'$};
+    \clusterII{5pt}{3}{0}{\fia}{1}{G}{H}
+    \clusterII{5pt}{6}{0}{180-\fia}{-1}{G'}{H'}
+    % AA'
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %A'B'
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %B'C
+      \begin{scope}[shift={(1,0)},rotate=72]
+       \meccanostrip[00CC00]{8}{1}{\p}
+       \path (0,0) ++(180:20+\p) node{$D'$};
+       \path (3,0) ++(-100:20+\p) node{$I'$};
+       \path (8,0) ++(180+54:25+\p) node{$E$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
+       %CB
+       \begin{scope}[shift={(8,0)},rotate=108]
+        \meccanostrip[00CC00]{8}{1}{\p}
+        \path (0,0) ++(180:20+\p) node{$D$};
+       \path (3,0) ++(100:20+\p) node{$I$};
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+    
+   \begin{scope}[shift={(18,0)}] % right pentagon
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+    \path (3,0) ++(-90:20+\p) node{$F$};
+    \path (6,0) ++(-90:20+\p) node{$F'$};
+    \clusterIII{5pt}{3}{0}{\fia}{1}{G}{J}
+    \clusterIII{5pt}{6}{0}{180-\fia}{-1}{G'}{J'}
+    % AA'
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %A'B'
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %B'C
+      \begin{scope}[shift={(6,0)},rotate=72]
+       \meccanostrip[00CC00]{8}{1}{\p}
+       \path (0,0) ++(180:20+\p) node{$D'$};
+       \path (8,0) ++(-100:20+\p) node{$I$};
+       \path (3,0) ++(180+54:25+\p) node{$E$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
+       %CB
+       \begin{scope}[shift={(3,0)},rotate=108]
+        \meccanostrip[00CC00]{8}{1}{\p}
+        \path (0,0) ++(180:20+\p) node{$D$};
+       \path (8,0) ++(100:20+\p) node{$I'$};
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

@@ -95,7 +95,7 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{11/penta11a}
- \caption{Regular pentagon size 11 made rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 11 made rigid with two internal clusters of five strips each. In the text we prove $\overline{CF} = \overline{AG} = 11 + 2\sqrt5$.}
  \label{fig:penta11a}
 \end{figure}
 
@@ -123,7 +123,7 @@ The program found the next pentagon of this type is a lot bigger: $\overline{BC}
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{10/penta10a}
- \caption{Regular pentagon size 10 made rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 10 made rigid with two internal clusters of five strips each. In the text we prove $\overline{CF} = \overline{AG} = \sqrt{114 + 35\sqrt5}$.}
  \label{fig:penta10a}
 \end{figure}
 
@@ -184,7 +184,7 @@ A minimal part with five strips of the construction of figure \ref{fig:cluster10
 \begin{figure}[h]
  \centering
  \includegraphics[scale=1]{9/penta9a}
- \caption{Regular pentagon size 9 (case a) made rigid with only six extra internal strips.}
+ \caption{Regular pentagon size 9 made rigid with six internal strips. In the text we prove $\overline{FG}=5+4\sqrt5$. }
  \label{fig:penta9a}
 \end{figure}
 
@@ -201,7 +201,7 @@ From the figure we see two right angles. Angle $\angle{GJK}=\pi$ because we have
 \begin{figure}[H]
  \centering
  \includegraphics[scale=1]{9/penta9-8a}
- \caption{Regular pentagon size 9 made rigid with 8 strips variation I.}
+ \caption{Regular pentagon size 9 made rigid with 8 strips variation 1. In the text we prove $\overline{FI} = \sqrt{55}$.}
  \label{fig:penta9-8a}
 \end{figure}
 
@@ -216,11 +216,40 @@ FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumbe
  &= \frac{\sqrt{(5-\sqrt5)^2 + (9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5})^2}}4
  = \frac{\sqrt{880}}4 = \sqrt{55}
 \end{align}
+
 Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\pi$ so: \begin{align}
 \overline{FI} &= \sqrt{(\overline{FH})^2 - (\overline{HI})^2}\nonumber\\
  &= \sqrt{8^2 - 3^2} = \sqrt{55}
 \end{align}
 
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=1]{9/penta9-8b}
+ \caption{Regular pentagons size 9 made rigid with 8 strips variations 2 and 3. In the text we prove $\overline{FI} = \sqrt{61}$.}
+ \label{fig:penta9-8b}
+\end{figure}
+
+Figure \ref{fig:penta9-8b} show two rigid pentagons $A,A',B',C,B'$ of size $9$. The pentagon at the left is called variation 2 and the right one variation 3. Both variations have the vertices $I,I'$ at the same positions and the same distance $\overline{FI}$ which first we calculate using the abscissas and ordinates following the vertices $F,A,B,D,I$ of the variation 2 for a regular pentagon angles $\alpha=\dfrac{3\pi}5, \beta=\dfrac{\pi}5$:
+\begin{align}
+FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -3 + (9)\frac{1-\sqrt5}4 + (1+3)\frac{\sqrt5+1}4 = \frac{1-5\sqrt5}4\\
+FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
+ &= (9)\frac{\sqrt{10+2\sqrt5}}4 + (1-3)\frac{\sqrt{10-2\sqrt5}}4
+ = \frac{9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4\\
+\overline{FI} &= \sqrt{(FI_x)^2 + (FI_y)^2}\nonumber\\
+ &= \frac{\sqrt{(1-\sqrt5)^2 + (9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5})^2}}4
+ = \frac{\sqrt{976}}4 = \sqrt{61}
+\end{align}
+
+Finally we calculate the distance $\overline{FI}$ made rigid by clusters $F,G,H,I$ or $F,G,I,J$ since in both variations we have the same $\overline{GF}$ and same angles $\angle{FGI}=\angle{FJG}$. With the law of cosines first we calculate $\cos(\angle{FJG})$ and then $\overline{FI}$:
+\begin{align}
+\cos(\angle{FJG}) &= \frac{\overline{FJ}^2 + \overline{JG}^2 - \overline{GF}^2}
+ {2(\overline{FJ})(\overline{JG})}
+ = \frac{8^2 + 4^2 - 8^2}{2(8)(4)} = \frac{1}4\nonumber\\
+\overline{FI} &= \sqrt{\overline{IJ}^2 + \overline{FJ}^2 
+ - 2(\overline{IJ})(\overline{FJ})\cos(\angle{FJG})}
+ = \sqrt{3^2 + 8^2 - 2(3)(8)\left(\dfrac{1}4\right)} = \sqrt{61}
+\end{align}
 
 
 \subsection{With 10 internal strips}
@@ -228,7 +257,7 @@ Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I
 \begin{figure}[H]
  \centering
  \includegraphics[scale=1]{9/penta9b}
- \caption{Regular pentagon size 9 (case b) made rigid with two internal clusters of five strips each.}
+ \caption{Regular pentagon size 9 (case b) made rigid with two internal clusters of five strips each. In the text we prove $\overline{FC}=\sqrt{79 + 18\sqrt5}$ and $\overline{FE} = \dfrac{\sqrt{334 + 90\sqrt5}}2$.}
  \label{fig:penta9b}
 \end{figure}
 
@@ -236,7 +265,7 @@ Figure \ref{fig:penta9b} show a regular pentagon $A,B,C,D,E$ of size $9$ made it
 \begin{align}
 \overline{CF} &= \sqrt{
  \overline{BC}^2 + \overline{BF}^2 - 2(\overline{BC})(\overline{BF})\cos\theta } 
- = \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}
+ = \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}\\
 %
 \cos(\angle{CFB}) &= 
  \frac{\overline{CF}^2 + \overline{BF}^2 - \overline{BC}^2}{2(\overline{CF})(\overline{BF})}
