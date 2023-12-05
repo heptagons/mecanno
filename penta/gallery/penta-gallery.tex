@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/3}
+\date{2023/12/5}
 
 \usepackage{../../meccano}
 \begin{document}
@@ -13,13 +13,13 @@ We build rigid meccano regular pentagons from sides $12$ to $3$. We restrict all
 
 \section{Pentagons of size 12}
 
-\subsection{With 4 internal strips}
+\subsection{Size 12 with 4 internal strips}
 
 A program found that side 12 is the smallest pentagon that can be made rigid with a rhoumbus and two strips as diagonals so need only 4 strips as diagonals. We show two cases.
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{12/penta12a}
+ \includegraphics[scale=0.8]{12/penta12a}
  \caption{Regular pentagon size 12 (case a) made rigid with only four internal strips.}
  \label{fig:penta12a}
 \end{figure}
@@ -58,7 +58,7 @@ Finally we calculate the distance $\overline{AJ}$ which coincides with strip siz
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{12/penta12b}
+ \includegraphics[scale=0.8]{12/penta12b}
  \caption{Regular pentagon size 12 case (b) made rigid with only four internal strips.}
  \label{fig:penta12b}
 \end{figure}
@@ -91,28 +91,54 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
  = \sqrt{121} = 11
 \end{align}
 
-\subsection{With 6 internal strips}
+\subsection{Size 12 with 6 internal strips}
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{12/penta12-6a}
+ \includegraphics[scale=0.8]{12/penta12-6a}
  \caption{Regular pentagon size 12 made rigid with 6 internal strips. In the text we prove $\overline{AC} = 6 + 6\sqrt5$}.
  \label{fig:penta12-6a}
 \end{figure}
 
 Figure \ref{fig:penta12-6a} show a regular pentagon $A,B,C,D,E$ of side 12. We know the regular pentagon diagonal for size 12 is $\overline{AC} = 12\left(\dfrac{1+\sqrt5}2\right) = 6 + 6\sqrt5$. We show the five strips $\overline{GH},\overline{GI},\overline{HF},\overline{HC},\overline{IJ}$ make the diagonal rigid which makes rigid the angle $\angle{ABC}$ of the pentagon. We have an isoscelles triangle $\triangle{FGH}$ and $\overline{AG}$ is two times $\overline{FG}$ so we have a right angle $\angle{AHG} = \frac{\pi}2$ and we can calculate $\overline{AH} = \sqrt{(\overline{AG})^2 - (\overline{GH})^2} = \sqrt{14^2-4^2} = 6\sqrt5$. Now we have another right angle $\angle{IHC} = \frac{\pi}2$ because the Pythagoras triangle $\triangle{HIJ}$. Since $G,H,I$ are collinear then we have another right angle $\angle{GHC}=\frac{\pi}2$. Both right angles $\angle{AHG},\angle{CHG}$ guaranty vertices $A,H,C$ are collinear and we can calculate $\overline{AC} = \overline{AH} + \overline{HC} = 6 + 6\sqrt5$. Finally we add a sixth strip $\overline{KL}$ parallel to $\overline{CD}$ to make rigid the last three perimeter strips $\overline{CD},\overline{DE},\overline{EA}$ of the pentagon.
 
-\subsection{With 8 internal strips}
-
-\subsection{With 10 internal strips}
-
-\section{Pentagon of size 11}
-
-\subsection{With 10 internal strips}
+\subsection{Size 12 with 8 internal strips}
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{11/penta11a}
+ \includegraphics[scale=0.8]{12/penta12-8a}
+ \caption{Regular pentagon size 12 made rigid with 8 internal strips. In the text we prove $\overline{FI} = 3\sqrt11$}.
+ \label{fig:penta12-8a}
+\end{figure}
+
+Figure \ref{fig:penta12-8a} show a regular pentagon $AA'B'CBA$ of side 12.
+First we calculate the distance $\overline{FI}$ using the abscissas and ordinates following the vertices $F,A,B,D,I$ for a regular pentagon angles $\alpha=\dfrac{3\pi}5, \beta=\dfrac{\pi}5$:
+\begin{align}
+FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -6 + (12)\frac{1-\sqrt5}4 + (3+6)\frac{\sqrt5+1}4 = -\frac{3+3\sqrt5}4\\
+FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
+ &= (12)\frac{\sqrt{10+2\sqrt5}}4 + (3-6)\frac{\sqrt{10-2\sqrt5}}4
+ = \frac{12\sqrt{10+2\sqrt5} - 3\sqrt{10-2\sqrt5}}4\\
+\overline{FI} &= \sqrt{(FI_x)^2 + (FI_y)^2}\nonumber\\
+ &= \frac{\sqrt{(-3-3\sqrt5)^2 + (12\sqrt{10+2\sqrt5} - 3\sqrt{10-2\sqrt5})^2}}4
+ = \frac{\sqrt{1584}}4 = 3\sqrt{11}
+\end{align}
+
+Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\frac{\pi}2$ so: \begin{align}
+\overline{FI} &= \sqrt{(\overline{FH})^2 - (\overline{HI})^2}\nonumber\\
+ &= \sqrt{10^2 - 1^2} = 3\sqrt{11}
+\end{align}
+
+
+\subsection{Size 12 with 10 internal strips}
+
+\section{Pentagon of size 11}
+
+\subsection{Size 11 with 10 internal strips}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.85]{11/penta11a}
  \caption{Regular pentagon size 11 made rigid with two internal clusters of five strips each. In the text we prove $\overline{CF} = \overline{AG} = 11 + 2\sqrt5$.}
  \label{fig:penta11a}
 \end{figure}
@@ -130,17 +156,19 @@ Figure \ref{fig:penta11a} show a rigid regular pentagon $A,B,C,D,E$ of size 11. 
   = \frac{21+11\sqrt5}{44+8\sqrt5} = \frac{121+79\sqrt5}{404}
 \end{align}
 
-\subsection{Distance $11+2\sqrt{5}$}
+\subsubsection{Distance $11+2\sqrt{5}$}
 
-A five strips cluster can create a rigid distance like $11 + 2\sqrt{5}$. In the figure, three strips $\overline{FI} = 2\overline{HJ}, \overline{FI} > \overline{IJ}$ builds a right angle $\angle{FJI} = \pi$, since triangle $\triangle{IJH}$ is isosceles ($\overline{FH} = \overline{HI} = \overline{JH}$). These three strips also build a distance $\overline{FJ} = \sqrt{\overline{FI}^2 - \overline{IJ}^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Now we attach strip $\overline{CJ}$ making a second right triangle $\angle{CJI} = \pi$ using strip $\overline{IK}=5$ as pythagorean diagonal ($\overline{JK}=3, \overline{IJ}=4$). We have two right triangles at vertice $J$ so vertices $F,J,C$ are collinear, so we can calculate the distance $\overline{FC} = \overline{CJ} + \overline{JF} = 11 + 2\sqrt5$. We repeat the five-strips cluster between vertices $A,G$ preventing overlaps of any strips. Since the clusters are rigid we formed two rigid triangles $\triangle{ABC}, \triangle{DEA}$ so the pentagon is rigid.
+A five strips cluster can create a rigid distance like $11 + 2\sqrt{5}$. In the figure, three strips $\overline{FI} = 2\overline{HJ}, \overline{FI} > \overline{IJ}$ builds a right angle $\angle{FJI} = \frac{\pi}2$, since triangle $\triangle{IJH}$ is isosceles ($\overline{FH} = \overline{HI} = \overline{JH}$). These three strips also build a distance $\overline{FJ} = \sqrt{\overline{FI}^2 - \overline{IJ}^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Now we attach strip $\overline{CJ}$ making a second right triangle $\angle{CJI} = \frac{\pi}2$ using strip $\overline{IK}=5$ as pythagorean diagonal ($\overline{JK}=3, \overline{IJ}=4$). We have two right triangles at vertice $J$ so vertices $F,J,C$ are collinear, so we can calculate the distance $\overline{FC} = \overline{CJ} + \overline{JF} = 11 + 2\sqrt5$. We repeat the five-strips cluster between vertices $A,G$ preventing overlaps of any strips. Since the clusters are rigid we formed two rigid triangles $\triangle{ABC}, \triangle{DEA}$ so the pentagon is rigid.
 \\\\
 The program found the next pentagon of this type is a lot bigger: $\overline{BC}=246, \overline{BF}=70, \overline{CF}=41+105\sqrt5$.
 
 \section{Pentagon of size 10}
 
+\subsection{Size 10 with 10 internal strips}
+
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{10/penta10a}
+ \includegraphics[scale=0.9]{10/penta10a}
  \caption{Regular pentagon size 10 made rigid with two internal clusters of five strips each. In the text we prove $\overline{CF} = \overline{AG} = \sqrt{114 + 35\sqrt5}$.}
  \label{fig:penta10a}
 \end{figure}
@@ -158,7 +186,7 @@ We calculate the angle $\angle{CFB}$ for the drawing:
   = \frac{9+5\sqrt5}{2\sqrt{114+35\sqrt5}}
 \end{align}
 
-\subsection{Distance $\sqrt{114+35\sqrt5}$}
+\subsubsection{Distance $\sqrt{114+35\sqrt5}$}
 
 \begin{figure}[h]
  \centering
@@ -197,11 +225,11 @@ A minimal part with five strips of the construction of figure \ref{fig:cluster10
 
 \section{Pentagons of size 9}
 
-\subsection{With 6 internal strips}
+\subsection{Size 9 with 6 internal strips}
 
 \begin{figure}[h]
  \centering
- \includegraphics[scale=1]{9/penta9a}
+ \includegraphics[scale=0.95]{9/penta9a}
  \caption{Regular pentagon size 9 made rigid with six internal strips. In the text we prove $\overline{FG}=5+4\sqrt5$. }
  \label{fig:penta9a}
 \end{figure}
@@ -212,13 +240,13 @@ Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. 
  &= \frac{1+\sqrt5}{2}(9-1) + 1 = 5 + 4\sqrt5
 \end{align}
 
-From the figure we see two right angles. Angle $\angle{GJK}=\pi$ because we have a Pythagorean triangle $\triangle{HJK}$. Angle $\angle{FJM}=\pi$ because we have an isosceles triangle $\triangle{FLM}$. The two right angles share vertice $J$ so vertices $G,J,F$ are collinear. First we calculate the distance $\overline{JF} = \sqrt{(LF)^2 - (LJ)^2} = \sqrt{9^2-1^2} = 4\sqrt5$ and finally the distance $\overline{GF} = \overline{GJ} + \overline{JF} = 5 + 4\sqrt5$ which matches the value in last equation above. To make rigid the pentagon we add strip $\overline{IN}$ parallel to side $\overline{GA}$.
+From the figure we see two right angles. Angle $\angle{GJK}=\frac{\pi}2$ because we have a Pythagorean triangle $\triangle{HJK}$. Angle $\angle{FJM}=\frac{\pi}2$ because we have an isosceles triangle $\triangle{FLM}$. The two right angles share vertice $J$ so vertices $G,J,F$ are collinear. First we calculate the distance $\overline{JF} = \sqrt{(LF)^2 - (LJ)^2} = \sqrt{9^2-1^2} = 4\sqrt5$ and finally the distance $\overline{GF} = \overline{GJ} + \overline{JF} = 5 + 4\sqrt5$ which matches the value in last equation above. To make rigid the pentagon we add strip $\overline{IN}$ parallel to side $\overline{GA}$.
 
-\subsection{With 8 internal strips}
+\subsection{Size 9 with 8 internal strips}
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=1]{9/penta9-8a}
+ \includegraphics[scale=0.95]{9/penta9-8a}
  \caption{Regular pentagon size 9 made rigid with 8 strips variation 1. In the text we prove $\overline{FI} = \sqrt{55}$.}
  \label{fig:penta9-8a}
 \end{figure}
@@ -235,14 +263,14 @@ FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumbe
  = \frac{\sqrt{880}}4 = \sqrt{55}
 \end{align}
 
-Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\pi$ so: \begin{align}
+Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\frac{\pi}2$ so: \begin{align}
 \overline{FI} &= \sqrt{(\overline{FH})^2 - (\overline{HI})^2}\nonumber\\
  &= \sqrt{8^2 - 3^2} = \sqrt{55}
 \end{align}
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=1]{9/penta9-8b}
+ \includegraphics[scale=0.95]{9/penta9-8b}
  \caption{Regular pentagons size 9 made rigid with 8 strips variations 2 and 3. In the text we prove $\overline{FI} = \sqrt{61}$.}
  \label{fig:penta9-8b}
 \end{figure}
@@ -270,11 +298,11 @@ Finally we calculate the distance $\overline{FI}$ made rigid by clusters $F,G,H,
 \end{align}
 
 
-\subsection{With 10 internal strips}
+\subsection{Size 9 with 10 internal strips}
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=1]{9/penta9b}
+ \includegraphics[scale=0.9]{9/penta9b}
  \caption{Regular pentagon size 9 (case b) made rigid with two internal clusters of five strips each. In the text we prove $\overline{FC}=\sqrt{79 + 18\sqrt5}$ and $\overline{FE} = \dfrac{\sqrt{334 + 90\sqrt5}}2$.}
  \label{fig:penta9b}
 \end{figure}
