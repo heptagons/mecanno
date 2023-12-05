@@ -13,6 +13,8 @@ We build rigid meccano regular pentagons from sides $12$ to $3$. We restrict all
 
 \section{Pentagons of size 12}
 
+\subsection{With 4 internal strips}
+
 A program found that side 12 is the smallest pentagon that can be made rigid with a rhoumbus and two strips as diagonals so need only 4 strips as diagonals. We show two cases.
 
 \begin{figure}[h]
@@ -89,8 +91,24 @@ Finally we calculate the distance $\overline{GH}$ which coincides with strip siz
  = \sqrt{121} = 11
 \end{align}
 
+\subsection{With 6 internal strips}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[scale=1]{12/penta12-6a}
+ \caption{Regular pentagon size 12 made rigid with 6 internal strips. In the text we prove $\overline{AC} = 6 + 6\sqrt5$}.
+ \label{fig:penta12-6a}
+\end{figure}
+
+Figure \ref{fig:penta12-6a} show a regular pentagon $A,B,C,D,E$ of side 12. We know the regular pentagon diagonal for size 12 is $\overline{AC} = 12\left(\dfrac{1+\sqrt5}2\right) = 6 + 6\sqrt5$. We show the five strips $\overline{GH},\overline{GI},\overline{HF},\overline{HC},\overline{IJ}$ make the diagonal rigid which makes rigid the angle $\angle{ABC}$ of the pentagon. We have an isoscelles triangle $\triangle{FGH}$ and $\overline{AG}$ is two times $\overline{FG}$ so we have a right angle $\angle{AHG} = \frac{\pi}2$ and we can calculate $\overline{AH} = \sqrt{(\overline{AG})^2 - (\overline{GH})^2} = \sqrt{14^2-4^2} = 6\sqrt5$. Now we have another right angle $\angle{IHC} = \frac{\pi}2$ because the Pythagoras triangle $\triangle{HIJ}$. Since $G,H,I$ are collinear then we have another right angle $\angle{GHC}=\frac{\pi}2$. Both right angles $\angle{AHG},\angle{CHG}$ guaranty vertices $A,H,C$ are collinear and we can calculate $\overline{AC} = \overline{AH} + \overline{HC} = 6 + 6\sqrt5$. Finally we add a sixth strip $\overline{KL}$ parallel to $\overline{CD}$ to make rigid the last three perimeter strips $\overline{CD},\overline{DE},\overline{EA}$ of the pentagon.
+
+\subsection{With 8 internal strips}
+
+\subsection{With 10 internal strips}
 
 \section{Pentagon of size 11}
+
+\subsection{With 10 internal strips}
 
 \begin{figure}[h]
  \centering
