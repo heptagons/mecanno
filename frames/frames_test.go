@@ -54,7 +54,9 @@ func TestTrianglePairsExt(t *testing.T) {
 	//frames.TrianglePairsExtPlusPlusTex(13, []int{10,3,5}) // some
 	//frames.TrianglePairsExtPlusPlusTex(13, []int{4,1,5})
 	//frames.TrianglePairsExtPlusPlusTex(13, []int{85,28,5})
-	frames.TrianglePairsExtPlusPlusTex(10, []int{114,35,5}) // angle 108:7:10 found
+	//frames.TrianglePairsExtPlusPlusTex(10, []int{114,35,5}) // angle 108:7:10 found
+	frames.TrianglePairsExtPlusPlusTex(12, []int{139,30,5}) // angle 108 5:12 found
+	//frames.TrianglePairsExtPlusPlusTex(12, []int{151,42,5}) // angle 108 7:12 few
 }
 
 

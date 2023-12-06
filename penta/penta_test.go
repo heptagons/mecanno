@@ -303,7 +303,7 @@ func TestDiagonals(t *testing.T) {
 
 
 	// test to get e = sqrt(46 + 18sqrt(5))/2
-	min, max := 8, 8
+	min, max := 12, 12
 	fmt.Printf("NewDiagonals min=%d max=%d\n", min, max)
 	// we print rows to be copied to penta-diagonals table for pentagon size=3
 	NewDiagonals().Get(min, max, func(a, b, c int, surd *nest.A32) {
