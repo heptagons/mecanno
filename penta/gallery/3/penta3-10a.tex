@@ -1,0 +1,68 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\begin{document}
+ \def\s{3}
+ \def\p{2pt}
+ \begin{tikzpicture}
+  \pgfmathsetmacro\ph{3*sqrt(5+2*sqrt(5))/2} % pentagon size 3 height O-D
+  \pgfmathsetmacro\pb{0.5} % pentagon base F-F'/2
+  \pgfmathsetmacro\pz{atan(\ph/\pb)}
+
+  \begin{scope}[scale={1}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{10}
+   \path(1,0) ++(-90:10+\p) node{$F$};
+   \pgfmathsetmacro\cax{sqrt(2^2 - (1/2)^2) + sqrt(3^2 - (3/2)^2}
+   \pgfmathsetmacro\cay{1}
+   \pgfmathsetmacro\caz{atan(\cay/\cax)} % 12.4 degrees
+   \begin{scope}[shift={(1,0)},rotate=\caz+\pz]
+    \begin{scope}[rotate=-asin(1/4)]
+     \meccanostrip[0088FF]{2}{1}{\p}
+     \path(2,0) ++(-10:10+\p) node{$I$};
+    \end{scope}
+    \begin{scope}[rotate=+asin(1/4)]
+     \meccanostrip[0088FF]{2}{1}{\p}
+     \begin{scope}[shift={(2,0)},rotate=-90-asin(1/4)]
+      \meccanostrip[880088]{1}{1}{\p}
+      \begin{scope}[shift={(0,0)},rotate=60]
+       \meccanostrip[FF4400]{3}{1}{\p}
+       \path(0,0) ++(90:10+\p) node{$G$};
+       \path(1,0) ++(90:10+\p) node{$H$};
+      \end{scope}
+      \begin{scope}[shift={(1,0)},rotate=120]
+       \meccanostrip[880088]{1}{1}{\p}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+   \path (1.5,0) ++(-90:10+\p) node{$J$};
+   \path (2,0) ++(-90:10+\p) node{$K$};
+   \pgfmathsetmacro\cbx{sqrt(2^2 - 1^2) + sqrt(2^2 - (1/2)^2)*3/2}
+   \pgfmathsetmacro\cby{1/4}
+   \pgfmathsetmacro\cbz{atan(\cby/\cbx)} % 3.0 degrees}
+   %\path(0,0) node{$\cbz$};
+   \begin{scope}[shift={(2,0)},rotate=180-\pz+\cbz]
+    \begin{scope}[shift={(0,0)},rotate=-30]
+     \meccanostrip[0088FF]{2}{1}{\p}
+     \path(1,0) ++(-90:10+\p) node{$L$};
+     \path(2,0) ++(-90:10+\p) node{$M$};
+     \begin{scope}[shift={(1,0)},rotate=60]
+      \meccanostrip[880088]{1}{1}{\p}
+     \end{scope}
+     \begin{scope}[shift={(2,0)},rotate=120]
+      \meccanostrip[880088]{1}{1}{\p}
+      \begin{scope}[shift={(0,0)},rotate=-acos(1/4)]
+       \meccanostrip[FF4400]{3}{1}{\p}
+      \end{scope}
+      \begin{scope}[shift={(1,0)},rotate=180+acos(1/4)]
+       \meccanostrip[0088FF]{2}{1}{\p}
+       \path(0,0) ++(170:12+\p) node{$N$};
+       \path(2,0) ++(120:10+\p) node{$O$};
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

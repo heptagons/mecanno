@@ -4,6 +4,8 @@
 \date{2023/12/6}
 
 \usepackage{../../meccano}
+\usepackage{amssymb}
+
 \begin{document}
 
 \maketitle
@@ -144,6 +146,8 @@ Figure \ref{fig:penta12-10a} show a regular pentagon $AA'B'CB$ of side 12. We kn
 \overline{CF} &= \sqrt{\overline{CE}^2 + \overline{EF}^2}\nonumber\\
  &= \sqrt{36(5+2\sqrt5) + 3^2} = 3\sqrt{21+8\sqrt5} = 3(4+\sqrt5)
 \end{align}
+After testing $\overline{AA'} \le 1800$ a program found that the last denesting is somehow special since other fractions $\dfrac{\overline{AF}}{\overline{AA'}} \neq \dfrac{1}4$ generated $\overline{CF}$s that can't be denested.
+
 We have the Pythagorean triangle $\triangle{HJK}$ and the isoscelles $\triangle{FGI}$ so vertices $FHC$ are collinear. First we calculate $\overline{FH} = \sqrt{\overline{FG}^2 - \overline{GH}^2} = \sqrt{7^2 - 2^2} = 3\sqrt5$ and then $\overline{FC} = \overline{FH} + \overline{HC} = 3\sqrt{5} + 12$ matching last calculation. Finally we prove angle $\angle{F'H'L'} = \frac{\pi}2$ noting $\overline{F'H'} = \sqrt{(\overline{F'L'})^2 - (\overline{H'L'})^2} = \sqrt{9^2 - 6^2} = 3\sqrt5$ matching $\overline{FH}$.
 
 \section{Pentagon of size 11}
@@ -209,7 +213,7 @@ We calculate the angle $\angle{CFB}$ for the drawing:
  \label{fig:cluster10a}
 \end{figure}
 
-Number $\sqrt{114 + 35\sqrt5}$ cannot be denested so we need to solve this with a cluster of strips. A program found a lot of solutions for this distance using five strips, so we choose one narrow enough to fit inside the decagon.
+Number $\sqrt{114 + 35\sqrt5}$ cannot be denested so we need to solve this with a cluster of strips. A program found a lot of solutions for this distance using five strips, so we choose one narrow enough to fit inside the pentagon.
 \\\\
 Figure \ref{fig:cluster10a} shows how to prove the cluster selected is correct. In the figure we have two isoscelles triangles $\triangle{IKL_1}$ and $\triangle{JKH}$. The sides $IL_1$ and $KH$ are extended to double the original size to the vertices $L_2$ and $H_1$ building two right angles $\angle{IKL_2}$ and $\angle{KJH_1}$. The right triangles permit the calculation of the abscissas and ordinates of vertices $C$ and $F$ to calculate their distance.
 \\\\
@@ -399,5 +403,67 @@ We form a cluster from the last construction to be applied in the pentagon of si
 
 \section{Pentagons of size 8}
 
+\section{Pentagons of size 7}
+
+\section{Pentagons of size 6}
+
+\section{Pentagons of size 5}
+
+\section{Pentagons of size 4}
+
+\section{Pentagons of size 3}
+
+\subsection{Size 3 with 10 internal strips}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.2]{3/penta3-10a}
+\caption{Regular pentagon of size 3 made rigid with 10 internal strips. In the text we prove distance $\overline{DF} = \overline{DK} = \dfrac{\sqrt{46+18\sqrt5}}2$.}
+\label{fig:penta3-10a}
+\end{figure}
+
+Figure \ref{fig:penta3-10a} show pentagon $A,B,C,D,E$ of size 3. We know the regular pentagon height is side length times $\dfrac{\sqrt{5+2\sqrt5}}2$ so in this case $\overline{DJ} = \dfrac{3\sqrt{5+2\sqrt5}}2$ and we have:
+\begin{align}
+\overline{DF} &= \sqrt{(\overline{DJ})^2 + (\overline{FJ})^2}\nonumber\\
+ &= \sqrt{\left(\frac{3\sqrt{5+2\sqrt5}}2\right)^2 + \left(\frac{1}2\right)^2}
+ = \frac{\sqrt{46+18\sqrt5}}2
+\end{align}
+
+From the internal strips we identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
+\begin{align}
+\cos\alpha &= \frac{\frac{\overline{GI}}2}{\overline{GH}} = \frac{\frac{1}2}1 = \frac{1}2\\
+\sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt3}2
+\end{align}
+
+From isoscelles triangle $\triangle{FGI}$ we calculate $\cos\beta$ and $\sin\beta$:
+\begin{align}
+\cos\beta &= \frac{\frac{\overline{GI}}2}{\overline{GF}} = \frac{\frac{1}2}{2} = \frac{1}4\\
+\sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{1}4\right)^2} = \frac{\sqrt{15}}4
+\end{align}
+
+Now we calculate $\cos(\alpha+\beta)$ with the sum identity:
+\begin{align}
+\cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+ &= \left(\frac{1}2\right)\left(\frac{1}4\right)
+  -\left(\frac{\sqrt3}2\right)\left(\frac{\sqrt{15}}4\right)
+ = \frac{1 - 3\sqrt5}8
+\end{align}
+
+Finally using the law of cosines we verify distance $\overline{DF}$:
+\begin{align}
+\overline{DF} &= \sqrt{(\overline{DG})^2 + (\overline{FG}^2)
+ - 2(\overline{DG})(\overline{FG})\cos(\alpha+\beta)} \nonumber\\
+ &= \sqrt{3^2 + 2^2 - 2(3)(2)\left(\frac{1 - 3\sqrt5}8\right)}
+ = \frac{\sqrt{46+18\sqrt5}}2 \quad\blacksquare
+\end{align}
+
+\subsection{Size 3 with 14 internal strips}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=2]{3/penta3-14a}
+\caption{Regular pentagon of size 3 made rigid with 14 internal strips. In text we prove distance $\overline{FC} = \dfrac{\sqrt{34+5\sqrt5}}2$.}
+\label{fig:penta3-14a}
+\end{figure}
 
 \end{document}
