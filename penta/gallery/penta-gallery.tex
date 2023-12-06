@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/5}
+\date{2023/12/6}
 
 \usepackage{../../meccano}
 \begin{document}
@@ -131,6 +131,20 @@ Finally we calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I
 
 
 \subsection{Size 12 with 10 internal strips}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.80]{12/penta12-10a}
+ \caption{Regular pentagon size 12 made rigid with two internal clusters of five strips each. In the text we prove $\overline{CF} = \overline{CF'} = 12 + 3\sqrt5$.}
+ \label{fig:penta12-10a}
+\end{figure}
+
+Figure \ref{fig:penta12-10a} show a regular pentagon $AA'B'CB$ of side 12. We know the regular pentagon height is $\dfrac{\sqrt{5+2\sqrt5}}2$ times the side. So here we have $\overline{CE} = 12\frac{\sqrt{5+2\sqrt5}}2 = 6\sqrt{5+2\sqrt5}$ and we can calculate $\overline{CF}$:
+\begin{align}
+\overline{CF} &= \sqrt{\overline{CE}^2 + \overline{EF}^2}\nonumber\\
+ &= \sqrt{36(5+2\sqrt5) + 3^2} = 3\sqrt{21+8\sqrt5} = 3(4+\sqrt5)
+\end{align}
+We have the Pythagorean triangle $\triangle{HJK}$ and the isoscelles $\triangle{FGI}$ so vertices $FHC$ are collinear. First we calculate $\overline{FH} = \sqrt{\overline{FG}^2 - \overline{GH}^2} = \sqrt{7^2 - 2^2} = 3\sqrt5$ and then $\overline{FC} = \overline{FH} + \overline{HC} = 3\sqrt{5} + 12$ matching last calculation. Finally we prove angle $\angle{F'H'L'} = \frac{\pi}2$ noting $\overline{F'H'} = \sqrt{(\overline{F'L'})^2 - (\overline{H'L'})^2} = \sqrt{9^2 - 6^2} = 3\sqrt5$ matching $\overline{FH}$.
 
 \section{Pentagon of size 11}
 
