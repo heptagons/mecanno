@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/6}
+\date{2023/12/7}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -418,18 +418,22 @@ We form a cluster from the last construction to be applied in the pentagon of si
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1.2]{3/penta3-10a}
-\caption{Regular pentagon of size 3 made rigid with 10 internal strips. In the text we prove distance $\overline{DF} = \overline{DK} = \dfrac{\sqrt{46+18\sqrt5}}2$.}
+\caption{Regular pentagon of size 3 made rigid with 10 internal strips. $\overline{DF} = \overline{DK} = \dfrac{\sqrt{46+18\sqrt5}}2$.}
 \label{fig:penta3-10a}
 \end{figure}
 
-Figure \ref{fig:penta3-10a} show pentagon $A,B,C,D,E$ of size 3. We know the regular pentagon height is side length times $\dfrac{\sqrt{5+2\sqrt5}}2$ so in this case $\overline{DJ} = \dfrac{3\sqrt{5+2\sqrt5}}2$ and we have:
+Figure \ref{fig:penta3-10a} show the regular pentagon $A,B,C,D,E$ of size 3. We know the regular pentagon height is side length times $\dfrac{\sqrt{5+2\sqrt5}}2$ so in this case $\overline{DJ} = \dfrac{3\sqrt{5+2\sqrt5}}2$ and we can calculate $\overline{DF}$:
 \begin{align}
 \overline{DF} &= \sqrt{(\overline{DJ})^2 + (\overline{FJ})^2}\nonumber\\
  &= \sqrt{\left(\frac{3\sqrt{5+2\sqrt5}}2\right)^2 + \left(\frac{1}2\right)^2}
  = \frac{\sqrt{46+18\sqrt5}}2
 \end{align}
 
-From the internal strips we identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
+\subsubsection{Rigid distance $\dfrac{\sqrt{46+18\sqrt5}}2$}
+
+Our software found several five strips solutions and we use two different which fit inside the pentagon.
+
+We identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
 \begin{align}
 \cos\alpha &= \frac{\frac{\overline{GI}}2}{\overline{GH}} = \frac{\frac{1}2}1 = \frac{1}2\\
 \sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt3}2
@@ -461,9 +465,67 @@ Finally using the law of cosines we verify distance $\overline{DF}$:
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=2]{3/penta3-14a}
-\caption{Regular pentagon of size 3 made rigid with 14 internal strips. In text we prove distance $\overline{FC} = \dfrac{\sqrt{34+5\sqrt5}}2$.}
+\includegraphics[scale=1.2]{3/penta3-14a}
+\caption{Regular pentagon of size 3 made rigid with 14 internal strips. $\overline{AD} = \dfrac{\sqrt{34+5\sqrt5}}2$.}
 \label{fig:penta3-14a}
 \end{figure}
+
+Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size 3. We know the internal angle of pentagon is $\theta=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{AD}$ and the angle $\angle{BAD}$:
+\begin{align}
+\overline{AD} &= \sqrt{(\overline{AB})^2 + (\overline{BD})^2
+ - 2(\overline{AB})(\overline{BD})\cos\theta} \nonumber\\
+ &= \sqrt{3^2 + 1^2 - 2(3)(1)\left(\frac{1-\sqrt5}4\right)} = \frac{\sqrt{34+6\sqrt5}}2\\
+\cos(\angle{BAD}) &= \frac{(\overline{AD})^2 + (\overline{AB})^2 - (\overline{BD})^2}
+ {2(\overline{AD})(\overline{AB})} \nonumber\\
+ &= \frac{\dfrac{34+6\sqrt5}4 + 3^2 - 1^2}{2\left(\dfrac{\sqrt{34+6\sqrt5}}2\right)(3)}
+  = \frac{11+\sqrt5}{2\sqrt{34+6\sqrt5}}
+\end{align}
+
+\subsubsection{Rigid distance  $\dfrac{\sqrt{34+6\sqrt5}}2$}
+
+Our software found several options to make the distance with five strips but we have to manually add a sixth strip in order to make a cluster narrow enough to fit two times inside the pentagon of size $3$. The result show as the duplicated cluster with vertices $D,E,F,G,H$ of the figure. We are going to prove the cluster's distance $\overline{AD}$ matches the distance alredy calculated.
+
+Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangle{EGH}$ we know angle $\angle{DGE} = \dfrac{2\pi}3$ and also $\cos\left(\dfrac{2\pi}3\right) = -\dfrac{1}2$ so we can calculate $\overline{DE}$ and the angle $\alpha \equiv \angle{GDE}$:
+\begin{align}
+\overline{DE} &= \sqrt{(\overline{DG})^2 + (\overline{GE})^2 
+ - 2(\overline{DG})(\overline{GE})\cos(\angle{DGE})}
+ = \sqrt{1^2 + 1^2 - 2(1)(1)\left(-\frac{1}2\right)} = \sqrt3\\
+\alpha &\equiv = \angle{GED} \nonumber\\
+\cos\alpha &= \frac{(\overline{GE})^2 + (\overline{DE})^2 - (\overline{DG})^2}
+ {2(\overline{GE})(\overline{DE})}
+ = \frac{3 + 1^2 - 1^2}{2(\sqrt3)(1)} = \frac{\sqrt3}2\\
+\sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{\sqrt3}4\right)^2} 
+ = \frac{1}2
+\end{align}
+
+From the isoscelles triangle $\triangle{AEF}$ we can calculate angle $\angle{AEF}$ noting $\cos(\angle{AEF}) = \dfrac{\overline{EF}/2}{\overline{AE}} = \dfrac{1/2}{2} = \dfrac{1}4$ so we define angle $\beta \equiv \angle{AEG}$ the supplementary of $\angle{AEF}$ and we get:
+\begin{align}
+\beta \equiv& \angle{AEG} = \pi - \angle{AEF} \nonumber\\
+\cos\beta &= -\cos{\angle{AEF}} = -\frac{1}4 \\
+\sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{-1}4\right)^2} = \frac{\sqrt{15}}4
+\end{align}
+
+Now we can calculate the angle $\angle{AED} = \alpha + \beta$ with the sum identity and plugin the last sines and cosines:
+\begin{align}
+\cos(\angle{AED}) &= \cos(\alpha + \beta) \nonumber\\
+ &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+ & = \left(\frac{\sqrt3}2\right)\left(-\frac{1}4\right) 
+  - \left(\frac{1}2\right)\left(\frac{\sqrt{15}}4\right) 
+  = -\frac{\sqrt3 + \sqrt{15}}8
+\end{align}
+
+Finally we calculate $\overline{AD}$ with the law of cosines:
+\begin{align}
+\overline{AD} &= \sqrt{(\overline{DE})^2 + (\overline{EA})^2 
+ - 2(\overline{DE})(\overline{EA})\cos(\angle{AED})} \nonumber\\
+ &= \sqrt{3 + 2^2 - 2(\sqrt3)(2)\left(-\frac{\sqrt3 + \sqrt{15}}8\right)} 
+ = \frac{\sqrt{34 + 6\sqrt5}}2 \quad\blacksquare
+\end{align}
+
+
+
+
+
+
 
 \end{document}
