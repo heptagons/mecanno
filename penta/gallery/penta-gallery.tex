@@ -411,6 +411,41 @@ We form a cluster from the last construction to be applied in the pentagon of si
 
 \section{Pentagons of size 4}
 
+\subsection{Size 4 with 8 internal strips}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.1]{4/penta4-8a}
+\caption{Regular pentagon of size 4 made rigid with 6 internal strips. $\overline{DI} = \sqrt{11}$.}
+\label{fig:penta4-8a}
+\end{figure}
+
+Figure \ref{fig:penta4-8a} show the regular pentagon $AA'B'CB$ of size $4$. We calculate the distance $\overline{DI}$ assuming vertex $D$ is at origin and calculating abscissa and ordinate of vertex $I$ and knowing $\alpha = \angle{ADB} = \dfrac{3\pi}5$ and $\beta = \angle{B'BE} = \dfrac{\pi}5$. Adding and substracting through vertices $D,A,B,E,I$ we get:
+\begin{align}
+I_x &= -\overline{DA} - \overline{AB}|\cos\alpha| + \overline{BE}\cos\beta + \overline{EI}\cos\beta \nonumber\\
+ &= -2 -(4)\left|-\frac{\sqrt5 - 1}4\right| + (1+2)\left(\frac{\sqrt5+1}4\right)
+ = -\frac{1+\sqrt5}4 \\
+I_y &= \overline{AB}\sin\alpha + \overline{BE}\sin\beta - \overline{BI}\sin\beta \nonumber\\
+ &= (4)\left(\frac{\sqrt{10+2\sqrt5}}4\right) + (1-2)\left(\frac{\sqrt{10-2\sqrt5}}4\right)
+ = \frac{4\sqrt{10+2\sqrt5} - \sqrt{10-2\sqrt5}}4 \\
+%
+\overline{DI} &= \sqrt{(I_x - D_x)^2 + (I_y - I_y)^2} \nonumber\\
+ &= \frac{\sqrt{(1+\sqrt5)^2 + (4\sqrt{10+2\sqrt5} - \sqrt{10-2\sqrt5})^2}}4
+ = \sqrt{11}
+\end{align}
+
+\subsubsection{Rigid distance $\sqrt{11}$}
+
+Our program found several three strips cluster which build rigid distance $\sqrt{11}$. We prove the selected cluster $DHGI$ inside the pentagon matches the expected distance. First we calculate the angle $\angle{DHG}$ with the law of cosines and use the value to finally calculate the distance $\overline{DI}$ with again the law of cosines:
+\begin{align}
+\cos(\angle{DHG}) &= \frac{(\overline{HD})^2 + (\overline{HG})^2 - (\overline{DG})^2}
+ {2(\overline{HD})(\overline{HG})} \nonumber\\
+ &= \frac{3^2 + 1^2 - 3^2}{2(3)(1)} = \frac{1}6 \\
+\overline{DI} &= \sqrt{(\overline{HD})^2 + (\overline{HI})^2
+ - 2(\overline{HD})(\overline{HD})\cos(\angle{DHG})} \nonumber\\
+ &= \sqrt{3^2 + 2^2 - 2(3)(2)\left(\frac{1}6\right)} = \sqrt{11} \quad\blacksquare
+\end{align}
+
 \section{Pentagons of size 3}
 
 \subsection{Size 3 with 10 internal strips}
@@ -422,7 +457,7 @@ We form a cluster from the last construction to be applied in the pentagon of si
 \label{fig:penta3-10a}
 \end{figure}
 
-Figure \ref{fig:penta3-10a} show the regular pentagon $A,B,C,D,E$ of size 3. We know the regular pentagon height is side length times $\dfrac{\sqrt{5+2\sqrt5}}2$ so in this case $\overline{DJ} = \dfrac{3\sqrt{5+2\sqrt5}}2$ and we can calculate $\overline{DF}$:
+Figure \ref{fig:penta3-10a} show the regular pentagon $A,B,C,D,E$ of size $3$. We know the regular pentagon height is side length times $\dfrac{\sqrt{5+2\sqrt5}}2$ so in this case $\overline{DJ} = \dfrac{3\sqrt{5+2\sqrt5}}2$ and we can calculate $\overline{DF}$:
 \begin{align}
 \overline{DF} &= \sqrt{(\overline{DJ})^2 + (\overline{FJ})^2}\nonumber\\
  &= \sqrt{\left(\frac{3\sqrt{5+2\sqrt5}}2\right)^2 + \left(\frac{1}2\right)^2}
@@ -470,7 +505,7 @@ Finally using the law of cosines we verify distance $\overline{DF}$:
 \label{fig:penta3-14a}
 \end{figure}
 
-Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size 3. We know the internal angle of pentagon is $\theta=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{AD}$ and the angle $\angle{BAD}$:
+Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size $3$. We know the internal angle of pentagon is $\theta=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{AD}$ and the angle $\angle{BAD}$:
 \begin{align}
 \overline{AD} &= \sqrt{(\overline{AB})^2 + (\overline{BD})^2
  - 2(\overline{AB})(\overline{BD})\cos\theta} \nonumber\\

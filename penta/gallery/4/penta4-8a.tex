@@ -1,0 +1,61 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\newcommand{\cluster}[8]{ %p,dx,dy,rot,mirror
+ \def\p{#1}
+ \pgfmathsetmacro\cx{sqrt(3^2 - (1/2)^2}
+ \pgfmathsetmacro\cy{1 + 1/2}
+ \pgfmathsetmacro\crot{-#5 * atan(\cy/\cx)}
+ \begin{scope}[shift={(#2,#3)},rotate=\crot + #4]
+  \begin{scope}[xscale=#5]
+   \begin{scope}[rotate=asin(1/6)]
+    \meccanostrip[0088FF]{3}{1}{\p}
+    \path(3,0) ++(0:10+\p) node{$#6$}; %G
+   \end{scope}
+   \begin{scope}[rotate=-asin(1/6)]
+    \meccanostrip[0088FF]{3}{1}{\p}
+    \path(3,0) ++(40:10+\p) node{$#7$}; %H
+    \begin{scope}[shift={(3,0)},rotate=90+asin(1/6)]
+     \meccanostrip[880088]{2}{1}{\p}
+     \path(2,0) ++(0:10+\p) node{$#8$}; %I
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \def\s{4}
+ \def\p{1.75pt}
+ \begin{tikzpicture}
+  \pgfmathsetmacro\px{1+sqrt(5)}
+  \pgfmathsetmacro\py{4*sqrt(10+2*sqrt(5)) - sqrt(10-2*sqrt(5))}
+  \pgfmathsetmacro\prot{atan(\py/\px)} % aprox 75°
+  \begin{scope}[scale={1}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{10}
+   % AA'
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %A'B'
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %B'C'
+     \path(1,0) ++(-90:10+\p) node{$E'$};
+     \begin{scope}[shift={(1,0)},rotate=72]
+      \meccanostrip[0088FF]{3}{1}{\p}
+      \path(3,0) ++(54:10+\p) node{$F$};
+     \end{scope}
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %CB
+      \path(3,0) ++(-90:10+\p) node{$E$};
+      \begin{scope}[shift={(3,0)},rotate=108]
+       \meccanostrip[0088FF]{3}{1}{\p}{+1}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+  \path(2,0) ++(-90:10+\p) node{$D$};
+  \cluster{1.75pt}{2}{0}{\prot}{1}{G'}{H'}{I'}
+  \cluster{1.75pt}{2}{0}{-\prot}{-1}{G}{H}{I}
+ \end{tikzpicture}
+\end{document}
