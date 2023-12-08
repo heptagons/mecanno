@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/7}
+\date{2023/12/8}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -436,7 +436,7 @@ I_y &= \overline{AB}\sin\alpha + \overline{BE}\sin\beta - \overline{BI}\sin\beta
 
 \subsubsection{Rigid distance $\sqrt{11}$}
 
-Our program found several three strips cluster which build rigid distance $\sqrt{11}$. We prove the selected cluster $DHGI$ inside the pentagon matches the expected distance. First we calculate the angle $\angle{DHG}$ with the law of cosines and use the value to finally calculate the distance $\overline{DI}$ with again the law of cosines:
+Our software found several three strips clusters for rigid distance $\sqrt{11}$. We prove the selected cluster $DHGI$ inside the pentagon matches the expected distance. First we calculate the angle $\angle{DHG}$ with the law of cosines and use the value to finally calculate the distance $\overline{DI}$ with again the law of cosines:
 \begin{align}
 \cos(\angle{DHG}) &= \frac{(\overline{HD})^2 + (\overline{HG})^2 - (\overline{DG})^2}
  {2(\overline{HD})(\overline{HG})} \nonumber\\
@@ -444,6 +444,48 @@ Our program found several three strips cluster which build rigid distance $\sqrt
 \overline{DI} &= \sqrt{(\overline{HD})^2 + (\overline{HI})^2
  - 2(\overline{HD})(\overline{HD})\cos(\angle{DHG})} \nonumber\\
  &= \sqrt{3^2 + 2^2 - 2(3)(2)\left(\frac{1}6\right)} = \sqrt{11} \quad\blacksquare
+\end{align}
+
+\subsection{Size 4 with 10 internal strips}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.1]{4/penta4-10a}
+\caption{Regular pentagon of size 4 made rigid with 10 internal strips. $\overline{CD} = \sqrt{19 + 6\sqrt5}$.}
+\label{fig:penta4-10a}
+\end{figure}
+
+Figure \ref{fig:penta4-10a} show the regular pentagon $A,A',B',C,B$ of size $4$. We know the internal angle of pentagon is $\theta=\angle{CBD}=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{CD}$ and the angle $\angle{DCB}$:
+\begin{align}
+\overline{CD} &= \sqrt{(\overline{BC})^2 + (\overline{BD})^2
+ - 2(\overline{BC})(\overline{BD})\cos\theta} \nonumber\\
+ &= \sqrt{4^2 + 3^2 - 2(4)(3)\left(\frac{1-\sqrt5}4\right)} = \sqrt{19+6\sqrt5}\\
+%
+\cos(\angle{DCB}) &= \frac{(\overline{CD})^2 + (\overline{BC})^2 - (\overline{BD})^2}
+ {2(\overline{CD})(\overline{BC})} \nonumber\\
+ &= \frac{(19+6\sqrt5) + 4^2 - 3^2}{2\left(\sqrt{19+6\sqrt5}\right)(4)}
+  = \frac{13 + 3\sqrt5}{4\sqrt{19+6\sqrt5}}
+\end{align}
+
+\subsubsection{Rigid distance  $\sqrt{19+6\sqrt5}$}
+
+Our software found several five strips clusters for rigid distance $\sqrt{19+6\sqrt5}$. We prove selected cluster $CEFGHID$ show in the figure inside the pentagon matches the expected distance. Set the cluster in the coordinate plane such that vertice $G$ is at the origin and vertices $F$ at $(-1,0)$ and vertice $H$ at $(+1,0)$.
+Since triangle $\triangle{EFG}$ is isoscelles and $\overline{CG}$ is the double of $\overline{GE}$ we know angle $\angle{CFG} = \frac{\pi}2$ and we can calculate the abscissa and ordinate of vertex $C$:
+\begin{align}
+C_x &= -\overline{FG} = -1 \\
+C_y &= \sqrt{(\overline{CG})^2 - (\overline{FG})^2} = \sqrt{4^2 - 1^2} = \sqrt{15}
+\end{align}
+
+Since triangle $\triangle{GHI}$ is equilateral and $\overline{HD}$ is the double of $\overline{HI}$ we know angle $\angle{DGH} = \frac{\pi}2$ and we can calculate the abscissa and ordinate of vertex $D$:
+\begin{align}
+D_x &= 0 \\
+D_y &= -\sqrt{(\overline{HD})^2 - (\overline{GH})^2} = -\sqrt{2^2 - 1^2} = -\sqrt3
+\end{align}
+
+Finally we calculate the distance $\overline{CD}$
+\begin{align}
+\overline{CD} &= \sqrt{(C_x - D_x)^2 + (C_y - D_y)^2} \nonumber\\
+ &= \sqrt{(-1 - 0)^2 + (\sqrt{15} + \sqrt{3})^2} = \sqrt{19 + 6\sqrt5} \quad\blacksquare
 \end{align}
 
 \section{Pentagons of size 3}
