@@ -1,0 +1,65 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\begin{document}
+ \def\s{5}
+ \def\p{3.5pt}
+ \begin{tikzpicture}
+  \begin{scope}[scale={1}]
+   % AA'
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{12}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %A'B'
+    \path(4,0) ++(-90:12+\p) node{$F$};
+    \begin{scope}[shift={(4,0)},rotate=108]
+     \meccanostrip[008800]{3}{1}{\p}
+     \path(3,0) ++(-230:15+\p) node{$G$};
+     \begin{scope}[shift={(3,0)},rotate=72]
+      \meccanostrip[0088FF]{4}{1}{\p}
+      \path(4,0) ++(0:15+\p) node{$H$};
+     \end{scope}
+     \begin{scope}[shift={(3,0)},rotate=asin(2/3)]
+      \meccanostrip[008800]{3}{1}{\p}
+      \path(3,0) ++(50:10+\p) node{$I$};
+     \end{scope}
+     \begin{scope}[shift={(3,0)},rotate=-asin(2/3)]
+      \meccanostrip[008800]{3}{1}{\p}
+      \path(3,0) ++(-85:15+\p) node{$J$};
+      \begin{scope}[shift={(3,0)},rotate=90+asin(2/3)]
+       \meccanostrip[0088FF]{4}{1}{\p}
+       \begin{scope}[shift={(0,0)},rotate=-acos(2/3)]
+        \meccanostrip[008800]{3}{1}{\p}
+        \path(3,0) ++(-30:15+\p) node{$K$};
+       \end{scope}
+       \begin{scope}[shift={(4,0)},rotate=180+acos(2/3)]
+        \meccanostrip[008800]{3}{1}{\p}
+       \end{scope}
+      \end{scope}
+     \end{scope}
+     \begin{scope}[rotate=-asin(2/(sqrt(3)+sqrt(15)))] % -21°
+      \begin{scope}[rotate=-asin(1/4)]
+       \meccanostrip[0088FF]{4}{1}{\p}
+       \path(2,0) ++(100:13+\p) node{$L$};
+       \path(4,0) ++(-55:12+\p) node{$M$};
+       \begin{scope}[shift={(2,0)},rotate=2*asin(1/4)]
+        \meccanostrip[0000FF]{2}{1}{\p}
+       \end{scope}
+       \begin{scope}[shift={(4,0)},rotate=90+asin(1/4)]
+        \meccanostrip[880088]{1}{1}{\p}
+        \path(1,0) ++(57:16+\p) node{$N$};
+        \begin{scope}[rotate=-60]
+         \meccanostrip[0000FF]{2}{1}{\p}
+         \path(1,0) ++(-110:12+\p) node{$O$};
+        \end{scope}
+        \begin{scope}[shift={(1,0)},rotate=-120]
+         \meccanostrip[880088]{1}{1}{\p}
+        \end{scope}
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
