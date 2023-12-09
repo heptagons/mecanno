@@ -1,0 +1,60 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\newcommand{\cluster}[4]{%p,dx,dy,rot
+ \pgfmathsetmacro\cxfx{sqrt(6^2 - 4^2) + 10}
+ \pgfmathsetmacro\cyfy{2}
+ \def\p{#1}
+ \begin{scope}[yscale=-1,xscale=1,shift={(#2,#3)},rotate=-(#4)]
+  \begin{scope}[rotate=atan(\cyfy/\cxfx)]
+   \begin{scope}[rotate=-asin(2/3)]
+    \meccanostrip[0088FF]{6}{1}{\p}
+    \path (3,0) ++(135:30+\p) node{$H$};
+    \begin{scope}[shift={(3,0)},rotate=2*asin(2/3)]
+     \meccanostrip[880088]{3}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(6,0)},rotate=90+asin(2/3)]
+     \meccanostrip[008800]{5}{1}{\p}
+     \path (0,0) ++(-120:20+\p) node{$I$};
+     \path (2,0) ++(-135:30+\p) node{$J$};
+     \path (4,0) ++(70:25+\p) node{$K$};
+     \path (5,0) ++(-30:20+\p) node{$L$};
+     \begin{scope}[shift={(2,0)},rotate=-90]
+      \meccanostrip[FF4400]{10}{1}{\p}
+     \end{scope}
+     \begin{scope}[shift={(5,0)},rotate=180+acos(3/5)]
+      \meccanostrip[008800]{5}{1}{\p}
+      \path (5,0) ++(100:25+\p) node{$M$};
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \pgfmathsetmacro\s{10}
+ \def\p{5pt}
+ \pgfmathsetmacro\dxPenta{2}
+ \pgfmathsetmacro\rotPenta{acos((11 + 5*sqrt(5))/(4*sqrt(31 + 10*sqrt(5))))}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{20}
+   % AB
+   \path (\dxPenta,0) ++(-90:20+\p) node{$F$};
+   \cluster{5pt}{\dxPenta}{0}{\rotPenta}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %BC
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %CD
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %DE
+      \path (\dxPenta,0) ++(-90:20+\p) node{$G$};
+      \cluster{5pt}{\dxPenta}{0}{\rotPenta}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
