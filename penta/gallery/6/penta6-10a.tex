@@ -1,0 +1,62 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\newcommand{\cluster}[8]{ %p,dx,rot
+ \def\p{#1}
+ \def\r{12+\p}
+ \pgfmathsetmacro\cx{sqrt(4^2 - 2^2) + 5*sqrt(4^2 - 1^2)/4}
+ \pgfmathsetmacro\cy{3 + 1/4}
+ \pgfmathsetmacro\crot{atan(\cy/\cx)} % -21.37°
+ \begin{scope}[shift={(#2,0)},rotate=\crot+#3]
+  \begin{scope}[yscale=-1]
+  \begin{scope}[rotate=30]
+   \path(3,0) ++(90:\r) node{$#4$}; %G
+   \path(4,0) ++(120:3+\r) node{$#5$}; %H
+   \meccanostrip[0088FF]{4}{1}{\p}
+   \begin{scope}[shift={(3,0)},rotate=-60]
+    \meccanostrip[0000FF]{1}{1}{\p}
+    \begin{scope}[shift={(1,0)},rotate=120]
+     \meccanostrip[880088]{2}{1}{\p}
+     \path(0,0) ++(180:\r) node{$#6$}; %I
+     \path(2,0) ++(60:\r) node{$#7$}; %J
+     \begin{scope}[shift={(1,0)},rotate=-90+asin(1/4)]
+      \meccanostrip[00CC00]{5}{1}{\p}
+      \path(2,0) ++(-90:\r) node{$#8$}; %K
+     \end{scope}
+     \begin{scope}[shift={(2,0)},rotate=-90-asin(1/4)]
+      \meccanostrip[880088]{2}{1}{\p}
+     \end{scope}
+    \end{scope}
+   \end{scope}   
+  \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \def\s{6}
+ \def\p{3.5pt}
+ \pgfmathsetmacro\pnum{7 + 3*sqrt(5)}
+ \pgfmathsetmacro\pden{2*sqrt(46 + 15*sqrt(5))}
+ \pgfmathsetmacro\prot{acos(\pnum / \pden)} % 40°
+ \begin{tikzpicture}
+  \begin{scope}[scale={1}]
+   % AA'
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{12}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %A'B'
+    \path(1,0) ++(-90:12+\p) node{$F$};
+    \cluster{3.5pt}{1}{\prot}{G}{H}{I}{J}{K}
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %B'C
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %CB
+      \path(1,0) ++(-90:12+\p) node{$F'$};
+      \cluster{3.5pt}{1}{\prot}{G'}{H'}{I'}{J'}{K'}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
