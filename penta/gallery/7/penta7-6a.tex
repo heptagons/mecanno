@@ -1,0 +1,44 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\begin{document}
+ \def\s{7}
+ \def\p{5pt}
+ \def\r{15}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.9}]
+   % AA'
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %A'B'
+    \path(6,0) ++(-90:\r+\p) node{$F$};
+    \begin{scope}[shift={(6,0)},rotate=108]
+     \meccanostrip[0088FF]{4}{1}{\p}
+     \path(2,0) ++(130:5+\r+\p) node{$H$};
+     \begin{scope}[shift={(0,0)},rotate=-asin(3/5)]
+      \meccanostrip[880088]{5}{1}{\p}
+      \end{scope}
+     \path(4,0) ++(0:\r+\p) node{$I$};
+     \begin{scope}[shift={(2,0)},rotate=72]
+      \meccanostrip[00CC00]{6}{1}{\p}
+      \path(6,0) ++(20:\r+\p) node{$J$};
+     \end{scope}
+     \begin{scope}[shift={(4,2)},rotate=-90]
+      \meccanostrip[880088]{5}{1}{\p}
+      \path(5,0) ++(60:\r+\p) node{$K$};
+      \path(4,0) ++(50:5+\r+\p) node{$L$};
+      \path(0,0) ++(180:\r+\p) node{$M$};
+      \begin{scope}[rotate=acos(2/7)]
+       \meccanostrip[FF4400]{7}{1}{\p}
+       \path(7,0) ++(25:\r+\p) node{$G$};
+      \end{scope}
+      \begin{scope}[shift={(4,0)},rotate=180-acos(2/7)]
+       \meccanostrip[FF4400]{7}{1}{\p}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
