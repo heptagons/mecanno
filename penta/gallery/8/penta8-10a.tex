@@ -1,0 +1,49 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\newcommand{\clusterI}[7]{ % p,x,y,rot,mirror,P1,P2
+ \def\p{#1}
+ \pgfmathsetmacro\rotA{acos((11^2 + 7^2 - 6^2)/(2*11*7))}
+ \pgfmathsetmacro\rotB{acos((7^2 + 6^2 - 11^2)/(2*6*7))}
+ \pgfmathsetmacro\rotI{0}
+ \begin{scope}[shift={(#2,#3)},rotate=(\rotI*#5)+#4] % displace,rotate
+  \begin{scope}[yscale=#5] % mirror
+   \begin{scope}
+    \meccanostrip[00CC00]{7}{1}{\p}
+    \begin{scope}[rotate=\rotA]
+     \meccanostrip[0088FF]{11}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(7,0)},rotate=180-\rotB]
+     \meccanostrip[0000FF]{6}{1}{\p}
+     \path(0,0) ++(180:15+\p) node{$#6$};
+     \path(6,0) ++(90:15+\p) node{$#7$};
+     \begin{scope}[shift={(0,0)},rotate=-acos(1/4)]
+      \meccanostrip[880088]{3}{1}{\p}
+      \begin{scope}[shift={(3,0)},rotate=180-acos(1/4)]
+       \meccanostrip[0000FF]{6}{1}{\p}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \pgfmathsetmacro\s{8}
+ \pgfmathsetmacro\fix{0}
+ \pgfmathsetmacro\fiy{0}
+ \pgfmathsetmacro\fia{52.9}%atan(\fiy/\fix)}
+ \def\p{2pt}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.8}]
+   \begin{scope}[shift={(0,0)}]
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{15}
+    \path(4,0) ++(-90:15+\p) node{$D$};
+    \clusterI{2pt}{4}{0}{\fia}{1}{E'}{F'}
+    \clusterI{2pt}{4}{0}{180-\fia}{-1}{E}{F}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
