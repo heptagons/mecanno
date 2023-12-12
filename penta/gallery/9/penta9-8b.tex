@@ -41,16 +41,15 @@
 
 \begin{document}
  \pgfmathsetmacro\s{9}
- %\pgfmathsetmacro\fix{(5-sqrt(5))/4}
- %\pgfmathsetmacro\fiy{(9*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
- %\pgfmathsetmacro\fia{atan(\fiy/\fix)} % aprox 85 degrees
- \pgfmathsetmacro\fia{109} % aprox 109 degrees
+ \pgfmathsetmacro\fix{(1-5*sqrt(5))/4}
+ \pgfmathsetmacro\fiy{(9*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
+ \pgfmathsetmacro\fia{90-atan(\fix/\fiy)}
  \def\p{5pt}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
 
    \begin{scope}[shift={(0,0)}] % left pentagon
-    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{20}
     \path (3,0) ++(-90:20+\p) node{$F$};
     \path (6,0) ++(-90:20+\p) node{$F'$};
     \clusterII{5pt}{3}{0}{\fia}{1}{G}{H}
@@ -79,7 +78,7 @@
    \end{scope}
     
    \begin{scope}[shift={(18,0)}] % right pentagon
-    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{20}
     \path (3,0) ++(-90:20+\p) node{$F$};
     \path (6,0) ++(-90:20+\p) node{$F'$};
     \clusterIII{5pt}{3}{0}{\fia}{1}{G}{J}

@@ -4,7 +4,7 @@
 
 \newcommand{\clusterI}[8]{ % p,x,y,rot,mirror,P1,P2,P3
  \def\p{#1}
- \pgfmathsetmacro\rotI{-atan((5/6)/(7*sqrt(6^2 - 2^2)/6)}
+ \pgfmathsetmacro\rotI{-atan((2/3)/(7*sqrt(6^2 - 2^2)/6)}
  \begin{scope}[shift={(#2,#3)},rotate=(\rotI*#5)+#4] % displace,rotate
   \begin{scope}[yscale=#5] % mirror
    \begin{scope}[rotate=-asin(1/3)]
@@ -23,17 +23,16 @@
  \end{scope}
 }
 
-
 \newcommand{\clusterII}[7]{ % p,x,y,rot,mirror,P1,P2
  \def\p{#1}
  \pgfmathsetmacro\rotII{-atan(sqrt(2^2 - (3/2)^2)/(13/2)}
  \begin{scope}[shift={(#2,#3)},rotate=(\rotII*#5)+#4] % displace,rotate
   \begin{scope}[yscale=#5] % mirror
    \meccanostrip[FF4400]{8}{1}{\p}
-   \path (8,0) ++(0:20+\p) node{$#6$};
+   \path (5,0) ++(-90:20+\p) node{$#6$}; %H
+   \path (8,0) ++(-60:20+\p) node{$#7$}; %I
    \begin{scope}[shift={(5,0)},rotate=asin(2/3)]
     \meccanostrip[880088]{2}{1}{\p}
-    \path (4,0) ++(40:20+\p) node{$#7$};
    \end{scope}
    \begin{scope}[shift={(8,0)},rotate=180-asin(2/3)]
     \meccanostrip[880088]{2}{1}{\p}
@@ -44,10 +43,9 @@
 
 \begin{document}
  \pgfmathsetmacro\s{8}
- %\pgfmathsetmacro\fix{(5-sqrt(5))/4}
- %\pgfmathsetmacro\fiy{(9*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
- %\pgfmathsetmacro\fia{atan(\fiy/\fix)} % aprox 85 degrees
- \pgfmathsetmacro\fia{77.5} % aprox 77.5 degrees
+ \pgfmathsetmacro\fix{(2+2*sqrt(5))/4}
+ \pgfmathsetmacro\fiy{(8*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4)}
+ \pgfmathsetmacro\fia{atan(\fiy/\fix)}
  \def\p{5pt}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
@@ -83,8 +81,8 @@
    \begin{scope}[shift={(17,0)}] % right pentagon
     \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{20}
     \path(4,0) ++(-90:20+\p) node{$F$};
-    \clusterII{5pt}{4}{0}{76}{1}{G}{J}
-    \clusterII{5pt}{4}{0}{180-\fia}{-1}{G'}{J'}
+    \clusterII{5pt}{4}{0}{\fia}{1}{H}{I}
+    \clusterII{5pt}{4}{0}{180-\fia}{-1}{H'}{I'}
     % AA'
     \begin{scope}[shift={(\s,0)},rotate=72]
      %A'B'
@@ -93,7 +91,7 @@
       \begin{scope}[shift={(4,0)},rotate=72]
        \meccanostrip[00CC00]{6}{1}{\p}
        \path(0,0) ++(180:20+\p) node{$D'$};
-       \path(6,0) ++(-100:20+\p) node{$G$};
+       \path(6,0) ++(-120:20+\p) node{$G'$};
        \path(4,0) ++(180+54:25+\p) node{$E$};
       \end{scope}
       \begin{scope}[shift={(\s,0)},rotate=72]
@@ -101,7 +99,7 @@
        \begin{scope}[shift={(4,0)},rotate=108]
         \meccanostrip[00CC00]{6}{1}{\p}
         \path(0,0) ++(180:20+\p) node{$D$};
-        \path(6,0) ++(100:20+\p) node{$G'$};
+        \path(6,0) ++(120:20+\p) node{$G$};
        \end{scope}
       \end{scope}
      \end{scope}
