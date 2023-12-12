@@ -336,7 +336,25 @@ Finally we calculate the distance $\overline{CD}$
 \label{fig:penta8-6a}
 \end{figure}
 
+Figure \ref{fig:penta8-6a} show regular pentagon $ABCDE$ of size 8. We know the pentagon width like $\overline{CE}$ is $\frac{1+\sqrt5}2$ times the side of the pentagon so here we have $\overline{CE} = 4+4\sqrt5$.
+
 \subsubsection{Rigid distance $4 + 4\sqrt5$}
+
+From the figure consider triangle $\triangle{NJM}$ and calculate with the law of cosines angle $\theta = \angle{NJM}$:
+\begin{align}
+\cos\theta = \frac{(\overline{JM})^2 + (\overline{JN})^2 
+ - (\overline{MN})^2}{2(\overline{JM})(\overline{JN})}
+ &= \frac{6^2 + 6^2 - 8^2}{2(6)(6)} = \frac{1}9
+\end{align}
+Since $\dfrac{\overline{EH}}{\overline{EJ}} = \sin\theta$ we have:
+\begin{align}
+\overline{EH} &= (\overline{EJ})\sin\theta
+ = 9\sqrt{1-\cos^2\theta} 
+ = 9\sqrt{1-\left(\frac{1}9\right)^2} = 4\sqrt5
+\end{align}
+
+Since $(\overline{EJ})^2 = (\overline{EH})^2 + (\overline{HJ})^2 \mapsto 9^2 = 16(5) + 1$ we conclude we have the right angle $\angle{EHJ} = \frac{\pi}2$. By inspection we have a second right angle $\angle{IHL} = \frac{\pi}2$ formed by the Pythagorean triangle $\triangle{HIL}$ and a third one $\angle{LHC} = \frac{\pi}2$ since is supplementary of $\angle{IHL}$. With the right angles we conclude vertices $E,H,C$ are colinear so the distance $\overline{EH} = \overline{EH} + \overline{HC} = 4\sqrt{5} + 4$ $\blacksquare$.
+The strip $\overline{FG}$ keeps rigid the vertices $A$ and $B$.
 
 \subsection{Size 8 with 8 internal strips}
 
