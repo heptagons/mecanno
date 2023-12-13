@@ -2,26 +2,33 @@
 
 \usepackage{../penta}
 
-\newcommand{\clusterI}[7]{ % p,x,y,rot,mirror,P1,P2
+\newcommand{\clusterI}[8]{ % p,x,y,rot,mirror,P1,P2,P3
  \def\p{#1}
  \pgfmathsetmacro\rotA{acos((11^2 + 7^2 - 6^2)/(2*11*7))}
  \pgfmathsetmacro\rotB{acos((7^2 + 6^2 - 11^2)/(2*6*7))}
- \pgfmathsetmacro\rotI{0}
+ \pgfmathsetmacro\cx{13 + 2*sqrt(5)} % 17.4721
+ \pgfmathsetmacro\cy{7*sqrt(4 + sqrt(5))} % 17.48035 against javascript 17.48048 (correct)
+ \pgfmathsetmacro\rotI{acos(\cx/\cy)} % 1.2044° against javascript=1.7708° (correct)
+ \pgfmathsetmacro\rotI{1.7708} % by hand because probable tikz miss precision???
  \begin{scope}[shift={(#2,#3)},rotate=(\rotI*#5)+#4] % displace,rotate
   \begin{scope}[yscale=#5] % mirror
    \begin{scope}
+%\path(0,3) node{cx=$\cx$};
+%\path(0,2) node{cy=$\cy$};
+%\path(0,1) node{roti=$\rotI$};
     \meccanostrip[00CC00]{7}{1}{\p}
     \begin{scope}[rotate=\rotA]
      \meccanostrip[0088FF]{11}{1}{\p}
     \end{scope}
     \begin{scope}[shift={(7,0)},rotate=180-\rotB]
      \meccanostrip[0000FF]{6}{1}{\p}
-     \path(0,0) ++(180:15+\p) node{$#6$};
-     \path(6,0) ++(90:15+\p) node{$#7$};
-     \begin{scope}[shift={(0,0)},rotate=-acos(1/4)]
+     \path(0,0) ++(180:12+\p) node{$#6$}; %E
+     \path(6,0) ++(90:12+\p) node{$#7$}; %F
+     \path(2,0) ++(-60:12+\p) node{$#8$}; %G
+     \begin{scope}[shift={(0,0)},rotate=-acos(1/3)]
       \meccanostrip[880088]{3}{1}{\p}
-      \begin{scope}[shift={(3,0)},rotate=180-acos(1/4)]
-       \meccanostrip[0000FF]{6}{1}{\p}
+      \begin{scope}[shift={(3,0)},rotate=2*acos(1/3)]
+       \meccanostrip[880088]{3}{1}{\p}
       \end{scope}
      \end{scope}
     \end{scope}
@@ -32,17 +39,17 @@
 
 \begin{document}
  \pgfmathsetmacro\s{8}
- \pgfmathsetmacro\fix{0}
- \pgfmathsetmacro\fiy{0}
- \pgfmathsetmacro\fia{52.9}%atan(\fiy/\fix)}
- \def\p{2pt}
+ \pgfmathsetmacro\fix{1 + sqrt(5)}
+ \pgfmathsetmacro\fiy{2*sqrt(4 + sqrt(5))}
+ \pgfmathsetmacro\fia{acos(\fix/\fiy)}
+ \def\p{1pt}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.8}]
+  \begin{scope}[scale={1}]
    \begin{scope}[shift={(0,0)}]
-    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{15}
-    \path(4,0) ++(-90:15+\p) node{$D$};
-    \clusterI{2pt}{4}{0}{\fia}{1}{E'}{F'}
-    \clusterI{2pt}{4}{0}{180-\fia}{-1}{E}{F}
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{10}
+    \path(4,0) ++(-90:10+\p) node{$D$};
+    \clusterI{1pt}{4}{0}{\fia}{1}{E'}{F'}{G'}
+    \clusterI{1pt}{4}{0}{180-\fia}{-1}{E}{F}{G}
    \end{scope}
   \end{scope}
  \end{tikzpicture}

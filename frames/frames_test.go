@@ -43,7 +43,7 @@ func TestTrianglePairsExt(t *testing.T) {
 	frames := NewFrames()
 	//frames.TrianglePairsExtPlusPlusTex(3, []int{46,18,5})
 	//frames.TrianglePairsExtPlusPlusTex(13, []int{10,3,5}) // some
-	//frames.TrianglePairsExtPlusPlusTex(13, []int{4,1,5})
+	frames.TrianglePairsExtPlusPlusTex(13, []int{4,1,5})
 	//frames.TrianglePairsExtPlusPlusTex(13, []int{85,28,5})
 	//frames.TrianglePairsExtPlusPlusTex(10, []int{114,35,5}) // angle 108:7:10 found
 	//frames.TrianglePairsExtPlusPlusTex(12, []int{139,30,5}) // angle 108 5:12 found
@@ -52,7 +52,7 @@ func TestTrianglePairsExt(t *testing.T) {
 	//frames.TrianglePairsExtPlusPlusTex(10, []int{26,10,5}) // penta-3 d1 none
 	//frames.TrianglePairsExtPlusPlusTex(10, []int{34,10,5}) // penta-3 d2
 	//frames.TrianglePairsExtPlusPlusTex(10, []int{18,6,5})
-	frames.TrianglePairsExtPlusPlusTex(10, []int{31,10,5}) // angle 108 5:4
+	//frames.TrianglePairsExtPlusPlusTex(10, []int{31,10,5}) // angle 108 5:4
 	//frames.TrianglePairsExtPlusPlusTex(10, []int{24,5,5}) // angle 108 5:2 (5,6,9) \oplus (7,7,6) \oplus (3,5,2) &\mapsto \frac{24\sqrt{24+5\sqrt{5}}}{7} \\
 }
 
