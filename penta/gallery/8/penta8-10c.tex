@@ -1,0 +1,63 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\def\p{2.5pt}
+\def\r{17+\p}
+
+\begin{document}
+ \def\s{8}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.6}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{17}
+   \begin{scope}[rotate=72]
+    \meccanostrip[0000FF]{4}{1}{\p}
+    \begin{scope}[shift={(4,1)},rotate=-90]
+     \meccanostrip[0000FF]{4}{1}{\p}
+     \path(0,0) ++(-90:\r) node{$F$};
+     \path(1,0) ++(90:\r) node{$G$};
+     \path(2,0) ++(-90:\r) node{$H$};
+     \path(3,0) ++(-100:\r) node{$I$};
+     \path(4,0) ++(-70:\r) node{$J$};
+     \begin{scope}[shift={(0,0)},rotate=acos(1/9)]
+      \meccanostrip[880000]{9}{1}{\p}
+      \path(3,0) ++(90:\r) node{$K$};
+     \end{scope}
+     \begin{scope}[shift={(3,0)},rotate=180-acos(2/3)]
+      \meccanostrip[0000FF]{4}{1}{\p}
+     \end{scope}
+     \begin{scope}[shift={(4,0)},rotate=-180+acos(3/5)]
+      \meccanostrip[880088]{5}{1}{\p}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+
+   \begin{scope}[shift={(4,0)},rotate=72]
+    \meccanostrip[00CC00]{6}{1}{\p}
+    \path(0,0) ++(180:\r) node{$L$};
+    \path(3,0) ++(-90:\r) node{$M$};
+    \path(4,0) ++(-90:\r) node{$R$};
+    \path(6,0) ++(-90:\r) node{$N$};
+    \begin{scope}[shift={(3,0)},rotate=acos(3/5)]
+     \meccanostrip[880088]{5}{1}{\p}
+    \end{scope}
+    \begin{scope}[shift={(6,0)},rotate=90]
+     \meccanostrip[0000FF]{4}{1}{\p}
+     \begin{scope}[shift={(0,0)},rotate=-90+asin(2/3)]
+      \meccanostrip[0088FF]{3}{1}{\p}
+     \end{scope}
+     \begin{scope}[shift={(4,0)},rotate=180+acos(2/3)]
+      \meccanostrip[00CC00]{6}{1}{\p}
+      \path(0,0) ++(30:7+\r) node{$O$};
+      \path(3,0) ++(90:\r) node{$P$};
+      \path(6,0) ++(0:\r) node{$Q$};
+     \end{scope}
+    \end{scope}
+   \end{scope}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %BC
+    \path(4,0) ++(-90:\r) node{$S$};
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

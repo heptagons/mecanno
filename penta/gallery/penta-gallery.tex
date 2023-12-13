@@ -469,6 +469,46 @@ Our software found several solutions, consider the cluster $FGHIJD$ in the figur
  &= \sqrt{(0 - 4)^2 + (-2\sqrt5 - 7)^2} = \sqrt{85 + 28\sqrt5} \quad \blacksquare
 \end{align}
 
+\subsection{Size 8 with 10 internal strips $build(8:8)$ and $build(4:8:4)$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{8/penta8-10c}
+\caption{Pentagon of size 8 with 10 internal strips. $\overline{AE}:\overline{ED} = 8:8$ and $\overline{AD} = 4 + 4\sqrt5$. $\overline{LB}:\overline{BC}:\overline{CQ} = 4:8:4$ and $\overline{LQ} = 6 + 2\sqrt5$.}
+\label{fig:penta8-10c}
+\end{figure}
+
+Figure \ref{fig:penta8-10c} show pentagon $ABCDE$ of size $8$. We have a width $\overline{AD}$ that we know equals the side times $\frac{1+\sqrt5}2$ so we have here:
+\begin{align}
+\overline{AD} = 8\left(\dfrac{1+\sqrt5}2\right) = 4 + 4\sqrt5
+\end{align}
+We have a smaller pentagon of side $4$ with a semi-perimeter $\overline{RS},\overline{SC},\overline{CQ}$ with width $\overline{RS} = 4\left(\frac{1+\sqrt5}2\right) = 2 + 2\sqrt5$ so we have:
+\begin{align}
+\overline{LQ} = \overline{LR} + \overline{RQ} = 4 + 2 + 2\sqrt5 = 6 + 2\sqrt5
+\end{align}
+
+\subsubsection{Rigid distances $4 + 4\sqrt5$ and $6 + 2\sqrt5$}
+
+From the last figure we have a (partial) isoscelles triangle $\triangle{FHD}$ where $\alpha = \angle{DFG} = \dfrac{\overline{FG}}{\overline{FD}} = \dfrac{1}9$. The (missing) strip $\overline{HD}$ is substituted by strip $\overline{IK}$ since triangle $\triangle{FIK}$ internal angle $\angle{IFK}$ matches $\alpha$ after using the law of cosines:
+\begin{align}
+\cos(\angle{IFK}) &= \frac{(\overline{FK})^2 + (\overline{FI})^2 - (\overline{IK})^2}
+ {2(\overline{FK})(\overline{FI})} 
+ = \frac{3^2 + 3^2 - 4^2}{2(3)(3)}
+= \frac{1}9 \quad \blacksquare
+\end{align}
+
+Angle $\angle{HGD}=\frac{\pi}2$ since $\triangle{FHD}$ is isoscelles and also $\angle{AGJ} = \frac{\pi}2$ since triangle $\triangle{AGJ}$ is Pythagorean so vertices $A,G,D$ are collinear and then we can get $\overline{AD}$:
+\begin{align}
+\overline{AD} &= \overline{AG} + \overline{GD} \nonumber\\
+ &= 4 + \sqrt{(\overline{FD})^2 - (\overline{FG})^2}
+ = 4 + \sqrt{9^2 - 1^2} = 4 + 4\sqrt5 \quad \blacksquare
+\end{align}
+
+From the last figure we see triangle $\triangle{NOP}$ is isoscelles and that strip $\overline{OQ}$ is the double of strip $\overline{PN}$ so angle $\angle{ONQ} = \frac{\pi}2$ and we can calculate $\overline{NQ} = \sqrt{(\overline{OQ})^2 - (\overline{ON})^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Also angle $\angle{MNO} = \frac{\pi}2$ since triangle $\triangle{MNO}$ is Pythagorean so vertices $M,N,Q$ are collinear and we can get $\overline{LQ}$:
+\begin{align}
+\overline{LQ} &= \overline{LN} + \overline{NQ} \nonumber\\
+ &= 6 + 2\sqrt5 \quad \blacksquare
+\end{align}
 
 
 % 9
