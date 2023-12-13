@@ -397,11 +397,11 @@ For the variation 2 at the right of the figure consider the cluster $FHIG$. With
  &= \sqrt{8^2 + 2^2 - 2(8)(2)\frac{3}4} = 2\sqrt{11} \quad\blacksquare
 \end{align}
 
-\subsection{Size 8 with 10 internal strips}
+\subsection{Size 8 with 10 internal strips $build(4:8)$}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{8/penta8-10a}
+\includegraphics[scale=1]{8/penta8-10a}
 \caption{Pentagon of size 8 with 10 internal strips. $\overline{DA}:\overline{AB} = 4:8$ and $\overline{DB} = 4\sqrt{4 + \sqrt5}$}
 \label{fig:penta8-10a}
 \end{figure}
@@ -410,16 +410,16 @@ Figure \ref{fig:penta8-10a} show pentagon $AA'B'CB$ of size $8$. We use the law 
 \begin{align}
 \overline{DB} &= \sqrt{(\overline{AD})^2 + (\overline{AB})^2
  - 2(\overline{AD})(\overline{AB})\cos\theta} \nonumber\\
- &= \sqrt{4^2 + 8^2 + 2(4)(8)\frac{1-\sqrt5}4} = 4\sqrt{4 + \sqrt5}
+ &= \sqrt{4^2 + 8^2 - 2(4)(8)\frac{1-\sqrt5}4} = 4\sqrt{4 + \sqrt5}
 \end{align}
 
 \subsubsection{Rigid distance $4\sqrt{4 + \sqrt5}$}
 
-Our software found few solutions. The cluster $DEBGF$ shown in the figure hardly fit inside the pentagon. We calculate angles around vertice $E$ $\alpha = \angle{DEF}$ with the law of cosines and $\beta = \angle{BEG}$ whitin the isoscelles triangle $\triangle{BEG}$:
+Our software found few solutions but the cluster $DEBGF$ shown in the figure fit (hardly) inside the pentagon. We calculate angles around vertice $E$ $\alpha = \angle{DEF}$ with the law of cosines and $\beta = \angle{BEG}$ whitin the isoscelles triangle $\triangle{BEG}$:
 \begin{align}
 \cos\alpha &= \frac{(\overline{DE})^2 + (\overline{EF})^2 - (\overline{DF})^2}
- {2(\overline{DE})(\overline{EF})} \nonumber\\
- &= \frac{7^2 + 6^2 - 11^2}{2(7)(6)} = -\frac{3}7 \\
+ {2(\overline{DE})(\overline{EF})} 
+ = \frac{7^2 + 6^2 - 11^2}{2(7)(6)} = -\frac{3}7 \\
 \sin\alpha &= \sqrt{1 - \cos^2\alpha}
  = \sqrt{1 - \left(-\frac{3}{7}\right)^2} = \frac{2\sqrt{10}}7 \\
 \cos\beta &= \frac{\frac{\overline{EG}}2}{\overline{EB}}
@@ -430,11 +430,11 @@ Our software found few solutions. The cluster $DEBGF$ shown in the figure hardly
 
 Now we calculate the angle $\angle{DEB} = \gamma = \alpha + \beta$ using the cosines sum identity:
 \begin{align}
-\cos\gamma &= \cos(\alpha + \beta) \nonumber\\
- &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos\gamma &= \cos(\alpha + \beta)
+ = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  &= \left(-\frac{3}7\right)\left(\frac{1}3\right)
   - \left(\frac{2\sqrt{10}}7\right)\left(\frac{2\sqrt2}3\right)
-  = -\frac{3 + 8\sqrt{5}}{21} \nonumber\\
+  = -\frac{3 + 8\sqrt{5}}{21}
 \end{align}
 
 Finally we calculate the distance $\overline{DB}$ using previous angle $\gamma$:
@@ -444,7 +444,36 @@ Finally we calculate the distance $\overline{DB}$ using previous angle $\gamma$:
  &= \sqrt{7^2 + 3^2 - 2(7)(3)\left(-\frac{3 + 8\sqrt{5}}{21}\right)} 
  = 4\sqrt{4 + \sqrt5} \quad\blacksquare
 \end{align}
+
+\subsection{Size 8 with 10 internal strips $build(7:8)$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.1]{8/penta8-10b}
+\caption{Pentagon of size 8 with 10 internal strips. $\overline{FC}:\overline{CD} = 7:8$ and $\overline{CD} = \sqrt{85 + 28\sqrt5}$}
+\label{fig:penta8-10b}
+\end{figure}
+
+Figure \ref{fig:penta8-10b} show pentagon $ABCDE$ of size $8$. We use the law of cosines to calculate distance $\overline{FD}$ knowing $\theta = \angle{FCD} = \frac{3\pi}5$ and $\cos\theta = \frac{1-\sqrt5}4$:
+\begin{align}
+\overline{FC} &= \sqrt{(\overline{FC})^2 + (\overline{CD})^2
+ - 2(\overline{FC})(\overline{CD})\cos\theta} \nonumber\\
+ &= \sqrt{7^2 + 8^2 - 2(7)(8)\frac{1-\sqrt5}4} = \sqrt{85 + 28\sqrt5}
+\end{align}
+
+\subsubsection{Rigid distance $\sqrt{85 + 28\sqrt5}$}
+
+Our software found several solutions, consider the cluster $FGHIJD$ in the figure. Assume vertice $I$ is at the origin and vertice $H$ is at coordinate $(4,0)$. Since triangle $\triangle{HIG}$ is isoscelles and $\overline{HF}$ is the double of $\overline{IG}$ then $\overline{IF} = \sqrt{(\overline{HF})^2 - (\overline{IH})^2} = \sqrt{6^2 - 4^2} = 2\sqrt{5}$ and the coordinates of vertice $F(x,y)$ are $(0,\overline{IF}) = (0,-2\sqrt5)$. Since the Pythagorean triangle $\triangle{HIJ}$ we have a right angle $\angle{IHD} = \frac{\pi}2$ and then the coordinates of vertice $D(x,y)$ are $(\overline{IH},\overline{HD}) = (4,7)$. Finally we calculat the distance $\overline{FD}$:
+\begin{align}
+\overline{FD} &= \sqrt{(F_x - D_x)^2 + (F_y - D_y)^2 } \nonumber\\
+ &= \sqrt{(0 - 4)^2 + (-2\sqrt5 - 7)^2} = \sqrt{85 + 28\sqrt5} \quad \blacksquare
+\end{align}
+
+
+
 % 9
+
+
 
 \section{Pentagons of size 9}
 
