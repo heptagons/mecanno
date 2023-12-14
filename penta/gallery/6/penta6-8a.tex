@@ -2,13 +2,17 @@
 
 \usepackage{../penta}
 
+\def\p{3.5pt}
+\def\r{12}
+\def\scale{0.7}
+
 \newcommand{\cluster}[8]{ %p,dx,dy,rot,mirror
- \def\p{#1}
+ %\def\p{#1}
  \pgfmathsetmacro\cx{sqrt(6^2 - 3^2}
  \pgfmathsetmacro\cy{2}
  \pgfmathsetmacro\crot{#5 * atan(\cy/\cx)}
- \begin{scope}[shift={(#2,#3)},rotate=\crot + #4]
-  \begin{scope}[xscale=#5]
+ \begin{scope}[shift={(#2*\scale,#3*\scale)},rotate=\crot + #4]
+  \begin{scope}[xscale=#5*\scale,yscale=\scale]
    \begin{scope}[rotate=-asin(1/2)]
     \meccanostrip[FF4400]{6}{1}{\p}
     \path(5,0) ++(-90:12+\p) node{$#6$}; %F
@@ -27,13 +31,11 @@
 
 \begin{document}
  \def\s{6}
- \def\p{3.5pt}
- \def\r{12}
  \begin{tikzpicture}
-  \pgfmathsetmacro\px{1+sqrt(5)}
-  \pgfmathsetmacro\py{4*sqrt(10+2*sqrt(5)) - sqrt(10-2*sqrt(5))}
-  \pgfmathsetmacro\prot{111}%atan(\py/\px)} % aprox 113°
-  \begin{scope}[scale={1}]
+  \pgfmathsetmacro\px{-11+sqrt(5)}
+  \pgfmathsetmacro\py{6*sqrt(10+2*sqrt(5)) - sqrt(10-2*sqrt(5))}
+  \pgfmathsetmacro\prot{180+atan(\py/\px)} % aprox 113°
+  \begin{scope}[scale={\scale}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{\r}
    % AA'
    \begin{scope}[shift={(\s,0)},rotate=72]

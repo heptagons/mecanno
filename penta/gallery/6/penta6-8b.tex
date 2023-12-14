@@ -1,0 +1,62 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\def\p{2pt}
+\def\r{15}
+
+\newcommand{\cluster}[7]{ % p,x,y,rot,mirror,P1,P2
+ \pgfmathsetmacro\rot{-acos(19/(4*sqrt(31))}
+ \begin{scope}[shift={(#2,#3)},rotate=(\rot*#5)+#4] % displace,rotate
+  \begin{scope}[yscale=#5] % mirror
+   \meccanostrip[0088FF]{4}{1}{\p}
+   \path (2,0) ++(-110:10+\r+\p) node{$#6$}; %H
+   \path (4,0) ++(-60:10+\r+\p) node{$#7$}; %I
+   \begin{scope}[shift={(2,0)},rotate=acos(11/16)]
+    \meccanostrip[0088FF]{4}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(4,0)},rotate=acos(1/4)]
+    \meccanostrip[880088]{3}{1}{\p}
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \pgfmathsetmacro\s{6}
+ \pgfmathsetmacro\fix{(4 + 4*sqrt(5))/4}
+ \pgfmathsetmacro\fiy{(6*sqrt(10+2*sqrt(5)) - 2*sqrt(10-2*sqrt(5)))/4}
+ \pgfmathsetmacro\fia{180-atan(\fiy/\fix)} %aprox 126°
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.7}]
+   \begin{scope}[shift={(17,0)}]
+    \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{\r}
+    \path(3,0) ++(-90:\r+\p) node{$F$};
+    \cluster{2pt}{3}{0}{\fia}{1}{H}{I}
+    \cluster{2pt}{3}{0}{180-\fia}{-1}{H'}{I'}
+    % AA'
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %A'B'
+     \begin{scope}[shift={(\s,0)},rotate=72]
+      %B'C
+      \begin{scope}[shift={(4,0)},rotate=72]
+       \meccanostrip[FF4400]{6}{1}{\p}
+       \path(0,0) ++(180:\r+\p) node{$D'$};
+       \path(2,0) ++(180+54:\r+\p) node{$E$};
+       \path(6,0) ++(-90:\r+\p) node{$G'$};
+      \end{scope}
+      \begin{scope}[shift={(\s,0)},rotate=72]
+       %CB
+       \begin{scope}[shift={(2,0)},rotate=108]
+        \meccanostrip[FF4400]{6}{1}{\p}
+        \path(0,0) ++(180:\r+\p) node{$D$};
+        \path(6,0) ++(120:\r+\p) node{$G$};
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

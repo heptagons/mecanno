@@ -139,7 +139,7 @@ Finally we calculate $\overline{AD}$ with the law of cosines:
 \label{fig:penta4-8a}
 \end{figure}
 
-Figure \ref{fig:penta4-8a} show the regular pentagon $AA'B'CB$ of size $4$. We calculate the distance $\overline{DI}$ assuming vertex $D$ is at origin and calculating abscissa and ordinate of vertex $I$ and knowing $\alpha = \angle{ADB} = \dfrac{3\pi}5$ and $\beta = \angle{B'BE} = \dfrac{\pi}5$. Adding and substracting through vertices $D,A,B,E,I$ we get:
+Figure \ref{fig:penta4-8a} show the regular pentagon $AA'B'CB$ of size $4$. We calculate the distance $\overline{DI}$ assuming vertex $D$ is at origin and calculating abscissa and ordinate of vertex $I$ and knowing $\alpha = \angle{ADB} = \frac{3\pi}5$ and $\beta = \angle{B'BE} = \frac{\pi}5$. Adding and substracting through vertices $D,A,B,E,I$ we get:
 \begin{align}
 I_x &= -\overline{DA} - \overline{AB}|\cos\alpha| + \overline{BE}\cos\beta + \overline{EI}\cos\beta \nonumber\\
  &= -2 -(4)\left|-\frac{\sqrt5 - 1}4\right| + (1+2)\left(\frac{\sqrt5+1}4\right)
@@ -253,12 +253,72 @@ Finally we calculate the distance $\overline{CD}$
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.7]{6/penta6-8a}
-\caption{Pentagon of size 6 with 8 internal strips. $\overline{A'A} : \overline{AB} : \overline{BD} : \overline{DF'} = 6:6:3:4$ and $\overline{A'F'} = \sqrt{31}$.}
-\label{fig:penta6-6a}
+\includegraphics[scale=1]{6/penta6-8a}
+\caption{Pentagon of size 6 with 8 internal strips. $\overline{A'A} : \overline{AB} : \overline{BD} : \overline{DH'} = 6:6:3:4$ and $\overline{A'H'} = \sqrt{31}$.}
+\label{fig:penta6-8a}
 \end{figure}
 
+Figure \ref{fig:penta6-8a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{A'H'}$ assuming vertex $A'$ is at origin and calculating abscissa and ordinate of vertex $H'$ and knowing $\alpha = \angle{ADB} = \frac{3\pi}5$ and $\beta = \angle{B'BE} = \frac{\pi}5$. Adding and substracting through vertices $A',A,B,D,H'$ we get:
+\begin{align}
+H'_x &= -\overline{A'A} -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DH}\cos\beta \nonumber\\
+ &= -6 -(6)\left(\frac{\sqrt5 - 1}4\right) + (3+4)\left(\frac{\sqrt5+1}4\right)
+ = \frac{-11 + \sqrt5}4 \\
+H'_y &= \overline{AB}\sin\alpha + \overline{BD}\sin\beta - \overline{DH'}\sin\beta \nonumber\\
+ &= (6)\left(\frac{\sqrt{10+2\sqrt5}}4\right) + (3-4)\left(\frac{\sqrt{10-2\sqrt5}}4\right)
+ = \frac{6\sqrt{10+2\sqrt5} - \sqrt{10-2\sqrt5}}4 \\
+%
+\overline{A'H'} &= \sqrt{(H'_x)^2 + (H'_y)^2} \nonumber\\
+ &= \frac{\sqrt{(-11+\sqrt5)^2 + (6\sqrt{10+2\sqrt5} -\sqrt{10-2\sqrt5})^2}}4
+ = \sqrt{31}
+\end{align}
+
 \subsubsection{Rigid distance $\sqrt{31}$}
+
+Our software found the cluster $AFGH$ in the figure which fits inside this pentagon. The angle $\theta = \angle{FGH} = \frac{\pi}3$ since triangle $\triangle{FGH}$ is equilateral so $\cos\theta = \frac{1}2$ and we can calculate $\overline{AF}$ with the law of cosines:
+\begin{align}
+\overline{AF} &= \sqrt{(\overline{GH})^2 + (\overline{AG})^2 
+ - 2(\overline{GH})(\overline{AG})\cos\theta} \nonumber\\
+ &= \sqrt{1^2 + 6^2 - 2(1)(6)\left(\frac{1}2\right)} = \sqrt{31} \quad \blacksquare
+\end{align}
+
+
+\subsection{Size 6 with 8 internal strips $build(3:6:4:6)$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1.2]{6/penta6-8b}
+\caption{Pentagon of size 6 with 8 internal strips. $\overline{FA} : \overline{AB} : \overline{BD} : \overline{DG} = 3:6:4:6$ and $\overline{FG} = \sqrt{31}$.}
+\label{fig:penta6-8b}
+\end{figure}
+
+Figure \ref{fig:penta6-8b} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{FG}$ assuming vertex $F$ is at origin and calculating abscissa and ordinate of vertex $G$ and knowing $\alpha = \angle{A'AB} = \frac{3\pi}5$ and $\beta = \angle{B'BD} = \frac{\pi}5$. Adding and substracting through vertices $F,A,B,D,G$ we get:
+\begin{align}
+G_x &= -\overline{FA} -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DG}\cos\beta \nonumber\\
+ &= -3 -(6)\left(\frac{\sqrt5 - 1}4\right) + (4+6)\left(\frac{\sqrt5+1}4\right)
+ = \frac{4 + 4\sqrt5}4 \\
+G_y &= \overline{AB}\sin\alpha + \overline{BD}\sin\beta - \overline{DG}\sin\beta \nonumber\\
+ &= (6)\left(\frac{\sqrt{10+2\sqrt5}}4\right) + (4-6)\left(\frac{\sqrt{10-2\sqrt5}}4\right)
+ = \frac{6\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4 \\
+%
+\overline{FG} &= \sqrt{(G_x)^2 + (G_y)^2} \nonumber\\
+ &= \frac{\sqrt{(4+4\sqrt5)^2 + (6\sqrt{10+2\sqrt5} -2\sqrt{10-2\sqrt5})^2}}4
+ = \sqrt{31}
+\end{align}
+
+\subsubsection{Rigid distance $\sqrt{31}$}
+
+Our software found the cluster $FGHI$ that fits (hardly) inside the pentagon in the figure.
+With the law of cosines we calculate angle $\theta = \angle{IHG}$ and then we use the supplement (cosine negative) as $\angle{FHG}$ to calculate $\overline{FG}$ again with the law of cosines:
+\begin{align}
+\cos\theta &= \frac{(\overline{HG})^2 + (\overline{HI})^2 - (\overline{IG})^2}
+ {2(\overline{HG})(\overline{HI})} \nonumber\\
+ &= \frac{4^2 + 2^2 - 3^2}{2(4)(2)} = \frac{11}{16} \\
+\overline{FG} &= \sqrt{(\overline{FH})^2 + (\overline{HG})^2 
+ - 2(\overline{FH})(\overline{HG})(-\cos\theta) } \nonumber\\
+ &= \sqrt{2^2 + 4^2 - 2(2)(4)\left(-\frac{11}{16}\right)}
+ = \sqrt{31} \quad \blacksquare
+\end{align}
+
 
 \subsection{Size 6 with 10 internal strips $build(5:6)$}
 
