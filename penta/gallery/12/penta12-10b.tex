@@ -1,0 +1,51 @@
+\documentclass[]{standalone}
+
+\usepackage{../penta}
+
+\def\p{5pt}
+\def\r{20}
+
+\newcommand{\cluster}[5]{ %dx,rot,n1,n2,n3
+ \pgfmathsetmacro\rota{acos((7^2 + 5^2 - 4^2)/(2*7*5))}
+ \pgfmathsetmacro\rotb{acos((7^2 + 4^2 - 5^2)/(2*7*4))}
+ \pgfmathsetmacro\rotc{acos(1/11)}
+ \begin{scope}[shift={(#1,0)},rotate=#2]
+  \meccanostrip[880088]{7}{1}{\p} 
+  \begin{scope}[rotate=\rota]
+   \meccanostrip[0088FF]{5}{1}{\p} 
+  \end{scope}
+  \begin{scope}[shift={(7,0)},rotate=180-\rotb]
+   \meccanostrip[0000FF]{4}{1}{\p} 
+   \path(0,0) ++(170:\r+\p) node{$#3$};
+   \path(2,0) ++(70:4+\r+\p) node{$#4$};
+   \path(4,0) ++(0:4+\r+\p) node{$#5$};
+   \begin{scope}[rotate=-\rotc]
+    \meccanostrip[00CC00]{11}{1}{\p} 
+   \end{scope}
+   \begin{scope}[shift={(2,0)},rotate=180+\rotc]
+    \meccanostrip[00CC00]{11}{1}{\p} 
+   \end{scope}
+  \end{scope}
+ \end{scope}
+}
+
+\begin{document}
+ \pgfmathsetmacro\s{12}
+ \pgfmathsetmacro\angle{0}%13}%acos((121+79*sqrt(5))/404))}
+ \begin{tikzpicture}
+  \begin{scope}[scale={0.5}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
+   % AB
+   \path(4,0) ++(-90:\r+\p) node{$F$};
+   \cluster{4}{\angle}{G}{H}{I}
+   \begin{scope}[shift={(\s,0)},rotate=72]
+    %BC
+    \begin{scope}[shift={(\s,0)},rotate=72]
+     %CD
+     \path(4,0) ++(-90:\r+\p) node{$F'$};
+     \cluster{4}{\angle}{G'}{H'}{I'}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
