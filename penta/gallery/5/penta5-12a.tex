@@ -9,11 +9,13 @@
   \begin{scope}[scale={1}]
    % AA'
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{12}
+   \path(4,0) ++(-90:12+\p) node{$S$};
    \begin{scope}[shift={(\s,0)},rotate=72]
     %A'B'
     \path(4,0) ++(-90:12+\p) node{$F$};
     \begin{scope}[shift={(4,0)},rotate=108]
      \meccanostrip[008800]{3}{1}{\p}
+     \path(1,0) ++(90:12+\p) node{$R$};
      \path(3,0) ++(-230:15+\p) node{$G$};
      \begin{scope}[shift={(3,0)},rotate=72]
       \meccanostrip[0088FF]{4}{1}{\p}
@@ -28,6 +30,7 @@
       \path(3,0) ++(-85:15+\p) node{$J$};
       \begin{scope}[shift={(3,0)},rotate=90+asin(2/3)]
        \meccanostrip[0088FF]{4}{1}{\p}
+       \path(2,0) ++(90:10+\p) node{$P$};
        \begin{scope}[shift={(0,0)},rotate=-acos(2/3)]
         \meccanostrip[008800]{3}{1}{\p}
         \path(3,0) ++(-30:15+\p) node{$K$};

@@ -7,7 +7,7 @@
  \def\p{5pt}
  \def\r{15}
  \begin{tikzpicture}
-  \begin{scope}[scale={1}]
+  \begin{scope}[scale={0.7}]
    % AA'
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
    \begin{scope}[shift={(\s,0)},rotate=72]
@@ -16,6 +16,7 @@
     \begin{scope}[shift={(4,0)},rotate=108]
      \meccanostrip[0088FF]{4}{1}{\p}
      \path(1,0) ++(75:\r+\p) node{$G$};
+     \path(2,0) ++(90:\r+\p) node{$R$};
      \begin{scope}[shift={(1,0)},rotate=-asin(4/5)]
       \meccanostrip[880088]{5}{1}{\p}
       \end{scope}
@@ -38,6 +39,7 @@
      \end{scope}
     \end{scope}
    \end{scope}
+   \path(4,0) ++(-90:\r+\p) node{$S$};
   \end{scope}
  \end{tikzpicture}
 \end{document}

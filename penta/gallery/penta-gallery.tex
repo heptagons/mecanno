@@ -261,8 +261,36 @@ Finally we calculte angle $\gamma = \angle{FHD} = \alpha + \beta$ with the cosin
 \label{fig:penta5-12a}
 \end{figure}
 
-\subsubsection{Rigid distances $3+2\sqrt5$ and $\sqrt{18+6\sqrt5} = \sqrt3 + \sqrt{15}$}
+Figure \ref{fig:penta5-12a} show pentagon $ABCDE$ of size $5$. For this construction we need vertices $K,G,F$ to be collinear. First we note the three consecutive sides: $\overline{KA}$, $\overline{AS}$ and $\overline{SR}$ of a (incomplete) sub-pentagon and we know its \textbf{width} $\overline{KR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{KA}$ so here $\overline{KR} = 2 + 2\sqrt5$ and we can get $\overline{KF} = \overline{KR} + \overline{RF} = 3 + 2\sqrt5$.
 
+\subsubsection{Rigid distance $3+2\sqrt5$}
+
+In figure \ref{fig:penta5-12a} we have an isoscelles triangle $\triangle{GIJ}$ and we calculate $\overline{PG} = \sqrt{(\overline{GI})^2 - (\overline{PI})^2} = \sqrt{3^2 - 2^2} = \sqrt5$. Similarly the other isoscelles triange $\triangle{IJK}$ gives $\overline{PK} = \sqrt{5}$ so we have (iff $K,P,G,F$ collinear):
+\begin{align}
+\overline{KF} = \overline{KP} + \overline{PG} + \overline{GF} = 3 + 2\sqrt5 \quad \blacksquare
+\end{align}
+
+Vertices $K,P,G$ already are collinear. For $P,G,F$ collinearity we need two angles $\alpha = \angle{PGJ}$ and $\beta = \overline{FGJ}$ with the condition $\alpha + \beta = \pi$. Within isoscelles triangle $\triangle{GIJ}$ we calculate $\alpha$ and then $\beta$ (its supplement) and use $\beta$ to calculate the distance $\overline{FJ}$ with the law of cosines, to be made rigid with extra five-strips cluster $FLMNOJ$ in next section:
+\begin{align}
+\cos\alpha &= \frac{\overline{PG}}{\overline{GJ}} = \frac{\sqrt5}3 \\
+\cos\beta &= -\cos\alpha = -\frac{\sqrt5}3 \\
+\overline{FJ} &= \sqrt{(\overline{FG})^2 + (\overline{GJ})^2
+ - 2(\overline{FG})(\overline{GJ})\cos\beta} \nonumber\\
+ &= \sqrt{3^2 + 3^2 - 2(3)(3)\left(-\frac{\sqrt5}3\right)}
+ = \sqrt{18 + 6\sqrt5}
+\end{align}
+
+
+\subsubsection{Rigid distance $\sqrt{18+6\sqrt5} = \sqrt3 + \sqrt{15}$}
+
+Our five-strips software generated among other solutions the cluster $FLMNOJ$ of figure \ref{fig:penta5-12a}. This cluster makes rigid the other cluster $FGJIK$ while the strip $GH$ make rigid vertices $A$ and $B$. Here we validate the five-strips cluster. We have the equilateral triangle $\triangle{MNO}$ and $\overline{MJ}$ is the double of $\overline{MO}$ so angle $\angle{MNJ} = \pi/2$. Similarly we have the isoscelles triangle $\triangle{MNL}$ and $\overline{MF}$ is the double of $\overline{ML}$ so angle $\angle{MNF} = \pi/2$. With the two right angles vertices $J,N,F$ are collinear so we can calculate easily $\overline{JF}$:
+\begin{align}
+\overline{JF} &= \overline{JN} + \overline{NF} \nonumber\\
+ &= \sqrt{(\overline{JM})^2 - (\overline{MN})^2} 
+  + \sqrt{(\overline{FM})^2 - (\overline{MN})^2} \nonumber\\
+ &= \sqrt{2^2 - 1^2} + \sqrt{4^2 - 1^2} = \sqrt{3} + \sqrt{15} 
+ = \sqrt{18 + 6\sqrt5} \quad \blacksquare
+\end{align}
 
 % 6
 
@@ -272,12 +300,21 @@ Finally we calculte angle $\gamma = \angle{FHD} = \alpha + \beta$ with the cosin
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.7]{6/penta6-6a}
+\includegraphics[scale=1]{6/penta6-6a}
 \caption{Pentagon of size 6 with 6 internal strips. $\overline{FB} : \overline{BA} : \overline{AL} = 4:6:4$. $\overline{FL} = 4 + 2\sqrt5$.}
 \label{fig:penta6-6a}
 \end{figure}
 
+Figure \ref{fig:penta6-6a} show pentagon $ABCDE$ of size $5$. For this construction we need vertices $L,H,F$ to be collinear. First we note the three consecutive sides: $\overline{LA}$, $\overline{AS}$ and $\overline{SR}$ of a (incomplete) sub-pentagon and we know its \textbf{width} $\overline{KR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{LA}$ so here $\overline{LR} = 2 + 2\sqrt5$ and we can get $\overline{KF} = \overline{KR} + \overline{RF} = 4 + 2\sqrt5$. Strip $\overline{HI}$ parallel and of the same size of $\overline{FB}$ makes rigid vertices $A$ and $B$.
+
 \subsubsection{Rigid distance $4 + 2\sqrt5$}
+
+In figure \ref{fig:penta6-6a} we have two right angles. First angle $\angle{LHJ} = \pi / 2$ because triangle $\triangle{HJK}$ is isoscelles and $\overline{JL}$ is the double of $\overline{JK}$. Second angle $\angle{FHJ} = \pi / 2$ because $\triangle{GHJ}$ is Pythagorean. Then vertices $L,H,F$ are colliear and we can calculate $\overline{LH}$:
+\begin{align}
+\overline{LF} &= \overline{LH} + \overline{HF} \nonumber\\
+ &= \sqrt{(\overline{LJ})^2 - (\overline{JH})^2} + 4 
+ = \sqrt{6^2 - 4^2} + 4 = 4 + 2\sqrt5 \quad \blacksquare
+\end{align}
 
 \subsection{Size 6 with 8 internal strips $build(6:6:3:4)$}
 
