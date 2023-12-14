@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/13}
+\date{2023/12/14}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -35,17 +35,15 @@ Figure \ref{fig:penta3-10a} show the regular pentagon $A,B,C,D,E$ of size $3$. W
 
 \subsubsection{Rigid distance $\dfrac{\sqrt{46+18\sqrt5}}2$}
 
-Our software found several five strips clusters and we use two different which fit inside the pentagon.
-
-We identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
+Our five-strips software found several clusters and we use two different which fit inside the pentagon. We identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
 \begin{align}
-\cos\alpha &= \frac{\frac{\overline{GI}}2}{\overline{GH}} = \frac{\frac{1}2}1 = \frac{1}2\\
+\cos\alpha &= \frac{\overline{GI} / 2}{\overline{GH}} = \frac{1 / 2}1 = \frac{1}2\\
 \sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt3}2
 \end{align}
 
 From isoscelles triangle $\triangle{FGI}$ we calculate $\cos\beta$ and $\sin\beta$:
 \begin{align}
-\cos\beta &= \frac{\frac{\overline{GI}}2}{\overline{GF}} = \frac{\frac{1}2}{2} = \frac{1}4\\
+\cos\beta &= \frac{\overline{GI} / 2}{\overline{GF}} = \frac{1 / 2}2 = \frac{1}4\\
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{1}4\right)^2} = \frac{\sqrt{15}}4
 \end{align}
 
@@ -87,14 +85,14 @@ Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size $3$.
 
 \subsubsection{Rigid distance  $\dfrac{\sqrt{34+6\sqrt5}}2$}
 
-Our software found several options to make the distance with five strips but we have to manually add a sixth strip in order to make a cluster narrow enough to fit two times inside the pentagon of size $3$. The result show as the duplicated cluster with vertices $D,E,F,G,H$ of the figure. We are going to prove the cluster's distance $\overline{AD}$ matches the distance alredy calculated.
+Our five-strips software found several options to make the distance but we add manually a sixth strip in order to make a cluster narrow enough to fit two times inside the pentagon. The result is show as cluster with vertices $DEFGH$ of figure \ref{fig:penta3-14a}. We prove the cluster's distance $\overline{AD}$ matches the distance alredy calculated.
 
-Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangle{EGH}$ we know angle $\angle{DGE} = \dfrac{2\pi}3$ and also $\cos\left(\dfrac{2\pi}3\right) = -\dfrac{1}2$ so we can calculate $\overline{DE}$ and the angle $\alpha \equiv \angle{GDE}$:
+Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangle{EGH}$ we know angle $\angle{DGE} = 2\pi / 3$ and also $\cos\left(\dfrac{2\pi}3\right) = -\dfrac{1}2$ so we can calculate $\overline{DE}$ and the angle $\alpha \equiv \angle{GDE}$:
 \begin{align}
 \overline{DE} &= \sqrt{(\overline{DG})^2 + (\overline{GE})^2 
- - 2(\overline{DG})(\overline{GE})\cos(\angle{DGE})}
- = \sqrt{1^2 + 1^2 - 2(1)(1)\left(-\frac{1}2\right)} = \sqrt3\\
-\alpha &\equiv = \angle{GED} \nonumber\\
+ - 2(\overline{DG})(\overline{GE})\cos(\angle{DGE})} \nonumber\\
+ &= \sqrt{1^2 + 1^2 - 2(1)(1)\left(-\frac{1}2\right)} = \sqrt3\\
+\alpha &\equiv \angle{GED} \nonumber\\
 \cos\alpha &= \frac{(\overline{GE})^2 + (\overline{DE})^2 - (\overline{DG})^2}
  {2(\overline{GE})(\overline{DE})}
  = \frac{3 + 1^2 - 1^2}{2(\sqrt3)(1)} = \frac{\sqrt3}2\\
@@ -104,24 +102,19 @@ Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangl
 
 From the isoscelles triangle $\triangle{AEF}$ we can calculate angle $\angle{AEF}$ noting $\cos(\angle{AEF}) = \dfrac{\overline{EF}/2}{\overline{AE}} = \dfrac{1/2}{2} = \dfrac{1}4$ so we define angle $\beta \equiv \angle{AEG}$ the supplementary of $\angle{AEF}$ and we get:
 \begin{align}
-\beta \equiv& \angle{AEG} = \pi - \angle{AEF} \nonumber\\
-\cos\beta &= -\cos{\angle{AEF}} = -\frac{1}4 \\
+\beta &= \pi - \angle{AEF} \nonumber\\
+\cos\beta &= -\cos(\angle{AEF}) = -\frac{1}4 \\
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{-1}4\right)^2} = \frac{\sqrt{15}}4
 \end{align}
 
-Now we can calculate the angle $\angle{AED} = \alpha + \beta$ with the sum identity and plugin the last sines and cosines:
+Finally we calculate the angle $\gamma = \angle{AED} = \alpha + \beta$ with the sum identity  plugin the last sines and cosines and use to calculate $\overline{AD}$ with the law of cosines:
 \begin{align}
-\cos(\angle{AED}) &= \cos(\alpha + \beta) \nonumber\\
- &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos\gamma &= \cos(\alpha + \beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  & = \left(\frac{\sqrt3}2\right)\left(-\frac{1}4\right) 
   - \left(\frac{1}2\right)\left(\frac{\sqrt{15}}4\right) 
-  = -\frac{\sqrt3 + \sqrt{15}}8
-\end{align}
-
-Finally we calculate $\overline{AD}$ with the law of cosines:
-\begin{align}
+  = -\frac{\sqrt3 + \sqrt{15}}8 \\
 \overline{AD} &= \sqrt{(\overline{DE})^2 + (\overline{EA})^2 
- - 2(\overline{DE})(\overline{EA})\cos(\angle{AED})} \nonumber\\
+ - 2(\overline{DE})(\overline{EA})\cos\gamma} \nonumber\\
  &= \sqrt{3 + 2^2 - 2(\sqrt3)(2)\left(-\frac{\sqrt3 + \sqrt{15}}8\right)} 
  = \frac{\sqrt{34 + 6\sqrt5}}2 \quad\blacksquare
 \end{align}
@@ -1043,9 +1036,9 @@ We have the Pythagorean triangle $\triangle{HJK}$ and the isoscelles $\triangle{
  \label{fig:penta12-10b}
 \end{figure}
 
-Figure \ref{fig:penta12-10b} show a pentagon $ABCDE$ of size $12$. We calculate the distance $\overline{CF}$ with the law of cosines knowing angle $\theta = \angle{CBF} = \frac{3\pi}5$ and we calculate the angle $\phi = \angle{CFB}$:
+Figure \ref{fig:penta12-10b} show a pentagon $ABCDE$ of size $12$. We calculate the distance $\overline{CF}$ with the law of cosines knowing angle $\theta = \angle{CBF} = 3\pi / 5$ and we calculate the angle $\phi = \angle{CFB}$:
 \begin{align}
-\overline{CF}^2 &= \sqrt{\overline{BC}^2 + \overline{BF}^2 
+\overline{CF} &= \sqrt{\overline{BC}^2 + \overline{BF}^2 
  - 2(\overline{BC})(\overline{BF})\cos\theta)} \nonumber\\
  &= \sqrt{12^2 + 8^2 - 2(12)(8)\left(\frac{1-\sqrt5}4\right)}
  = 4\sqrt{10 + 3\sqrt5} \\
@@ -1055,6 +1048,40 @@ Figure \ref{fig:penta12-10b} show a pentagon $ABCDE$ of size $12$. We calculate 
  = \frac{16(10 + 3\sqrt5) + 8^2 - 12^2}{2(4\sqrt{10 + 3\sqrt5})(8)}
   = \frac{5 + 3\sqrt5}{4\sqrt{10 + 3\sqrt5}}
 \end{align}
+
+\subsubsection{Rigid distance $4\sqrt{10 + 3\sqrt5}$}
+
+Our five-strips software found few options of the form $z_i\sqrt{10+3\sqrt5}$. We validate the cluster $FIHGC$ of figure \ref{fig:penta12-10b}. With the law of cosines we calculate $\alpha = \angle{FGI}$ inside scalene triangle $\triangle{FGI}$ and angle $\beta = \angle{HGC}$ inside isoscelles triangle $\triangle{HGC}$:
+\begin{align}
+\cos\alpha &= \frac{(\overline{FG})^2 + (\overline{GI})^2 - (\overline{FI})^2}
+ {2(\overline{FG})(\overline{GI})}
+ = \frac{7^2 + 4^2 - 5^2}{2(7)(4)} = \frac{5}7 \\
+\sin\alpha &= \sqrt{1 - \cos^2\alpha} 
+ = \sqrt{1 - \left(\frac{5}7\right)^2} = \frac{2\sqrt6}7 \\
+\cos\beta &= \frac{\overline{HG}/2}{\overline{GC}} = \frac{1}{11} \\
+\sin\beta &= \sqrt{1 - \cos^2\beta}
+ = \sqrt{1 - \left(\frac{1}{11}\right)^2} = \frac{2\sqrt{30}}{11}
+\end{align}
+
+Finally we calculate angle $\gamma = \alpha + \beta$ using the cosines sum identity and use it to calculate distance $\overline{FC}$ with the law of cosines:
+\begin{align}
+\cos\gamma &= \cos(\alpha + \beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+ &= \left(\frac{5}7\right)\left(\frac{1}{11}\right) 
+  - \left(\frac{2\sqrt6}7\right)\left(\frac{2\sqrt{30}}{11}\right)
+  = \frac{5 - 24\sqrt5}{77} \\
+%
+\overline{FC} &= \sqrt{(\overline{FG})^2 + (\overline{GC})^2 
+ - 2(\overline{FG})(\overline{GC})\cos\gamma} \nonumber\\
+  &= \sqrt{7^2 + 11^2 - 2(7)(11)\left(\frac{5 - 24\sqrt5}{77}\right)} 
+  = 4\sqrt{10 + 3\sqrt5} \quad \blacksquare
+\end{align}
+
+
+
+
+
+
+
 
 
 

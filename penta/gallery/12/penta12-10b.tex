@@ -4,12 +4,14 @@
 
 \def\p{5pt}
 \def\r{20}
+\pgfmathsetmacro\diag{4*sqrt(10 + 3*sqrt(5))}
 
 \newcommand{\cluster}[5]{ %dx,rot,n1,n2,n3
  \pgfmathsetmacro\rota{acos((7^2 + 5^2 - 4^2)/(2*7*5))}
  \pgfmathsetmacro\rotb{acos((7^2 + 4^2 - 5^2)/(2*7*4))}
  \pgfmathsetmacro\rotc{acos(1/11)}
- \begin{scope}[shift={(#1,0)},rotate=#2]
+ \pgfmathsetmacro\cosFGC{(7^2 + \diag^2 - 11^2)/ (2*7*\diag)}
+ \begin{scope}[shift={(#1,0)},rotate=#2 - acos(\cosFGC)]
   \meccanostrip[880088]{7}{1}{\p} 
   \begin{scope}[rotate=\rota]
    \meccanostrip[0088FF]{5}{1}{\p} 
@@ -31,19 +33,19 @@
 
 \begin{document}
  \pgfmathsetmacro\s{12}
- \pgfmathsetmacro\angle{0}%13}%acos((121+79*sqrt(5))/404))}
+ \pgfmathsetmacro\cosFBC{(5+3*sqrt(5)) / \diag)}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
    % AB
    \path(4,0) ++(-90:\r+\p) node{$F$};
-   \cluster{4}{\angle}{G}{H}{I}
+   \cluster{4}{acos(\cosFBC)}{G}{H}{I}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
     \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
      \path(4,0) ++(-90:\r+\p) node{$F'$};
-     \cluster{4}{\angle}{G'}{H'}{I'}
+     \cluster{4}{acos(\cosFBC)}{G'}{H'}{I'}
     \end{scope}
    \end{scope}
   \end{scope}
