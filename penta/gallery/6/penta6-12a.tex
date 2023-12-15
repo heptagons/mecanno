@@ -36,10 +36,10 @@
  \pgfmathsetmacro\fia{asin(3/sqrt(34+10*sqrt(5)))}% aprox 23.5 degrees
  \def\p{3pt}
  \begin{tikzpicture}
-  \begin{scope}[scale={1}]
-   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{12}
-   \cluster{3pt}{6}{0}{90+\fia}{1}{F}{G}{H}
-   \cluster{3pt}{0}{0}{90-\fia}{-1}{F'}{G'}{H'}
+  \begin{scope}[scale={0.7}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{15}
+   \cluster{3pt}{6}{0}{90+\fia}{1}{F'}{G'}{H'}
+   \cluster{3pt}{0}{0}{90-\fia}{-1}{F}{G}{H}
    % AA'
    \begin{scope}[shift={(\s,0)},rotate=72]
     %A'B'
@@ -47,14 +47,14 @@
      %B'C
      \begin{scope}[shift={(4,0)},rotate=72]
       \meccanostrip[880088]{2}{1}{\p}
-      \path (0,0) ++(180:12+\p) node{$D'$};
-      \path (2,0) ++(180+54:2+12+\p) node{$E$};
+      \path (0,0) ++(180:15+\p) node{$D'$};
+      \path (2,0) ++(180+54:2+15+\p) node{$E$};
      \end{scope}
      \begin{scope}[shift={(\s,0)},rotate=72]
       %CB
       \begin{scope}[shift={(2,0)},rotate=108]
        \meccanostrip[880088]{2}{1}{\p}
-       \path (0,0) ++(180:12+\p) node{$D$};
+       \path (0,0) ++(180:15+\p) node{$D$};
       \end{scope}
      \end{scope}
     \end{scope}

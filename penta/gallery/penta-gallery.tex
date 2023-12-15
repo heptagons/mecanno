@@ -454,21 +454,53 @@ Finally we calculate the distance $\overline{FD}$:
  = \sqrt{46 + 15\sqrt{5}} \quad \blacksquare
 \end{align}
 
+% ---
 
 \subsection{Size 6 with 12 internal strips $build(0:6:4:2)$}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.7]{6/penta6-12a}
+\includegraphics[scale=1]{6/penta6-12a}
 \caption{Pentagon of size 6 with 12 internal strips. $\overline{AA}:\overline{AB}:\overline{BD}:\overline{DE} = 0:6:4:2$ and $AE = \sqrt{34 + 10\sqrt5}$} 
 \label{fig:penta6-12a}
 \end{figure}
 
+Figure \ref{fig:penta6-12a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{AE}$ assuming vertex $A$ is at origin and calculating abscissa and ordinate of vertex $E$, knowing $\alpha = \angle{ABC} = 3\pi / 5$ and $\beta = \angle{CBB'} = \pi / 5$. Adding and substracting through vertices $ABDE$ we get:
+\begin{align}
+E_x &= -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DE}\cos\beta \nonumber\\
+ &= -(6)\left(\frac{\sqrt5 - 1}4\right) + (4+2)\left(\frac{\sqrt5+1}4\right)
+ = \frac{12}4 \\
+E_y &= \overline{AB}\sin\alpha + \overline{BD}\sin\beta - \overline{DE}\sin\beta \nonumber\\
+ &= (6)\left(\frac{\sqrt{10+2\sqrt5}}4\right) + (4-2)\left(\frac{\sqrt{10-2\sqrt5}}4\right)
+ = \frac{6\sqrt{10+2\sqrt5} + 2\sqrt{10-2\sqrt5}}4 \\
+%
+\overline{AE} &= \sqrt{(E_x)^2 + (E_y)^2} \nonumber\\
+ &= \frac{\sqrt{(12)^2 + (6\sqrt{10+2\sqrt5} +2\sqrt{10-2\sqrt5})^2}}4
+ = \sqrt{34 + 10\sqrt5}
+\end{align}
+
 \subsubsection{Rigid distance $\sqrt{34 + 10\sqrt5}$}
 
+Our five-strips sofware found the cluster $AFGHE$ shown in figure \ref{fig:penta6-12a}. We define two angles $\alpha \equiv \angle{AFG} = \pi/2$ within the Pythagorean triangle $\triangle{AFG}$ and $\beta \equiv \angle{GFH}$ within isoscelles triangle $\triangle{GFH}$ so we have:
+\begin{align}
+\cos\alpha &= 0\\
+\sin\alpha &= 1\\
+\cos\beta &= \frac{\overline{GF} / 2}{\overline{FH}} = \frac{4/2}{3} = \frac{2}3\\
+\sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{2}3\right)^2} = \frac{\sqrt5}3
+\end{align}
 
+Finally we calculate $\gamma \equiv \angle{AFE} = \alpha + \beta$ with the cosine sum identity and use it to calculate $\overline{AE}$ with the law of cosines:
+\begin{align}
+\cos\gamma &= \cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+ &= (0)\left(\frac{2}3\right) - (1)\left(\frac{\sqrt5}3\right) = -\frac{\sqrt5}3 \\
+%
+\overline{AE} &= \sqrt{(\overline{AF})^2 + (\overline{FE})^2 
+ - 2(\overline{AF})(\overline{FE})\cos\gamma} \nonumber\\
+ &= \sqrt{3^2 + 5^2 - 2(3)(5)\left(-\frac{\sqrt5}3\right)}
+ = \sqrt{34 + 10\sqrt5} \quad \blacksquare
+\end{align}
 
-% 7
+% === 7 ===
 
 \section{Pentagons of size 7}
 
@@ -476,12 +508,26 @@ Finally we calculate the distance $\overline{FD}$:
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.7]{7/penta7-6a}
+\includegraphics[scale=1]{7/penta7-6a}
 \caption{Pentagon of size 7 with 6 internal strips. $\overline{FC} : \overline{CD} : \overline{} = 6:7:6$. $\overline{FD} = 4 + 3\sqrt5$.}
 \label{fig:penta7-6a}
 \end{figure}
 
+Figure \ref{fig:penta7-6a} show pentagon $ABCDE$ of size $7$. For this construction we need vertices $G,I,F$ to be collinear. First we note the three consecutive sides: $\overline{GA}$, $\overline{AS}$ and $\overline{SR}$ of a (incomplete) sub-pentagon of size $6$. We know its \textbf{width} $\overline{GR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{GA}$ so here $\overline{GR} = 3 + 3\sqrt5$ and then:
+\begin{align}
+\overline{GF} &= \overline{GR} + \overline{RF} = 4 + 3\sqrt5
+\end{align}
+
+Strip $\overline{HJ}$ is parallel and of the same size of $\overline{FB}$ so makes rigid vertices $A$ and $B$.
+
 \subsubsection{Rigid distance $4 + 3\sqrt5$}
+
+In figure \ref{fig:penta7-6a} triangle $\triangle{GLM}$ is isoscelles so angle $\angle{GIL} = \pi / 2$ and triangle $\triangle{FIK}$ is Pythagorean so angle $\angle{FIK} = \pi / 2$. With the two right angles the vertices $G,I,F$ are collinear and we can easily find $\overline{GF}$:
+\begin{align}
+\overline{GF} &= \overline{GI} + \overline{IF} \nonumber\\
+ &= \sqrt{(\overline{GL})^2 - (\overline{LI})^2} + 4 
+ = \sqrt{7^2 - 2^2} + 4 = 4 + 3\sqrt{5} \quad \blacksquare
+\end{align}
 
 
 \subsection{Size 7 with 10 internal strips $build(6,7)$}
