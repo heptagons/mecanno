@@ -613,20 +613,26 @@ Now since $\overline{KG} = 2\sqrt2$ and $\overline{GJ} = \overline{JK} = 2$ we c
 
 \section{Pentagons of size 8}
 
+% 8-6
 \subsection{Size 8 with 6 internal strips $build(8:8)$}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{8/penta8-6a}
+\includegraphics[scale=1]{8/penta8-6a}
 \caption{Pentagon of size 8 with 6 internal strips. $\overline{CD} : \overline{DE} = 8:8$. $\overline{FD} = 4 + 4\sqrt5$.}
 \label{fig:penta8-6a}
 \end{figure}
 
-Figure \ref{fig:penta8-6a} show regular pentagon $ABCDE$ of size 8. We know the pentagon width like $\overline{CE}$ is $\frac{1+\sqrt5}2$ times the side of the pentagon so here we have $\overline{CE} = 4+4\sqrt5$.
+Figure \ref{fig:penta8-6a} show regular pentagon $ABCDE$ of size 8. We know the pentagon width like $\overline{CE}$ is $\frac{1+\sqrt5}2$ times the side of the pentagon so here we have:
+\begin{align}
+\overline{CE} &= 8\left(\frac{1 + \sqrt5}2\right) = 4 + 4\sqrt5
+\end{align}
+
+We expect vertices $E,H,C$ to be collinear so strip $\overline{FG}$ which is parallel and of the same size that strip $\overline{CB}$ makes rigid the vertices $A$ and $B$.
 
 \subsubsection{Rigid distance $4 + 4\sqrt5$}
 
-From the figure consider triangle $\triangle{NJM}$ and calculate with the law of cosines angle $\theta = \angle{NJM}$:
+From the figure \ref{fig:penta8-6a} consider triangle $\triangle{NJM}$ and calculate with the law of cosines angle $\theta \equiv \angle{NJM}$:
 \begin{align}
 \cos\theta = \frac{(\overline{JM})^2 + (\overline{JN})^2 
  - (\overline{MN})^2}{2(\overline{JM})(\overline{JN})}
@@ -639,22 +645,25 @@ Since $\dfrac{\overline{EH}}{\overline{EJ}} = \sin\theta$ we have:
  = 9\sqrt{1-\left(\frac{1}9\right)^2} = 4\sqrt5
 \end{align}
 
-Since $(\overline{EJ})^2 = (\overline{EH})^2 + (\overline{HJ})^2 \mapsto 9^2 = 16(5) + 1$ we conclude we have the right angle $\angle{EHJ} = \frac{\pi}2$. By inspection we have a second right angle $\angle{IHL} = \frac{\pi}2$ formed by the Pythagorean triangle $\triangle{HIL}$ and a third one $\angle{LHC} = \frac{\pi}2$ since is supplementary of $\angle{IHL}$. With the right angles we conclude vertices $E,H,C$ are colinear so the distance $\overline{EH} = \overline{EH} + \overline{HC} = 4\sqrt{5} + 4$ $\blacksquare$.
-The strip $\overline{FG}$ keeps rigid the vertices $A$ and $B$.
+Since $(\overline{EJ})^2 = (\overline{EH})^2 + (\overline{HJ})^2 \mapsto 9^2 = 16(5) + 1$ we found a first right angle $\angle{EHJ} = \pi / 2$. By inspection we have a second right angle $\angle{IHL} = \pi / 2$ formed by the Pythagorean triangle $\triangle{HIL}$ and a third one $\angle{LHC} = \pi / 2$ since is supplementary of $\angle{IHL}$. From the right angles we conclude vertices $E,H,C$ are colinear so we verify the distance $\overline{EH}$:
+\begin{align}
+\overline{EH} &= \overline{EH} + \overline{HC} = 4 + 4\sqrt{5} \quad \blacksquare
+\end{align}
 
+% 8-8
 \subsection{Size 8 with 8 internal strips $build(4:8:2:4)$ and $build(4:8:4:6)$}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{8/penta8-8a}
-\caption{Pentagons of size 8 with 8 internal strips. For the pentagon variation 1 at the left $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DG} = 4:8:2:4$ and $\overline{FG}=2\sqrt{11}$. For the pentagon variation 2 at the right $\overline{AF}:\overline{AB}:\overline{BD}:\overline{DG} = 4:8:4:6$ and $\overline{FG}=2\sqrt{11}$.}
+\caption{Pentagons of size 8 with 8 internal strips. For pentagon at $(a)$ $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DG} = 4:8:2:4$ and $\overline{FG}=2\sqrt{11}$. For pentagon at $(b)$ $\overline{AF}:\overline{AB}:\overline{BD}:\overline{DG} = 4:8:4:6$ and $\overline{FG}=2\sqrt{11}$.}
 \label{fig:penta8-8a}
 \end{figure}
 
-Figure \ref{fig:penta8-8a} show two rigid regular pentagons $A,A',B',C,B$ of size $9$. For the variation 1 at the left and assuming vertice $F$ is at the origin we calculate the distance $\overline{FG}$ using the abscissas and ordinates following the vertices $F,A,B,D,G$ for a regular pentagon angles $3\pi/5$, $\beta=\pi/5$:
+Figure \ref{fig:penta8-8a} show two rigid regular pentagons $A,A',B',C,B$ of size $9$. For the pentagon at $(a)$ we assume vertice $F$ is at the origin and calculate the distance $\overline{FG}$ using the abscissas and ordinates following the vertices $FABDG$ for a regular pentagon angles $\alpha = 3\pi/5$, $\beta=\pi/5$:
 \begin{align}
-FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
- &= -4 + (8)\frac{1-\sqrt5}4 + (2+4)\frac{\sqrt5+1}4 = -\frac{2+2\sqrt5}4\\
+FI_x &= -\overline{AF} - \overline{AB}|\cos\alpha| + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -4 -(8)\frac{\sqrt5-1}4 + (2+4)\frac{\sqrt5+1}4 = -\frac{2+2\sqrt5}4\\
 FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
  &= (8)\frac{\sqrt{10+2\sqrt5}}4 + (2-4)\frac{\sqrt{10-2\sqrt5}}4
  = \frac{8\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4\\
@@ -662,12 +671,13 @@ FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumbe
  &= \frac{\sqrt{(2+2\sqrt5)^2 + (8\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5})^2}}4
  = \frac{\sqrt{704}}4 = 2\sqrt{11}
 \end{align}
-For the variation 2 at the right vertices $G,G'$ switch positions of those of variation 1 and in both variations we have $\overline{FG} = \overline{FG'} = 2\sqrt{11}$.
+
+For the pentagon at $(b)$ the vertices $G,G'$ switch positions with those of pentagon at $(a)$. In both pentagons we have $\overline{FG} = \overline{FG'} = 2\sqrt{11}$.
 
 
 \subsubsection{Rigid distances $2\sqrt{11}$}
 
-Our software found several options. For the variation 1 at the left of the figure consider the cluster $FHIJG'$. Within the isoscelles triangle $\triangle{HIJ}$ we calculate the cosine of angle $\theta = \angle{JIH}$ and use it with the law of cosines to calculate $\overline{FG'}$:
+Our three-strips software found several options for the clusters of pentagons of figure \ref{fig:penta8-8a}. For the pentagon at $(a)$ consider the cluster $FHIJG'$. Within the isoscelles triangle $\triangle{HIJ}$ we calculate the cosine of angle $\theta \equiv \angle{JIH}$ and use it with the law of cosines to verify $\overline{FG'}$:
 \begin{align}
 \cos\theta &= \frac{\overline{IJ}/2}{\overline{IH}} = \frac{1}3 \nonumber\\
 \overline{FG'} &= \sqrt{(\overline{FI})^2 + (\overline{IG'})^2 
@@ -675,7 +685,7 @@ Our software found several options. For the variation 1 at the left of the figur
  &= \sqrt{7^2 + 3^2 - 2(7)(3)\frac{1}3} = 2\sqrt{11} \quad\blacksquare
 \end{align}
 
-For the variation 2 at the right of the figure consider the cluster $FHIG$. Within the isoscelles triangle $GIH$ we calculate the cosine of angle $\phi = \angle{HIG}$ and use it with the law of cosines to calculate $\overline{FG}$:
+For the pentagon at $(b)$ consider the cluster $FHIG$. Within the isoscelles triangle $GIH$ we calculate the cosine of angle $\phi = \angle{HIG}$ and use it with the law of cosines to verify $\overline{FG}$:
 \begin{align}
 \cos\phi &= \frac{\overline{HI}/2}{\overline{GI}} = \frac{3}4 \nonumber\\
 \overline{FH} &= \sqrt{(\overline{FI})^2 + (\overline{GI})^2
@@ -683,6 +693,7 @@ For the variation 2 at the right of the figure consider the cluster $FHIG$. With
  &= \sqrt{8^2 + 2^2 - 2(8)(2)\frac{3}4} = 2\sqrt{11} \quad\blacksquare
 \end{align}
 
+% 8-10a
 \subsection{Size 8 with 10 internal strips $build(4:8)$}
 
 \begin{figure}[H]
@@ -692,7 +703,7 @@ For the variation 2 at the right of the figure consider the cluster $FHIG$. With
 \label{fig:penta8-10a}
 \end{figure}
 
-Figure \ref{fig:penta8-10a} show pentagon $AA'B'CB$ of size $8$. We use the law of cosines to calculate distance $\overline{DB}$ knowing $\theta = \angle{DAB} = \frac{3\pi}5$ and $\cos\theta = \frac{1-\sqrt5}4$:
+Figure \ref{fig:penta8-10a} show pentagon $AA'B'CB$ of size $8$. We use the law of cosines to calculate distance $\overline{DB}$. We know $\theta \equiv \angle{DAB} = \dfrac{3\pi}5$ and $\cos\theta = \dfrac{1-\sqrt5}4$ so we have:
 \begin{align}
 \overline{DB} &= \sqrt{(\overline{AD})^2 + (\overline{AB})^2
  - 2(\overline{AD})(\overline{AB})\cos\theta} \nonumber\\
@@ -701,7 +712,7 @@ Figure \ref{fig:penta8-10a} show pentagon $AA'B'CB$ of size $8$. We use the law 
 
 \subsubsection{Rigid distance $4\sqrt{4 + \sqrt5}$}
 
-Our software found few solutions but the cluster $DEBGF$ shown in the figure fit (hardly) inside the pentagon. We calculate angles around vertice $E$ $\alpha = \angle{DEF}$ with the law of cosines and $\beta = \angle{BEG}$ whitin the isoscelles triangle $\triangle{BEG}$:
+Our software found few solutions and the cluster $DEBGF$ shown in the figure \ref{fig:penta8-10a} fit (hardly) inside the pentagon. We calculate two angles around vertice $E$. Angle $\alpha \equiv \angle{DEF}$ whitin the scalene triangle $\triangle{DEF}$ with the law of cosines and angle $\beta \equiv \angle{BEG}$ whitin the isoscelles triangle $\triangle{BEG}$:
 \begin{align}
 \cos\alpha &= \frac{(\overline{DE})^2 + (\overline{EF})^2 - (\overline{DF})^2}
  {2(\overline{DE})(\overline{EF})} 
@@ -714,47 +725,50 @@ Our software found few solutions but the cluster $DEBGF$ shown in the figure fit
  = \sqrt{1 - \left(\frac{1}3\right)^2} = \frac{2\sqrt2}3
 \end{align}
 
-Now we calculate the angle $\angle{DEB} = \gamma = \alpha + \beta$ using the cosines sum identity:
+Finally we calculate the angle $\angle{DEB} = \alpha + \beta$ using the cosines sum identity and use it
+to verify the distance $\overline{DB}$:
 \begin{align}
-\cos\gamma &= \cos(\alpha + \beta)
- = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos(\alpha + \beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  &= \left(-\frac{3}7\right)\left(\frac{1}3\right)
   - \left(\frac{2\sqrt{10}}7\right)\left(\frac{2\sqrt2}3\right)
-  = -\frac{3 + 8\sqrt{5}}{21}
-\end{align}
-
-Finally we calculate the distance $\overline{DB}$ using previous angle $\gamma$:
-\begin{align}
+  = -\frac{3 + 8\sqrt{5}}{21} \\
+%
 \overline{DB} &= \sqrt{(\overline{DE})^2 + (\overline{EB})^2
- - 2(\overline{DE})(\overline{EB})\cos\gamma} \nonumber\\
+ - 2(\overline{DE})(\overline{EB})\cos(\alpha + \beta)} \nonumber\\
  &= \sqrt{7^2 + 3^2 - 2(7)(3)\left(-\frac{3 + 8\sqrt{5}}{21}\right)} 
  = 4\sqrt{4 + \sqrt5} \quad\blacksquare
 \end{align}
 
+% 8-10b
 \subsection{Size 8 with 10 internal strips $build(7:8)$}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1.1]{8/penta8-10b}
-\caption{Pentagon of size 8 with 10 internal strips. $\overline{FC}:\overline{CD} = 7:8$ and $\overline{CD} = \sqrt{85 + 28\sqrt5}$}
+\caption{Pentagon of size 8 with 10 internal strips. $\overline{FC}:\overline{CD} = 7:8$ and $\overline{FD} = \sqrt{85 + 28\sqrt5}$}
 \label{fig:penta8-10b}
 \end{figure}
 
-Figure \ref{fig:penta8-10b} show pentagon $ABCDE$ of size $8$. We use the law of cosines to calculate distance $\overline{FD}$ knowing $\theta = \angle{FCD} = \frac{3\pi}5$ and $\cos\theta = \frac{1-\sqrt5}4$:
+Figure \ref{fig:penta8-10b} show pentagon $ABCDE$ of size $8$. We use the law of cosines to calculate distance $\overline{FD}$ knowing $\theta = \angle{FCD} = \dfrac{3\pi}5$ and $\cos\theta = \dfrac{1-\sqrt5}4$ and calculate angle $\delta \equiv \angle{CFD}$:
 \begin{align}
-\overline{FC} &= \sqrt{(\overline{FC})^2 + (\overline{CD})^2
+\overline{FD} &= \sqrt{(\overline{FC})^2 + (\overline{CD})^2
  - 2(\overline{FC})(\overline{CD})\cos\theta} \nonumber\\
- &= \sqrt{7^2 + 8^2 - 2(7)(8)\frac{1-\sqrt5}4} = \sqrt{85 + 28\sqrt5}
+ &= \sqrt{7^2 + 8^2 - 2(7)(8)\frac{1-\sqrt5}4} = \sqrt{85 + 28\sqrt5} \\
+\cos\delta &= \frac{(\overline{FD})^2 + (\overline{FC})^2 - (\overline{CD})^2}
+ {2(\overline{FD})(\overline{FC})} \nonumber\\
+ &= \frac{85 + 28\sqrt5 + 7^2 - 8^2}{2\sqrt{85 + 28\sqrt5}(7)}
+ = \frac{5 + 2\sqrt5}{\sqrt{85 + 28\sqrt5}}
 \end{align}
 
 \subsubsection{Rigid distance $\sqrt{85 + 28\sqrt5}$}
 
-Our software found several solutions, consider the cluster $FGHIJD$ in the figure. Assume vertice $I$ is at the origin and vertice $H$ is at coordinate $(4,0)$. Since triangle $\triangle{HIG}$ is isoscelles and $\overline{HF}$ is the double of $\overline{IG}$ then $\overline{IF} = \sqrt{(\overline{HF})^2 - (\overline{IH})^2} = \sqrt{6^2 - 4^2} = 2\sqrt{5}$ and the coordinates of vertice $F(x,y)$ are $(0,\overline{IF}) = (0,-2\sqrt5)$. Since the Pythagorean triangle $\triangle{HIJ}$ we have a right angle $\angle{IHD} = \frac{\pi}2$ and then the coordinates of vertice $D(x,y)$ are $(\overline{IH},\overline{HD}) = (4,7)$. Finally we calculat the distance $\overline{FD}$:
+Our five-strips software found several solutions, consider the cluster $FGHIJD$ in the figure \ref{fig:penta8-10b}. Assume vertice $I$ is at the origin and vertice $H$ is at coordinate $(4,0)$. Since triangle $\triangle{HIG}$ is isoscelles and $\overline{HF}$ is the double of $\overline{IG}$ then $\overline{IF} = \sqrt{(\overline{HF})^2 - (\overline{IH})^2} = \sqrt{6^2 - 4^2} = 2\sqrt{5}$ and the coordinates of vertice $F$ are $F(x,y) = (0,-\overline{IF}) = (0,-2\sqrt5)$. Since the triangle $\triangle{HIJ}$ is Pythagorean we have a right angle $\angle{IHD} = \pi / 2$ and then the coordinates of vertice $D$ are $D(x,y) = (\overline{IH},\overline{HD}) = (4,7)$. Finally we verify the distance $\overline{FD}$:
 \begin{align}
 \overline{FD} &= \sqrt{(F_x - D_x)^2 + (F_y - D_y)^2 } \nonumber\\
  &= \sqrt{(0 - 4)^2 + (-2\sqrt5 - 7)^2} = \sqrt{85 + 28\sqrt5} \quad \blacksquare
 \end{align}
 
+% 8-10c
 \subsection{Size 8 with 10 internal strips $build(8:8)$ and $build(4:8:4)$}
 
 \begin{figure}[H]
@@ -768,14 +782,14 @@ Figure \ref{fig:penta8-10c} show pentagon $ABCDE$ of size $8$. We have a width $
 \begin{align}
 \overline{AD} = 8\left(\dfrac{1+\sqrt5}2\right) = 4 + 4\sqrt5
 \end{align}
-We have a smaller pentagon of side $4$ with a semi-perimeter $\overline{RS},\overline{SC},\overline{CQ}$ with width $\overline{RS} = 4\left(\frac{1+\sqrt5}2\right) = 2 + 2\sqrt5$ so we have:
+We have a partial sub-pentagon of side $4$ with a semi-perimeter $\overline{RS},\overline{SC},\overline{CQ}$ with width $\overline{RS} = 4\left(\frac{1+\sqrt5}2\right) = 2 + 2\sqrt5$ so we have:
 \begin{align}
 \overline{LQ} = \overline{LR} + \overline{RQ} = 4 + 2 + 2\sqrt5 = 6 + 2\sqrt5
 \end{align}
 
 \subsubsection{Rigid distances $4 + 4\sqrt5$ and $6 + 2\sqrt5$}
 
-From the last figure we have a (partial) isoscelles triangle $\triangle{FHD}$ where $\alpha = \angle{DFG} = \dfrac{\overline{FG}}{\overline{FD}} = \dfrac{1}9$. The (missing) strip $\overline{HD}$ is substituted by strip $\overline{IK}$ since triangle $\triangle{FIK}$ internal angle $\angle{IFK}$ matches $\alpha$ after using the law of cosines:
+From the figure \ref{fig:penta8-10c} we have a (partial) isoscelles triangle $\triangle{FHD}$ where $\alpha = \angle{DFG} = \dfrac{\overline{FG}}{\overline{FD}} = \dfrac{1}9$. The (missing) strip $\overline{HD}$ is substituted by strip $\overline{IK}$ since triangle $\triangle{FIK}$ internal angle $\angle{IFK}$ matches $\alpha$ after using the law of cosines:
 \begin{align}
 \cos(\angle{IFK}) &= \frac{(\overline{FK})^2 + (\overline{FI})^2 - (\overline{IK})^2}
  {2(\overline{FK})(\overline{FI})} 
@@ -783,14 +797,14 @@ From the last figure we have a (partial) isoscelles triangle $\triangle{FHD}$ wh
 = \frac{1}9 \quad \blacksquare
 \end{align}
 
-Angle $\angle{HGD}=\frac{\pi}2$ since $\triangle{FHD}$ is isoscelles and also $\angle{AGJ} = \frac{\pi}2$ since triangle $\triangle{AGJ}$ is Pythagorean so vertices $A,G,D$ are collinear and then we can get $\overline{AD}$:
+Angle $\angle{HGD}= \pi / 2$ since $\triangle{FHD}$ is isoscelles and also $\angle{AGJ} = \pi / 2$ since triangle $\triangle{AGJ}$ is Pythagorean so vertices $A,G,D$ are collinear and then we verify distance $\overline{AD}$:
 \begin{align}
 \overline{AD} &= \overline{AG} + \overline{GD} \nonumber\\
  &= 4 + \sqrt{(\overline{FD})^2 - (\overline{FG})^2}
  = 4 + \sqrt{9^2 - 1^2} = 4 + 4\sqrt5 \quad \blacksquare
 \end{align}
 
-From the last figure we see triangle $\triangle{NOP}$ is isoscelles and that strip $\overline{OQ}$ is the double of strip $\overline{PN}$ so angle $\angle{ONQ} = \frac{\pi}2$ and we can calculate $\overline{NQ} = \sqrt{(\overline{OQ})^2 - (\overline{ON})^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Also angle $\angle{MNO} = \frac{\pi}2$ since triangle $\triangle{MNO}$ is Pythagorean so vertices $M,N,Q$ are collinear and we can get $\overline{LQ}$:
+From the figure \ref{fig:penta8-10c} we see triangle $\triangle{NOP}$ is isoscelles and that strip $\overline{OQ}$ is the double of strip $\overline{PN}$ so angle $\angle{ONQ} = \pi / 2$ and we can calculate $\overline{NQ} = \sqrt{(\overline{OQ})^2 - (\overline{ON})^2} = \sqrt{6^2 - 4^2} = 2\sqrt5$. Also angle $\angle{MNO} = \pi / 2$ since triangle $\triangle{MNO}$ is Pythagorean so vertices $M,N,Q$ are collinear and we verify distance $\overline{LQ}$:
 \begin{align}
 \overline{LQ} &= \overline{LN} + \overline{NQ} \nonumber\\
  &= 6 + 2\sqrt5 \quad \blacksquare

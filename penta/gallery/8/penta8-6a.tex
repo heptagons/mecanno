@@ -5,9 +5,9 @@
 \begin{document}
  \def\s{8}
  \def\p{2pt}
- \def\r{12}
+ \def\r{15}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.9}]
+  \begin{scope}[scale={0.7}]
    % AB
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
    \begin{scope}[shift={(\s,0)},rotate=72]
@@ -15,7 +15,7 @@
     \begin{scope}[shift={(8,0)},rotate=108]
      \meccanostrip[0088FF]{7}{1}{\p}
       \path(2,0) ++(-90:\r+\p) node{$F$};
-      \path(4,0) ++(-135:4+\r+\p) node{$H$};
+      \path(4,0) ++(-135:2+\r+\p) node{$H$};
       \path(7,0) ++(0:\r+\p) node{$I$};
      \begin{scope}[shift={(7,0)},rotate=180-acos(3/5)]
       \meccanostrip[880088]{5}{1}{\p}
