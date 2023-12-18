@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano pentagons gallery}
 \author{https://github.com/heptagons/meccano/penta/gallery}
-\date{2023/12/14}
+\date{2023/12/18}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -17,6 +17,7 @@ We build rigid meccano\meccanoref regular pentagons from sides $3$ to $12$. We r
 
 \section{Pentagons of size 3}
 
+% 3-10
 \subsection{Size 3 with 10 internal strips $build(3:3:1)$}
 
 \begin{figure}[H]
@@ -35,34 +36,28 @@ Figure \ref{fig:penta3-10a} show the regular pentagon $A,B,C,D,E$ of size $3$. W
 
 \subsubsection{Rigid distance $\dfrac{\sqrt{46+18\sqrt5}}2$}
 
-Our five-strips software found several clusters and we use two different which fit inside the pentagon. We identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\cos\alpha$ and $\sin\alpha$:
+Our five-strips software found several clusters and we use two different which fit inside the pentagon. We identify two angles $\alpha = \angle{HGI} = \angle{LMN}$ of equilateral triangles and $\beta = \angle{FGI} = \angle{NMO}$ of isoscelles'. Adding the angles we get angles $\angle{DGF} = \angle{DMK} = (\alpha + \beta)$. From equilateral triangle $\triangle{HGI}$ we calculate $\alpha$ and from isoscelles triangle $\triangle{FGI}$ we calculate $\beta$:
 \begin{align}
 \cos\alpha &= \frac{\overline{GI} / 2}{\overline{GH}} = \frac{1 / 2}1 = \frac{1}2\\
-\sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt3}2
-\end{align}
-
-From isoscelles triangle $\triangle{FGI}$ we calculate $\cos\beta$ and $\sin\beta$:
-\begin{align}
+\sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt3}2\\
+%
 \cos\beta &= \frac{\overline{GI} / 2}{\overline{GF}} = \frac{1 / 2}2 = \frac{1}4\\
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{1}4\right)^2} = \frac{\sqrt{15}}4
 \end{align}
 
-Now we calculate $\cos(\alpha+\beta)$ with the sum identity:
+Finally we calculate $\cos(\alpha+\beta)$ with the sum identity and using the law of cosines we verify distance $\overline{DF}$:
 \begin{align}
 \cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  &= \left(\frac{1}2\right)\left(\frac{1}4\right)
   -\left(\frac{\sqrt3}2\right)\left(\frac{\sqrt{15}}4\right)
- = \frac{1 - 3\sqrt5}8
-\end{align}
-
-Finally using the law of cosines we verify distance $\overline{DF}$:
-\begin{align}
+ = \frac{1 - 3\sqrt5}8 \\
 \overline{DF} &= \sqrt{(\overline{DG})^2 + (\overline{FG}^2)
  - 2(\overline{DG})(\overline{FG})\cos(\alpha+\beta)} \nonumber\\
  &= \sqrt{3^2 + 2^2 - 2(3)(2)\left(\frac{1 - 3\sqrt5}8\right)}
  = \frac{\sqrt{46+18\sqrt5}}2 \quad\blacksquare
 \end{align}
 
+% --- 3-14
 \subsection{Size 3 with 14 internal strips $build(3:1)$}
 
 \begin{figure}[H]
@@ -72,7 +67,7 @@ Finally using the law of cosines we verify distance $\overline{DF}$:
 \label{fig:penta3-14a}
 \end{figure}
 
-Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size $3$. We know the internal angle of pentagon is $\theta=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{AD}$ and the angle $\delta = \angle{BAD}$:
+Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size $3$. We know the internal angle of regular pentagon is $\theta \equiv \angle{ABD} = \dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{AD}$ and the angle $\delta \equiv \angle{BAD}$:
 \begin{align}
 \overline{AD} &= \sqrt{(\overline{AB})^2 + (\overline{BD})^2
  - 2(\overline{AB})(\overline{BD})\cos\theta} \nonumber\\
@@ -85,14 +80,16 @@ Figure \ref{fig:penta3-14a} show the regular pentagon $A,B',A',C,B$ of size $3$.
 
 \subsubsection{Rigid distance  $\dfrac{\sqrt{34+6\sqrt5}}2$}
 
-Our five-strips software found several options to make the distance but we add manually a sixth strip in order to make a cluster narrow enough to fit two times inside the pentagon. The result is show as cluster with vertices $DEFGH$ of figure \ref{fig:penta3-14a}. We prove the cluster's distance $\overline{AD}$ matches the distance alredy calculated.
+Our five-strips software found several options to make the distance but we add manually a sixth strip in order to make a cluster narrow enough to fit two times inside the pentagon. The result is shown as cluster with vertices $DEFGH$ of figure \ref{fig:penta3-14a}. We prove the cluster's distance $\overline{AD}$ matches the distance alredy calculated.
 
-Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangle{EGH}$ we know angle $\angle{DGE} = 2\pi / 3$ and also $\cos\left(\dfrac{2\pi}3\right) = -\dfrac{1}2$ so we can calculate $\overline{DE}$ and the angle $\alpha \equiv \angle{GDE}$:
+We have a pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangle{EGH}$ so angle $\gamma \equiv \angle{DGE} = 2\pi / 3$ also $\cos\gamma = - 1/2$ so we can calculate $\overline{DE}$:
 \begin{align}
 \overline{DE} &= \sqrt{(\overline{DG})^2 + (\overline{GE})^2 
- - 2(\overline{DG})(\overline{GE})\cos(\angle{DGE})} \nonumber\\
- &= \sqrt{1^2 + 1^2 - 2(1)(1)\left(-\frac{1}2\right)} = \sqrt3\\
-\alpha &\equiv \angle{GED} \nonumber\\
+ - 2(\overline{DG})(\overline{GE})\cos\gamma} \nonumber\\
+ &= \sqrt{1^2 + 1^2 - 2(1)(1)\left(-\frac{1}2\right)} = \sqrt3
+\end{align}
+We define angle $\alpha = \angle{GED}$ and calculate it using $\overline{DE}$:
+\begin{align}
 \cos\alpha &= \frac{(\overline{GE})^2 + (\overline{DE})^2 - (\overline{DG})^2}
  {2(\overline{GE})(\overline{DE})}
  = \frac{3 + 1^2 - 1^2}{2(\sqrt3)(1)} = \frac{\sqrt3}2\\
@@ -100,21 +97,21 @@ Noting the pair of adjacent equilateral triangles $\triangle{DGH}$ and $\triangl
  = \frac{1}2
 \end{align}
 
-From the isoscelles triangle $\triangle{AEF}$ we can calculate angle $\angle{AEF}$ noting $\cos(\angle{AEF}) = \dfrac{\overline{EF}/2}{\overline{AE}} = \dfrac{1/2}{2} = \dfrac{1}4$ so we define angle $\beta \equiv \angle{AEG}$ the supplementary of $\angle{AEF}$ and we get:
+From the isoscelles triangle $\triangle{AEF}$ we define angle $\epsilon \equiv \angle{AEF}$ noting $\cos\epsilon = \dfrac{\overline{EF}/2}{\overline{AE}} = \dfrac{1/2}{2} = \dfrac{1}4$ and we define angle $\beta \equiv \angle{AEG}$ the supplementary of $\epsilon$ and we get:
 \begin{align}
-\beta &= \pi - \angle{AEF} \nonumber\\
-\cos\beta &= -\cos(\angle{AEF}) = -\frac{1}4 \\
+\beta &= \pi - \epsilon \nonumber\\
+\cos\beta &= -\cos\epsilon = -\frac{1}4 \\
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{-1}4\right)^2} = \frac{\sqrt{15}}4
 \end{align}
 
-Finally we calculate the angle $\gamma = \angle{AED} = \alpha + \beta$ with the sum identity  plugin the last sines and cosines and use to calculate $\overline{AD}$ with the law of cosines:
+Finally we calculate the angle $\alpha + \beta$ with the sum identity plugin the last sines and cosines and use it to verify $\overline{AD}$ with the law of cosines:
 \begin{align}
-\cos\gamma &= \cos(\alpha + \beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos(\alpha + \beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  & = \left(\frac{\sqrt3}2\right)\left(-\frac{1}4\right) 
   - \left(\frac{1}2\right)\left(\frac{\sqrt{15}}4\right) 
   = -\frac{\sqrt3 + \sqrt{15}}8 \\
 \overline{AD} &= \sqrt{(\overline{DE})^2 + (\overline{EA})^2 
- - 2(\overline{DE})(\overline{EA})\cos\gamma} \nonumber\\
+ - 2(\overline{DE})(\overline{EA})\cos(\alpha + \beta)} \nonumber\\
  &= \sqrt{3 + 2^2 - 2(\sqrt3)(2)\left(-\frac{\sqrt3 + \sqrt{15}}8\right)} 
  = \frac{\sqrt{34 + 6\sqrt5}}2 \quad\blacksquare
 \end{align}
@@ -123,6 +120,7 @@ Finally we calculate the angle $\gamma = \angle{AED} = \alpha + \beta$ with the 
 
 \section{Pentagons of size 4}
 
+% 4-8
 \subsection{Size 4 with 8 internal strips $build(2:4:1:2)$}
 
 \begin{figure}[H]
@@ -148,7 +146,7 @@ I_y &= \overline{AB}\sin\alpha + \overline{BE}\sin\beta - \overline{BI}\sin\beta
 
 \subsubsection{Rigid distance $\sqrt{11}$}
 
-Our three-strips software found several clusters for distance $\sqrt{11}$. We prove the selected cluster $DHGI$ inside the pentagon of figure \ref{fig:penta4-8a} matches the expected distance. First we calculate the angle $\alpha = \angle{DHG}$ with the law of cosines and use the value to finally calculate the distance $\overline{DI}$ with again the law of cosines:
+Our three-strips software found several clusters for distance $\sqrt{11}$. We prove the selected cluster $DHGI$ inside the pentagon of figure \ref{fig:penta4-8a} matches the expected distance. First we calculate the angle $\alpha \equiv \angle{DHG}$ with the law of cosines and use the value to finally verify the distance $\overline{DI}$ with again the law of cosines:
 \begin{align}
 \cos\alpha &= \frac{(\overline{HD})^2 + (\overline{HG})^2 - (\overline{DG})^2}
  {2(\overline{HD})(\overline{HG})} \nonumber\\
@@ -158,6 +156,7 @@ Our three-strips software found several clusters for distance $\sqrt{11}$. We pr
  &= \sqrt{3^2 + 2^2 - 2(3)(2)\left(\frac{1}6\right)} = \sqrt{11} \quad\blacksquare
 \end{align}
 
+% 4-10
 \subsection{Size 4 with 10 internal strips $build(3:4)$}
 
 \begin{figure}[H]
@@ -167,7 +166,7 @@ Our three-strips software found several clusters for distance $\sqrt{11}$. We pr
 \label{fig:penta4-10a}
 \end{figure}
 
-Figure \ref{fig:penta4-10a} show the regular pentagon $A,A',B',C,B$ of size $4$. We know the internal angle of pentagon is $\theta=\angle{CBD}=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{CD}$ and the angle $\delta = \angle{DBC}$:
+Figure \ref{fig:penta4-10a} show the regular pentagon $A,A',B',C,B$ of size $4$. We know the internal angle of pentagon is $\theta=\angle{CBD}=\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{CD}$ and the angle $\delta = \angle{BDC}$:
 \begin{align}
 \overline{CD} &= \sqrt{(\overline{BC})^2 + (\overline{BD})^2
  - 2(\overline{BC})(\overline{BD})\cos\theta} \nonumber\\
@@ -194,7 +193,7 @@ D_x &= 0 \\
 D_y &= -\sqrt{(\overline{HD})^2 - (\overline{GH})^2} = -\sqrt{2^2 - 1^2} = -\sqrt3
 \end{align}
 
-Finally we calculate the distance $\overline{CD}$
+Finally we verify the distance $\overline{CD}$
 \begin{align}
 \overline{CD} &= \sqrt{(C_x - D_x)^2 + (C_y - D_y)^2} \nonumber\\
  &= \sqrt{(-1 - 0)^2 + (\sqrt{15} + \sqrt{3})^2} = \sqrt{19 + 6\sqrt5} \quad\blacksquare
@@ -204,6 +203,7 @@ Finally we calculate the distance $\overline{CD}$
 
 \section{Pentagons of size 5}
 
+% 5-10
 \subsection{Size 5 with 10 internal strips $build(3,5)$}
 
 \begin{figure}[H]
@@ -229,7 +229,7 @@ Figure \ref{fig:penta5-10a} show the regular pentagon $ABCDE$ of size $5$. We kn
 
 \subsubsection{Rigid distance $\dfrac{\sqrt{106 + 30\sqrt5}}2$}
 
-Our five-strips software found the cluster $FGHID$ of figure \ref{fig:penta5-10a}. We calculate two angles, angle $\alpha = \angle{FHG}$ within isoscelles triangle $\triangle{FHG}$ and angle $\beta = \angle{GHI}$ within equilateral triangle $\triangle{GHI}$:
+Our five-strips software found the cluster $FGHID$ of figure \ref{fig:penta5-10a}. We calculate two angles, angle $\alpha \equiv \angle{FHG}$ within isoscelles triangle $\triangle{FHG}$ and angle $\beta \equiv \angle{GHI}$ within equilateral triangle $\triangle{GHI}$:
 \begin{align}
 \cos\alpha &= \frac{\overline{HG}/2}{\overline{FH}} = \frac{1/2}2 = \frac{1}4 \\
 \sin\alpha &= \sqrt{1 - \cos^2\alpha} = \sqrt{1 - \left(\frac{1}4\right)^2} = \frac{\sqrt{15}}4\\
@@ -238,20 +238,20 @@ Our five-strips software found the cluster $FGHID$ of figure \ref{fig:penta5-10a
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{1}2\right)^2} = \frac{\sqrt{3}}2
 \end{align}
 
-Finally we calculte angle $\gamma = \angle{FHD} = \alpha + \beta$ with the cosines sum identity and use it to calculate distance $\overline{FD}$ using the law of cosines:
+Finally we calculte angle $\angle{FHD} = \alpha + \beta$ with the cosines sum identity and use it to verify the distance $\overline{FD}$ using the law of cosines:
 \begin{align}
-\cos\gamma &= \cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  &= \left(\frac{1}4\right)\left(\frac{1}2\right) 
   - \left(\frac{\sqrt{15}}4\right)\left(\frac{\sqrt{3}}2\right)
   = \frac{1 - 3\sqrt{5}}8 \\
 \overline{FD} &= \sqrt{(\overline{FH})^2 + (\overline{HD})^2 
- - 2(\overline{FH})(\overline{HD})\cos\gamma} \nonumber\\
+ - 2(\overline{FH})(\overline{HD})\cos(\alpha + \beta)} \nonumber\\
  &= \sqrt{2^2 + 5^2 - 2(2)(5)\left(\frac{1 - 3\sqrt{5}}8\right)}
  = \frac{\sqrt{106 + 30\sqrt5}}2 \quad \blacksquare
 \end{align}
 
 
-
+% 5-12
 \subsection{Size 5 with 12 internal strips $build(4:5:4)$}
 
 \begin{figure}[H]
@@ -261,21 +261,21 @@ Finally we calculte angle $\gamma = \angle{FHD} = \alpha + \beta$ with the cosin
 \label{fig:penta5-12a}
 \end{figure}
 
-Figure \ref{fig:penta5-12a} show pentagon $ABCDE$ of size $5$. For this construction we need vertices $K,G,F$ to be collinear. First we note the three consecutive sides: $\overline{KA}$, $\overline{AS}$ and $\overline{SR}$ of a (incomplete) sub-pentagon and we know its \textbf{width} $\overline{KR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{KA}$ so here $\overline{KR} = 2 + 2\sqrt5$ and we have:
+Figure \ref{fig:penta5-12a} show pentagon $ABCDE$ of size $5$. For this construction we need vertices $K,G,F$ to be collinear. First we note the three consecutive sides: $\overline{KA}$, $\overline{AS}$ and $\overline{SR}$ of an (incomplete) sub-pentagon and we know its \textbf{width} $\overline{KR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{KA}$ so here $\overline{KR} = 2 + 2\sqrt5$ and we have:
 \begin{align}
 \overline{KF} &= \overline{KR} + \overline{RF} = 3 + 2\sqrt5
 \end{align}
 
-Strip $\overline{GH}$ is parallel and of the same size of $\overline{FB}$ so makes rigid vertices $A$ and $B$.
+Strip $\overline{GH}$ is parallel and of the same size of $\overline{FB}$ so makes rigid vertices $A$ and $B$ once colliner vertices $K,G,F$ are rigid which we will show next.
 
 \subsubsection{Rigid distance $3+2\sqrt5$}
 
-In figure \ref{fig:penta5-12a} we have an isoscelles triangle $\triangle{GIJ}$ and we calculate $\overline{PG} = \sqrt{(\overline{GI})^2 - (\overline{PI})^2} = \sqrt{3^2 - 2^2} = \sqrt5$. Similarly the other isoscelles triange $\triangle{IJK}$ gives $\overline{PK} = \sqrt{5}$ so we have (iff $K,P,G,F$ collinear):
+In figure \ref{fig:penta5-12a} we have an isoscelles triangle $\triangle{GIJ}$ and we calculate $\overline{PG} = \sqrt{(\overline{GI})^2 - (\overline{PI})^2} = \sqrt{3^2 - 2^2} = \sqrt5$. Similarly the other isoscelles triange $\triangle{IJK}$ gives $\overline{PK} = \sqrt{5}$ so we have (iff $K,P,G,F$ were collinear):
 \begin{align}
 \overline{KF} = \overline{KP} + \overline{PG} + \overline{GF} = 3 + 2\sqrt5 \quad \blacksquare
 \end{align}
 
-Vertices $K,P,G$ already are collinear. For $P,G,F$ collinearity we need two angles $\alpha = \angle{PGJ}$ and $\beta = \overline{FGJ}$ with the condition $\alpha + \beta = \pi$. Within isoscelles triangle $\triangle{GIJ}$ we calculate $\alpha$ and then $\beta$ (its supplement) and use $\beta$ to calculate the distance $\overline{FJ}$ with the law of cosines, to be made rigid with extra five-strips cluster $FLMNOJ$ in next section:
+Vertices $K,P,G$ already are collinear. For $P,G,F$ collinearity we need two angles $\alpha \equiv \angle{PGJ}$ and $\beta \equiv \overline{FGJ}$ with the condition $\alpha + \beta = \pi$. Within isoscelles triangle $\triangle{GIJ}$ we calculate $\alpha$ and then $\beta$ (its supplement) and use $\beta$ to calculate the distance $\overline{FJ}$ with the law of cosines:
 \begin{align}
 \cos\alpha &= \frac{\overline{PG}}{\overline{GJ}} = \frac{\sqrt5}3 \\
 \cos\beta &= -\cos\alpha = -\frac{\sqrt5}3 \\
@@ -285,12 +285,13 @@ Vertices $K,P,G$ already are collinear. For $P,G,F$ collinearity we need two ang
  = \sqrt{18 + 6\sqrt5}
 \end{align}
 
+With extra five-strips cluster $FLMNOJ$ distance $FJ$ is made rigid as we show in next section.
 
 \subsubsection{Rigid distance $\sqrt{18+6\sqrt5} = \sqrt3 + \sqrt{15}$}
 
-Our five-strips software generated among other solutions the cluster $FLMNOJ$ of figure \ref{fig:penta5-12a}. This cluster makes rigid the other cluster $FGJIK$. Here we validate the five-strips cluster. We have the equilateral triangle $\triangle{MNO}$ and $\overline{MJ}$ is the double of $\overline{MO}$ so angle $\angle{MNJ} = \pi/2$. Similarly we have the isoscelles triangle $\triangle{MNL}$ and $\overline{MF}$ is the double of $\overline{ML}$ so angle $\angle{MNF} = \pi/2$. With the two right angles vertices $J,N,F$ are collinear so we can calculate easily $\overline{JF}$:
+Our five-strips software generated among other solutions the cluster $FLMNOJ$ of figure \ref{fig:penta5-12a}. This cluster makes rigid the other cluster $FGJIK$. Here we validate the five-strips cluster. We have the equilateral triangle $\triangle{MNO}$ and $\overline{MJ}$ is the double of $\overline{MO}$ so angle $\angle{MNJ} = \pi/2$. Similarly we have the isoscelles triangle $\triangle{MNL}$ and $\overline{MF}$ is the double of $\overline{ML}$ so angle $\angle{MNF} = \pi/2$. With the two right angles vertices $J,N,F$ are collinear so we can calculate easily $\overline{FJ}$:
 \begin{align}
-\overline{JF} &= \overline{JN} + \overline{NF} \nonumber\\
+\overline{FJ} &= \overline{JN} + \overline{NF} \nonumber\\
  &= \sqrt{(\overline{JM})^2 - (\overline{MN})^2} 
   + \sqrt{(\overline{FM})^2 - (\overline{MN})^2} \nonumber\\
  &= \sqrt{2^2 - 1^2} + \sqrt{4^2 - 1^2} = \sqrt{3} + \sqrt{15} 
@@ -301,6 +302,7 @@ Our five-strips software generated among other solutions the cluster $FLMNOJ$ of
 
 \section{Pentagons of size 6}
 
+% 6-6
 \subsection{Size 6 with 6 internal strips $build(4:6:4)$}
 
 \begin{figure}[H]
@@ -326,7 +328,7 @@ In figure \ref{fig:penta6-6a} we have two right angles. First angle $\angle{LHJ}
  = \sqrt{6^2 - 4^2} + 4 = 4 + 2\sqrt5 \quad \blacksquare
 \end{align}
 
-
+% 6-8a
 \subsection{Size 6 with 8 internal strips $build(6:6:3:4)$}
 
 \begin{figure}[H]
@@ -336,7 +338,7 @@ In figure \ref{fig:penta6-6a} we have two right angles. First angle $\angle{LHJ}
 \label{fig:penta6-8a}
 \end{figure}
 
-Figure \ref{fig:penta6-8a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{A'H'}$ assuming vertex $A'$ is at origin and calculating abscissa and ordinate of vertex $H'$ and knowing $\alpha = \angle{ADB} = 3\pi / 5$ and $\beta = \angle{B'BE} = \pi / 5$. Adding and substracting through vertices $A',A,B,D,H'$ we get:
+Figure \ref{fig:penta6-8a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{A'H'}$ assuming vertex $A'$ is at origin and calculating abscissa and ordinate of vertex $H'$. We define $\alpha \equiv \angle{ADB} = 3\pi / 5$ and $\beta \equiv \angle{B'BE} = \pi / 5$ and add and substract through vertices $A',A,B,D,H'$ to get:
 \begin{align}
 H'_x &= -\overline{A'A} -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DH}\cos\beta \nonumber\\
  &= -6 -(6)\left(\frac{\sqrt5 - 1}4\right) + (3+4)\left(\frac{\sqrt5+1}4\right)
@@ -352,15 +354,14 @@ H'_y &= \overline{AB}\sin\alpha + \overline{BD}\sin\beta - \overline{DH'}\sin\be
 
 \subsubsection{Rigid distance $\sqrt{31}$}
 
-Our software found the cluster $AFGH$ in the figure which fits inside this pentagon. The angle $\theta = \angle{FGH} = \pi / 3$ since triangle $\triangle{FGH}$ is equilateral so $\cos\theta = 1 / 2$ and we can calculate $\overline{AF}$ with the law of cosines:
+Our three-strips software found the cluster $AFGH$ in the figure which fits inside this pentagon. We define angle $\theta \equiv \angle{FGH} = \pi / 3$ since triangle $\triangle{FGH}$ is equilateral so $\cos\theta = 1 / 2$ and we can verify $\overline{AH}$ with the law of cosines:
 \begin{align}
-\overline{AF} &= \sqrt{(\overline{GH})^2 + (\overline{AG})^2 
+\overline{AH} &= \sqrt{(\overline{GH})^2 + (\overline{AG})^2 
  - 2(\overline{GH})(\overline{AG})\cos\theta} \nonumber\\
  &= \sqrt{1^2 + 6^2 - 2(1)(6)\left(\frac{1}2\right)} = \sqrt{31} \quad \blacksquare
 \end{align}
 
-% ---
-
+% 6-8b
 \subsection{Size 6 with 8 internal strips $build(3:6:4:6)$}
 
 \begin{figure}[H]
@@ -370,7 +371,7 @@ Our software found the cluster $AFGH$ in the figure which fits inside this penta
 \label{fig:penta6-8b}
 \end{figure}
 
-Figure \ref{fig:penta6-8b} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{FG}$ assuming vertex $F$ is at origin and calculating abscissa and ordinate of vertex $G$ and knowing $\alpha = \angle{A'AB} = 3\pi / 5$ and $\beta = \angle{B'BD} = \pi / 5$. Adding and substracting through vertices $F,A,B,D,G$ we get:
+Figure \ref{fig:penta6-8b} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{FG}$ assuming vertex $F$ is at origin and calculating abscissa and ordinate of vertex $G$. We define $\alpha \equiv \angle{A'AB} = 3\pi / 5$ and $\beta \equiv \angle{B'BD} = \pi / 5$ and add and substract ortogonal distances through vertices $F,A,B,D,G$ to get:
 \begin{align}
 G_x &= -\overline{FA} -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DG}\cos\beta \nonumber\\
  &= -3 -(6)\left(\frac{\sqrt5 - 1}4\right) + (4+6)\left(\frac{\sqrt5+1}4\right)
@@ -386,8 +387,7 @@ G_y &= \overline{AB}\sin\alpha + \overline{BD}\sin\beta - \overline{DG}\sin\beta
 
 \subsubsection{Rigid distance $\sqrt{31}$}
 
-Our software found the cluster $FGHI$ that fits (hardly) inside the pentagon in the figure.
-With the law of cosines we calculate angle $\theta = \angle{IHG}$ and then we use the supplement (cosine negative) as $\angle{FHG}$ to calculate $\overline{FG}$ again with the law of cosines:
+Our three-strips software found the cluster $FGHI$ that fits (hardly) inside the pentagon in the figure. With the law of cosines we calculate angle $\theta = \angle{IHG}$ and then we use the supplement (cosine negative) as $\angle{FHG}$ to verify $\overline{FG}$, again with the law of cosines:
 \begin{align}
 \cos\theta &= \frac{(\overline{HG})^2 + (\overline{HI})^2 - (\overline{IG})^2}
  {2(\overline{HG})(\overline{HI})} \nonumber\\
@@ -398,8 +398,7 @@ With the law of cosines we calculate angle $\theta = \angle{IHG}$ and then we us
  = \sqrt{31} \quad \blacksquare
 \end{align}
 
-% ---
-
+% 6:10
 \subsection{Size 6 with 10 internal strips $build(5:6)$}
 
 \begin{figure}[H]
@@ -424,29 +423,31 @@ Figure \ref{fig:penta6-10a} show the regular pentagon $ABCDE$ of size $6$. We kn
 
 \subsubsection{Rigid distance $\sqrt{46 + 15\sqrt5}$}
 
-Our five-strips software found cluster $FGHIJKD$ shown in figure \ref{fig:penta6-10a}. Suppose vertice $H$ is at the origin while vertice $I$ is at $\{-1,0\}$ and vertice $J$ is at $\{+1,0\}$. Triangle $\triangle{HJK}$ is isoscelles so we can found the coordinates of vertice $K$ and vertice $D$ which is scaled a factor of $\overline{DH} / \overline{KH} = 5 / 2$:
+Our five-strips software found cluster $FGHIJKD$ shown in figure \ref{fig:penta6-10a}. Suppose vertice $H$ is at the origin while vertice $I$ is at $\{-1,0\}$ and vertice $J$ is at $\{+1,0\}$. Triangle $\triangle{HJK}$ is isoscelles so we can found the coordinates of vertice $K$ and vertice $D$ which is a scaled coordinate of $K$ by a factor $\overline{DH} / \overline{KH}$:
 \begin{align}
 K\{x,y\} &= \left\{\frac{\overline{HJ}}2, 
  \sqrt{(\overline{HK})^2 - \left(\frac{\overline{HJ}}2\right)^2}\right\} \nonumber\\
  &= \left\{\frac{1}2, \sqrt{2^2 - \left(\frac{1}2\right)^2}\right\} 
  = \left\{\frac{1}2,\frac{\sqrt{15}}2\right\} \\
 %
-D\{x,y\} &= \left(\frac{5}2\right)\left\{\frac{1}2,\frac{\sqrt{15}}2\right\}
+D\{x,y\} &= \left(\frac{\overline{DH}}{\overline{KH}}\right)K\{x,y\} \nonumber\\
+ &= \left(\frac{5}2\right)\left\{\frac{1}2,\frac{\sqrt{15}}2\right\}
  = \left\{ \frac{5}4 , \frac{5\sqrt{15}}4 \right\}
 \end{align}
 
-Triangle $\triangle{GHI}$ is equilateral so we can found the coordinates of vertices $G$ and $F$ which is scaled a factor of $\overline{HF} / \overline{GF} = 4$:
+Triangle $\triangle{GHI}$ is equilateral so we can found the coordinates of vertice $G$ and vertice $F$ which is a scaled coordinate of $G$ by factor of $\overline{HF} / \overline{GF}$:
 \begin{align}
-I\{x,y\} &= \left\{ -\frac{\overline{HI}}2, 
+G\{x,y\} &= \left\{ -\frac{\overline{HI}}2, 
  - \sqrt{(\overline{HG})^2 - \left( \frac{\overline{HI}}2 \right)^2}\right\} \nonumber\\
  &= \left\{ -\frac{1}2, -\sqrt{1^2 - \left(\frac{1}2\right)^2} \right\}
  = \left\{ -\frac{1}2, -\frac{\sqrt3}2 \right\} \\
 %
-F\{x,y\} &= \left(4\right)\left\{ -\frac{1}2, -\frac{\sqrt3}2 \right\}
+F\{x,y\} &= \left(\frac{\overline{HF}}{\overline{GF}}\right)G\{x,y\} \nonumber\\
+ &= \left(4\right)\left\{ -\frac{1}2, -\frac{\sqrt3}2 \right\}
  = \left\{ -2, -2\sqrt{3} \right\}
 \end{align}
 
-Finally we calculate the distance $\overline{FD}$:
+Finally we verify the distance $\overline{FD}$:
 \begin{align}
 \overline{FD} &= \sqrt{(D_x - F_x)^2 + (D_y - F_y)^2} \nonumber\\
  &= \sqrt{ \left( \frac{5}4 -(-2) \right)^2 
@@ -454,8 +455,7 @@ Finally we calculate the distance $\overline{FD}$:
  = \sqrt{46 + 15\sqrt{5}} \quad \blacksquare
 \end{align}
 
-% ---
-
+% --- 6:12
 \subsection{Size 6 with 12 internal strips $build(0:6:4:2)$}
 
 \begin{figure}[H]
@@ -465,7 +465,7 @@ Finally we calculate the distance $\overline{FD}$:
 \label{fig:penta6-12a}
 \end{figure}
 
-Figure \ref{fig:penta6-12a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{AE}$ assuming vertex $A$ is at origin and calculating abscissa and ordinate of vertex $E$, knowing $\alpha = \angle{ABC} = 3\pi / 5$ and $\beta = \angle{CBB'} = \pi / 5$. Adding and substracting through vertices $ABDE$ we get:
+Figure \ref{fig:penta6-12a} show the regular pentagon $AA'B'CB$ of size $6$. We calculate the distance $\overline{AE}$ assuming vertex $A$ is at origin and calculating abscissa and ordinate of vertex $E$. We define $\alpha \equiv \angle{A'AB} = 3\pi / 5$ and $\beta \equiv \angle{B'BC} = \pi / 5$ and add and substract orthogonal distances through vertices $ABDE$ to get:
 \begin{align}
 E_x &= -\overline{AB}|\cos\alpha| + \overline{BD}\cos\beta + \overline{DE}\cos\beta \nonumber\\
  &= -(6)\left(\frac{\sqrt5 - 1}4\right) + (4+2)\left(\frac{\sqrt5+1}4\right)
@@ -489,13 +489,13 @@ Our five-strips sofware found the cluster $AFGHE$ shown in figure \ref{fig:penta
 \sin\beta &= \sqrt{1 - \cos^2\beta} = \sqrt{1 - \left(\frac{2}3\right)^2} = \frac{\sqrt5}3
 \end{align}
 
-Finally we calculate $\gamma \equiv \angle{AFE} = \alpha + \beta$ with the cosine sum identity and use it to calculate $\overline{AE}$ with the law of cosines:
+Finally we calculate $\angle{AFE} = \alpha + \beta$ with the cosine sum identity and use it to verify the distance $\overline{AE}$ with the law of cosines:
 \begin{align}
-\cos\gamma &= \cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
+\cos(\alpha+\beta) &= \cos\alpha\cos\beta - \sin\alpha\sin\beta \nonumber\\
  &= (0)\left(\frac{2}3\right) - (1)\left(\frac{\sqrt5}3\right) = -\frac{\sqrt5}3 \\
 %
 \overline{AE} &= \sqrt{(\overline{AF})^2 + (\overline{FE})^2 
- - 2(\overline{AF})(\overline{FE})\cos\gamma} \nonumber\\
+ - 2(\overline{AF})(\overline{FE})\cos(\alpha + \beta)} \nonumber\\
  &= \sqrt{3^2 + 5^2 - 2(3)(5)\left(-\frac{\sqrt5}3\right)}
  = \sqrt{34 + 10\sqrt5} \quad \blacksquare
 \end{align}
@@ -504,6 +504,7 @@ Finally we calculate $\gamma \equiv \angle{AFE} = \alpha + \beta$ with the cosin
 
 \section{Pentagons of size 7}
 
+% 7-6
 \subsection{Size 7 with 6 internal strips $build(6:7:6)$}
 
 \begin{figure}[H]
@@ -513,33 +514,49 @@ Finally we calculate $\gamma \equiv \angle{AFE} = \alpha + \beta$ with the cosin
 \label{fig:penta7-6a}
 \end{figure}
 
-Figure \ref{fig:penta7-6a} show pentagon $ABCDE$ of size $7$. For this construction we need vertices $G,I,F$ to be collinear. First we note the three consecutive sides: $\overline{GA}$, $\overline{AS}$ and $\overline{SR}$ of a (incomplete) sub-pentagon of size $6$. We know its \textbf{width} $\overline{GR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{GA}$ so here $\overline{GR} = 3 + 3\sqrt5$ and then:
+Figure \ref{fig:penta7-6a} show pentagon $ABCDE$ of size $7$. For this construction we need vertices $G,I,F$ to be collinear. First we note the three consecutive sides: $\overline{GA}$, $\overline{AS}$ and $\overline{SR}$ of an (incomplete) sub-pentagon of size $6$. We know its \textbf{width} $\overline{GR}$ equals $\dfrac{1+\sqrt5}2$ times the side $\overline{GA}$ so here $\overline{GR} = 3 + 3\sqrt5$ and then:
 \begin{align}
 \overline{GF} &= \overline{GR} + \overline{RF} = 4 + 3\sqrt5
 \end{align}
 
-Strip $\overline{HJ}$ is parallel and of the same size of $\overline{FB}$ so makes rigid vertices $A$ and $B$.
+Strip $\overline{HJ}$ is parallel and of the same size of $\overline{FB}$ so makes rigid vertices $A$ and $B$ once vertices $G,I,F$ were rigid.
 
 \subsubsection{Rigid distance $4 + 3\sqrt5$}
 
-In figure \ref{fig:penta7-6a} triangle $\triangle{GLM}$ is isoscelles so angle $\angle{GIL} = \pi / 2$ and triangle $\triangle{FIK}$ is Pythagorean so angle $\angle{FIK} = \pi / 2$. With the two right angles the vertices $G,I,F$ are collinear and we can easily find $\overline{GF}$:
+In figure \ref{fig:penta7-6a} triangle $\triangle{GLM}$ is isoscelles so angle $\angle{GIL} = \pi / 2$ and triangle $\triangle{FIK}$ is Pythagorean so angle $\angle{FIK} = \pi / 2$. With the two right angles the vertices $G,I,F$ are collinear and we can easily verify distance $\overline{GF}$:
 \begin{align}
 \overline{GF} &= \overline{GI} + \overline{IF} \nonumber\\
  &= \sqrt{(\overline{GL})^2 - (\overline{LI})^2} + 4 
  = \sqrt{7^2 - 2^2} + 4 = 4 + 3\sqrt{5} \quad \blacksquare
 \end{align}
 
-
+% 7-10
 \subsection{Size 7 with 10 internal strips $build(6,7)$}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.7]{7/penta7-10a}
+\includegraphics[scale=1]{7/penta7-10a}
 \caption{Pentagon of size 7 with 10 internal strips. $\overline{FC}:\overline{CD} = 6:7$. $\overline{FD} = \sqrt{64 + 21\sqrt5}$.}
 \label{fig:penta7-10a}
 \end{figure}
 
+
+Figure \ref{fig:penta7-10a} show the regular pentagon $ABCDE$ of size $7$. We know the internal angle of pentagon $\theta=\angle{FCD} =\dfrac{3\pi}5$ and $\cos\theta=\dfrac{1-\sqrt5}4$ so with the law of cosines we can calculate $\overline{FD}$ and the angle $\delta = \angle{CFD}$:
+\begin{align}
+\overline{FD} &= \sqrt{(\overline{FC})^2 + (\overline{CD})^2
+ - 2(\overline{FC})(\overline{CD})\cos\theta} \nonumber\\
+ &= \sqrt{6^2 + 7^2 - 2(6)(7)\left(\frac{1-\sqrt5}4\right)} = \sqrt{64 + 21\sqrt5}\\
+%
+\cos\delta &= \frac{(\overline{FD})^2 + (\overline{FC})^2 - (\overline{CD})^2}
+ {2(\overline{FD})(\overline{FC})} \nonumber\\
+ &= \frac{\left(64 + 21\sqrt5\right) + 6^2 - 7^2}
+  {2\left(\sqrt{64 + 21\sqrt5}\right)(6)}
+  = \frac{17 + 7\sqrt5}{4\sqrt{64 + 21\sqrt5}}
+\end{align}
+
 \subsubsection{Rigid distance $\sqrt{64 + 21\sqrt5}$}
+
+Our five-strips software produced the cluster $FGHIJD$ shown in figure \ref{fig:penta7-10a}. Consider vertice $I$ at origin $(0,0)$ and vertice $H$ at coordinate $(-1,0)$.
 
 \subsection{Size 7 with 14 internal strips}
 

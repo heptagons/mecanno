@@ -4,7 +4,7 @@
 
 \newcommand{\cluster}[8]{ %p,dx,rot
  \def\p{#1}
- \def\r{12+\p}
+ \def\r{15+\p}
  \pgfmathsetmacro\cx{sqrt(4^2 - 1^2) + sqrt(7^2 - (7/2)^2)}
  \pgfmathsetmacro\cy{7/2}
  \pgfmathsetmacro\crot{-atan(\cy/\cx)}
@@ -38,18 +38,18 @@
  \pgfmathsetmacro\pden{4*sqrt(64 + 21*sqrt(5))}
  \pgfmathsetmacro\prot{acos(\pnum / \pden)}
  \begin{tikzpicture}
-  \begin{scope}[scale={1}]
+  \begin{scope}[scale={0.7}]
    % AA'
-   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{12}
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{15}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %A'B'
-    \path(1,0) ++(-90:12+\p) node{$F$};
+    \path(1,0) ++(-90:15+\p) node{$F$};
     \cluster{3.5pt}{1}{\prot}{G}{H}{I}{J}{K}
     \begin{scope}[shift={(\s,0)},rotate=72]
      %B'C
      \begin{scope}[shift={(\s,0)},rotate=72]
       %CB
-      \path(1,0) ++(-90:12+\p) node{$F'$};
+      \path(1,0) ++(-90:15+\p) node{$F'$};
       \cluster{3.5pt}{1}{\prot}{G'}{H'}{I'}{J'}{K'}
      \end{scope}
     \end{scope}
