@@ -556,19 +556,58 @@ Figure \ref{fig:penta7-10a} show the regular pentagon $ABCDE$ of size $7$. We kn
 
 \subsubsection{Rigid distance $\sqrt{64 + 21\sqrt5}$}
 
-Our five-strips software produced the cluster $FGHIJD$ shown in figure \ref{fig:penta7-10a}. Consider vertice $I$ at origin $(0,0)$ and vertice $H$ at coordinate $(-1,0)$.
+Our five-strips software produced the cluster $FGHIJD$ shown in figure \ref{fig:penta7-10a}. Consider vertice $I$ at origin $(0,0)$ and vertice $H$ at coordinate $(-1,0)$. Since triangle $\triangle{GHI}$ is isoscelles and $\overline{HF}$ is the double of ${FG}$ we have angle $\angle{HIF} = \pi/2$ and we can calculate the coordinates of vertice $F$ as:
+\begin{align}
+F_x &= 0 \\
+F_y &= \overline{IF} \nonumber\\
+ &= -\sqrt{(\overline{HF})^2 - (\overline{HI})^2} = -\sqrt{4^2 - 1^2} = -\sqrt{15}
+\end{align}
 
+Since triangle $\triangle{HIJ}$ is equilateral we have this coordinates for vertice $J$:
+\begin{align}
+J_x = -\overline{IJ}\cos(\pi/3) = -(1)\frac{1}2 = -\frac{1}2 \\
+J_y = +\overline{IJ}\sin(\pi/3) = (1)\frac{\sqrt3}2 = \frac{\sqrt3}2
+\end{align}
+We notice vertice $D$ is a coordinate scaled from vertice $J$ by a factor of $\overline{DI} / \overline{JI} = 7$ so $D_x = -7/2$ and $D_y = 7\sqrt3 / 2$. Finally we verify the distance $\overline{FD}$ using the coordinates values of vertices $F,D$:
+\begin{align}
+\overline{FD} &= \sqrt{(D_x - F_x)^2 + (D_y - F_y)^2} \nonumber\\
+ &= \sqrt{\left(-\frac{7}2 - 0\right)^2 + \left( \frac{7\sqrt3}2 - (-\sqrt{15})\right)^2}
+ = \sqrt{64 + 21\sqrt5} \quad \blacksquare
+\end{align}
+
+% 7-14
 \subsection{Size 7 with 14 internal strips}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{7/penta7-14a}
+\includegraphics[scale=1]{7/penta7-14a}
 \caption{Pentagon of size 7 with 14 internal strips. $\overline{FB} : \overline{BG} = 4:4$ and $\overline{FG} = 2 + 2\sqrt5$.}
 \label{fig:penta7-14a}
 \end{figure}
-%
+
+Figure \ref{fig:penta7-14a} show pentagon $ABCDE$ of size $7$. We notice an (incomplete) sub-pentagon of size $4$ with two consecutive sides $\overline{FB}$ and $\overline{BG}$. We know the \textbf{widht} of this sub-pentagon is $\dfrac{1+\sqrt5}{2}$ times the sub-side so here:
+\begin{align}
+\overline{FG} = (4)\frac{1 + \sqrt5}2 = 2 + 2\sqrt5
+\end{align}
+
 \subsubsection{Rigid distance $2 + 2\sqrt5$}
 
+Consider the cluster $GLMK$ in figure \ref{fig:penta7-14a}. First we calculate angle $\theta \equiv \angle{LMK}$ with the law of cosines and use this angle to calculate $\overline{KG}$ with the law of cosines:
+\begin{align}
+\cos\theta &= \frac{(\overline{ML})^2 + (\overline{MK})^2 - (\overline{KL})^2}
+ {2(\overline{ML})(\overline{ML})}
+ = \frac{3^2 + 2^2 - 2^2}{2(3)(2)} = \frac{3}4 \\
+\overline{KG} &= \sqrt{(\overline{GM})^2 + (\overline{MK})^2
+ - 2(\overline{GM})(\overline{MK})\cos\theta} \nonumber\\
+ &= \sqrt{4^2 + 2^2 - (2)(4)(2)\frac{3}4} = 2\sqrt2
+\end{align}
+
+Now since $\overline{KG} = 2\sqrt2$ and $\overline{GJ} = \overline{JK} = 2$ we conclude we have a right angle $\angle{GJK} = \pi / 2.$ And we have a second right angle $\angle{FJI} = \pi/2$ since triangle $\triangle{HIJ}$ is isoscelles and $\overline{IF}$ is the double of $\overline{IH}$. From the two right angles at vertice $J$ we conclude vertices $F,J,G$ are collinear and we verify distance $\overline{FG}$:
+\begin{align}
+\overline{FG} &= \overline{FJ} + \overline{JG} \nonumber\\
+ &= \sqrt{(\overline{IF})^2 - (\overline{IJ})^2} + 2
+ = \sqrt{6^2 - 4^2} + 2 = 2 + 2\sqrt5 \quad \blacksquare
+\end{align}
 
 % 8
 
