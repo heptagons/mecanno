@@ -815,6 +815,7 @@ From the figure \ref{fig:penta8-10c} we see triangle $\triangle{NOP}$ is isoscel
 
 \section{Pentagons of size 9}
 
+% 9-6
 \subsection{Size 9 with 6 internal strips $build(8:9:8)$}
 
 \begin{figure}[H]
@@ -824,29 +825,37 @@ From the figure \ref{fig:penta8-10c} we see triangle $\triangle{NOP}$ is isoscel
  \label{fig:penta9a}
 \end{figure}
 
-Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. The regular pentagon distance $\overline{CE}$ is called width and equals $\dfrac{1+\sqrt5}{2}\overline{AB}$. Is easy to note the distance $\overline{FG}$ equals the width of smaller pentagon size $9-1=8$ plus $1$. So we have:
+Figure \ref{fig:penta9a} show a rigid regular pentagon $A,B,C,D,E$ of size $9$. Inside we have a (partial) sub-pentagon of size $8$ formed with the semi-perimeter of distances $\overline{HS}$, $\overline{SB}$ and $\overline{BF}$. We know the $width$ of the sub-pentagon $\overline{HF}$ equals $\dfrac{1+\sqrt5}2$ times the side of the sub-pentagon so we can calculate the distance $\overline{FG}$:
 \begin{align}
-\overline{FG} &= \frac{1+\sqrt5}{2}(\overline{BC}-\overline{FC}) + \overline{FC}\nonumber\\
- &= \frac{1+\sqrt5}{2}(9-1) + 1 = 5 + 4\sqrt5
+\overline{GF} &= \overline{GH} + \overline{HF} \nonumber\\
+ &= 8\left(\frac{1+\sqrt5}2\right) + 1 = 5 + 4\sqrt5
 \end{align}
+
+We expect here vertices $GJF$ to be collinear so strip $\overline{IN}$ which is parallel and of the same size of segment $\overline{GA}$ makes rigid the vertices $A$ and $B$.
 
 \subsubsection{Rigid distance $5 + 4\sqrt5$}
 
-From the figure we see two right angles. Angle $\angle{GJK}=\frac{\pi}2$ because we have a Pythagorean triangle $\triangle{HJK}$. Angle $\angle{FJM}=\frac{\pi}2$ because we have an isosceles triangle $\triangle{FLM}$. The two right angles share vertice $J$ so vertices $G,J,F$ are collinear. First we calculate the distance $\overline{JF} = \sqrt{(LF)^2 - (LJ)^2} = \sqrt{9^2-1^2} = 4\sqrt5$ and finally the distance $\overline{GF} = \overline{GJ} + \overline{JF} = 5 + 4\sqrt5$ which matches the value in last equation above $\blacksquare$. To make rigid the pentagon we add strip $\overline{IN}$ parallel to side $\overline{GA}$.
+From the figure we see two right angles. Angle $\angle{GJK} = \pi/2$ because triangle $\triangle{HJK}$  is Pythagorean. Angle $\angle{FJM} = \pi/2$ because triangle $\triangle{FLM}$ is isoscelles. The two right angles share vertice $J$ so vertices $G,J,F$ are collinear. Then we verify the distance $\overline{GF}$:
+\begin{align}
+\overline{GF} &= \overline{GJ} + \overline{JF} \nonumber\\
+ &= 5 + \sqrt{(\overline{LF})^2 - (\overline{LJ})^2} 
+ = 5 + \sqrt{9^2-1^2} = 5 + 4\sqrt5 \quad \blacksquare
+\end{align}
 
+% 9-8a
 \subsection{Size 9 with 8 internal strips $build(3,9,3,5)$}
 
 \begin{figure}[H]
  \centering
  \includegraphics[scale=0.95]{9/penta9-8a}
- \caption{Pentagon size 9 with 8 strips variation 1. $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DI} = 3:9:3:5$. $\overline{FI} = \sqrt{55}$.}
+ \caption{Pentagon size 9 with 8 strips. $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DI} = 3:9:3:5$. $\overline{FI} = \sqrt{55}$.}
  \label{fig:penta9-8a}
 \end{figure}
 
-Figure \ref{fig:penta9-8a} show a rigid regular pentagon $A,A',B',C,B$ of size $9$. First we calculate the distance $\overline{FI}$ using the abscissas and ordinates following the vertices $F,A,B,D,I$ for a regular pentagon angles $\alpha=\dfrac{3\pi}5, \beta=\dfrac{\pi}5$:
+Figure \ref{fig:penta9-8a} show a rigid regular pentagon $A,A',B',C,B$ of size $9$. First we calculate the distance $\overline{FI}$ using the abscissas and ordinates following the vertices sequence $F,A,B,D,I$ with the regular pentagon angles $\alpha \equiv \angle{FAB} = 3\pi/5$, $\beta \equiv \angle{B'BC} = \pi/5$:
 \begin{align}
-FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
- &= -3 + (9)\frac{1-\sqrt5}4 + (3+5)\frac{\sqrt5+1}4 = \frac{5-\sqrt5}4\\
+FI_x &= -\overline{AF} - \overline{AB}|\cos\alpha| + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -3 - 9\left(\frac{\sqrt5-1}4\right) + (3+5)\frac{\sqrt5+1}4 = \frac{5-\sqrt5}4\\
 FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
  &= (9)\frac{\sqrt{10+2\sqrt5}}4 + (3-5)\frac{\sqrt{10-2\sqrt5}}4
  = \frac{9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4\\
@@ -857,25 +866,26 @@ FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumbe
 
 \subsubsection{Rigid distance $\sqrt{55}$}
 
-By software we find several options for the distance and we use the one shown in the figure.
-We calculate the distance $\overline{FI}$ made rigid by cluster $F,G,H,I$. We have an isoscelles triangle $\triangle{GHI}$ and $\overline{FH}=2\overline{GH}$ so we have a right triangle $\angle{FIH}=\frac{\pi}2$ so: \begin{align}
+Our three-strips software found the cluster $FGHI$ of figure \ref{fig:penta9-8a}. Triangle $\triangle{GHI}$ is isoscelles and $\overline{FH}$ is the double of $\overline{GH}$ so we have a right angle $\angle{FIH} = \pi/2$ and we confirm the distance $\overline{FI}$:
+\begin{align}
 \overline{FI} &= \sqrt{(\overline{FH})^2 - (\overline{HI})^2}\nonumber\\
  &= \sqrt{8^2 - 3^2} = \sqrt{55} \quad\blacksquare
 \end{align}
 
+% 9-8bc
 \subsection{Size 9 with 8 internal strips $build(3,9,1,4)$ and $build(6,9,6,8)$}
 
 \begin{figure}[H]
  \centering
  \includegraphics[scale=0.95]{9/penta9-8b}
- \caption{Regular pentagons size 9 made rigid with 8 strips variations 2 and 3. At the left we have $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DI} = 3:9:1:4$ and $\overline{FI} = \sqrt{61}$. At the right we have $\overline{F'A}:\overline{AB}:\overline{BD}:\overline{DI'} = 6:9:6:8$ and $\overline{F'I'}=\sqrt{61}$.}
+ \caption{Pentagons size 9 with 8 strips. For the pentagon at $(a)$ we have $\overline{FA}:\overline{AB}:\overline{BD}:\overline{DI} = 3:9:1:4$ and $\overline{FI} = \sqrt{61}$. For pentagon at $(b)$ we have $\overline{F'A}:\overline{AB}:\overline{BD}:\overline{DI'} = 6:9:6:8$ and $\overline{F'I'}=\sqrt{61}$.}
  \label{fig:penta9-8b}
 \end{figure}
 
-Figure \ref{fig:penta9-8b} show two rigid pentagons $A,A',B',C,B'$ of size $9$. The pentagon at the left is called variation 2 and the right one variation 3. Both variations have the vertices $I,I'$ at the same positions and the same distance $\overline{FI}$ which first we calculate using the abscissas and ordinates following the vertices $F,A,B,D,I$ of the variation 2 for a regular pentagon angles $\alpha=\dfrac{3\pi}5, \beta=\dfrac{\pi}5$:
+Figure \ref{fig:penta9-8b} show two pentagons $A,A',B',C,B'$ of size $9$. Both pentagons have the vertices $I,I'$ at the same positions and the same distance $\overline{FI}$. For the pentagon at $(a)$ we calculate using the abscissas and ordinates following the vertices sequence $F,A,B,D,I$ with the regular pentagon angles $\alpha \equiv \angle{FAB} = 3\pi/5$ and $\beta \equiv \angle{B'BC} = \pi/5$:
 \begin{align}
-FI_x &= -\overline{AF} - \overline{AB}\cos\alpha + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
- &= -3 + (9)\frac{1-\sqrt5}4 + (1+3)\frac{\sqrt5+1}4 = \frac{1-5\sqrt5}4\\
+FI_x &= -\overline{AF} - \overline{AB}|\cos\alpha| + (\overline{BD} + \overline{DI})\cos\beta\nonumber\\
+ &= -3 - 9\left(\frac{\sqrt5-1}4\right) + (1+3)\frac{\sqrt5+1}4 = \frac{1-5\sqrt5}4\\
 FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumber\\
  &= (9)\frac{\sqrt{10+2\sqrt5}}4 + (1-3)\frac{\sqrt{10-2\sqrt5}}4
  = \frac{9\sqrt{10+2\sqrt5} - 2\sqrt{10-2\sqrt5}}4\\
@@ -886,16 +896,17 @@ FI_y &= \overline{AB}\sin\alpha + (\overline{BD}-\overline{DI})\sin\beta\nonumbe
 
 \subsubsection{Rigid distance $\sqrt{61}$}
 
-Our software found several clusters and we use two different for each variation. We  calculate the distance $\overline{FI}$ made rigid by clusters $F,G,H,I$ or $F,G,I,J$ since in both variations we have the same $\overline{GF}$ and same angles $\angle{FGI}=\angle{FJG}$. With the law of cosines first we calculate $\cos(\angle{FJG})$ and then $\overline{FI}$:
+Our three-strips software found several clusters and we use two different for each of the pentagons of figure \ref{fig:penta9-8b}. We calculate the distance $\overline{FI}$ made rigid by clusters $FGHI$ or $FGIJ$ since in both pentagons we have the same sub-triangle $\triangle{FGI}$. With the law of cosines first we calculate $\theta = \angle{FJG}$ and then we confirm $\overline{FI}$:
 \begin{align}
-\cos(\angle{FJG}) &= \frac{\overline{FJ}^2 + \overline{JG}^2 - \overline{GF}^2}
+\cos\theta &= \frac{\overline{FJ}^2 + \overline{JG}^2 - \overline{GF}^2}
  {2(\overline{FJ})(\overline{JG})}
- = \frac{8^2 + 4^2 - 8^2}{2(8)(4)} = \frac{1}4\nonumber\\
+ = \frac{8^2 + 4^2 - 8^2}{2(8)(4)} = \frac{1}4 \nonumber\\
 \overline{FI} &= \sqrt{\overline{IJ}^2 + \overline{FJ}^2 
- - 2(\overline{IJ})(\overline{FJ})\cos(\angle{FJG})}
- = \sqrt{3^2 + 8^2 - 2(3)(8)\left(\dfrac{1}4\right)} = \sqrt{61} \quad\blacksquare
+ - 2(\overline{IJ})(\overline{FJ})\cos\theta} \nonumber\\
+ &= \sqrt{3^2 + 8^2 - 2(3)(8)\left(\dfrac{1}4\right)} = \sqrt{61} \quad\blacksquare
 \end{align}
 
+% 9-10
 \subsection{Size 9 with 10 internal strips $build(4:9)$ and $build(5:9)$}
 
 \begin{figure}[H]
@@ -905,25 +916,27 @@ Our software found several clusters and we use two different for each variation.
  \label{fig:penta9b}
 \end{figure}
 
-Figure \ref{fig:penta9b} show a regular pentagon $A,B,C,D,E$ of size $9$ made it rigid with the help of clusters fixing the distances $\overline{CF}$ and $\overline{EF}$. Pentagon size $9$ is the smaller one with diagonals where consecutive side segments fractions are $\overline{BF} / \overline{BC} =\dfrac{4}9$ and $\overline{AF} / \overline{AE} = \dfrac{5}9$. We calculate the diagonals $\overline{CF}$, $\overline{EF}$ and the angles to side $\overline{AB}$ using the law of cosines and the internal pentagon angle $\theta=\angle{FBC}=\angle{FAE}=\frac{3\pi}5$ where $\cos\theta = \frac{1-\sqrt5}4$. Diagonal $\overline{CF}$:
+Figure \ref{fig:penta9b} show a regular pentagon $A,B,C,D,E$ of size $9$ made it rigid using two different clusters with different distances $\overline{CF}$ and $\overline{EF}$. We calculate the diagonals $\overline{CF}$, $\overline{EF}$ and the angles to side $\overline{AB}$ using the law of cosines and the internal pentagon angle $\theta=\angle{FBC}=\angle{FAE}=\dfrac{3\pi}5$ where $\cos\theta = \dfrac{1-\sqrt5}4$. 
+
+First we calculate distance $\overline{CF}$ and angle $\gamma = \angle{BFC}$:
 \begin{align}
 \overline{CF} &= \sqrt{
  \overline{BC}^2 + \overline{BF}^2 - 2(\overline{BC})(\overline{BF})\cos\theta } \nonumber\\
  &= \sqrt{9^2 + 4^2 - 2(9)(4)\left(\frac{1-\sqrt5}4\right)} = \sqrt{79 + 18\sqrt5}\\
 %
-\cos(\angle{CFB}) &= 
+\cos\gamma &= 
  \frac{\overline{CF}^2 + \overline{BF}^2 - \overline{BC}^2}{2(\overline{CF})(\overline{BF})}
  = \frac{79 + 18\sqrt5 + 4^2 - 9^2}{2(\sqrt{79 + 18\sqrt5})(4)}
  = \frac{7 + 9\sqrt5}{4\sqrt{79 + 18\sqrt5}}
 \end{align}
 
-Diagonal $\overline{EF}$:
+Then we calculate $\overline{EF}$ and angle $\epsilon \equiv \angle{AFE}$:
 \begin{align}
 \overline{EF} &= \sqrt{
  \overline{AE}^2 + \overline{AF}^2 - 2(\overline{AE})(\overline{AF})\cos\theta} \nonumber\\
  &= \sqrt{9^2 + 5^2 - 2(9)(5)\left(\frac{1-\sqrt5}4\right)} = \frac{\sqrt{334 + 90\sqrt5}}2\\
 %
-\cos(\angle{EFA}) &=
+\cos\epsilon &=
  \frac{\overline{EF}^2 + \overline{AF}^2 - \overline{EA}^2}{2(\overline{EF})(\overline{AF})}
  = \frac{\dfrac{334 + 90\sqrt5}4 + 5^2 - 9^2 }{2\left(\dfrac{\sqrt{334 + 90\sqrt5}}2\right)(5)}
  = \frac{11 + 9\sqrt5}{2\sqrt{334 + 90\sqrt5}}
@@ -931,7 +944,7 @@ Diagonal $\overline{EF}$:
 
 \subsubsection{Rigid distance $\sqrt{79 + 18\sqrt5}$}
 
-Our software found several options with five strips to build distance $\sqrt{79 + 18\sqrt5}$.
+Our five-strips software found several clusters for distance $\sqrt{79 + 18\sqrt5}$.
 
 \begin{figure}[H]
 \centering
@@ -955,12 +968,12 @@ Equilateral triangle $\triangle{FIZ}$ and isosceles $\triangle{IJK}$ share verti
  = \sqrt{79 + 18\sqrt5} \quad\blacksquare
 \end{align}
 
-We use a smaller part of this construction, the five strips with vertices $F,G,H,I,J,K,C$, as a cluster to made rigid the consecutive strips $\overline{AB},\overline{BC}$ of the pentagon of side $9$ of figure \ref{fig:penta9b}.
+We use five strips of this construction with vertices $F,G,H,I,J,K,C$, as a cluster to made rigid the consecutive strips $\overline{AB},\overline{BC}$ of the pentagon of side $9$ of figure \ref{fig:penta9b}.
 
 
 \subsubsection{Rigid distance $\dfrac{\sqrt{334 + 90\sqrt5}}2$}
 
-Our software found several options with five strips to build distance$\dfrac{\sqrt{334 + 90\sqrt5}}2$.
+Our five-strips software found several clusters for distance$\dfrac{\sqrt{334 + 90\sqrt5}}2$.
 
 \begin{figure}[H]
 \centering
@@ -979,17 +992,18 @@ E_y &= \overline{YN} - \left(\frac{\overline{NE}}{\overline{NX}}\right)\overline
 F_x &= \overline{F_0F} = \sqrt{\overline{YF}^2 - \overline{YF_0}^2}
  = \sqrt{10^2 - 5^2} = 5\sqrt3\\
 F_y &= \overline{YF_0} = 5\\
-\overline{EF} &= \sqrt{(E_x - F_x)^2 + (E_y - F_y)^2}
- = \sqrt{\left(-\frac{3\sqrt{15}}{4} -5\sqrt3 \right)^2 + \left(\frac{21}4 - 5\right)^2}
+\overline{EF} &= \sqrt{(E_x - F_x)^2 + (E_y - F_y)^2} \nonumber\\
+ &= \sqrt{\left(-\frac{3\sqrt{15}}{4} -5\sqrt3 \right)^2 + \left(\frac{21}4 - 5\right)^2}
  = \frac{\sqrt{334+90\sqrt5}}2 \quad\blacksquare
 \end{align}
-We form a cluster from the last construction to be applied in the pentagon of side $9$. We choose the five strips with vertices $E,N,M,L,O,F$. Is easy to prove strip $\overline{EM}$ is correct in the cluster comparing equal cosines at vertice $Y$ for triangles $\triangle{YVW},\triangle{YEN},\triangle{YEM}$ using the law of cosines for each triangle.
+We form a cluster from the last construction and insert it inside the pentagon of side $9$. We choose the five strips with vertices $E,N,M,L,O,F$. Is easy to prove strip $\overline{EM}$ is correct in the cluster comparing equal cosines at vertice $Y$ for triangles $\triangle{YVW},\triangle{YEN},\triangle{YEM}$ using the law of cosines for each triangle.
 
 
 % 10
 
 \section{Pentagon of size 10}
 
+% 10-10
 \subsection{Size 10 with 10 internal strips $build(7:10)$}
 
 \begin{figure}[H]

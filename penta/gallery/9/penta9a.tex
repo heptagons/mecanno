@@ -7,11 +7,12 @@
  \def\p{5pt}
  \begin{tikzpicture}
   \begin{scope}[scale={0.5}]
-   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{20}
+   \path(1,0) ++(-90:20+\p) node{$S$};
    % AB
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
-    \path (8,0) ++(-90:20+\p) node{$F$};
+    \path(8,0) ++(-90:20+\p) node{$F$};
     \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
      \begin{scope}[shift={(\s,0)},rotate=72]
@@ -24,18 +25,18 @@
          \meccanostrip[0088FF]{5}{1}{\p}
         \end{scope}
         \meccanostrip[0088FF]{5}{1}{\p}
-        \path (1,0) ++(-75:20+\p) node{$H$};
-        \path (3,0) ++(60:20+\p) node{$I$};
-        \path (5,0) ++(0:20+\p) node{$J$};
+        \path(1,0) ++(-75:20+\p) node{$H$};
+        \path(3,0) ++(60:20+\p) node{$I$};
+        \path(5,0) ++(0:20+\p) node{$J$};
         \begin{scope}[shift={(3,0)},rotate=-72]
          \meccanostrip[008800]{8}{1}{\p}
-         \path (8,0) ++(0:20+\p) node{$N$};
+         \path(8,0) ++(0:20+\p) node{$N$};
         \end{scope}
         \begin{scope}[shift={(5,-1)},rotate=90]
          \meccanostrip[880088]{4}{1}{\p}
-         \path (4,0) ++(-45:20+\p) node{$K$};
-         \path (2,0) ++(-45:25+\p) node{$L$};
-         \path (0,0) ++(-180:20+\p) node{$M$};
+         \path(4,0) ++(-45:20+\p) node{$K$};
+         \path(2,0) ++(-45:25+\p) node{$L$};
+         \path(0,0) ++(-180:20+\p) node{$M$};
         \end{scope}
         \begin{scope}[shift={(5,+1)},rotate=-asin(1/9)]
          \meccanostrip[FF4400]{9}{1}{\p}
