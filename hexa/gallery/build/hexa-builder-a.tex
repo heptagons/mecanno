@@ -1,0 +1,39 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+ 
+  \begin{scope}[shift={(0,0)}]
+   \begin{scope}[scale={0.6}]
+%    \meccanoHexagonBuilderA{8}{3}{5pt}{20} %a,b,p,r
+    \meccanoHexagonBuilderB{8}{3}{5pt}{20} %a,b,p,r
+   \end{scope}
+   \path(3,-1.2) node{$(a)$};
+  \end{scope}
+
+  \begin{scope}[shift={(9,0)}]
+   \begin{scope}[scale={0.4}]
+%    \meccanoHexagonBuilderA{15}{7}{3pt}{18} %a,b,p,r
+   \end{scope}
+   \path(3,-1.2) node{$(b)$};
+  \end{scope}
+
+  \begin{scope}[shift={(0,-8.5)}]
+   \begin{scope}[scale={0.22}]
+%    \meccanoHexagonBuilderA{21}{5}{8pt}{40} %a,b,p,r
+   \end{scope}
+   \path(3,-1.2) node{$(c)$};
+  \end{scope}
+ 
+  \begin{scope}[shift={(9,-8.5)}]
+   \begin{scope}[scale={0.15}]
+%    \meccanoHexagonBuilderA{35}{11}{9pt}{50} %a,b,p,r
+   \end{scope}
+   \path(3,-1.2) node{$(d)$};
+  \end{scope}
+ 
+ \end{tikzpicture}
+
+\end{document}
