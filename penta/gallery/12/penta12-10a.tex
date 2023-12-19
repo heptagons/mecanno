@@ -6,8 +6,8 @@
  \def\s{12}
  \def\p{4pt}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.5}]
-   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+  \begin{scope}[scale={0.4}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{20}
    \path (3,0) ++(-90:20+\p) node{$F$};
    \begin{scope}[shift={(3,0)},rotate=acos(3/(12+3*sqrt(5)))]
     \begin{scope}[rotate=+asin(2/7)]

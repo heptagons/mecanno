@@ -3,7 +3,7 @@
 \usepackage{../penta}
 
 \def\p{5pt}
-\def\r{20}
+\def\r{22}
 \pgfmathsetmacro\diag{4*sqrt(10 + 3*sqrt(5))}
 
 \newcommand{\cluster}[5]{ %dx,rot,n1,n2,n3
@@ -18,9 +18,9 @@
   \end{scope}
   \begin{scope}[shift={(7,0)},rotate=180-\rotb]
    \meccanostrip[0000FF]{4}{1}{\p} 
-   \path(0,0) ++(170:\r+\p) node{$#3$};
-   \path(2,0) ++(70:4+\r+\p) node{$#4$};
-   \path(4,0) ++(0:4+\r+\p) node{$#5$};
+   \path(0,0) ++(170:\r+\p-3) node{$#3$}; %G
+   \path(2,0) ++(70:4+\r+\p) node{$#4$}; %H
+   \path(4,0) ++(0:4+\r+\p) node{$#5$}; %I
    \begin{scope}[rotate=-\rotc]
     \meccanostrip[00CC00]{11}{1}{\p} 
    \end{scope}
@@ -35,16 +35,16 @@
  \pgfmathsetmacro\s{12}
  \pgfmathsetmacro\cosFBC{(5+3*sqrt(5)) / \diag)}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.5}]
+  \begin{scope}[scale={0.4}]
    \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{\r}
    % AB
-   \path(4,0) ++(-90:\r+\p) node{$F$};
+   \path(4,0) ++(-90:3+\r+\p) node{$F$};
    \cluster{4}{acos(\cosFBC)}{G}{H}{I}
    \begin{scope}[shift={(\s,0)},rotate=72]
     %BC
     \begin{scope}[shift={(\s,0)},rotate=72]
      %CD
-     \path(4,0) ++(-90:\r+\p) node{$F'$};
+     \path(4,0) ++(-90:3+\r+\p) node{$F'$};
      \cluster{4}{acos(\cosFBC)}{G'}{H'}{I'}
     \end{scope}
    \end{scope}

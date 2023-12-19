@@ -28,8 +28,8 @@
  \pgfmathsetmacro\fia{104}%atan(\fiy/\fix)} % aprox 104 degrees
  \def\p{5pt}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.5}]
-   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}
+  \begin{scope}[scale={0.4}]
+   \meccanopentagon{FF4400}{\s}{\p}{A}{A'}{B'}{C}{B}{20}
    \path (6,0) ++(-90:20+\p) node{$F$};
    \cluster{5pt}{6}{0}{\fia}{1}{G}{H}
    \cluster{5pt}{6}{0}{180-\fia}{-1}{G'}{H'}

@@ -4,13 +4,13 @@
 
 \begin{document}
  \begin{tikzpicture}
-  \begin{scope}[scale={0.5}]
+  \begin{scope}[scale={0.4}]
    \pgfmathsetmacro\s{12}
    \pgfmathsetmacro\abscissa{(19-5*sqrt(5))/4}
    \pgfmathsetmacro\ordinate{sqrt(1450+190*sqrt(5))/4}
    \pgfmathsetmacro\angle{atan(\ordinate/\abscissa)}
    \def\p{5pt}
-   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}
+   \meccanopentagon{FF4400}{\s}{\p}{A}{B}{C}{D}{E}{20}
    % AB
    \begin{scope}[shift={(0,0)},rotate=\angle]
     \meccanostrip[AA00AA]{11}{1}{\p}
