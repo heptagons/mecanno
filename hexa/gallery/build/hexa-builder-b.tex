@@ -5,9 +5,9 @@
 \begin{document}
  \begin{tikzpicture}
   \def\dx{10}
-  \def\dy{-10}
+  \def\dy{-9}
   \def\tx{2}
-  \def\ty{-1.2}
+  \def\ty{-1.1}
   \begin{scope}[shift={(0,0)}]
    \begin{scope}[scale={0.8}]
     \meccanoHexagonBuilderB{8}{3}{5pt}{20} %a,b,p,r
@@ -37,14 +37,14 @@
   \end{scope}
 
   \begin{scope}[shift={(0,2*\dy)}]
-   \begin{scope}[scale={0.2}]
+   \begin{scope}[scale={0.19}]
     \meccanoHexagonBuilderB{40}{7}{8pt}{50}
    \end{scope}
    \meccanoHexagonStatsB{40}{7}{\tx}{\ty}
   \end{scope}
 
   \begin{scope}[shift={(\dx,2*\dy)}]
-   \begin{scope}[scale={0.17}]
+   \begin{scope}[scale={0.16}]
     \meccanoHexagonBuilderB{48}{13}{7pt}{50}
    \end{scope}
    \meccanoHexagonStatsB{48}{13}{\tx}{\ty}

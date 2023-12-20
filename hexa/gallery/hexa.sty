@@ -15,107 +15,25 @@
   \draw[main] (\x*#3,0) circle (#4);
 }
 
-\newcommand{\meccanoHexagonStatsB}[4]{
- \pgfmathsetmacro\a{#1}
- \pgfmathsetmacro\b{#2}
- \pgfmathsetmacro\c{int(sqrt(\a^2 + \b^2 - \a*\b))}
- \pgfmathsetmacro\abb{\a-\b-\b}
- \pgfmathsetmacro\even{Mod(\abb,2)==0}
- \ifthenelse{\even=1}{
-  \pgfmathsetmacro\side{int(\a/2)}
-  \pgfmathsetmacro\diag{\c}
- }{
-  \pgfmathsetmacro\side{\a}
-  \pgfmathsetmacro\diag{int(2*\c)}
- }
- \path(#3,#4) node{$a=\a,b=\b,c=\c,d=\diag,s=\side$};
-}
-
-\newcommand{\meccanoHexagonBuilderB}[4]{
- \pgfmathsetmacro\a{#1}
- \pgfmathsetmacro\b{#2}
- \pgfmathsetmacro\ab{\a-\b}
- \pgfmathsetmacro\abb{\a-\b-\b}
- \pgfmathsetmacro\c{int(sqrt(\a^2 + \b^2 - \a*\b))}
- \pgfmathsetmacro\beta{acos((\abb/2)/(\c))}
- \pgfmathsetmacro\even{Mod(\abb,2)==0}
-
- \ifthenelse{\even=1}{
-  %\path(#4/2,0) ++(0,0) node{$\abb,Even$};
-  \pgfmathsetmacro\side{\a/2}
-  \pgfmathsetmacro\diag{\c}
-  \meccanostrip[FF4400]{\side}{1}{#3}
-  \path(\abb/2,0) ++(-90:#4 + #3) node{$O$};
-  \begin{scope}[shift={(0,0)},rotate=\beta]
-   \meccanostrip[0088FF]{\diag}{1}{#3}
-   \path(0,0) ++(180:#4 + #3) node{$A$};
-   \path(\diag,0) ++(0:#4 + #3) node{$I$};
-  \end{scope}
-  \begin{scope}[shift={(\abb,0)},rotate=180-\beta]
-   \meccanostrip[0088FF]{\diag}{1}{#3}
-  \end{scope}
-  \begin{scope}[shift={(\abb,0)},rotate=\beta]
-   \meccanostrip[0088FF]{\diag}{1}{#3}
-   \path(0,0) ++(180:#4 + #3) node{$G$};
-   \path(\diag,0) ++(0:#4 + #3) node{$H$};
-  \end{scope}
-  \begin{scope}[shift={(\side,0)},rotate=60]
-   \meccanostrip[FF4400]{\side}{1}{#3}
-   \path(0,0) ++(-90:#4 + #3) node{$B$};
-   \begin{scope}[shift={(\side,0)},rotate=60]
-    \meccanostrip[FF4400]{\side}{1}{#3}
-    \path(0,0) ++(-90:#4 + #3) node{$C$};
-    \begin{scope}[shift={(\side,0)},rotate=60]
-     \meccanostrip[FF4400]{\side}{1}{#3}
-     \path(0,0) ++(-90:#4 + #3) node{$D$};
-     \begin{scope}[shift={(\side,0)},rotate=60]
-      \meccanostrip[FF4400]{\side}{1}{#3}
-      \path(0,0) ++(-90:#4 + #3) node{$E$};
-      \begin{scope}[shift={(\side,0)},rotate=60]
-       \meccanostrip[FF4400]{\side}{1}{#3}
-       \path(0,0) ++(-90:#4 + #3) node{$F$};
+\newcommand{\meccanoHexagon}[9]{ 
+  \meccanostrip[#1]{#2}{1}{#3} \path(#2,0) ++(-60:#9+#3) node{$#4$};
+  \begin{scope}[shift={(#2,0)},rotate=60]
+   \meccanostrip[#1]{#2}{1}{#3} \path(#2,0) ++(-60:#9+#3) node{$#5$};
+   \begin{scope}[shift={(#2,0)},rotate=60]
+    \meccanostrip[#1]{#2}{1}{#3} \path(#2,0) ++(-60:#9+#3) node{$#6$};
+    \begin{scope}[shift={(#2,0)},rotate=60]
+     \meccanostrip[#1]{#2}{1}{#3} \path(#2,0) ++(-60:#9+#3) node{$#7$};
+     \begin{scope}[shift={(#2,0)},rotate=60]
+      \meccanostrip[#1]{#2}{1}{#3} \path(#2,0) ++(-60:#9+#3) node{$#8$};
+      \begin{scope}[shift={(#2,0)},rotate=60]
+       \meccanostrip[#1]{#2}{1}{#3} %\path(#2,0) ++(-60:#9+#3) node{$#8$};
       \end{scope}
      \end{scope}
     \end{scope}
    \end{scope}
   \end{scope}
- }{
-  %\path(#4/2,0) ++(0,0) node{$\abb,Odd$};
-  \pgfmathsetmacro\side{\a}
-  \pgfmathsetmacro\diag{2*\c}
-  \meccanostrip[FF4400]{\side}{1}{#3}
-  \path(\abb,0) ++(-90:#4 + #3) node{$G$};
-  \begin{scope}[shift={(0,0)},rotate=\beta]
-   \meccanostrip[0088FF]{\diag}{1}{#3}
-   \path(0,0) ++(180:#4 + #3) node{$A$};
-   \path(\c,0) ++(90:#4 + #3) node{$J$};
-   \path(\diag,0) ++(0:#4 + #3) node{$I$};
-  \end{scope}
-  \begin{scope}[shift={(\abb,0)},rotate=180-\beta]
-   \meccanostrip[0088FF]{\diag}{1}{#3}
-  \end{scope}
-  \begin{scope}[shift={(\side,0)},rotate=60]
-   \meccanostrip[FF4400]{\side}{1}{#3}
-   \path(0,0) ++(-90:#4 + #3) node{$B$};
-   \begin{scope}[shift={(\side,0)},rotate=60]
-    \meccanostrip[FF4400]{\side}{1}{#3}
-    \path(0,0) ++(-90:#4 + #3) node{$C$};
-    \begin{scope}[shift={(\side,0)},rotate=60]
-     \meccanostrip[FF4400]{\side}{1}{#3}
-     \path(0,0) ++(-90:#4 + #3) node{$D$};
-     \begin{scope}[shift={(\side,0)},rotate=60]
-      \meccanostrip[FF4400]{\side}{1}{#3}
-      \path(0,0) ++(-90:#4 + #3) node{$E$};
-      \begin{scope}[shift={(\side,0)},rotate=60]
-       \meccanostrip[FF4400]{\side}{1}{#3}
-       \path(0,0) ++(-90:#4 + #3) node{$F$};
-      \end{scope}
-     \end{scope}
-    \end{scope}
-   \end{scope}
-  \end{scope}
- }
 }
+
 
 \newcommand{\meccanoHexagonStatsA}[4]{
  \pgfmathsetmacro\a{#1}
@@ -202,5 +120,109 @@
     \meccanostrip[AAAAAA]{\ab}{1}{#3}
    \end{scope}
   \end{scope}
+}
+
+
+
+\newcommand{\meccanoHexagonStatsB}[4]{
+ \pgfmathsetmacro\a{#1}
+ \pgfmathsetmacro\b{#2}
+ \pgfmathsetmacro\c{int(sqrt(\a^2 + \b^2 - \a*\b))}
+ \pgfmathsetmacro\abb{\a-\b-\b}
+ \pgfmathsetmacro\even{Mod(\abb,2)==0}
+ \ifthenelse{\even=1}{
+  \pgfmathsetmacro\side{int(\a/2)}
+  \pgfmathsetmacro\diag{\c}
+ }{
+  \pgfmathsetmacro\side{\a}
+  \pgfmathsetmacro\diag{int(2*\c)}
+ }
+ \path(#3,#4) node{$a=\a,b=\b,c=\c,d=\diag,t=\side$};
+}
+
+\newcommand{\meccanoHexagonBuilderB}[4]{
+ \pgfmathsetmacro\a{#1}
+ \pgfmathsetmacro\b{#2}
+ \pgfmathsetmacro\ab{\a-\b}
+ \pgfmathsetmacro\abb{\a-\b-\b}
+ \pgfmathsetmacro\c{int(sqrt(\a^2 + \b^2 - \a*\b))}
+ \pgfmathsetmacro\beta{acos((\abb/2)/(\c))}
+ \pgfmathsetmacro\even{Mod(\abb,2)==0}
+
+ \ifthenelse{\even=1}{
+  %\path(#4/2,0) ++(0,0) node{$\abb,Even$};
+  \pgfmathsetmacro\side{\a/2}
+  \pgfmathsetmacro\diag{\c}
+  \meccanostrip[FF4400]{\side}{1}{#3}
+  \path(\abb/2,0) ++(-90:#4 + #3) node{$O$};
+  \begin{scope}[shift={(0,0)},rotate=\beta]
+   \meccanostrip[0088FF]{\diag}{1}{#3}
+   \path(0,0) ++(180:#4 + #3) node{$A$};
+   \path(\diag,0) ++(0:#4 + #3) node{$I$};
+  \end{scope}
+  \begin{scope}[shift={(\abb,0)},rotate=180-\beta]
+   \meccanostrip[0088FF]{\diag}{1}{#3}
+  \end{scope}
+  \begin{scope}[shift={(\abb,0)},rotate=\beta]
+   \meccanostrip[0088FF]{\diag}{1}{#3}
+   \path(0,0) ++(180:#4 + #3) node{$G$};
+   \path(\diag,0) ++(0:#4 + #3) node{$H$};
+  \end{scope}
+  \begin{scope}[shift={(\side,0)},rotate=60]
+   \meccanostrip[FF4400]{\side}{1}{#3}
+   \path(0,0) ++(-90:#4 + #3) node{$B$};
+   \begin{scope}[shift={(\side,0)},rotate=60]
+    \meccanostrip[FF4400]{\side}{1}{#3}
+    \path(0,0) ++(-90:#4 + #3) node{$C$};
+    \begin{scope}[shift={(\side,0)},rotate=60]
+     \meccanostrip[FF4400]{\side}{1}{#3}
+     \path(0,0) ++(-90:#4 + #3) node{$D$};
+     \begin{scope}[shift={(\side,0)},rotate=60]
+      \meccanostrip[FF4400]{\side}{1}{#3}
+      \path(0,0) ++(-90:#4 + #3) node{$E$};
+      \begin{scope}[shift={(\side,0)},rotate=60]
+       \meccanostrip[FF4400]{\side}{1}{#3}
+       \path(0,0) ++(-90:#4 + #3) node{$F$};
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ }{
+  %\path(#4/2,0) ++(0,0) node{$\abb,Odd$};
+  \pgfmathsetmacro\side{\a}
+  \pgfmathsetmacro\diag{2*\c}
+  \meccanostrip[FF4400]{\side}{1}{#3}
+  \path(\abb,0) ++(-90:#4 + #3) node{$G$};
+  \begin{scope}[shift={(0,0)},rotate=\beta]
+   \meccanostrip[0088FF]{\diag}{1}{#3}
+   \path(0,0) ++(180:#4 + #3) node{$A$};
+   \path(\c,0) ++(90:#4 + #3) node{$J$};
+   \path(\diag,0) ++(0:#4 + #3) node{$I$};
+  \end{scope}
+  \begin{scope}[shift={(\abb,0)},rotate=180-\beta]
+   \meccanostrip[0088FF]{\diag}{1}{#3}
+  \end{scope}
+  \begin{scope}[shift={(\side,0)},rotate=60]
+   \meccanostrip[FF4400]{\side}{1}{#3}
+   \path(0,0) ++(-90:#4 + #3) node{$B$};
+   \begin{scope}[shift={(\side,0)},rotate=60]
+    \meccanostrip[FF4400]{\side}{1}{#3}
+    \path(0,0) ++(-90:#4 + #3) node{$C$};
+    \begin{scope}[shift={(\side,0)},rotate=60]
+     \meccanostrip[FF4400]{\side}{1}{#3}
+     \path(0,0) ++(-90:#4 + #3) node{$D$};
+     \begin{scope}[shift={(\side,0)},rotate=60]
+      \meccanostrip[FF4400]{\side}{1}{#3}
+      \path(0,0) ++(-90:#4 + #3) node{$E$};
+      \begin{scope}[shift={(\side,0)},rotate=60]
+       \meccanostrip[FF4400]{\side}{1}{#3}
+       \path(0,0) ++(-90:#4 + #3) node{$F$};
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ }
 }
 
