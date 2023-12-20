@@ -4,34 +4,36 @@
 
 \begin{document}
  \begin{tikzpicture}
- 
+ \def\tx{3}
+ \def\ty{-1.2}
+
   \begin{scope}[shift={(0,0)}]
    \begin{scope}[scale={0.6}]
-%    \meccanoHexagonBuilderA{8}{3}{5pt}{20} %a,b,p,r
-    \meccanoHexagonBuilderB{8}{3}{5pt}{20} %a,b,p,r
+    \meccanoHexagonBuilderA{8}{3}{5pt}{20} %a,b,p,r
    \end{scope}
-   \path(3,-1.2) node{$(a)$};
+%   \path(\tx,\ty) node{$(a)$};
+   \meccanoHexagonStatsA{8}{3}{\tx}{\ty}
   \end{scope}
 
   \begin{scope}[shift={(9,0)}]
    \begin{scope}[scale={0.4}]
-%    \meccanoHexagonBuilderA{15}{7}{3pt}{18} %a,b,p,r
+    \meccanoHexagonBuilderA{15}{7}{3pt}{18} %a,b,p,r
    \end{scope}
-   \path(3,-1.2) node{$(b)$};
+   \meccanoHexagonStatsA{15}{7}{\tx}{\ty}
   \end{scope}
 
   \begin{scope}[shift={(0,-8.5)}]
    \begin{scope}[scale={0.22}]
-%    \meccanoHexagonBuilderA{21}{5}{8pt}{40} %a,b,p,r
+    \meccanoHexagonBuilderA{21}{5}{8pt}{40} %a,b,p,r
    \end{scope}
-   \path(3,-1.2) node{$(c)$};
+   \meccanoHexagonStatsA{21}{5}{\tx}{\ty}
   \end{scope}
  
   \begin{scope}[shift={(9,-8.5)}]
    \begin{scope}[scale={0.15}]
-%    \meccanoHexagonBuilderA{35}{11}{9pt}{50} %a,b,p,r
+    \meccanoHexagonBuilderA{35}{11}{9pt}{50} %a,b,p,r
    \end{scope}
-   \path(3,-1.2) node{$(d)$};
+   \meccanoHexagonStatsA{35}{11}{\tx}{\ty}
   \end{scope}
  
  \end{tikzpicture}
