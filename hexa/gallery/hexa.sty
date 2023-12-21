@@ -40,7 +40,7 @@
  \pgfmathsetmacro\b{#2}
  \pgfmathsetmacro\c{int(sqrt(\a^2 + \b^2 - \a*\b))}
  \pgfmathsetmacro\ab{int(\a-\b})
- \path(#3,#4) node{$a=\a,b=\b,c=\c,s=\ab$};
+ \path(#3,#4) node{$a=\a,b=\b,c=\c,p=\ab$};
 }
 
 
@@ -137,7 +137,7 @@
   \pgfmathsetmacro\side{\a}
   \pgfmathsetmacro\diag{int(2*\c)}
  }
- \path(#3,#4) node{$a=\a,b=\b,c=\c,d=\diag,t=\side$};
+ \path(#3,#4) node{$a=\a,b=\b,c=\c,d=\diag,q=\side$};
 }
 
 \newcommand{\meccanoHexagonBuilderB}[4]{

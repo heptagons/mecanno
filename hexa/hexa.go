@@ -6,6 +6,29 @@ import (
 	"github.com/heptagons/meccano"
 )
 
+func TriangleInsideHexagon(max int) {
+
+	for s := 1; s < max; s++ {
+		for o := 1; o < s/2; o++ {
+			if meccano.Gcd(s,o) == 1 {
+				diag := 3*s*s - 3*s*o + 3*o*o
+				cd := math.Sqrt(float64(diag))
+				c := int(cd)
+				if cd == float64(c) {
+					fmt.Printf("s=%d o=%d c=%d p=%d b=%d\n", s, o, c, s+o, s-2*o)
+				}
+			}
+		}
+	}
+	// s=13 o=2 c=21 p=15 b=9
+	// s=23 o=1 c=39 p=24 b=21
+	// s=37 o=11 c=57 p=48 b=15
+	// s=59 o=13 c=93 p=72 b=33
+	// s=73 o=26 c=111 p=99 b=21
+	// s=83 o=22 c=129 p=105 b=39
+	// s=94 o=23 c=147 p=117 b=48
+}
+
 // triangle_diagonals finds the integer diagonals inside equilateral meccano
 // triangles:
 //       C      sizes AB = BD = CA, angle ABC = 60°
