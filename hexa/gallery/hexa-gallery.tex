@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano hexagons gallery}
 \author{https://github.com/heptagons/meccano/hexa/gallery}
-\date{2023/12/21}
+\date{2023/12/22}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -10,34 +10,33 @@
 
 \maketitle
 \begin{abstract}
-We build rigid meccano\meccanoref regular pentagons from sides $4$ to $24$. We restrict all internal strips to remain inside the hexagons's perimeter and don't permit they overlap with others. The internal strips must not be parallel to any side of the hexagon.
+We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. The perimeter has six equal strips and for their rigidity we add some internal strips as diagonals under three conditions: Will remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triplets} to make triangles having an internal angle of $120^\circ$ used as the base of the internal strips.
 \end{abstract}
 
-% 13
-
-\section{Internal strips}
+\section{Hexagonal triplets}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.9]{build/hexa-builder-a}
-\caption{First four cases where internal strip $c = \overline{GC}$ is an integer and makes rigid two consecutive regular hexagon sides $p = \overline{AB} = \overline{BC}$. We use two numbers to identify every solution $a$ and $b$ where $b = \overline{GB}$ and $a = p - b$ and $c = \sqrt{a^2+b^2-ab}$. }
+\caption{First four cases where internal strip $c = \overline{GC}$ is an integer and makes rigid two consecutive regular hexagon sides $p = \overline{AB} = \overline{BC}$. Our software inspect two integers $a > b$ and looks for $c = \sqrt{a^2+b^2-ab}$ to be an integer. In the figures $b = \overline{GB}$ and $a = \overline{GX} = p + b$. }
 \label{fig:builder-a}
 \end{figure}
 
-We run a software program to look strips that can make rigid two consecutive internal sides of any hexagon. Figure \ref{fig:builder-a} show the smaller four cases found. Consider the figure at top left, the internal hexagon angle is $\theta \equiv \angle{GBC} = 2\pi/3$ and the hexagon side is $p \equiv \overline{BC}$. Consider the triangle $\triangle{GBC}$ and define the other two sides as $b \equiv \overline{GB}$ and $c = \overline{GC}$. By the law of cosines we know that:
+We look strips that can make rigid two consecutive internal sides the regular hexagon. Figure \ref{fig:builder-a} show the first four cases found. From any figure we have the internal hexagon angle is $\theta \equiv \angle{GBC} = 2\pi/3$. First we define the hexagon side as $p \equiv \overline{BC}$. From the triangle $\triangle{GBC}$ we define the other two sides as $b \equiv \overline{GB}$ and $c = \overline{GC}$. By the law of cosines we know that:
 \begin{align}
 c &= \sqrt{b^2 + p^2 - 2bp\cos\theta} \nonumber\\
  &= \sqrt{b^2 + p^2 - 2bp\left(-\frac{1}{2}\right)} \nonumber\\
- &= \sqrt{b^2 + p^2 + bp}
+ &= \sqrt{b^2 + p^2 + bp} \label{eq:triplet-cpb}
 \end{align}
-By defining $a \equiv p + b$ we get:
+
+Then we defie $a \equiv p + b$ and we get:
 \begin{align}
-c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } a > b
+c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } c > a > b
 \end{align}
 
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{||c c c c||} 
+\begin{tabular}{| c | c c c |} 
  \hline
  $a$ & $b$ & $c$ & $p$ \\ [0.5ex] 
  \hline\hline
@@ -48,18 +47,19 @@ c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } a > b
  40 &  7 & 37 & 33 \\ \hline
  48 & 13 & 43 & 35 \\ \hline
 \end{tabular}
-\caption{Triplets of sides of triangle with angle $2\pi/3$ where $c > p > b$.}
+\caption{Hexagonal triplets $c > p > b$ as the sides of a triangle with an internal angle $2\pi/3$.}
 \label{tbl:triplets}
 \end{center}
 \end{table}
 
-We run a software to iterate first over $0 < a < max$ and then by $1 < b < a$ and filtering $c$ to be integer we get the first rows of triangles with sides $c > p > b$ in table \ref{tbl:triplets}.
+A software iterates first $0 < a < max$ and then $1 < b < a$ and record all $c$ that is an integer. The first cases of such triangles with sides $c > p > b$ are shown table \ref{tbl:triplets} and we call them \texttt{Hexagonal triplets}.
 
-Figure $\ref{fig:builder-a}$ shows hexagons of sizes $p = 5,8,16,24$ with perimeter strips in orange made rigid adding three internal green strips of lenght $c = 7,13,19,31$. In the figure we have also an equilateral triangle $\triangle{GCY}$ and an isoscelles triangle $\triangle{AGY}$. The base of the isoscelles triangle is $x \equiv \overline{AG} = \overline{AB} - \overline{GB} = p - b$ and the equals sides $\overline{AY} = \overline{GY} = c$. So we can calculate the height $y \equiv \overline{OY}$:
+Figure $\ref{fig:builder-a}$ shows hexagons of sizes $p = \{5,8,16,24\}$ with perimeter strips in orange made rigid adding three internal green strips of lenght $c = \{7,13,19,31\}$. In the figure we have also an equilateral triangle $\triangle{GCY}$ and an isoscelles triangle $\triangle{AGY}$. The base of the isoscelles triangle is $x \equiv \overline{AG} = \overline{AB} - \overline{GB} = p - b$ and the equals sides are $\overline{AY} = \overline{GY} = c$. So we can calculate the height $y \equiv \overline{OY}$ substituting $c$ using equation \ref{eq:triplet-cpb}:
 \begin{align}
 y &= \sqrt{(\overline{GY})^2 - (\overline{AO})^2} \nonumber\\
  &= \sqrt{c^2 - \left(\frac{p - b}2\right)^2} \nonumber\\
- &= \sqrt{b^2 + p^2 + bp - \left(\frac{p-b}2\right)^2} = \frac{(p+s)\sqrt3}2 = \frac{a\sqrt3}2
+ &= \sqrt{b^2 + p^2 + bp - \left(\frac{p-b}2\right)^2}
+  = \frac{(p + b)\sqrt3}2 = \frac{a\sqrt3}2
 \end{align}
 
 
@@ -73,7 +73,19 @@ y &= \sqrt{(\overline{GY})^2 - (\overline{AO})^2} \nonumber\\
 
 We know $\dfrac{a\sqrt3}2$ is the height of the regular hexagon of side $\dfrac{a}2$ so we can use the blue strips to connect opposite sides. Figure \ref{fig:builder-b} show the smaller hexagons that have integer strips connecting opposites sides.
 
-Through the gallery we will use the green and blue strips and scaled copies of such strips to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of bolts, minimum number of strips and the largest strips sizes as possible.
+Through the gallery we will use the green and blue strips and their scaled copies as the internal diagonals which make some rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of strips and bolts and the largest strips sizes as possible.
+
+\section{Hexagons of size $s < 10$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{4/hexa-4a}
+\caption{Hexagon of size $s = 4$. Diagonals $c = \overline{GH} = \overline{HI} = \overline{IG} = 7$.}
+\label{fig:4a}
+\end{figure}
+
+Figure \ref{fig:4a} show a regular hexagon of size $4$ with three diagonals of size $7$. The distance $\overline{OG} = \sqrt{(\overline{AG})^2 - (\overline{AO})^2} = \sqrt{7^2 - 1^2} = 4\sqrt3$.
+
 
 \section{Hexagons of size 13}
 
@@ -122,7 +134,7 @@ First terms of this case is shown in the table \ref{tbl:eqtriangles}
 \end{center}
 \end{table}
 
-\section{Hexagon of size $\ge 20$}
+\section{Hexagons of size $\ge 20$}
 
 \begin{figure}[H]
 \centering
