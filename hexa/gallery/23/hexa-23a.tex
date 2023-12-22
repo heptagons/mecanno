@@ -1,0 +1,43 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+  \def\s{23}
+  \def\p{7pt}
+  \def\r{40}
+  \pgfmathsetmacro\angle{(39^2 + 24^2 - 21^2)/(2*39*24)}
+
+  \begin{scope}[scale={0.2}]
+   \path(0,0) ++(-120:\r+\p) node{$A$};
+   \meccanoHexagon{FF4400}{\s}{\p}{B}{C}{D}{E}{F}{\r}
+   % first internal
+   \begin{scope}[shift={(22,0)},rotate=60+acos(\angle)]
+    \meccanostrip[00CC00]{39}{1}{\p}
+    \path(0,0) ++(180:\r+\p) node{$G$};
+   \end{scope}
+   % second internal
+   \begin{scope}[shift={(\s,0)},rotate=60]
+    \begin{scope}[shift={(\s,0)},rotate=60]
+     %\path(2,0) ++(-90:\r+\p) node{$J$}; % for calculations explanation
+     \begin{scope}[shift={(22,0)},rotate=60+acos(\angle)]
+      \meccanostrip[00CC00]{39}{1}{\p}
+      \path(0,0) ++(180:\r+\p) node{$H$};
+     \end{scope}
+     % third internal
+     \begin{scope}[shift={(\s,0)},rotate=60]
+      \begin{scope}[shift={(\s,0)},rotate=60]
+       \begin{scope}[shift={(22,0)},rotate=60+acos(\angle)]
+        \meccanostrip[00CC00]{39}{1}{\p}
+        \path(0,0) ++(180:\r+\p) node{$I$};
+       \end{scope}
+      \end{scope}  
+     \end{scope}
+
+    \end{scope}  
+   \end{scope}
+   
+  \end{scope}
+ \end{tikzpicture}
+\end{document}

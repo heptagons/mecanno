@@ -10,5 +10,5 @@ func TestDiagonals(t *testing.T) {
 }
 
 func TestTriangleInsideHexagon(t *testing.T) {
-	TriangleInsideHexagon(100)
+	TriangleInsideHexagon(700)
 }
