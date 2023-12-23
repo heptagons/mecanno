@@ -1,0 +1,40 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+  \def\s{5}
+  \def\p{5pt}
+  \def\r{20}
+  \pgfmathsetmacro\angle{acos((7^2 + 3^2 - 5^2)/(2*7*3))}
+
+  \begin{scope}[scale={0.6}]
+   \path(0,0) ++(-120:\r+\p) node{$A$};
+   \meccanoHexagon{FF4400}{\s}{\p}{B}{C}{D}{E}{F}{\r}
+   % first internal
+   \begin{scope}[shift={(2,0)},rotate=\angle]
+    \path(0,0) ++(-150:\r+\p) node{$G$};
+    \meccanostrip[00CC00]{7}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(\s,0)},rotate=60]
+    \begin{scope}[shift={(\s,0)},rotate=60]
+     % second internal
+     \begin{scope}[shift={(2,0)},rotate=\angle]
+      \path(0,0) ++(-150:\r+\p) node{$H$};
+      \meccanostrip[00CC00]{7}{1}{\p}
+     \end{scope}
+     \begin{scope}[shift={(\s,0)},rotate=60]
+      \begin{scope}[shift={(\s,0)},rotate=60]
+       % third internal
+       \begin{scope}[shift={(2,0)},rotate=\angle]
+        \path(0,0) ++(-150:\r+\p) node{$I$};
+        \meccanostrip[00CC00]{7}{1}{\p}
+       \end{scope}
+      \end{scope}
+     \end{scope}
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
