@@ -13,7 +13,9 @@
 We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexagon perimeter has $6$ equal strips connected with $6$ bolts. To make it rigid we add a maximum of $3$ internal strips connected with at most $4$ extra bolts. The extra strips also must remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triangles} which have an internal angle of $120^\circ$ and we use their sides as the internal strips.
 \end{abstract}
 
-\section{Hexagonal triangles}
+\section{Algebra and software}
+
+\subsection{Hexagon angles}
 
 \begin{figure}[h]
 \centering
@@ -36,25 +38,33 @@ c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } a > b
 
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{| c | c c c |} 
- \hline
- $a$ & $b$ & $c$ & $p$ \\ [0.5ex] 
- \hline\hline
-  8 &  3 &  7 &  5 \\ \hline
- 15 &  7 & 13 &  8 \\ \hline
- 21 &  5 & 19 & 16 \\ \hline
- 35 & 11 & 31 & 24 \\ \hline
- 40 &  7 & 37 & 33 \\ \hline
- 48 & 13 & 43 & 35 \\ \hline
+
+% start go test ./hexa/. -run TestHexagonTrianglesTex -v -count 1
+\begin{tabular}{| c | c c c |}
+\hline
+$a$ & $c$ & $p$ & $b$ \\ [0.5ex]
+\hline\hline
+8 & 7 & 5 & 3 \\ \hline
+15 & 13 & 8 & 7 \\ \hline
+21 & 19 & 16 & 5 \\ \hline
+35 & 31 & 24 & 11 \\ \hline
+40 & 37 & 33 & 7 \\ \hline
+48 & 43 & 35 & 13 \\ \hline
 \end{tabular}
+% end
+
 \caption{\textbf{Hexagonal triangles} with sides $c > p > b$ with an internal angle $2\pi/3$.}
 \label{tbl:triplets}
 \end{center}
 \end{table}
 
-Our software iterates first $0 < a < max$ and then $1 < b < a$ and record all $c$ that is an integer. The first cases of such triangles with sides $c > p > b$ are shown table \ref{tbl:triplets} and we call them \texttt{Hexagonal triplets}.
+Our software iterates first $0 < a < max$ and then $1 < b < a$ and record all $c$ that is an integer. The first cases of such triangles with sides $c > p > b$ are shown table \ref{tbl:triplets} and we call them \textbf{Hexagonal triangles}.
 
-Figure $\ref{fig:builder-a}$ shows hexagons of sizes $p = \{5,8,16,24\}$ with perimeter strips in orange made rigid adding three internal green strips of lenght $c = \{7,13,19,31\}$. In the figure we have also an equilateral triangle $\triangle{GCY}$ and an isoscelles triangle $\triangle{AGY}$. The base of the isoscelles triangle is $x \equiv \overline{AG} = \overline{AB} - \overline{GB} = p - b$ and the equals sides are $\overline{AY} = \overline{GY} = c$. So we can calculate the height $y \equiv \overline{OY}$ substituting $c$ using equation \ref{eq:triplet-cpb}:
+Figure $\ref{fig:builder-a}$ shows hexagons of sizes $p = \{5,8,16,24\}$ with perimeter strips in orange made rigid adding three internal green strips of lenght $c = \{7,13,19,31\}$. 
+
+\subsubsection{Hexagon height}
+
+In figure $\ref{fig:builder-a}$ we have also an equilateral triangle $\triangle{GCY}$ and an isoscelles triangle $\triangle{AGY}$. The base of the isoscelles triangle is $x \equiv \overline{AG} = \overline{AB} - \overline{GB} = p - b$ and the equals sides are $\overline{AY} = \overline{GY} = c$. So we can calculate the height $y \equiv \overline{OY}$ substituting $c$ using equation \ref{eq:triplet-cpb}:
 \begin{align}
 y &= \sqrt{(\overline{GY})^2 - (\overline{AO})^2} \nonumber\\
  &= \sqrt{c^2 - \left(\frac{p - b}2\right)^2} \nonumber\\
@@ -72,6 +82,8 @@ y &= \sqrt{(\overline{GY})^2 - (\overline{AO})^2} \nonumber\\
 \end{figure}
 
 We know $\dfrac{a\sqrt3}2$ is the height of the regular hexagon of side $\dfrac{a}2$ so we can use the blue strips to connect opposite sides. Figure \ref{fig:builder-b} show the smaller hexagons that have integer strips connecting opposites sides.
+
+\subsubsection{Hexagon rigidity}
 
 Through the gallery we will use the green, blue and purple strips and their scaled copies as internal diagonals to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of internal strips (2 or 3) and extra bolts (2 or 3 or 4) and the largest strips sizes as possible. We discard the hexagons which are scaled copies of smaller ones.
 
@@ -106,7 +118,7 @@ Figure \ref{fig:5a} show a regular hexagon $ABCDEF$ of size $5$ with three diago
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{8/hexa-8a}
-\caption{Hexagon of size $9$ with \textbf{only} two diagonals $\overline{AH} = \overline{EI} = 14$ and extra bolts at $G,H,I$.}
+\caption{Hexagon of size $8$ with \textbf{only} two diagonals $\overline{AH} = \overline{EI} = 14$ and extra bolts at $G,H,I$.}
 \label{fig:8a}
 \end{figure}
 
@@ -155,15 +167,15 @@ Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GH
 \label{fig:13a}
 \end{figure}
 
-Figure \ref{fig:13a} show hexagon of size $s = 13$. First we detect an offset $o \equiv \overline{DH}$ which we use to calculate the sides $p',b',c'$ of triangle $\triangle{GJH}$:
+Figure \ref{fig:13a} show hexagon of size $s = 13$. First we note an offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{p',b',c'\}$ of triangle $\triangle{GJH}$:
 \begin{align}
-o &\equiv \overline{DH} = \overline{CJ} = 2 \nonumber\\
-p' &\equiv \overline{GJ} = \overline{BC} + o = 13+2 = 15 \nonumber\\
-b' &\equiv \overline{JH} = \overline{CD} - 2o = 13 - 2(2) = 9 \nonumber\\
+o &\equiv \overline{DH} = \overline{CO} = 2 \nonumber\\
+p' &\equiv \overline{GO} = \overline{BC} + o = 13+2 = 15 \nonumber\\
+b' &\equiv \overline{OH} = \overline{CD} - 2o = 13 - 2(2) = 9 \nonumber\\
 c' &\equiv \overline{GH} = 21
 \end{align}
-We confirm triplet $c',p',b'$ is three times ($n=3$) valid hexagonal triplet $c=7,p=5,b=3$.
-This case has an equilateral triangle $\triangle{GHI}$ inside the hexagon because is a special of the general case when:
+
+We confirm sides $\{c',p',b'\}$ corresponds to hexagonal triangle $\{7,5,3\}$ multipled by $3$. This case has an equilateral triangle $\triangle{GHI}$ inside the hexagon because is a special of the general case when:
 \begin{align}
 nb &= s - 2o \nonumber\\
 np &= s + o \nonumber\\
@@ -179,13 +191,12 @@ First terms of this case is shown in the table \ref{tbl:eqtriangles}
  \hline
  $s$ & $o$ & $c$ & $p$ & $b$ \\ [0.5ex] 
  \hline\hline
-%  8 &  3 &  7 &  5 \\ \hline
   13 &  2 &  21 &  15 &  9 \\ \hline
   23 &  1 &  39 &  24 & 21 \\ \hline
   37 & 11 &  57 &  48 & 15 \\ \hline
   59 & 13 &  93 &  72 & 33 \\ \hline
 \end{tabular}
-\caption{Hexagons of size $s$ with inside equilateral triangles side of $c$.}
+\caption{Hexagons of size $s$ with inside equilateral triangles of side $c$.}
 \label{tbl:eqtriangles}
 \end{center}
 \end{table}
@@ -230,7 +241,7 @@ Figure \ref{fig:23a} show a regular hexagon $ABCDEF$ of size $s=23$. Is the seco
 \label{fig:24a}
 \end{figure}
 
-Figure \ref{fig:24a} show regular hexagon $ABCDEF$ of size $s = 24$. Triangle $\triangle{GBC}$ has sides $\{31,24,11\}$ which is the fourth hexagonal triangle in table \ref{tbl:triplets}. Triangle $\triangle{DHG}$ is the isoscelles triangle shown in figure \ref{fig:builder-b} case $a=48$.
+Figure \ref{fig:24a} show regular hexagon $ABCDEF$ of size $24$. Triangle $\triangle{GBC}$ has sides $\{31,24,11\}$ which is an hexagonal triangle in table \ref{tbl:triplets}. Triangle $\triangle{DHG}$ is the isoscelles triangle shown in figure \ref{fig:builder-b} case $a=48$.
 
 
 

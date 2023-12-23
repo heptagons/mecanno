@@ -4,9 +4,8 @@ import (
 	"testing"
 )
 
-func TestDiagonals(t *testing.T) {
-	
-	Diagonals(700)
+func TestHexagonTrianglesTex(t *testing.T) {
+	HexagonTrianglesTex(48) // tex lines for gallery document
 }
 
 func TestTriangleInsideHexagon(t *testing.T) {
