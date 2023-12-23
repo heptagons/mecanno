@@ -29,7 +29,7 @@ func TriangleInsideHexagon(max int) {
 	// s=94 o=23 c=147 p=117 b=48
 }
 
-// triangle_diagonals finds the integer diagonals inside equilateral meccano
+// Triangles120Tex finds the integer diagonals inside equilateral meccano
 // triangles:
 //       C      sizes AB = BD = CA, angle ABC = 60°
 //      / \     diagonal AD=Math.sqrt((a-b)*(a-b) + ab)
@@ -37,8 +37,7 @@ func TriangleInsideHexagon(max int) {
 //    /   _ D
 //   /_ -    \
 //  A---------B
-func HexagonTrianglesTex(max int) {
-
+func Triangles120Tex(max int) {
 	fmt.Println("\\begin{tabular}{| c | c c c |}")
 	fmt.Println("\\hline")
  	fmt.Println("$a$ & $c$ & $p$ & $b$ \\\\ [0.5ex]")
@@ -50,11 +49,6 @@ func HexagonTrianglesTex(max int) {
 				cd := math.Sqrt(float64(diag))
 				d := int(cd)
 				if cd == float64(d) {
-					//num := float64(diag + a*a - b*b)
-					//den := 2.0 * cd * float64(a)
-					//angle := 180*math.Acos(num/den)/math.Pi
-					//fmt.Printf("a=%3d b=%3d d=%3d angle=%8.4f\n", a, b, d, angle)
-					//  8 &  7 &  3 &  7 &  5 \\ \hline
 					fmt.Printf("%d & %d & %d & %d ", a, d, a-b, b)
 					fmt.Print("\\\\ \\hline\n")
 
@@ -64,6 +58,8 @@ func HexagonTrianglesTex(max int) {
 	}
 	fmt.Println("\\end{tabular}")
 }
+
+
 
 func Diagonals(max int) {
 	for a := 1; a < max; a++ {

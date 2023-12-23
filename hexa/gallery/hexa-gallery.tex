@@ -20,7 +20,7 @@ We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexag
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.9]{build/hexa-builder-a}
-\caption{First four cases where internal strip $c = \overline{GC}$ is an integer and makes rigid two consecutive regular hexagon sides $p = \overline{AB} = \overline{BC}$. Our software inspect two integers $a > b$ and looks for $c = \sqrt{a^2+b^2-ab}$ to be an integer. In the figures $b = \overline{GB}$ and $a = \overline{GX} = p + b$. }
+\caption{First four cases where internal strip $c = \overline{GC}$ is an integer and makes rigid two consecutive regular hexagon sides $p = \overline{AB} = \overline{BC}$. Our software inspect two integers $a > b$ and looks for $c = \sqrt{a^2+b^2-ab}$ to be an integer. In the figures $b = \overline{GB}$ and $a = \overline{GX} = \overline{XJ} = \overline{JG} = p + b$. }
 \label{fig:builder-a}
 \end{figure}
 
@@ -39,7 +39,7 @@ c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } a > b
 \begin{table}[H]
 \begin{center}
 
-% start go test ./hexa/. -run TestHexagonTrianglesTex -v -count 1
+% start go test ./hexa/. -run TestTriangles120Tex -v -count 1
 \begin{tabular}{| c | c c c |}
 \hline
 $a$ & $c$ & $p$ & $b$ \\ [0.5ex]
@@ -158,6 +158,16 @@ Figure \ref{fig:10a} show hexagon $ABCDEF$ of size $10$. Triangles $\triangle{HI
 
 Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GHA}$ and $\triangle{JIC}$ have sides $\{14,10,6\}$ which are the hexagonal triangle $\{7,5,3\}$ multipled by 2. Triangle $\triangle{IGO}$ has sides $\{19,16,5\}$ which is an hexagonal triangle.
 
+% 12
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{12/hexa-12a}
+\caption{Hexagon of size $12$ with only two diagonals $\overline{EG} = \overline{HI} = 21$ and four extra bolts in vertices $G,H,I,J$.}
+\label{fig:12a}
+\end{figure}
+
+Figure \ref{fig:12a} show hexagon $ABCDEF$ of size $12$. We confirm the hexagon height: $\overline{AE} = \sqrt{(\overline{EG})^2 - (\overline{AG})^2} = \sqrt{21^2 - 3^2} = 12\sqrt3$.
+
 
 % 13
 \begin{figure}[H]
@@ -167,24 +177,24 @@ Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GH
 \label{fig:13a}
 \end{figure}
 
-Figure \ref{fig:13a} show hexagon of size $s = 13$. First we note an offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{p',b',c'\}$ of triangle $\triangle{GJH}$:
+Figure \ref{fig:13a} show hexagon of size $s = 13$. First we note an offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{c,p,b\}$ of triangle $\triangle{GOH}$:
 \begin{align}
 o &\equiv \overline{DH} = \overline{CO} = 2 \nonumber\\
-p' &\equiv \overline{GO} = \overline{BC} + o = 13+2 = 15 \nonumber\\
-b' &\equiv \overline{OH} = \overline{CD} - 2o = 13 - 2(2) = 9 \nonumber\\
-c' &\equiv \overline{GH} = 21
+c &\equiv \overline{GH} = 21 \nonumber\\
+p &\equiv \overline{GO} = \overline{BC} + o = 13+2 = 15 \nonumber\\
+b &\equiv \overline{OH} = \overline{CD} - 2o = 13 - 2(2) = 9
 \end{align}
 
-We confirm sides $\{c',p',b'\}$ corresponds to hexagonal triangle $\{7,5,3\}$ multipled by $3$. This case has an equilateral triangle $\triangle{GHI}$ inside the hexagon because is a special of the general case when:
+The sides $c,p,b$ are $\{21,15,9\}$ which corresponds to hexagonal triangle $\{7,5,3\}$ multipled by $3$. For this case having an equilateral triangle inside the hexagon we can calculate $c$ in function of $s,o$ using the equation \ref{eq:triplet-cpb}:
 \begin{align}
-nb &= s - 2o \nonumber\\
-np &= s + o \nonumber\\
-nc &= \sqrt{(nb)^2 + (np)^2 - (nb)(np)} \nonumber\\
+b &= s - 2o \nonumber\\
+p &= s + o \nonumber\\
+c &= \sqrt{b^2 + p^2 - bp} \nonumber\\
    &= \sqrt{(s - 2o)^2 + (s+o)^2 + (s - 2o)(s+o)} \nonumber\\
    &= \sqrt{3s^2 - 3so + 3o^2}
 \end{align}
 
-First terms of this case is shown in the table \ref{tbl:eqtriangles}
+Using the formula our software found more cases shown in the table \ref{tbl:eqtriangles}
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{| c c | c c c |} 
@@ -200,6 +210,16 @@ First terms of this case is shown in the table \ref{tbl:eqtriangles}
 \label{tbl:eqtriangles}
 \end{center}
 \end{table}
+
+% 14
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{14/hexa-14a}
+\caption{Hexagon of size $14$ with three diagonals $\overline{GH} = 14, \overline{GI} = \overline{IJ} = 13$ and four bolts at vertices $G,H,I,J$.}
+\label{fig:14a}
+\end{figure}
+
+Figure \ref{fig:14a} show hexagon of size $14$. Triangle $\triangle{GHA}$ has sides $\{14,10,6\}$ which is hexagonal triangle $\{7,5,3\}$ multipled by $2$. Triangles $\triangle{IGB}$ and $\triangle{JCI}$ have sides $\{13,8,7\}$ which are hexagonal triangles.
 
 \section{Hexagons of size $\ge 20$}
 

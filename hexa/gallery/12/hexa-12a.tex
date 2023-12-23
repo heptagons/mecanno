@@ -1,0 +1,28 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+  \def\s{12}
+  \def\p{7pt}
+  \def\r{30}
+  \pgfmathsetmacro\angleA{acos(1/7)}
+
+  \begin{scope}[scale={0.3}]
+   \path(0,0) ++(-120:\r+\p) node{$A$};
+   \meccanoHexagon{FF4400}{\s}{\p}{B}{C}{D}{E}{F}{\r}
+   % first internal
+   \begin{scope}[shift={(3,0)},rotate=180-\angleA]
+    \meccanostrip[880088]{21}{1}{\p}
+    \path(0,0) ++(180:\r+\p) node{$G$};
+   \end{scope}
+   \begin{scope}[shift={(1,0)},rotate=\angleA]
+    \meccanostrip[880088]{21}{1}{\p}
+    \path(0,0) ++(180:\r+\p) node{$H$};
+    \path(21,0) ++(0:\r+\p) node{$I$};
+    \path(7,0) ++(-90:\r+\p) node{$J$};
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
