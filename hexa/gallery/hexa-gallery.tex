@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano hexagons gallery}
 \author{https://github.com/heptagons/meccano/hexa/gallery}
-\date{2023/12/22}
+\date{2023/12/23}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -10,10 +10,10 @@
 
 \maketitle
 \begin{abstract}
-We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. The perimeter has six equal strips and for their rigidity we add some internal strips as diagonals under three conditions: Will remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triplets} to make triangles having an internal angle of $120^\circ$ used as the base of the internal strips.
+We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexagon perimeter has $6$ equal strips connected with $6$ bolts. To make it rigid we add a maximum of $3$ internal strips connected with at most $4$ extra bolts. The extra strips also must remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triangles} which have an internal angle of $120^\circ$ and we use their sides as the internal strips.
 \end{abstract}
 
-\section{Hexagonal triplets}
+\section{Hexagonal triangles}
 
 \begin{figure}[h]
 \centering
@@ -25,13 +25,13 @@ We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. The p
 We look strips that can make rigid two consecutive internal sides the regular hexagon. Figure \ref{fig:builder-a} show the first four cases found. From any figure we have the internal hexagon angle is $\theta \equiv \angle{GBC} = 2\pi/3$. First we define the hexagon side as $p \equiv \overline{BC}$. From the triangle $\triangle{GBC}$ we define the other two sides as $b \equiv \overline{GB}$ and $c = \overline{GC}$. By the law of cosines we know that:
 \begin{align}
 c &= \sqrt{b^2 + p^2 - 2bp\cos\theta} \nonumber\\
- &= \sqrt{b^2 + p^2 - 2bp\left(-\frac{1}{2}\right)} \nonumber\\
- &= \sqrt{b^2 + p^2 + bp} \label{eq:triplet-cpb}
+ &= \sqrt{b^2 + p^2 - 2bp\left(-\frac{1}{2}\right)}
+ = \sqrt{b^2 + p^2 + bp} \label{eq:triplet-cpb}
 \end{align}
 
-Then we defie $a \equiv p + b$ and we get:
+Then we defie $a \equiv p + b$ to get:
 \begin{align}
-c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } c > a > b
+c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } a > b
 \end{align}
 
 \begin{table}[H]
@@ -47,12 +47,12 @@ c &= \sqrt{a^2 + b^2 - ab} \quad \texttt{ where } c > a > b
  40 &  7 & 37 & 33 \\ \hline
  48 & 13 & 43 & 35 \\ \hline
 \end{tabular}
-\caption{Hexagonal triplets $c > p > b$ as the sides of a triangle with an internal angle $2\pi/3$.}
+\caption{\textbf{Hexagonal triangles} with sides $c > p > b$ with an internal angle $2\pi/3$.}
 \label{tbl:triplets}
 \end{center}
 \end{table}
 
-A software iterates first $0 < a < max$ and then $1 < b < a$ and record all $c$ that is an integer. The first cases of such triangles with sides $c > p > b$ are shown table \ref{tbl:triplets} and we call them \texttt{Hexagonal triplets}.
+Our software iterates first $0 < a < max$ and then $1 < b < a$ and record all $c$ that is an integer. The first cases of such triangles with sides $c > p > b$ are shown table \ref{tbl:triplets} and we call them \texttt{Hexagonal triplets}.
 
 Figure $\ref{fig:builder-a}$ shows hexagons of sizes $p = \{5,8,16,24\}$ with perimeter strips in orange made rigid adding three internal green strips of lenght $c = \{7,13,19,31\}$. In the figure we have also an equilateral triangle $\triangle{GCY}$ and an isoscelles triangle $\triangle{AGY}$. The base of the isoscelles triangle is $x \equiv \overline{AG} = \overline{AB} - \overline{GB} = p - b$ and the equals sides are $\overline{AY} = \overline{GY} = c$. So we can calculate the height $y \equiv \overline{OY}$ substituting $c$ using equation \ref{eq:triplet-cpb}:
 \begin{align}
@@ -73,7 +73,7 @@ y &= \sqrt{(\overline{GY})^2 - (\overline{AO})^2} \nonumber\\
 
 We know $\dfrac{a\sqrt3}2$ is the height of the regular hexagon of side $\dfrac{a}2$ so we can use the blue strips to connect opposite sides. Figure \ref{fig:builder-b} show the smaller hexagons that have integer strips connecting opposites sides.
 
-Through the gallery we will use the green, blue and purple strips and their scaled copies as internal diagonals to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of strips and bolts and the largest strips sizes as possible.
+Through the gallery we will use the green, blue and purple strips and their scaled copies as internal diagonals to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of internal strips (2 or 3) and extra bolts (2 or 3 or 4) and the largest strips sizes as possible. We discard the hexagons which are scaled copies of smaller ones.
 
 \section{Hexagons of size $s < 10$}
 
@@ -101,6 +101,38 @@ Figure \ref{fig:5a} show a regular hexagon $ABCDEF$ of size $5$ with three diago
  {2(\overline{GB})(\overline{BC})}
  = \frac{3^2 + 5^2 - 7^2}{2(3)(5)} = -\frac{1}2 \nonumber
 \end{align}
+
+%8
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{8/hexa-8a}
+\caption{Hexagon of size $9$ with \textbf{only} two diagonals $\overline{AH} = \overline{EI} = 14$ and extra bolts at $G,H,I$.}
+\label{fig:8a}
+\end{figure}
+
+Figure \ref{fig:8a} show hexagon $ABCDEF$ of size $8$. We confirm the height of the hexagon $\overline{AE} = \sqrt{(\overline{AG})^2 - (\overline{AH})^2} = \sqrt{14^2 - 2^2} = 8\sqrt3$.
+
+
+%9
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{9/hexa-9a}
+\caption{Hexagon of size $9$ with three diagonals $\overline{GH} = \overline{IJ} = 13, \overline{GI} = 14$ and extra bolts at $G,H,I,J$.}
+\label{fig:9a}
+\end{figure}
+
+Figure \ref{fig:9a} show hexagon $ABCDEF$ of size $9$. Triangles $\triangle{HBG}$ and $\triangle{JID}$ have sides $\{13,8,7\}$ which are hexagonal triangles. Triangle $\triangle{GIO}$ has sides $\{14,10,6\}$ which is hexagonal triangle $\{7,5,3\}$ multipled by $2$.
+
+
+%10
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{10/hexa-10a}
+\caption{Hexagon of size $10$ with three diagonals $\overline{HI} = \overline{IJ} = 7, \overline{GH} = 13$ and extra bolts at $G,H,I,J$.}
+\label{fig:10a}
+\end{figure}
+
+Figure \ref{fig:10a} show hexagon $ABCDEF$ of size $10$. Triangles $\triangle{HIC}$ and $\triangle{JID}$ have sides $\{7,5,3\}$ which are hexagonal triangles. Triangle $\triangle{HGB}$ has size $\{13,8,7\}$ which is an hexagonal triangle.
 
 \section{Hexagons of size $10 < s < 20$ }
 
@@ -143,7 +175,7 @@ nc &= \sqrt{(nb)^2 + (np)^2 - (nb)(np)} \nonumber\\
 First terms of this case is shown in the table \ref{tbl:eqtriangles}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{||c c c c c||} 
+\begin{tabular}{| c c | c c c |} 
  \hline
  $s$ & $o$ & $c$ & $p$ & $b$ \\ [0.5ex] 
  \hline\hline
@@ -152,11 +184,8 @@ First terms of this case is shown in the table \ref{tbl:eqtriangles}
   23 &  1 &  39 &  24 & 21 \\ \hline
   37 & 11 &  57 &  48 & 15 \\ \hline
   59 & 13 &  93 &  72 & 33 \\ \hline
-  73 & 26 & 111 &  99 & 21 \\ \hline
-  83 & 22 & 129 & 105 & 39 \\ \hline
-  94 & 23 & 147 & 117 & 48 \\ \hline
 \end{tabular}
-\caption{Equilateral triangles side $c$ inside regular hexagons side $s$.}
+\caption{Hexagons of size $s$ with inside equilateral triangles side of $c$.}
 \label{tbl:eqtriangles}
 \end{center}
 \end{table}
