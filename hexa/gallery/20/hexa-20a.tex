@@ -5,7 +5,7 @@
 \begin{document}
  \begin{tikzpicture}
   \def\s{20}
-  \def\p{7pt}
+  \def\p{8pt}
   \def\r{40}
   \pgfmathsetmacro\angleA{acos(13/37)}
   \pgfmathsetmacro\angleB{acos((7^2 + 13^2 - 8^2)/(2*7*13))}
@@ -17,7 +17,7 @@
    % first internal
    \begin{scope}[shift={(13,0)},rotate=180-\angleA]
     \path(0,0) ++(180:\r+\p) node{$G$};
-    \meccanostrip[00CC00]{37}{1}{\p}
+    \meccanostrip[880088]{37}{1}{\p}
    \end{scope}
 
    % second internal

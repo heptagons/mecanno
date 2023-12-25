@@ -1,0 +1,41 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+  \def\s{19}
+  \def\p{7pt}
+  \def\r{40}
+  \pgfmathsetmacro\angleA{acos((3^2 + 7^2 - 5^2)/(2*3*7))}
+  \pgfmathsetmacro\angleB{acos((7^2 + 5^2 - 3^2)/(2*7*5))}
+  \pgfmathsetmacro\angleC{acos((28^2 + 12^2 - 20^2)/(2*28*12))}
+  
+  \begin{scope}[scale={0.2}]
+   \path(0,0) ++(-120:\r+\p) node{$A$};
+   \meccanoHexagon{FF4400}{\s}{\p}{B}{C}{D}{E}{F}{\r}
+   % first internal
+   \begin{scope}[shift={(9,0)},rotate=180-\angleA]
+    \meccanostrip[00CC00]{21}{1}{\p}
+    \path(0,0) ++(150:\r+\p) node{$G$};
+    \path(21,0) ++(60:\r+\p) node{$H$};
+   \end{scope}
+   % second internal
+   \begin{scope}[shift={(9,0)},rotate=\angleB]
+    \meccanostrip[00CC00]{14}{1}{\p}
+    \path(14,0) ++(-60:\r+\p) node{$I$};
+   \end{scope}
+   % third internal
+   \begin{scope}[shift={(\s,0)},rotate=60]
+    \begin{scope}[shift={(6,0)},rotate=\angleA]
+     \meccanostrip[00CC00]{28}{1}{\p}
+     \path(28,0) ++(0:\r+\p) node{$J$};
+    \end{scope}  
+    \begin{scope}[shift={(18,0)},rotate=60]
+     \path(0,0) ++(200:\r+\p) node{$O$};
+     \draw[lightgray] (0,0) -- (19,0);
+    \end{scope}
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
