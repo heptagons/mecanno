@@ -5,6 +5,7 @@
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
+\usepackage{subcaption}
 
 \begin{document}
 
@@ -93,7 +94,7 @@ Through the gallery we will use the green, blue and purple strips and their copi
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{4/hexa-4a}
-\caption{Hexagon of size $4$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 7$ and three extra bolts at $G,H,I$.}
+\caption{Hexagon of size $4$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 7$ and three extra bolts at vertices $G,H,I$.}
 \label{fig:4a}
 \end{figure}
 
@@ -103,7 +104,7 @@ Figure \ref{fig:4a} show a regular hexagon $ABCDEF$ of size $4$ with three diago
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{5/hexa-5a}
-\caption{Hexagon of size $5$ with three equal diagonals $\overline{GC} = \overline{HE} = \overline{IA} = 7$ and three extra bolts at $G,H,I$.}
+\caption{Hexagon of size $5$ with three equal diagonals $\overline{GC} = \overline{HE} = \overline{IA} = 7$ and three extra bolts at vertices $G,H,I$.}
 \label{fig:5a}
 \end{figure}
 
@@ -140,7 +141,7 @@ Figure \ref{fig:9a} show hexagon $ABCDEF$ of size $9$. Triangles $\triangle{HBG}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{10/hexa-10a}
-\caption{Hexagon of size $10$ with three diagonals $\overline{HI} = \overline{IJ} = 7, \overline{GH} = 13$ and four extra bolts at $G,H,I,J$.}
+\caption{Hexagon of size $10$ with three diagonals $\overline{HI} = \overline{IJ} = 7, \overline{GH} = 13$ and four extra bolts at vertices $G,H,I,J$.}
 \label{fig:10a}
 \end{figure}
 
@@ -162,7 +163,7 @@ Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GH
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{12/hexa-12a}
-\caption{Hexagon of size $12$ with \textbf{only} two diagonals $\overline{EG} = \overline{HI} = 21$ and four extra bolts at $G,H,I,J$.}
+\caption{Hexagon of size $12$ with \textbf{only} two diagonals $\overline{EG} = \overline{HI} = 21$ and four extra bolts at vertices $G,H,I,J$.}
 \label{fig:12a}
 \end{figure}
 
@@ -215,12 +216,31 @@ Using the formula our software found more cases shown in the table \ref{tbl:eqtr
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{14/hexa-14a}
-\caption{Hexagon of size $14$ with three diagonals $\overline{GH} = 14, \overline{GI} = \overline{IJ} = 13$ and four extra bolts at $G,H,I,J$.}
+\caption{Hexagon of size $14$ with three diagonals $\overline{GH} = 14, \overline{GI} = \overline{IJ} = 13$ and four extra bolts at vertices $G,H,I,J$.}
 \label{fig:14a}
 \end{figure}
 
-Figure \ref{fig:14a} show hexagon $ABCDEF$ of size $14$. Triangle $\triangle{GHA}$ has sides $(14,10,6)$ which is hexagonal triangle $(7,5,3)$ multipled by $2$. Triangles $\triangle{IGB}$ and $\triangle{JCI}$ have sides $\{13,8,7\}$ which are hexagonal triangles.
+Figure \ref{fig:14a} show hexagon $ABCDEF$ of size $14$. Triangle $\triangle{GHA}$ has sides $(14,10,6)$ which is hexagonal triangle $(7,5,3)$ multipled by $2$. Triangles $\triangle{IGB}$ and $\triangle{JCI}$ have sides $(13,8,7)$ which are hexagonal triangles.
 
+
+% 15
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.49\textwidth}
+ \centering
+ \includegraphics[scale=0.8]{15/hexa-15a}
+ \caption{With \textbf{only} two diagonals. }
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+ \centering
+ \includegraphics[scale=0.8]{15/hexa-15b}
+ \caption{With three diagonals. }
+\end{subfigure}
+\caption{Hexagons of size $15$. (a) with diagonals $\overline{AH} = \overline{EG} = 26$ and three extra bolts at vertices $G,H,I$. (b) with diagonals $\overline{GF} = 21, \overline{GH} = 19, \overline{HI} = 26$ and three extra bolts at vertices $G,H,I$.}
+\label{fig:15ab}
+\end{figure}
+
+Figure \ref{fig:15ab} show two hexagons $ABCDEF$ of size $15$. Hexagon height at (a) is $\overline{AE} = \sqrt{(EG)^2 - (AG)^2} = \sqrt{26^2 - 1^2} = 15\sqrt3.$ For hexagon at (b) we have that triangle $\triangle{GFA}$ sides are $(21,15,9)$ which are hexagonal triangle $(7,5,3)$ multipled by $3$; triangle $\triangle{GHB}$ sides are $(14,10,6)$ which is hexagonal triangle $(7,5,3)$ multipled by $2$; triangle $\triangle{HIO}$ is rectangle where $\overline{IO} = \sqrt{(\overline{HI})^2 - (\overline{HO})^2} = \sqrt{26^2 - 1^2} = 15\sqrt3$.
 
 % 16
 \begin{figure}[H]

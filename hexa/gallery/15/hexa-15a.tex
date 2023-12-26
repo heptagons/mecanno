@@ -1,0 +1,26 @@
+\documentclass[]{standalone}
+
+\usepackage{../hexa}
+
+\begin{document}
+ \begin{tikzpicture}
+  \def\s{15}
+  \def\p{7pt}
+  \def\r{30}
+  \begin{scope}[scale={0.3}]
+   \path(0,0) ++(-120:\r+\p) node{$A$};
+   \meccanoHexagon{FF4400}{\s}{\p}{B}{C}{D}{E}{F}{\r}
+   % first internal
+   \begin{scope}[shift={(0,0)},rotate=acos(1/26)]
+    \meccanostrip[880088]{26}{1}{\p}
+    \path(26,0) ++(0:\r+\p) node{$H$};
+   \end{scope}
+   % first internal
+   \begin{scope}[shift={(1,0)},rotate=180-acos(1/26)]
+    \path(0,0) ++(180:\r+\p) node{$G$};
+    \meccanostrip[880088]{26}{1}{\p}
+    \path(13,0) ++(-90:\r+\p) node{$I$};
+   \end{scope}
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
