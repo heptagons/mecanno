@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \title{Meccano hexagons gallery}
 \author{https://github.com/heptagons/meccano/hexa/gallery}
-\date{2023/12/25}
+\date{2023/12/26}
 
 \usepackage{../../meccano}
 \usepackage{amssymb}
@@ -10,7 +10,7 @@
 
 \maketitle
 \begin{abstract}
-We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexagon perimeter has $6$ equal strips connected with $6$ bolts. To make it rigid we add a maximum of $3$ internal strips connected with at most $4$ extra bolts. The extra strips also must remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triangles} which have an internal angle of $120^\circ$ and we use their sides as the internal strips.
+We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexagon perimeter has $6$ equal strips connected with $6$ bolts. To make it rigid we want to add a maximum of $3$ internal strips connected with at most $4$ extra bolts. The extra strips also must remain totally inside the perimeter, don't overlap with any other and must not be parallel to any external strip. With algebra and then sofware, we produce \texttt{hexagonal triangles} which have an internal angle of $120^\circ$ and we use their sides as the internal strips.
 \end{abstract}
 
 \section{Algebra and software}
@@ -85,7 +85,7 @@ We know $\dfrac{a\sqrt3}2$ is the height of the regular hexagon of side $\dfrac{
 
 \subsubsection{Hexagon rigidity}
 
-Through the gallery we will use the green, blue and purple strips and their scaled copies as internal diagonals to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of internal strips (2 or 3) and extra bolts (2 or 3 or 4) and the largest strips sizes as possible. We discard the hexagons which are scaled copies of smaller ones.
+Through the gallery we will use the green, blue and purple strips and their copies multipled by integers as internal diagonals to make rigid regular hexagons from size $4$ to $24$. We prioritize minimum number of internal strips (2 or 3) and extra bolts (2 or 3 or 4) and the largest strips sizes as possible. We discard the hexagons which are scaled copies of smaller ones.
 
 \section{Hexagons of size $s < 10$}
 
@@ -93,17 +93,17 @@ Through the gallery we will use the green, blue and purple strips and their scal
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{4/hexa-4a}
-\caption{Hexagon of size $s = 4$ with three diagonals $c = \overline{GH} = \overline{HI} = \overline{IG} = 7$.}
+\caption{Hexagon of size $4$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 7$ and three extra bolts at $G,H,I$.}
 \label{fig:4a}
 \end{figure}
 
-Figure \ref{fig:4a} show a regular hexagon $ABCDEF$ of size $4$ with three diagonals of size $7$. We confirm the height of the hexagon since the distance $\overline{OG} = \sqrt{(\overline{AG})^2 - (\overline{AO})^2} = \sqrt{7^2 - 1^2} = 4\sqrt3$.
+Figure \ref{fig:4a} show a regular hexagon $ABCDEF$ of size $4$ with three diagonals of size $7$. We confirm the height of the hexagon with the distance $\overline{OG} = \sqrt{(\overline{AG})^2 - (\overline{AO})^2} = \sqrt{7^2 - 1^2} = 4\sqrt3$.
 
 %5
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{5/hexa-5a}
-\caption{Hexagon of size $s = 5$ with three diagonals $c = \overline{GC} = \overline{HE} = \overline{IA} = 7$.}
+\caption{Hexagon of size $5$ with three equal diagonals $\overline{GC} = \overline{HE} = \overline{IA} = 7$ and three extra bolts at $G,H,I$.}
 \label{fig:5a}
 \end{figure}
 
@@ -118,7 +118,7 @@ Figure \ref{fig:5a} show a regular hexagon $ABCDEF$ of size $5$ with three diago
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{8/hexa-8a}
-\caption{Hexagon of size $8$ with \textbf{only} two diagonals $\overline{AH} = \overline{EI} = 14$ and extra bolts at $G,H,I$.}
+\caption{Hexagon of size $8$ with \textbf{only} two diagonals $\overline{AH} = \overline{EI} = 14$ and three extra bolts at $G,H,I$.}
 \label{fig:8a}
 \end{figure}
 
@@ -129,22 +129,22 @@ Figure \ref{fig:8a} show hexagon $ABCDEF$ of size $8$. We confirm the height of 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{9/hexa-9a}
-\caption{Hexagon of size $9$ with three diagonals $\overline{GH} = \overline{IJ} = 13, \overline{GI} = 14$ and extra bolts at $G,H,I,J$.}
+\caption{Hexagon of size $9$ with three diagonals $\overline{GH} = \overline{IJ} = 13, \overline{GI} = 14$ and four extra bolts at $G,H,I,J$.}
 \label{fig:9a}
 \end{figure}
 
-Figure \ref{fig:9a} show hexagon $ABCDEF$ of size $9$. Triangles $\triangle{HBG}$ and $\triangle{JID}$ have sides $\{13,8,7\}$ which are hexagonal triangles. Triangle $\triangle{GIO}$ has sides $\{14,10,6\}$ which is hexagonal triangle $\{7,5,3\}$ multipled by $2$.
+Figure \ref{fig:9a} show hexagon $ABCDEF$ of size $9$. Triangles $\triangle{HBG}$ and $\triangle{JID}$ have sides $(13,8,7)$ which are hexagonal triangles. Triangle $\triangle{GIO}$ has sides $(14,10,6)$ which is hexagonal triangle $(7,5,3)$ multipled by $2$.
 
 
 %10
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{10/hexa-10a}
-\caption{Hexagon of size $10$ with three diagonals $\overline{HI} = \overline{IJ} = 7, \overline{GH} = 13$ and extra bolts at $G,H,I,J$.}
+\caption{Hexagon of size $10$ with three diagonals $\overline{HI} = \overline{IJ} = 7, \overline{GH} = 13$ and four extra bolts at $G,H,I,J$.}
 \label{fig:10a}
 \end{figure}
 
-Figure \ref{fig:10a} show hexagon $ABCDEF$ of size $10$. Triangles $\triangle{HIC}$ and $\triangle{JID}$ have sides $\{7,5,3\}$ which are hexagonal triangles. Triangle $\triangle{HGB}$ has size $\{13,8,7\}$ which is an hexagonal triangle.
+Figure \ref{fig:10a} show hexagon $ABCDEF$ of size $10$. Triangles $\triangle{HIC}$ and $\triangle{JID}$ have sides $(7,5,3)$ which are hexagonal triangles. Triangle $\triangle{HGB}$ has size $(13,8,7)$ which is an hexagonal triangle.
 
 \section{Hexagons of size $10 < s < 20$ }
 
@@ -152,17 +152,17 @@ Figure \ref{fig:10a} show hexagon $ABCDEF$ of size $10$. Triangles $\triangle{HI
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{11/hexa-11a}
-\caption{Hexagon of size $11$ with three diagonals $\overline{GH} = \overline{IJ} = 14$ and $\overline{IG} = 19$ and four extra bolts in vertices $G,H,I,J$.}
+\caption{Hexagon of size $11$ with three diagonals $\overline{GH} = \overline{IJ} = 14$ and $\overline{IG} = 19$ and four extra bolts at $G,H,I,J$.}
 \label{fig:11a}
 \end{figure}
 
-Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GHA}$ and $\triangle{JIC}$ have sides $\{14,10,6\}$ which are the hexagonal triangle $\{7,5,3\}$ multipled by 2. Triangle $\triangle{IGO}$ has sides $\{19,16,5\}$ which is an hexagonal triangle.
+Figure \ref{fig:11a} show hexagon $ABCDEF$ of size $11$. Triangles $\triangle{GHA}$ and $\triangle{JIC}$ have sides $(14,10,6)$ which are the hexagonal triangle $(7,5,3)$ multipled by 2. Triangle $\triangle{IGO}$ has sides $(19,16,5)$ which is an hexagonal triangle.
 
 % 12
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{12/hexa-12a}
-\caption{Hexagon of size $12$ with only two diagonals $\overline{EG} = \overline{HI} = 21$ and four extra bolts in vertices $G,H,I,J$.}
+\caption{Hexagon of size $12$ with \textbf{only} two diagonals $\overline{EG} = \overline{HI} = 21$ and four extra bolts at $G,H,I,J$.}
 \label{fig:12a}
 \end{figure}
 
@@ -173,11 +173,11 @@ Figure \ref{fig:12a} show hexagon $ABCDEF$ of size $12$. We confirm the hexagon 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{13/hexa-13a}
-\caption{Hexagon of size $13$ with three diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 21$ and three bolts at vertices $G,H,I$.}
+\caption{Hexagon of size $13$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 21$ and three bolts at vertices $G,H,I$.}
 \label{fig:13a}
 \end{figure}
 
-Figure \ref{fig:13a} show hexagon $ABCDEF$ of size $s = 13$. First we note an offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{c,p,b\}$ of triangle $\triangle{GOH}$:
+Figure \ref{fig:13a} show hexagon $ABCDEF$ of size $s = 13$. First we note the offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{c,p,b\}$ of triangle $\triangle{GOH}$:
 \begin{align}
 o &\equiv \overline{DH} = \overline{CO} = 2 \nonumber\\
 c &\equiv \overline{GH} = 21 \nonumber\\
@@ -185,7 +185,7 @@ p &\equiv \overline{GO} = \overline{BC} + o = 13+2 = 15 \nonumber\\
 b &\equiv \overline{OH} = \overline{CD} - 2o = 13 - 2(2) = 9
 \end{align}
 
-The sides $c,p,b$ are $\{21,15,9\}$ which corresponds to hexagonal triangle $\{7,5,3\}$ multipled by $3$. For this case having an equilateral triangle inside the hexagon we can calculate $c$ in function of $s,o$ using the equation \ref{eq:triplet-cpb}:
+The sides $c,p,b$ are $(21,15,9)$ which is hexagonal triangle $(7,5,3)$ multipled by $3$. For this case having an equilateral triangle inside the hexagon we can calculate $c$ in function of $s,o$ using the equation \ref{eq:triplet-cpb}:
 \begin{align}
 b &= s - 2o \nonumber\\
 p &= s + o \nonumber\\
@@ -215,22 +215,44 @@ Using the formula our software found more cases shown in the table \ref{tbl:eqtr
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{14/hexa-14a}
-\caption{Hexagon of size $14$ with three diagonals $\overline{GH} = 14, \overline{GI} = \overline{IJ} = 13$ and four bolts at vertices $G,H,I,J$.}
+\caption{Hexagon of size $14$ with three diagonals $\overline{GH} = 14, \overline{GI} = \overline{IJ} = 13$ and four extra bolts at $G,H,I,J$.}
 \label{fig:14a}
 \end{figure}
 
-Figure \ref{fig:14a} show hexagon $ABCDEF$ of size $14$. Triangle $\triangle{GHA}$ has sides $\{14,10,6\}$ which is hexagonal triangle $\{7,5,3\}$ multipled by $2$. Triangles $\triangle{IGB}$ and $\triangle{JCI}$ have sides $\{13,8,7\}$ which are hexagonal triangles.
+Figure \ref{fig:14a} show hexagon $ABCDEF$ of size $14$. Triangle $\triangle{GHA}$ has sides $(14,10,6)$ which is hexagonal triangle $(7,5,3)$ multipled by $2$. Triangles $\triangle{IGB}$ and $\triangle{JCI}$ have sides $\{13,8,7\}$ which are hexagonal triangles.
 
 
 % 16
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{16/hexa-16a}
-\caption{Hexagon of size $16$ with three diagonals $\overline{GH} = 28, \overline{GI} = 21, \overline{CH} = 19$ and three bolts at vertices $G,H,I$.}
+\caption{Hexagon of size $16$ with three diagonals $\overline{GH} = 28, \overline{GI} = 21, \overline{CH} = 19$ and three extra bolts at $G,H,I$.}
 \label{fig:16a}
 \end{figure}
 
-Figure \ref{fig:16a} show hexagon $ABCDEF$ of size $16$. Hexagon's height is $\overline{OH}=\sqrt{(\overline{GH})^2-(\overline{GO})^2}=\sqrt{28^2-4^2}=16\sqrt3$. Triangle $\triangle{IBG}$ sides are $(21,15,9)$ which correspond to hexagonal triangle $(7,5,3)$ multipled by $3$. Triangle $\triangle{HCD}$ sides are $(19,16,5)$ which is an hexagonal triangle.
+Figure \ref{fig:16a} show hexagon $ABCDEF$ of size $16$. Hexagon's height is $\overline{OH}=\sqrt{(\overline{GH})^2-(\overline{GO})^2}=\sqrt{28^2-4^2}=16\sqrt3$. Triangle $\triangle{IBG}$ sides are $(21,15,9)$ which is hexagonal triangle $(7,5,3)$ multipled by $3$. Triangle $\triangle{HCD}$ sides are $(19,16,5)$ which is an hexagonal triangle.
+
+
+% 17
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{17/hexa-17a}
+\caption{Hexagon of size $17$ with three diagonals $\overline{GH} = 26, \overline{GI} = 28, \overline{IJ} = 21$ and four bolts at vertices $G,H,I,J$.}
+\label{fig:17a}
+\end{figure}
+
+Figure \ref{fig:17a} show hexagon $ABCDEF$ of size $17$. Triangle $\triangle{GHA}$ sides are $(26,16,14)$ which is hexagonal triangle $(13,8,7)$ multiplied by $2$. Triangle $\triangle{IGO}$ sides are $(28,20,12)$ which is hexagonal triangle $(7,5,3)$ multipled by $4$. Triangle $\triangle{JIC}$ has sides $(21,15,9)$ which is hexagonal triangle $(7,5,3)$ multiplied by $3$.
+
+% 18
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{18/hexa-18a}
+\caption{Hexagon of size $18$ with three diagonals $\overline{GH} = \overline{GI} = 21, \overline{IJ} = 7$ and four bolts at vertices $G,H,I,J$.}
+\label{fig:18a}
+\end{figure}
+
+Figure \ref{fig:18a} show hexagon $ABCDEF$ of size $18$. Triangles $\triangle{GHA}$ and $\triangle{GIB}$ have sides $(21,15,9)$ which are hexagonal triangles $(7,5,3)$ multipled by $3$. Triangle $\triangle{IJC}$ sides are $(7,5,3)$ which is an hexagonal triangle.
+
 
 % 19
 \begin{figure}[H]
