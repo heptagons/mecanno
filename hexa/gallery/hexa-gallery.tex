@@ -16,7 +16,7 @@ We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexag
 
 \section{Algebra and software}
 
-\subsection{Hexagon angles}
+\subsection{Hexagon triangles}
 
 \begin{figure}[h]
 \centering
@@ -25,7 +25,7 @@ We build meccano\meccanoref rigid regular hexagons from sides $4$ to $24$. Hexag
 \label{fig:builder-a}
 \end{figure}
 
-We look strips that can make rigid two consecutive internal sides the regular hexagon. Figure \ref{fig:builder-a} show the first four cases found. From any figure we have the internal hexagon angle is $\theta \equiv \angle{GBC} = 2\pi/3$. First we define the hexagon side as $p \equiv \overline{BC}$. From the triangle $\triangle{GBC}$ we define the other two sides as $b \equiv \overline{GB}$ and $c = \overline{GC}$. By the law of cosines we know that:
+We look for strips that can make rigid two consecutive internal sides the regular hexagon. Figure \ref{fig:builder-a} show the first four cases found. From any figure we have the internal hexagon angle is $\theta \equiv \angle{GBC} = 2\pi/3$. First we define the hexagon side as $p \equiv \overline{BC}$. From the triangle $\triangle{GBC}$ we define the other two sides as $b \equiv \overline{GB}$ and $c \equiv \overline{GC}$. Using the law of cosines and knowing that $\cos\theta = -1/2$ we have:
 \begin{align}
 c &= \sqrt{b^2 + p^2 - 2bp\cos\theta} \nonumber\\
  &= \sqrt{b^2 + p^2 - 2bp\left(-\frac{1}{2}\right)}
@@ -174,11 +174,11 @@ Figure \ref{fig:12a} show hexagon $ABCDEF$ of size $12$. We confirm the hexagon 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{13/hexa-13a}
-\caption{Hexagon of size $13$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 21$ and three bolts at vertices $G,H,I$.}
+\caption{Hexagon of size $13$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 21$ forming an \textbf{equilateral triangle} and three bolts at vertices $G,H,I$.}
 \label{fig:13a}
 \end{figure}
 
-Figure \ref{fig:13a} show hexagon $ABCDEF$ of size $s = 13$. First we note the offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{c,p,b\}$ of triangle $\triangle{GOH}$:
+Figure \ref{fig:13a} show hexagon $ABCDEF$ of size $13$. First we note the offset $o \equiv \overline{CO}$ which we use to calculate the sides $\{c,p,b\}$ of triangle $\triangle{GOH}$:
 \begin{align}
 o &\equiv \overline{DH} = \overline{CO} = 2 \nonumber\\
 c &\equiv \overline{GH} = 21 \nonumber\\
@@ -267,7 +267,7 @@ Figure \ref{fig:17a} show hexagon $ABCDEF$ of size $17$. Triangle $\triangle{GHA
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{18/hexa-18a}
-\caption{Hexagon of size $18$ with three diagonals $\overline{GH} = \overline{GI} = 21, \overline{IJ} = 7$ and four bolts at vertices $G,H,I,J$.}
+\caption{Hexagon of size $18$ with three diagonals $\overline{GH} = \overline{GI} = 21, \overline{IJ} = 7$ and four extra bolts at vertices $G,H,I,J$.}
 \label{fig:18a}
 \end{figure}
 
@@ -294,7 +294,7 @@ Figure \ref{fig:19a} show hexagon $ABCDEF$ of size $19$. Triangle $\triangle{GHA
 \label{fig:20a}
 \end{figure}
 
-Figure \ref{fig:20a} show regular hexagon $ABCDEF$ of size $20$. Triangle $\triangle{GBH}$ sides are $\{13,8,7\}$ which is an hexagonal triangle. Triangle $\triangle{HCD}$ sides are $\{28,20,12\}$ which is hexagonal triangle $\{7,5,3\}$ scaled by $4$. Right triangle $\triangle{EAG}$ has side $\overline{AE} = \sqrt{(\overline{EG})^2 - (\overline{AG})^2} = \sqrt{37^2 - 13^2} = 20\sqrt3$ equals to hexagon height.
+Figure \ref{fig:20a} show regular hexagon $ABCDEF$ of size $20$. Triangle $\triangle{GBH}$ sides are $(13,8,7)$ which is an hexagonal triangle. Triangle $\triangle{HCD}$ sides are $(28,20,12)$ which is hexagonal triangle $(7,5,3)$ multiplied by $4$. Right triangle $\triangle{EAG}$ side $\overline{AE} = \sqrt{(\overline{EG})^2 - (\overline{AG})^2} = \sqrt{37^2 - 13^2} = 20\sqrt3$ equals to hexagon height.
 
 % 21
 \begin{figure}[H]
@@ -306,11 +306,21 @@ Figure \ref{fig:20a} show regular hexagon $ABCDEF$ of size $20$. Triangle $\tria
 
 Figure \ref{fig:21a} show regular hexagon $ABCDEF$ of size $21$. We confirm the height of the hexagon is $\overline{AE} = \sqrt{(\overline{EH})^2 - (\overline{AH})^2} = \sqrt{38^2 - 11^2} = 21\sqrt3$.
 
+% 22
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.9]{22/hexa-22a}
+\caption{Hexagon of size $22$ with three diagonals $\overline{GH} = 21, \overline{GI} = 13, \overline{IJ} = 26$ and four extra bolts at vertices $H,G,I,J$.}
+\label{fig:22a}
+\end{figure}
+
+Figure \ref{fig:22a} show regular hexagon $ABCDEF$ of size $22$. Triangle $\triangle{GHA}$ sides are $(21,15,9)$ which is hexagonal triangle $(7,5,3)$ multiplied by $3$. Triangle $\triangle{GIB}$ sides are $(13,8,7)$ which is an hexagonal triangle. Triangle $\triangle{IJC}$ sides are $(26,16,14)$ which is hexagonal triangle $(13,8,7)$ multiplied by $2$.
+
 % 23
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.9]{23/hexa-23a}
-\caption{Hexagon of size $s = 23$ with three diagonals $c = \overline{GH} = \overline{HI} = \overline{IG} = 39$.}
+\caption{Hexagon of size $23$ with three equal diagonals $\overline{GH} = \overline{HI} = \overline{IG} = 39$ forming and \textbf{equilateral triangle} with three extra bolts at vertices $G,H,I$.}
 \label{fig:23a}
 \end{figure}
 
@@ -320,11 +330,11 @@ Figure \ref{fig:23a} show a regular hexagon $ABCDEF$ of size $s=23$. Is the seco
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.9]{24/hexa-24a}
-\caption{Hexagon of size $s = 24$ with diagonals $\overline{GC} = 31$ and $\overline{GD} = \overline{GH} = 43$ with \textbf{only} two extra bolts at vertices $G$ and $H$. Segments $\overline{GB} = 11$ and $\overline{DH} = 22$.}
+\caption{Hexagon of size $24$ with diagonals $\overline{GC} = 31$ and $\overline{GD} = \overline{GH} = 43$ with \textbf{only} two extra bolts at vertices $G$ and $H$. Segments $\overline{GB} = 11$ and $\overline{DH} = 22$.}
 \label{fig:24a}
 \end{figure}
 
-Figure \ref{fig:24a} show regular hexagon $ABCDEF$ of size $24$. Triangle $\triangle{GBC}$ has sides $\{31,24,11\}$ which is an hexagonal triangle in table \ref{tbl:triplets}. Triangle $\triangle{DHG}$ is the isoscelles triangle shown in figure \ref{fig:builder-b} case $a=48$.
+Figure \ref{fig:24a} show regular hexagon $ABCDEF$ of size $24$. Triangle $\triangle{GBC}$ has sides $\{31,24,11\}$ which is an hexagonal triangle in table \ref{tbl:triplets}. Triangle $\triangle{DHG}$ is the isoscelles triangle shown in figure \ref{fig:builder-b} case $a=48$ where $\overline{BD} = \sqrt{(\overline{DG})^2 - (\overline{GB})^2} = \sqrt{43^2 - 11^2} = 24\sqrt3$.
 
 
 
