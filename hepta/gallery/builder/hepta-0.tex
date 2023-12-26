@@ -1,0 +1,115 @@
+\documentclass[]{standalone}
+
+\usepackage{../hepta}
+
+\pgfmathsetmacro\angleA{acos(3/4)}
+\pgfmathsetmacro\angleB{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))}
+\pgfmathsetmacro\angleC{atan(sqrt(7))}
+
+\newcommand{\builder}[2][888888]{
+  \def\p{#2}
+  \meccanostrip[#1]{2}{1}{\p}
+  % right part
+  \begin{scope}[shift={(2,0)},rotate=-\angleB + 180 -\angleC]
+   \meccanostrip[#1]{4}{1}{\p}
+   \begin{scope}[shift={(1,0)},rotate=\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(4,0)},rotate=180-\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+  \end{scope}
+  % left part
+  \begin{scope}[shift={(0,0)},rotate=180 +\angleB -180 +\angleC]
+   \meccanostrip[#1]{4}{1}{\p}
+   \begin{scope}[shift={(1,0)},rotate=-\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(4,0)},rotate=-180+\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+  \end{scope}
+}
+
+\newcommand{\builderHepta}[7][FF0000]{
+ % below
+ \meccanostrip[#1]{2}{1}{#2}
+ \path(0,0) ++(-90:10+3pt) node{$A$};
+ \path(1,0) ++(-90:10+3pt) node{$O$};
+ \path(2,0) ++(-90:10+3pt) node{$B$};
+
+ \def\Index{#3}
+ \pgfmathsetmacro\ABC{#4}
+ \pgfmathsetmacro\BCD{#5}
+ \pgfmathsetmacro\CDX{#6}
+ \pgfmathsetmacro\CDE{#7}
+
+ \path(0,-1.00) node[right]{$\alpha\Index=\angle{ABC}=\ABC$};
+ \path(0,-1.25) node[right]{$\beta\Index=\angle{BCD}=\BCD$};
+ \path(0,-1.50) node[right]{$\gamma\Index=\angle{CDX}=\CDX$};
+ \path(0,-1.75) node[right]{$\delta\Index=\angle{CDE}=\CDE$};
+ 
+ % right-1
+ \begin{scope}[shift={(2,0)},rotate=180-\ABC]
+  \meccanostrip[FF0000]{2}{1}{#2}
+  \path(2,0) ++(-90:10+3pt) node{$C\Index$};
+  % right-2
+  \begin{scope}[shift={(2,0)},rotate=180-\BCD]
+   \meccanostrip[FF0000]{2}{1}{#2}
+   \path(2,0) ++(-90:10+3pt) node{$D\Index$};
+   % right-below
+   \begin{scope}[shift={(2,0)},rotate=180-\CDX]
+    \meccanostrip[0000FF]{2}{1}{#2}
+    \path(2,0) ++(50:10+3pt) node{$X$};
+   \end{scope}
+   % right-above
+   \begin{scope}[shift={(2,0)},rotate=180-\CDE]
+    \meccanostrip[FF0000]{2}{1}{#2}
+    \path(2,0) ++(-45:10+3pt) node{$E\Index$};
+   \end{scope}
+  \end{scope}
+ \end{scope}
+ % left-1
+ \begin{scope}[shift={(0,0)},rotate=\ABC]
+  \meccanostrip[FF0000]{2}{1}{#2}
+  \path(2,0) ++(90:10+3pt) node{$G\Index$};
+  % left-2
+  \begin{scope}[shift={(2,0)},rotate=180+\BCD]
+   \meccanostrip[FF0000]{2}{1}{#2}
+   \path(2,0) ++(90:10+3pt) node{$F\Index$};
+   % left-below
+   \begin{scope}[shift={(2,0)},rotate=180+\CDX]
+    \meccanostrip[0000FF]{2}{1}{3pt}
+   \end{scope}
+   % left-above
+   \begin{scope}[shift={(2,0)},rotate=180+\CDE]
+    \meccanostrip[FF0000]{2}{1}{3pt}
+   \end{scope}
+  \end{scope}
+ \end{scope}       
+}
+
+\begin{document}
+ \begin{tikzpicture}
+  \begin{scope}[scale=1.5]
+   \begin{scope}[shift={(0,0)}]
+    \builder[CCCCCC]{1pt}
+    \pgfmathsetmacro\ABCZero{\angleB + \angleC}
+    \pgfmathsetmacro\BCDZero{180}
+    \pgfmathsetmacro\CDXZero{\angleA}
+    \pgfmathsetmacro\CDEZero{180-(2*(\ABCZero-90)+\angleA)}
+    \builderHepta[FF0000]{3pt}{_0}{\ABCZero}{\BCDZero}{\CDXZero}{\CDEZero}
+   \end{scope}
+   \begin{scope}[shift={(5,0)}]
+    \builder[CCCCCC]{1pt}
+    \pgfmathsetmacro\ABCZero{5*180/7}
+    \pgfmathsetmacro\BCDZero{5*180/7}
+    \pgfmathsetmacro\CDXZero{3*180/7}
+    \pgfmathsetmacro\CDEZero{5*180/7}
+    \builderHepta[FF0000]{3pt}{_1}{\ABCZero}{\BCDZero}{\CDXZero}{\CDEZero}
+
+   \end{scope}   
+   
+  \end{scope}
+ \end{tikzpicture}
+\end{document}
