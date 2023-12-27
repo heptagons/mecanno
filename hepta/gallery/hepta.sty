@@ -36,3 +36,112 @@
   \end{scope}
 }
 
+\pgfmathsetmacro\angleA{acos(3/4)} %41.4
+\pgfmathsetmacro\angleB{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))} %27.8
+\pgfmathsetmacro\angleC{acos(sqrt(2)/4)}%atan(sqrt(7))} %69.2
+\pgfmathsetmacro\angleD{acos((1^2 + 2^2 - 2)/(2*1*2))}
+
+\newcommand{\builderBase}[3][888888]{
+  \def\p{#2}
+  \pgfmathsetmacro\height{sqrt(7)}
+  \meccanostrip[#1]{2}{1}{\p}
+  \ifthenelse{#3=1}{
+   \path(0,0) ++(-90:7+\p) node{$A$};
+   \path(1,0) ++(-90:7+\p) node{$O$};
+   \path(2,0) ++(-90:7+\p) node{$B$};
+   \path(1,\height) ++(90:7+\p) node{$X$};
+  }{}
+  % right part
+  \begin{scope}[shift={(2,0)},rotate=-\angleB + 180 -\angleC]
+   \meccanostrip[#1]{4}{1}{\p}
+   \ifthenelse{#3=1}{
+    \path(1,0) ++(-90:7+\p) node{$P$};
+    \path(4,0) ++(-90:7+\p) node{$Q$};
+   }{}
+   \begin{scope}[shift={(1,0)},rotate=\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(4,0)},rotate=180-\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+  \end{scope}
+  % left part
+  \begin{scope}[shift={(0,0)},rotate=180 +\angleB -180 +\angleC]
+   \meccanostrip[#1]{4}{1}{\p}
+   \ifthenelse{#3=1}{
+    \path(1,0) ++(90:7+\p) node{$P'$};
+    \path(4,0) ++(90:7+\p) node{$Q$'};
+   }{}
+   \begin{scope}[shift={(1,0)},rotate=-\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+   \begin{scope}[shift={(4,0)},rotate=-180+\angleA]
+    \meccanostrip[#1]{2}{1}{\p}
+   \end{scope}
+  \end{scope}
+}
+
+\newcommand{\builderHepta}[8][FF0000]{
+ % below
+ \meccanostrip[#1]{2}{1}{#2}
+ \path(0,0) ++(-90:10+3pt) node{$A$};
+ \path(1,0) ++(-90:10+3pt) node{$O$};
+ \path(2,0) ++(-90:10+3pt) node{$B$};
+
+ \def\Index{#3}
+ \pgfmathsetmacro\ABC{#4}
+ \pgfmathsetmacro\BCD{#5}
+ \pgfmathsetmacro\CDX{#6}
+ \pgfmathsetmacro\CDE{#7}
+
+ \ifthenelse{#8=1}{
+  \path(0,-1.00) node[right]{$\alpha\Index=\ABC^\circ$};
+  \path(0,-1.25) node[right]{$\beta\Index=\BCD^\circ$};
+  \path(0,-1.50) node[right]{$\gamma\Index=\CDX^\circ$};
+  \path(0,-1.75) node[right]{$\delta\Index=\CDE^\circ$};
+ }{}
+ % right-1
+ \draw[blue] (1.5,0) arc (180:180-\ABC:0.5) node[below]{$\alpha\Index$}; % arc
+ \begin{scope}[shift={(2,0)},rotate=180-\ABC]
+  \meccanostrip[#1]{2}{1}{#2}
+  \path(2,0) ++(-90:10+3pt) node{$C\Index$};
+  % right-2
+ \draw[blue] (1.5,0) arc (180:180-\BCD:0.5) node[right]{$\beta\Index$}; % arc
+  \begin{scope}[shift={(2,0)},rotate=180-\BCD]
+   \meccanostrip[#1]{2}{1}{#2}
+   \path(2,0) ++(-90:10+3pt) node{$D\Index$};
+   % right-below
+   \draw[blue] (1,0) arc (180:180-\CDX:1) node[left]{$\gamma\Index$}; % arc
+   \begin{scope}[shift={(2,0)},rotate=180-\CDX]
+    \meccanostrip[008800]{2}{1}{#2}
+    \path(2,0) ++(50:10+3pt) node{$X$};
+   \end{scope}
+   % right-above
+   \draw[blue] (1.5,0) arc (180:180-\CDE:0.5) node[above]{$\delta\Index$}; % arc
+   \begin{scope}[shift={(2,0)},rotate=180-\CDE]
+    \meccanostrip[#1]{2}{1}{#2}
+    \path(2,0) ++(-45:10+3pt) node{$E\Index$};
+   \end{scope}
+  \end{scope}
+ \end{scope}
+ % left-1
+ \begin{scope}[shift={(0,0)},rotate=\ABC]
+  \meccanostrip[#1]{2}{1}{#2}
+  \path(2,0) ++(90:10+3pt) node{$G\Index$};
+  % left-2
+  \begin{scope}[shift={(2,0)},rotate=180+\BCD]
+   \meccanostrip[#1]{2}{1}{#2}
+   \path(2,0) ++(90:10+3pt) node{$F\Index$};
+   % left-below
+   \begin{scope}[shift={(2,0)},rotate=180+\CDX]
+    \meccanostrip[008800]{2}{1}{#2}
+   \end{scope}
+   % left-above
+   \begin{scope}[shift={(2,0)},rotate=180+\CDE]
+    \meccanostrip[#1]{2}{1}{#2}
+   \end{scope}
+  \end{scope}
+ \end{scope}       
+}
+
+
