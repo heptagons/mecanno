@@ -2,11 +2,12 @@
 
 \usepackage{../hepta}
 
-\pgfmathsetmacro\angleA{acos(3/4)}
-\pgfmathsetmacro\angleB{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))}
-\pgfmathsetmacro\angleC{atan(sqrt(7))}
+\pgfmathsetmacro\angleA{acos(3/4)} %41.40962210927086
+\pgfmathsetmacro\angleB{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))} %27.88556683609372
+\pgfmathsetmacro\angleC{acos(sqrt(2)/4)}%atan(sqrt(7))} %69.29518894536457
+\pgfmathsetmacro\angleD{acos((1^2 + 2^2 - 2)/(2*1*2))}
 
-\newcommand{\builder}[2][888888]{
+\newcommand{\builderBase}[2][888888]{
   \def\p{#2}
   \meccanostrip[#1]{2}{1}{\p}
   % right part
@@ -91,25 +92,44 @@
 
 \begin{document}
  \begin{tikzpicture}
-  \begin{scope}[scale=1.5]
+  \begin{scope}[scale=1.2]
    \begin{scope}[shift={(0,0)}]
-    \builder[CCCCCC]{1pt}
-    \pgfmathsetmacro\ABCZero{\angleB + \angleC}
-    \pgfmathsetmacro\BCDZero{180}
-    \pgfmathsetmacro\CDXZero{\angleA}
-    \pgfmathsetmacro\CDEZero{180-(2*(\ABCZero-90)+\angleA)}
-    \builderHepta[FF0000]{3pt}{_0}{\ABCZero}{\BCDZero}{\CDXZero}{\CDEZero}
+    \builderBase[CCCCCC]{1pt}
+    \pgfmathsetmacro\abcA{\angleB + \angleC}
+    \pgfmathsetmacro\bcdA{180}
+    \pgfmathsetmacro\cdxA{\angleA}
+    \pgfmathsetmacro\cdeA{180 - 2*(\abcA-90) - \angleA}
+    \builderHepta[FF0000]{3pt}{_0}{\abcA}{\bcdA}{\cdxA}{\cdeA}
    \end{scope}
-   \begin{scope}[shift={(5,0)}]
-    \builder[CCCCCC]{1pt}
-    \pgfmathsetmacro\ABCZero{5*180/7}
-    \pgfmathsetmacro\BCDZero{5*180/7}
-    \pgfmathsetmacro\CDXZero{3*180/7}
-    \pgfmathsetmacro\CDEZero{5*180/7}
-    \builderHepta[FF0000]{3pt}{_1}{\ABCZero}{\BCDZero}{\CDXZero}{\CDEZero}
-
+   \begin{scope}[shift={(7,0)}]
+    \builderBase[CCCCCC]{1pt}
+    \pgfmathsetmacro\abcB{5*180/7}
+    \pgfmathsetmacro\bcdB{5*180/7}
+    \pgfmathsetmacro\cdxB{3*180/7}
+    \pgfmathsetmacro\cdeB{5*180/7}
+    \builderHepta[FF0000]{3pt}{_1}{\abcB}{\bcdB}{\cdxB}{\cdeB}
    \end{scope}   
    
+   \begin{scope}[shift={(0,-7)}]
+    \builderBase[CCCCCC]{1pt}
+    \pgfmathsetmacro\abcC{180 - \angleC + 45}
+    \pgfmathsetmacro\bcdC{90)}
+    \pgfmathsetmacro\cdxC{45 + \angleC}
+    \pgfmathsetmacro\cdeC{45 + \angleC}
+    \builderHepta[FF0000]{3pt}{_2}{\abcC}{\bcdC}{\cdxC}{\cdeC}
+   \end{scope}   
+
+   \begin{scope}[shift={(7,-7)}]
+    \builderBase[CCCCCC]{1pt}
+    \pgfmathsetmacro\abcD{180}
+    \pgfmathsetmacro\bcdD{\angleD}
+    \pgfmathsetmacro\cdxD{180}
+    \pgfmathsetmacro\cdeD{\angleB + \angleC}
+    \builderHepta[FF0000]{3pt}{_4}{\abcD}{\bcdD}{\cdxD}{\cdeD}
+   \end{scope}   
+
+
+
   \end{scope}
  \end{tikzpicture}
 \end{document}
