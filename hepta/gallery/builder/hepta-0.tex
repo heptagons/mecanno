@@ -7,40 +7,40 @@
   \begin{scope}[scale=1.2]
    \begin{scope}[shift={(0,0)}]
     \builderBase[CCCCCC]{1pt}{0}
-    \pgfmathsetmacro\abcA{\angleB + \angleC}
-    \pgfmathsetmacro\bcdA{180}
-    \pgfmathsetmacro\cdxA{\angleA}
-    \pgfmathsetmacro\cdeA{180 - 2*(\abcA-90) - \angleA}
-    \builderHepta[FF0000]{3pt}{_0}{\abcA}{\bcdA}{\cdxA}{\cdeA}{0}
+    \pgfmathsetmacro\abc{\angPhi + \angPsi}
+    \pgfmathsetmacro\bcd{180}
+    \pgfmathsetmacro\cdx{\angTheta}
+    \pgfmathsetmacro\cde{2*(180-\angPhi-\angPsi)-\angTheta}
+    \builderHepta[FF0000]{2pt}{_0}{\abc}{\bcd}{\cdx}{\cde}{0}
     \path(1,-1) node{$(a)$};
    \end{scope}
    \begin{scope}[shift={(7,0)}]
     \builderBase[CCCCCC]{1pt}{0}
-    \pgfmathsetmacro\abcB{5*180/7}
-    \pgfmathsetmacro\bcdB{5*180/7}
-    \pgfmathsetmacro\cdxB{3*180/7}
-    \pgfmathsetmacro\cdeB{5*180/7}
-    \builderHepta[FF0000]{3pt}{_1}{\abcB}{\bcdB}{\cdxB}{\cdeB}{0}
+    \pgfmathsetmacro\abc{5*180/7}
+    \pgfmathsetmacro\bcd{5*180/7}
+    \pgfmathsetmacro\cdx{3*180/7}
+    \pgfmathsetmacro\cde{5*180/7}
+    \builderHepta[FF0000]{2pt}{_1}{\abc}{\bcd}{\cdx}{\cde}{0}
     \path(1,-1) node{$(b)$};
    \end{scope}   
    
    \begin{scope}[shift={(0,-5.5)}]
     \builderBase[CCCCCC]{1pt}{0}
-    \pgfmathsetmacro\abcC{180 - \angleC + 45}
-    \pgfmathsetmacro\bcdC{90)}
-    \pgfmathsetmacro\cdxC{45 + \angleC}
-    \pgfmathsetmacro\cdeC{45 + \angleC}
-    \builderHepta[FF0000]{3pt}{_2}{\abcC}{\bcdC}{\cdxC}{\cdeC}{0}
+    \pgfmathsetmacro\abc{180 - \angPsi + 45}
+    \pgfmathsetmacro\bcd{90)}
+    \pgfmathsetmacro\cdx{45 + \angPsi}
+    \pgfmathsetmacro\cde{45 + \angPsi}
+    \builderHepta[FF0000]{2pt}{_2}{\abc}{\bcd}{\cdx}{\cde}{0}
     \path(1,-1) node{$(c)$};
    \end{scope}   
 
    \begin{scope}[shift={(7,-5.5)}]
     \builderBase[CCCCCC]{1pt}{0}
     \pgfmathsetmacro\abcD{180}
-    \pgfmathsetmacro\bcdD{\angleD}
+    \pgfmathsetmacro\bcdD{acos(3/4)}%\angleD}
     \pgfmathsetmacro\cdxD{180}
-    \pgfmathsetmacro\cdeD{\angleB + \angleC}
-    \builderHepta[FF0000]{3pt}{_3}{\abcD}{\bcdD}{\cdxD}{\cdeD}{0}
+    \pgfmathsetmacro\cdeD{\angPhi + \angPsi}
+    \builderHepta[FF0000]{2pt}{_3}{\abcD}{\bcdD}{\cdxD}{\cdeD}{0}
     \path(1,-1) node{$(d)$};
    \end{scope}   
   \end{scope}

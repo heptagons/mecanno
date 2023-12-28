@@ -36,46 +36,55 @@
   \end{scope}
 }
 
-\pgfmathsetmacro\angleA{acos(3/4)} %41.4
-\pgfmathsetmacro\angleB{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))} %27.8
-\pgfmathsetmacro\angleC{acos(sqrt(2)/4)}%atan(sqrt(7))} %69.2
-\pgfmathsetmacro\angleD{acos((1^2 + 2^2 - 2)/(2*1*2))}
+\pgfmathsetmacro\angTheta{acos(3/4)} %41.4
+\pgfmathsetmacro\angPhi{acos((8 + 1^2 - 2^2)/(2*sqrt(8)*1))} %27.8
+\pgfmathsetmacro\angPsi{acos(sqrt(2)/4)} %69.2
 
 \newcommand{\builderBase}[3][888888]{
   \def\p{#2}
   \pgfmathsetmacro\height{sqrt(7)}
   \meccanostrip[#1]{2}{1}{\p}
   \ifthenelse{#3=1}{
-   \path(0,0) ++(-90:7+\p) node{$A$};
-   \path(1,0) ++(-90:7+\p) node{$O$};
-   \path(2,0) ++(-90:7+\p) node{$B$};
-   \path(1,\height) ++(90:7+\p) node{$X$};
+   \path(0,0) ++(-90:7+\p) node[blue]{$A$};
+   \path(1,0) ++(-90:7+\p) node[blue]{$O$};
+   \path(2,0) ++(-90:7+\p) node[blue]{$B$};
+   \path(1,\height) ++(90:7+\p) node[blue]{$X$};
   }{}
   % right part
-  \begin{scope}[shift={(2,0)},rotate=-\angleB + 180 -\angleC]
+
+  \begin{scope}[shift={(2,0)},rotate=-\angPhi + 180 -\angPsi]
+   \draw[gray] (2,0) arc (0:-180+\angPhi+\angPsi:2) node[right]{$C$}; % arc
    \meccanostrip[#1]{4}{1}{\p}
    \ifthenelse{#3=1}{
-    \path(1,0) ++(-90:7+\p) node{$P$};
-    \path(4,0) ++(-90:7+\p) node{$Q$};
+    \path(1,0) ++(-75:7+\p) node[blue]{$P$};
+    \path(2,0) ++(120:7+\p) node[blue]{$R$};
+    \path(4,0) ++(90:7+\p) node[blue]{$Q$};
+    \draw[blue] (3.2,0) arc(180:180-\angTheta:0.8) node[midway, left=3, below]{$\theta$};
+    \begin{scope}[rotate=\angPhi]
+     \draw[blue] (0,0) -- (2.828,0); % line BX
+     \draw[blue] (0.75,0) arc(0:-\angPhi:0.75) node[right]{$\phi$};
+     \draw[blue] (0.6,0) arc(0:\angPsi:0.6) node[midway, left=3, above]{$\psi$};
+    \end{scope}
    }{}
-   \begin{scope}[shift={(1,0)},rotate=\angleA]
+   \begin{scope}[shift={(1,0)},rotate=\angTheta]
     \meccanostrip[#1]{2}{1}{\p}
    \end{scope}
-   \begin{scope}[shift={(4,0)},rotate=180-\angleA]
+   \begin{scope}[shift={(4,0)},rotate=180-\angTheta]
+    \draw[gray] (0,0) arc (180:180-2*\angTheta:2) node[right]{$D$}; % arc
     \meccanostrip[#1]{2}{1}{\p}
    \end{scope}
   \end{scope}
   % left part
-  \begin{scope}[shift={(0,0)},rotate=180 +\angleB -180 +\angleC]
+  \begin{scope}[shift={(0,0)},rotate=180 +\angPhi -180 +\angPsi]
    \meccanostrip[#1]{4}{1}{\p}
    \ifthenelse{#3=1}{
-    \path(1,0) ++(90:7+\p) node{$P'$};
-    \path(4,0) ++(90:7+\p) node{$Q$'};
+    \path(1,0) ++(75:7+\p) node[blue]{$P'$};
+    \path(4,0) ++(-90:7+\p) node[blue]{$Q$'};
    }{}
-   \begin{scope}[shift={(1,0)},rotate=-\angleA]
+   \begin{scope}[shift={(1,0)},rotate=-\angTheta]
     \meccanostrip[#1]{2}{1}{\p}
    \end{scope}
-   \begin{scope}[shift={(4,0)},rotate=-180+\angleA]
+   \begin{scope}[shift={(4,0)},rotate=-180+\angTheta]
     \meccanostrip[#1]{2}{1}{\p}
    \end{scope}
   \end{scope}
@@ -95,10 +104,10 @@
  \pgfmathsetmacro\CDE{#7}
 
  \ifthenelse{#8=1}{
-  \path(0,-1.00) node[right]{$\alpha\Index=\ABC^\circ$};
-  \path(0,-1.25) node[right]{$\beta\Index=\BCD^\circ$};
-  \path(0,-1.50) node[right]{$\gamma\Index=\CDX^\circ$};
-  \path(0,-1.75) node[right]{$\delta\Index=\CDE^\circ$};
+  \path(2,-1.00) node[right]{$\alpha\Index=\ABC^\circ$};
+  \path(2,-1.25) node[right]{$\beta\Index=\BCD^\circ$};
+  \path(2,-1.50) node[right]{$\gamma\Index=\CDX^\circ$};
+  \path(2,-1.75) node[right]{$\delta\Index=\CDE^\circ$};
  }{}
  % right-1
  \draw[blue] (1.5,0) arc (180:180-\ABC:0.5) node[below]{$\alpha\Index$}; % arc
